@@ -39,3 +39,23 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+/src/generated/prisma
+
+# Local DB
+/dev.db
+/dev.db-journal
+
+# Scripts
+/scripts
+/*.js
+!next.config.js
+!tailwind.config.js
+!postcss.config.js
+!eslint.config.mjs
+
+# Allow env example
+!/.env.example
+
+# Local Uploads
+/public/uploads/

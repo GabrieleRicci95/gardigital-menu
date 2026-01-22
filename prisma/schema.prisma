@@ -1,0 +1,142 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?  // Nome completo
+  password  String
+  role      String   @default("OWNER") // "ADMIN", "OWNER", "USER"
+  
+  resetToken       String?
+  resetTokenExpiry DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  restaurants Restaurant[]
+}
+
+model Restaurant {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  logoUrl     String?
+
+  themeColor  String   @default("#1a237e") 
+  
+  coverImageUrl   String?
+  backgroundColor String   @default("#ffffff")
+  textColor       String   @default("#000000")
+  fontFamily      String   @default("inter") // "inter", "playfair", "roboto", "lato", "montserrat"
+  cardStyle       String   @default("minimal") // "minimal", "shadow", "border", "glass"
+  ownerId     String
+  owner       User     @relation(fields: [ownerId], references: [id])
+  
+  menus       Menu[]
+  subscription Subscription?
+  // VISITS: Added for Analytics
+  visits      Visit[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Menu {
+  id           String     @id @default(cuid())
+  name         String
+  isActive     Boolean    @default(false)
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  categories   Category[]
+
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model Category {
+  id           String     @id @default(cuid())
+  name         String
+  sortOrder    Int        @default(0)
+  menuId       String
+  menu         Menu       @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  
+  items        MenuItem[]
+  translations CategoryTranslation[]
+
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model MenuItem {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  price       Decimal
+  imageUrl    String?
+  isVisible   Boolean  @default(true)
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  allergens    String? // JSON string
+  isVegan      Boolean @default(false)
+  isGlutenFree Boolean @default(false)
+  isVegetarian Boolean @default(false)
+  spiciness    Int     @default(0)
+
+  translations MenuItemTranslation[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Subscription {
+  id             String     @id @default(cuid())
+  plan           String     @default("BASE") // "BASE", "PREMIUM"
+  status         String     @default("ACTIVE") // "ACTIVE", "EXPIRED"
+  startDate      DateTime   @default(now())
+  endDate        DateTime?
+  restaurantId   String     @unique
+  restaurant     Restaurant @relation(fields: [restaurantId], references: [id])
+
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+}
+
+
+model MenuItemTranslation {
+  id          String   @id @default(cuid())
+  language    String   // "en", "de", "fr", "es"
+  name        String
+  description String?
+  
+  menuItemId  String
+  menuItem    MenuItem @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
+
+  @@unique([menuItemId, language])
+}
+
+model CategoryTranslation {
+    id          String   @id @default(cuid())
+    language    String   // "en", "de", "fr", "es"
+    name        String
+
+    categoryId  String
+    category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+    @@unique([categoryId, language])
+}
+
+model Visit {
+  id           String     @id @default(cuid())
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  createdAt    DateTime   @default(now())
+}
