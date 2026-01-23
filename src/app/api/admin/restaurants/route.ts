@@ -7,9 +7,9 @@ export async function GET() {
 
     // Security check: Must be ADMIN
     // TEMPORARY: Allow everyone to see this for testing purposes
-    /* if (!session || session.user.role !== 'ADMIN') {
+    if (!session || session.user.role !== 'ADMIN') {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    } */
+    }
 
     try {
         const restaurants = await prisma.restaurant.findMany({

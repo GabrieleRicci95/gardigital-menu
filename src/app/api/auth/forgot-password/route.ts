@@ -43,7 +43,7 @@ export async function POST(request: Request) {
             const resend = new Resend(process.env.RESEND_API_KEY);
             try {
                 await resend.emails.send({
-                    from: 'Gardigital Menu <onboarding@resend.dev>',
+                    from: 'Gardigital Menu <noreply@gardigital.it>',
                     to: email,
                     subject: 'Reset Password - Gardigital Menu',
                     html: `

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import styles from './subscription.module.css'; // We'll assume a new CSS module or inline styles for simplicity first, but let's use inline for speed as per pattern
 
 export default function SubscriptionPage() {
@@ -128,18 +129,22 @@ export default function SubscriptionPage() {
                             Gia Attivo ✨
                         </button>
                     ) : (
-                        <button
-                            onClick={handleUpgrade}
+                        <Link
+                            href="/contact?plan=Premium"
                             className="btn btn-primary"
                             style={{
+                                display: 'block',
                                 width: '100%',
-                                background: 'linear-gradient(45deg, #1a237e, #3949ab)',
-                                boxShadow: '0 4px 15px rgba(26, 35, 126, 0.3)'
+                                background: '#25D366', // Green
+                                boxShadow: '0 4px 15px rgba(37, 211, 102, 0.3)',
+                                textAlign: 'center',
+                                textDecoration: 'none',
+                                lineHeight: 'normal',
+                                padding: '12px'
                             }}
-                            disabled={processing}
                         >
-                            {processing ? 'Elaborazione...' : 'Attiva Premium 🚀'}
-                        </button>
+                            Contattaci per Attivare 📱
+                        </Link>
                     )}
                 </div>
 

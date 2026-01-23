@@ -57,7 +57,7 @@ export default function Home() {
                 <li>QR Code Standard</li>
                 <li>Limite piatti 15</li>
               </ul>
-              <Link href="/register" className="btn btn-primary" style={{ backgroundColor: '#757575' }}>Scegli Base</Link>
+              <Link href="/contact?plan=Base" className="btn btn-primary" style={{ backgroundColor: '#757575' }}>Contattaci per Info</Link>
             </div>
 
             {/* Premium Plan */}
@@ -73,7 +73,7 @@ export default function Home() {
                 <li>QR Code Personalizzato</li>
                 <li>Traduzione Multilingua</li>
               </ul>
-              <Link href="/register" className="btn btn-primary">Attiva Premium</Link>
+              <Link href="/contact?plan=Premium" className="btn btn-primary">Richiedi Premium</Link>
             </div>
 
           </div>

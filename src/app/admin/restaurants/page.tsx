@@ -12,6 +12,7 @@ interface Restaurant {
     subscription?: {
         plan: string;
         status: string;
+        endDate?: string | null;
     } | null;
 }
 
@@ -93,6 +94,7 @@ export default function AdminRestaurantsPage() {
                             <th style={{ padding: '1rem' }}>Ristorante</th>
                             <th style={{ padding: '1rem' }}>Proprietario</th>
                             <th style={{ padding: '1rem' }}>Stato Abbonamento</th>
+                            <th style={{ padding: '1rem' }}>Scadenza</th>
                             <th style={{ padding: '1rem' }}>Azioni</th>
                         </tr>
                     </thead>
@@ -117,6 +119,14 @@ export default function AdminRestaurantsPage() {
                                         }}>
                                             {isPremium ? 'PREMIUM ✨' : 'BASE'}
                                         </span>
+                                    </td>
+                                    <td style={{ padding: '1rem', fontSize: '0.9rem', color: '#555' }}>
+                                        {isPremium
+                                            ? (r.subscription?.endDate
+                                                ? new Date(r.subscription.endDate).toLocaleDateString('it-IT')
+                                                : '♾️ Illimitato')
+                                            : '-'
+                                        }
                                     </td>
                                     <td style={{ padding: '1rem' }}>
                                         {isPremium ? (

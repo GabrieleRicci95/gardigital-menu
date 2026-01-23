@@ -7,9 +7,9 @@ export async function POST(req: Request) {
 
     // Security Check
     // TEMPORARY: Allow for testing
-    /* if (!session || session.user.role !== 'ADMIN') {
+    if (!session || session.user.role !== 'ADMIN') {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    } */
+    }
 
     try {
         const { restaurantId, newPlan, durationMonths } = await req.json();
