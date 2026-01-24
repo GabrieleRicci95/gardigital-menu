@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import styles from './menu-public.module.css';
+import ReservationModal from '@/components/menu/ReservationModal';
 
 interface MenuPageItem {
     id: string;
@@ -33,6 +34,7 @@ export interface MenuPageRestaurant {
     textColor: string;
     fontFamily: string;
     cardStyle: string;
+    whatsappNumber: string | null;
     categories: MenuPageCategory[];
 }
 
@@ -46,6 +48,7 @@ const LANGUAGES = [
 export default function MenuClient({ restaurant }: { restaurant: MenuPageRestaurant }) {
     const [activeFilters, setActiveFilters] = useState<Set<string>>(new Set());
     const [language, setLanguage] = useState<string>('it');
+    const [isReservationOpen, setIsReservationOpen] = useState(false);
 
     const toggleFilter = (filter: string) => {
         const newFilters = new Set(activeFilters);
@@ -110,87 +113,75 @@ export default function MenuClient({ restaurant }: { restaurant: MenuPageRestaur
                 }
             `}</style>
 
-            {/* Language Switcher Floating */}
-            <div style={{ position: 'fixed', top: '20px', right: '20px', zIndex: 100, display: 'flex', gap: '5px', background: 'rgba(255,255,255,0.9)', padding: '5px', borderRadius: '20px', boxShadow: '0 2px 5px rgba(0,0,0,0.2)' }}>
-                {LANGUAGES.map(lang => (
+
+
+            {/* Floating Reservation Button - Only if WhatsApp number exists */}
+            {restaurant.whatsappNumber && (
+                <>
                     <button
-                        key={lang.code}
-                        onClick={() => setLanguage(lang.code)}
+                        onClick={() => setIsReservationOpen(true)}
                         style={{
+                            position: 'fixed',
+                            bottom: '20px',
+                            right: '20px',
+                            zIndex: 100,
+                            backgroundColor: '#25D366', // WhatsApp Brand Color
+                            color: 'white',
                             border: 'none',
-                            background: language === lang.code ? restaurant.themeColor : 'transparent',
-                            color: language === lang.code ? 'white' : '#333',
-                            borderRadius: '50%',
-                            width: '32px',
-                            height: '32px',
+                            borderRadius: '50px',
+                            padding: '12px 24px',
+                            boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
+                            fontWeight: 'bold',
+                            fontSize: '1rem',
                             cursor: 'pointer',
-                            fontSize: '1.2rem',
                             display: 'flex',
                             alignItems: 'center',
-                            justifyContent: 'center',
-                            transition: 'all 0.2s'
+                            gap: '8px',
+                            transition: 'transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
                         }}
-                        title={lang.code.toUpperCase()}
+                        onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
+                        onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
                     >
-                        {lang.label}
+                        <span>Prenota Tavolo</span>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" /></svg>
                     </button>
-                ))}
-            </div>
+
+                    <ReservationModal
+                        isOpen={isReservationOpen}
+                        onClose={() => setIsReservationOpen(false)}
+                        whatsappNumber={restaurant.whatsappNumber!}
+                        restaurantName={restaurant.name}
+                    />
+                </>
+            )}
 
             {/* Hero Section */}
-            <header className={styles.hero} style={{
-                backgroundImage: restaurant.coverImageUrl ? `url(${restaurant.coverImageUrl})` : 'none',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                color: restaurant.coverImageUrl ? 'white' : 'inherit',
-                textShadow: restaurant.coverImageUrl ? '0 2px 4px rgba(0,0,0,0.5)' : 'none'
-            }}>
-                <div style={{
-                    position: 'absolute', inset: 0,
-                    background: restaurant.coverImageUrl ? 'rgba(0,0,0,0.4)' : 'transparent',
-                    zIndex: 0
-                }} />
+            <header className={styles.hero}>
+                {/* Removed dynamic background overlay */}
 
-                <div style={{ position: 'relative', zIndex: 1 }}>
+                <div className={styles.heroContent} style={{ position: 'relative', zIndex: 1 }}>
                     {restaurant.logoUrl && (
                         <img
                             src={restaurant.logoUrl}
                             alt="Logo Ristorante"
                             className={styles.logo}
-                            style={{ borderColor: restaurant.themeColor }}
                         />
                     )}
-                    <h1 className={styles.restaurantName} style={{ color: restaurant.coverImageUrl ? 'white' : restaurant.textColor }}>{restaurant.name}</h1>
+                    <h1 className={styles.restaurantName}>
+                        {restaurant.name.split('&').map((part, i, arr) => (
+                            <span key={i}>
+                                {part}
+                                {i < arr.length - 1 && <span className={styles.ampersand}>&</span>}
+                            </span>
+                        ))}
+                    </h1>
                     {restaurant.description && (
-                        <p className={styles.restaurantDesc} style={{ color: restaurant.coverImageUrl ? 'rgba(255,255,255,0.9)' : restaurant.textColor, opacity: 0.9 }}>{restaurant.description}</p>
+                        <p className={styles.restaurantDesc}>{restaurant.description}</p>
                     )}
                 </div>
             </header>
 
-            {/* Filter Bar */}
-            <div className={styles.filterBar} style={{ backgroundColor: restaurant.backgroundColor, borderColor: 'rgba(0,0,0,0.1)' }}>
-                <span style={{ fontSize: '0.9rem', opacity: 0.7, marginRight: '10px' }}>
-                    {language === 'it' ? 'Filtra per:' : language === 'en' ? 'Filter by:' : language === 'fr' ? 'Filtrer par:' : 'Filtern nach:'}
-                </span>
-                <button
-                    className={`${styles.filterBtn} ${activeFilters.has('vegetarian') ? styles.active : ''}`}
-                    onClick={() => toggleFilter('vegetarian')}
-                >
-                    {language === 'it' ? 'Vegetariano 🥬' : language === 'en' ? 'Vegetarian 🥬' : language === 'fr' ? 'Végétarien 🥬' : 'Vegetarisch 🥬'}
-                </button>
-                <button
-                    className={`${styles.filterBtn} ${activeFilters.has('vegan') ? styles.active : ''}`}
-                    onClick={() => toggleFilter('vegan')}
-                >
-                    {language === 'it' ? 'Vegano 🌱' : language === 'en' ? 'Vegan 🌱' : language === 'fr' ? 'Végétalien 🌱' : 'Vegan 🌱'}
-                </button>
-                <button
-                    className={`${styles.filterBtn} ${activeFilters.has('glutenFree') ? styles.active : ''}`}
-                    onClick={() => toggleFilter('glutenFree')}
-                >
-                    {language === 'it' ? 'Senza Glutine 🌾' : language === 'en' ? 'Gluten Free 🌾' : language === 'fr' ? 'Sans Gluten 🌾' : 'Glutenfrei 🌾'}
-                </button>
-            </div>
+            {/* Filter Bar Removed */}
 
             {/* Sticky Navigation */}
             <nav className={styles.categoryNav} style={{ backgroundColor: restaurant.backgroundColor }}>
@@ -241,7 +232,7 @@ export default function MenuClient({ restaurant }: { restaurant: MenuPageRestaur
                                                 <div className={styles.itemTags}>
                                                     {item.isVegetarian && <span className={styles.tagVeg} title="Vegetariano">Veg</span>}
                                                     {item.isVegan && <span className={styles.tagVegan} title="Vegano">Vegan</span>}
-                                                    {item.isGlutenFree && <span className={styles.tagGf} title="Senza Glutine">GF</span>}
+                                                    {item.isGlutenFree && <span className={styles.tagGf} title="Senza Glutine">Senza Glutine</span>}
                                                     {item.spiciness > 0 && <span className={styles.tagSpicy} title={`Piccantezza ${item.spiciness}/3`}>{'🌶️'.repeat(item.spiciness)}</span>}
                                                 </div>
                                             </div>

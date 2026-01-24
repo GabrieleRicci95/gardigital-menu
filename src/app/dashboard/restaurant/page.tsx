@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import styles from './restaurant.module.css';
+import styles from '../restaurant-dashboard.module.css';
 
 export default function RestaurantPage() {
     const [loading, setLoading] = useState(true);
@@ -13,6 +13,7 @@ export default function RestaurantPage() {
         description: '',
         themeColor: '#1a237e',
         slug: '',
+        whatsappNumber: '',
     });
 
     useEffect(() => {
@@ -25,6 +26,7 @@ export default function RestaurantPage() {
                         description: data.restaurant.description || '',
                         themeColor: data.restaurant.themeColor || '#1a237e',
                         slug: data.restaurant.slug || '',
+                        whatsappNumber: data.restaurant.whatsappNumber || '',
                     });
                 }
                 setLoading(false);
@@ -56,13 +58,16 @@ export default function RestaurantPage() {
         }
     };
 
-    if (loading) return <div className="p-4">Caricamento...</div>;
+    if (loading) return <div className={styles.container}>Caricamento...</div>;
 
     return (
         <div className={styles.container}>
-            <h1 className="h2 mb-4">Profilo Ristorante</h1>
+            <header className={styles.header}>
+                <h1 className={styles.title}>Il Mio Ristorante 🍽️</h1>
+                <p className={styles.subtitle}>Gestisci le informazioni principali del tuo locale.</p>
+            </header>
 
-            <div className="card">
+            <div className={styles.card}>
                 <form onSubmit={handleSubmit} className={styles.form}>
                     <div className={styles.inputGroup}>
                         <label htmlFor="name">Nome Ristorante</label>
@@ -73,6 +78,7 @@ export default function RestaurantPage() {
                             onChange={e => setFormData({ ...formData, name: e.target.value })}
                             required
                             placeholder="Es. La Trattoria Bella"
+                            className={styles.formInput}
                         />
                     </div>
 
@@ -82,45 +88,53 @@ export default function RestaurantPage() {
                             id="description"
                             value={formData.description}
                             onChange={e => setFormData({ ...formData, description: e.target.value })}
-                            placeholder="La migliore cucina tradizionale..."
-                            rows={3}
+                            placeholder="Racconta la storia e le specialità del tuo locale..."
+                            rows={4}
+                            className={styles.formTextarea}
                         />
                     </div>
 
-
+                    <div className={styles.inputGroup}>
+                        <label htmlFor="whatsappNumber">Numero WhatsApp</label>
+                        <input
+                            type="text"
+                            id="whatsappNumber"
+                            value={formData.whatsappNumber || ''}
+                            onChange={e => setFormData({ ...formData, whatsappNumber: e.target.value })}
+                            placeholder="Es. 3401234567 (senza spazi)"
+                            className={styles.formInput}
+                        />
+                        <span className={styles.helperText}>
+                            ℹ️ Se inserito, apparirà un pulsante "Prenota Tavolo" sul tuo menu pubblico.
+                        </span>
+                    </div>
 
                     <div className={styles.actions}>
-                        <button type="submit" className="btn btn-primary" disabled={saving}>
+                        <button type="submit" className={`${styles.button} ${styles.btnPrimary}`} style={{ width: 'auto' }} disabled={saving}>
                             {saving ? 'Salvataggio...' : 'Salva Modifiche'}
                         </button>
-                        {message && <span className={styles.message}>{message}</span>}
+                        {message && <span className={styles.message}>✅ {message}</span>}
                     </div>
                 </form>
 
                 {formData.slug && (
-                    <div style={{ marginTop: '2rem', paddingTop: '2rem', borderTop: '1px solid #eee' }}>
-                        <h3 className="h3 mb-2">Il tuo Menu Pubblico</h3>
-                        <p style={{ color: '#666', marginBottom: '10px' }}>Condividi questo link con i tuoi clienti o genera il QR Code.</p>
+                    <div className={styles.linkBox}>
+                        <h3 className={styles.cardTitle}>Il tuo Menu Pubblico 🌐</h3>
+                        <p className={styles.cardDesc}>
+                            Condividi questo link con i tuoi clienti o genera il QR Code.
+                        </p>
 
-                        <div style={{
-                            display: 'flex',
-                            gap: '10px',
-                            background: '#f5f5f5',
-                            padding: '10px',
-                            borderRadius: '8px',
-                            alignItems: 'center'
-                        }}>
-                            <code style={{ flex: 1, wordBreak: 'break-all' }}>
+                        <div className={styles.linkContainer}>
+                            <code className={styles.linkUrl}>
                                 {`${window.location.origin}/menu/${formData.slug}`}
                             </code>
                             <a
                                 href={`/menu/${formData.slug}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="btn btn-sm"
-                                style={{ background: 'white', border: '1px solid #ddd' }}
+                                className={styles.btnSm}
                             >
-                                Apri ↗
+                                Apri Menu ↗
                             </a>
                         </div>
                     </div>

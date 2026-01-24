@@ -3,6 +3,8 @@ import "@fontsource/inter";
 import "@fontsource/playfair-display";
 import "./globals.css";
 
+import CookieBanner from "@/components/common/CookieBanner";
+
 export const metadata: Metadata = {
   title: "Gardigital Menu - Gestione Ristoranti",
   description: "Piattaforma SaaS per menu digitali premium",
@@ -22,6 +24,7 @@ export default function RootLayout({
     <html lang="it" suppressHydrationWarning>
       <body>
         {children}
+        <CookieBanner />
       </body>
     </html>
   );

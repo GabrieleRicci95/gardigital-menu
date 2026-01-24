@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import styles from '../dashboard.module.css'; // Reusing dashboard styles
+import styles from '../restaurant-dashboard.module.css';
 
 interface Restaurant {
     id: string;
@@ -92,8 +92,8 @@ export default function DesignPage() {
         }
     };
 
-    if (loading) return <div className="p-8">Caricamento impostazioni...</div>;
-    if (!restaurant) return <div className="p-8">Ristorante non trovato.</div>;
+    if (loading) return <div className={styles.container}>Caricamento impostazioni...</div>;
+    if (!restaurant) return <div className={styles.container}>Ristorante non trovato.</div>;
 
     const fontOptions = [
         { value: 'inter', label: 'Inter (Moderno)' },
@@ -111,109 +111,121 @@ export default function DesignPage() {
     ];
 
     return (
-        <div style={{ maxWidth: '900px', margin: '0 auto', padding: '1.5rem' }}>
-            <h1 className="h2" style={{ marginBottom: '1.5rem' }}>Personalizzazione Grafica</h1>
+        <div className={styles.container}>
+            <div className={styles.header}>
+                <h1 className={styles.title}>Aspetto & Design</h1>
+                <p className={styles.subtitle}>Personalizza l'identità visiva del tuo menù digitale.</p>
+            </div>
 
             {message && (
-                <div style={{
-                    padding: '1rem',
-                    borderRadius: '8px',
-                    marginBottom: '1.5rem',
-                    background: message.type === 'success' ? '#e8f5e9' : '#ffebee',
-                    color: message.type === 'success' ? '#2e7d32' : '#c62828'
-                }}>
+                <div className={styles.message} style={{ marginBottom: '1.5rem', color: message.type === 'error' ? '#c62828' : undefined }}>
                     {message.text}
                 </div>
             )}
 
-            <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+            <form onSubmit={handleSave} className={styles.form} style={{ maxWidth: '100%' }}>
 
-                {/* Branding Section */}
-                <section className={styles.card}>
-                    <h2 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '1rem', color: 'var(--color-primary)' }}>Branding</h2>
+                <div className={styles.grid}>
+                    {/* Branding Section */}
+                    <div className={styles.card}>
+                        <h2 className={styles.cardTitle}>Branding & Logo</h2>
+                        <div className={styles.cardDesc}>
+                            Gestisci il logo e l'immagine di copertina del tuo ristorante.
+                        </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
-                        {/* Logo Upload */}
-                        <div>
-                            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Logo</label>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                {restaurant.logoUrl && (
-                                    <img src={restaurant.logoUrl} alt="Logo" style={{ width: '64px', height: '64px', borderRadius: '50%', objectFit: 'cover', border: '1px solid #ddd' }} />
-                                )}
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={(e) => handleFileUpload(e, 'logoUrl')}
-                                />
-                                {uploading === 'logoUrl' && <span style={{ fontSize: '0.9rem', color: '#1a237e' }}>Caricamento...</span>}
+                        <div className={styles.inputGroup} style={{ marginBottom: '1.5rem' }}>
+                            <label>Logo Ristorante</label>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                                <div style={{
+                                    width: '80px',
+                                    height: '80px',
+                                    borderRadius: '50%',
+                                    background: '#f5f5f5',
+                                    overflow: 'hidden',
+                                    border: '2px solid #eee',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}>
+                                    {restaurant.logoUrl ? (
+                                        <img src={restaurant.logoUrl} alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                    ) : (
+                                        <span style={{ fontSize: '2rem', color: '#ccc' }}>📷</span>
+                                    )}
+                                </div>
+                                <div style={{ flex: 1 }}>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        id="logo-upload"
+                                        onChange={(e) => handleFileUpload(e, 'logoUrl')}
+                                        style={{ display: 'none' }}
+                                    />
+                                    <label htmlFor="logo-upload" className={styles.btnSm} style={{ cursor: 'pointer', display: 'inline-flex' }}>
+                                        {uploading === 'logoUrl' ? 'Caricamento...' : 'Carica Logo'}
+                                    </label>
+                                    <p className={styles.helperText}>Formato consigliato: PNG o JPG quadrata (500x500px)</p>
+                                </div>
                             </div>
                         </div>
 
-                        {/* Cover Image Upload */}
-                        <div>
-                            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Immagine di Copertina</label>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                {restaurant.coverImageUrl && (
-                                    <img src={restaurant.coverImageUrl} alt="Cover" style={{ width: '100px', height: '64px', borderRadius: '4px', objectFit: 'cover', border: '1px solid #ddd' }} />
-                                )}
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={(e) => handleFileUpload(e, 'coverImageUrl')}
-                                />
-                                {uploading === 'coverImageUrl' && <span style={{ fontSize: '0.9rem', color: '#1a237e' }}>Caricamento...</span>}
+
+                    </div>
+
+                    {/* Style Section */}
+                    <div className={styles.card}>
+                        <h2 className={styles.cardTitle}>Stile & Tipografia</h2>
+                        <div className={styles.cardDesc}>
+                            Personalizza i colori e i font del tuo menù.
+                        </div>
+
+                        <div className={styles.form} style={{ gap: '1.5rem' }}>
+                            <div className={styles.inputGroup}>
+                                <label>Font (Carattere)</label>
+                                <select
+                                    value={restaurant.fontFamily}
+                                    onChange={(e) => setRestaurant({ ...restaurant, fontFamily: e.target.value })}
+                                    className={styles.formInput}
+                                >
+                                    {fontOptions.map(opt => (
+                                        <option key={opt.value} value={opt.value}>{opt.label}</option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            <div className={styles.inputGroup}>
+                                <label>Stile Schede Piatti</label>
+                                <select
+                                    value={restaurant.cardStyle}
+                                    onChange={(e) => setRestaurant({ ...restaurant, cardStyle: e.target.value })}
+                                    className={styles.formInput}
+                                >
+                                    {cardStyleOptions.map(opt => (
+                                        <option key={opt.value} value={opt.value}>{opt.label}</option>
+                                    ))}
+                                </select>
                             </div>
                         </div>
                     </div>
-                </section>
+                </div>
 
-
-
-                {/* Typography & Style Section */}
-                <section className={styles.card}>
-                    <h2 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '1rem', color: 'var(--color-primary)' }}>Stile & Tipografia</h2>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
-                        <div>
-                            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Font (Carattere)</label>
-                            <select
-                                value={restaurant.fontFamily}
-                                onChange={(e) => setRestaurant({ ...restaurant, fontFamily: e.target.value })}
-                                style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid #ddd', fontSize: '1rem' }}
-                            >
-                                {fontOptions.map(opt => (
-                                    <option key={opt.value} value={opt.value}>{opt.label}</option>
-                                ))}
-                            </select>
+                <div className={styles.linkBox} style={{ marginTop: '0rem' }}>
+                    <div className={styles.linkContainer} style={{ justifyContent: 'space-between', background: 'white', border: 'none', padding: 0 }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                            <span className={styles.helperText}>Anteprima pubblica</span>
+                            <a href={`/menu/${restaurant.slug}`} target="_blank" className={styles.linkUrl} style={{ background: '#f8f9fa', textDecoration: 'none' }}>
+                                🔗 /menu/{restaurant.slug}
+                            </a>
                         </div>
-
-                        <div>
-                            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Stile Schede Piatti</label>
-                            <select
-                                value={restaurant.cardStyle}
-                                onChange={(e) => setRestaurant({ ...restaurant, cardStyle: e.target.value })}
-                                style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid #ddd', fontSize: '1rem' }}
-                            >
-                                {cardStyleOptions.map(opt => (
-                                    <option key={opt.value} value={opt.value}>{opt.label}</option>
-                                ))}
-                            </select>
-                        </div>
+                        <button
+                            type="submit"
+                            disabled={saving}
+                            className={`${styles.button} ${styles.btnPrimary}`}
+                            style={{ width: 'auto', alignSelf: 'flex-end', opacity: saving ? 0.7 : 1 }}
+                        >
+                            {saving ? 'Salvataggio...' : 'Salva Modifiche'}
+                        </button>
                     </div>
-                </section>
-
-                {/* Preview Link */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#f5f5f5', padding: '1rem', borderRadius: '8px' }}>
-                    <span style={{ color: '#555' }}>
-                        Anteprima pubblica: <a href={`/menu/${restaurant.slug}`} target="_blank" style={{ color: 'var(--color-primary)', textDecoration: 'underline' }}>/menu/{restaurant.slug}</a>
-                    </span>
-                    <button
-                        type="submit"
-                        disabled={saving}
-                        className="btn btn-primary"
-                        style={{ opacity: saving ? 0.7 : 1 }}
-                    >
-                        {saving ? 'Salvataggio...' : 'Salva Modifiche'}
-                    </button>
                 </div>
 
             </form>

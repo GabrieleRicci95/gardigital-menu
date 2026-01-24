@@ -5,6 +5,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -36,6 +37,9 @@ model Restaurant {
   backgroundColor String   @default("#ffffff")
   textColor       String   @default("#000000")
   fontFamily      String   @default("inter") // "inter", "playfair", "roboto", "lato", "montserrat"
+  
+  whatsappNumber  String?  // Added for Reservation System
+  
   cardStyle       String   @default("minimal") // "minimal", "shadow", "border", "glass"
   ownerId     String
   owner       User     @relation(fields: [ownerId], references: [id])

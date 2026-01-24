@@ -1,87 +1,68 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import styles from './onboarding.module.css';
 
 export default function OnboardingPage() {
-    const [loading, setLoading] = useState(false);
     const router = useRouter();
 
-    const handleSelectPlan = async (plan: 'BASE' | 'PREMIUM') => {
-        setLoading(true);
-        try {
-            const res = await fetch('/api/subscription', {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ plan }) // Ensure the API handles creating if not exists or updating
-            });
+    useEffect(() => {
+        // Check if already active
+        const checkStatus = async () => {
+            try {
+                const t = Date.now();
+                const res = await fetch(`/api/restaurant?t=${t}`);
+                if (res.ok) {
+                    const data = await res.json();
+                    const sub = data.restaurant?.subscription;
 
-            if (res.ok) {
-                router.push('/dashboard');
-            } else {
-                alert("Errore durante la selezione del piano. Riprova.");
+                    if (sub && sub.status === 'ACTIVE') {
+                        router.push('/dashboard');
+                    }
+                }
+            } catch (error) {
+                console.error("Check failed", error);
             }
+        };
+
+        checkStatus();
+        const interval = setInterval(checkStatus, 5000); // Poll every 5s
+        return () => clearInterval(interval);
+    }, [router]);
+
+    const handleLogout = async () => {
+        try {
+            await fetch('/api/auth/logout', { method: 'POST' });
+            router.push('/login');
         } catch (error) {
-            console.error(error);
-            alert("Errore di connessione.");
-        } finally {
-            setLoading(false);
+            console.error("Logout failed", error);
         }
     };
 
     return (
-        <div style={{
-            minHeight: '100vh',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: '#f5f5f5',
-            padding: '2rem'
-        }}>
-            <h1 className="h2" style={{ marginBottom: '2rem', color: '#1a237e' }}>Scegli il tuo piano</h1>
-            <p style={{ marginBottom: '3rem', fontSize: '1.2rem', color: '#555' }}>Seleziona l'abbonamento più adatto alle tue esigenze per iniziare.</p>
+        <div className={styles.container}>
+            <button onClick={handleLogout} className={styles.logoutButton}>
+                Esci
+            </button>
+            <div className={styles.card}>
+                <div className={styles.iconWrapper}>⏳</div>
+                <h1 className={styles.title}>Attivazione in Corso</h1>
+                <p className={styles.text}>
+                    Grazie per esserti registrato!<br />
+                    Il tuo account è attualmente <strong>in attesa di revisione</strong>.
+                </p>
 
-            <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-                {/* BASE PLAN */}
-                <div className="card" style={{ width: '300px', textAlign: 'center', border: '1px solid #ddd' }}>
-                    <h2 style={{ color: '#555' }}>Base</h2>
-                    <p style={{ fontSize: '2.5rem', fontWeight: 'bold', margin: '1rem 0' }}>Gratis</p>
-                    <ul style={{ listStyle: 'none', padding: 0, margin: '2rem 0', textAlign: 'left' }}>
-                        <li style={{ marginBottom: '0.5rem' }}>✅ 1 Menu Digitale</li>
-                        <li style={{ marginBottom: '0.5rem' }}>✅ QR Code Base</li>
-                        <li style={{ marginBottom: '0.5rem' }}>❌ Statistiche Avanzate</li>
-                        <li style={{ marginBottom: '0.5rem' }}>❌ Supporto Dedicato</li>
-                    </ul>
-                    <button
-                        onClick={() => handleSelectPlan('BASE')}
-                        disabled={loading}
-                        className="btn"
-                        style={{ width: '100%', border: '1px solid #1a237e', color: '#1a237e' }}
-                    >
-                        {loading ? 'Attendi...' : 'Scegli Base'}
-                    </button>
+                <div className={styles.statusBox}>
+                    Un amministratore attiverà il tuo profilo a breve.<br />
+                    Non devi fare nulla, questa pagina si aggiornerà automaticamente appena sarai attivo.
                 </div>
 
-                {/* PREMIUM PLAN */}
-                <div className="card" style={{ width: '300px', textAlign: 'center', border: '2px solid #1a237e', transform: 'scale(1.05)' }}>
-                    <div style={{ background: '#1a237e', color: 'white', padding: '0.5rem', borderRadius: '4px', display: 'inline-block', marginBottom: '1rem' }}>Consigliato</div>
-                    <h2 style={{ color: '#1a237e' }}>Premium</h2>
-                    <p style={{ fontSize: '2.5rem', fontWeight: 'bold', margin: '1rem 0' }}>€ 19<span style={{ fontSize: '1rem' }}>/mese</span></p>
-                    <ul style={{ listStyle: 'none', padding: 0, margin: '2rem 0', textAlign: 'left' }}>
-                        <li style={{ marginBottom: '0.5rem' }}>✅ Menu Illimitati</li>
-                        <li style={{ marginBottom: '0.5rem' }}>✅ QR Code Personalizzabile</li>
-                        <li style={{ marginBottom: '0.5rem' }}>✅ Statistiche Avanzate</li>
-                        <li style={{ marginBottom: '0.5rem' }}>✅ Supporto Prioritario</li>
-                    </ul>
-                    <button
-                        onClick={() => handleSelectPlan('PREMIUM')}
-                        disabled={loading}
-                        className="btn btn-primary"
-                        style={{ width: '100%' }}
-                    >
-                        {loading ? 'Attendi...' : 'Scegli Premium 👑'}
-                    </button>
+                <div className={styles.footerText}>
+                    <p>Se hai fretta o desideri maggiori informazioni, contattaci.</p>
+                    <a href="/contact" className={styles.contactLink}>
+                        Contatta Supporto &rarr;
+                    </a>
                 </div>
             </div>
         </div>

@@ -4,15 +4,30 @@ import { getSession } from '@/lib/auth';
 
 export async function GET() {
     const session = await getSession();
-    if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!session || !session.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const menus = await prisma.menu.findMany({
-        where: { restaurantId: session.restaurantId },
-        orderBy: { createdAt: 'desc' },
-        include: { _count: { select: { categories: true } } }
-    });
+    try {
+        // Find the restaurant belonging to this user
+        const restaurant = await prisma.restaurant.findFirst({
+            where: { ownerId: session.user.id }
+        });
 
-    return NextResponse.json({ menus });
+        if (!restaurant) {
+            // User registered but has no restaurant (shouldn't happen with current flow, but possible)
+            return NextResponse.json({ menus: [] });
+        }
+
+        const menus = await prisma.menu.findMany({
+            where: { restaurantId: restaurant.id },
+            orderBy: { createdAt: 'desc' },
+            include: { _count: { select: { categories: true } } }
+        });
+
+        return NextResponse.json({ menus });
+    } catch (error) {
+        console.error("Get Menus Error:", error);
+        return NextResponse.json({ error: 'Errore interno' }, { status: 500 });
+    }
 }
 
 export async function POST(req: Request) {

@@ -1,0 +1,306 @@
+/* Main Container */
+.container {
+    animation: fadeIn 0.5s ease-out;
+}
+
+.header {
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.title {
+    font-size: 2rem;
+    color: var(--color-primary);
+    font-family: var(--font-family-serif);
+    font-weight: 700;
+}
+
+/* Grid Layout */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Card Base Style */
+.card {
+    background: white;
+    border-radius: 20px;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* Specific Card Variants */
+.cardBlue {
+    background: linear-gradient(135deg, #e3f2fd 0%, #ffffff 100%);
+    border-left: 4px solid #2196f3;
+}
+
+.cardPurple {
+    background: linear-gradient(135deg, #f3e5f5 0%, #ffffff 100%);
+    border-left: 4px solid #9c27b0;
+}
+
+.cardGold {
+    background: linear-gradient(135deg, #fff8e1 0%, #ffffff 100%);
+    border-left: 4px solid #ffb300;
+}
+
+.cardGreen {
+    background: linear-gradient(135deg, #e8f5e9 0%, #ffffff 100%);
+    border-left: 4px solid #4caf50;
+}
+
+/* Card Content */
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.cardTitle {
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.iconBlue {
+    background: rgba(33, 150, 243, 0.1);
+    color: #2196f3;
+}
+
+.iconPurple {
+    background: rgba(156, 39, 176, 0.1);
+    color: #9c27b0;
+}
+
+.iconGold {
+    background: rgba(255, 179, 0, 0.1);
+    color: #ffb300;
+}
+
+.iconGreen {
+    background: rgba(76, 175, 80, 0.1);
+    color: #4caf50;
+}
+
+.stat {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--color-text-main);
+    line-height: 1.2;
+}
+
+.subtext {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Search Bar */
+.searchContainer {
+    position: relative;
+    max-width: 400px;
+    margin-bottom: 2rem;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 0.8rem 1rem 0.8rem 2.8rem;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.searchInput:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 4px 12px rgba(26, 35, 126, 0.1);
+}
+
+.searchIcon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+    pointer-events: none;
+}
+
+/* Table Card */
+.tableCard {
+    background: white;
+    border-radius: 20px;
+    padding: 0;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.tableContainer {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+}
+
+.table th {
+    background: #f8f9fa;
+    padding: 1.2rem;
+    text-align: left;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.table td {
+    padding: 1.2rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+    color: var(--color-text-main);
+    vertical-align: middle;
+}
+
+.table tr:last-child td {
+    border-bottom: none;
+}
+
+.table tr:hover td {
+    background: #fafafa;
+}
+
+/* Badges */
+.badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 30px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.badgePremium {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    color: #1565c0;
+    border: 1px solid #bbdefb;
+}
+
+.badgeBase {
+    background: #f5f5f5;
+    color: #757575;
+    border: 1px solid #eeeeee;
+}
+
+/* Action Buttons */
+.actionGroup {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btnAction {
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.1s, opacity 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.btnAction:hover {
+    transform: translateY(-1px);
+    opacity: 0.9;
+}
+
+.btnOutline {
+    background: white;
+    border: 1px solid #e0e0e0;
+    color: #616161;
+}
+
+.btnOutline:hover {
+    background: #f5f5f5;
+    border-color: #bdbdbd;
+}
+
+.btnGreen {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.btnBlue {
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+.btnNavy {
+    background: #e8eaf6;
+    color: #1a237e;
+}
+
+.ownerName {
+    font-weight: 600;
+    color: var(--color-text-main);
+}
+
+.ownerEmail {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+}

@@ -34,7 +34,7 @@ export async function PATCH(request: Request) {
 
     try {
         const data = await request.json();
-        const { name, description, themeColor, coverImageUrl, backgroundColor, textColor, fontFamily, cardStyle } = data;
+        const { name, description, themeColor, coverImageUrl, backgroundColor, textColor, fontFamily, cardStyle, whatsappNumber } = data;
 
         if (!name) return NextResponse.json({ error: 'Il nome è obbligatorio' }, { status: 400 });
 
@@ -60,6 +60,7 @@ export async function PATCH(request: Request) {
                     textColor,
                     fontFamily,
                     cardStyle,
+                    whatsappNumber, // Add this
                     slug: existingRestaurant.name !== name ? slug + '-' + Math.floor(Math.random() * 1000) : existingRestaurant.slug
                 },
             });
@@ -79,6 +80,7 @@ export async function PATCH(request: Request) {
                     textColor,
                     fontFamily,
                     cardStyle,
+                    whatsappNumber, // Add this
                     ownerId: session.user.id,
                 },
             });

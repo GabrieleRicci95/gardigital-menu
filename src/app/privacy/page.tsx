@@ -1,51 +1,71 @@
+import Link from 'next/link';
+import styles from '../page.module.css';
+
 export default function PrivacyPage() {
     return (
-        <div className="container mx-auto px-4 py-8 max-w-4xl">
-            <h1 className="text-3xl font-bold mb-6">Privacy Policy</h1>
-            <div className="prose">
-                <p className="mb-4">Ultimo aggiornamento: {new Date().toLocaleDateString()}</p>
+        <div className={styles.container}>
+            <main style={{ maxWidth: '800px', margin: '0 auto', padding: '4rem 2rem' }}>
+                <div style={{ marginBottom: '2rem' }}>
+                    <Link href="/" style={{ color: 'var(--color-primary)', textDecoration: 'none' }}>
+                        ← Torna alla Home
+                    </Link>
+                </div>
 
-                <h2 className="text-xl font-semibold mt-6 mb-3">1. Introduzione</h2>
-                <p>
-                    Gardigital Menu ("noi", "nostro") si impegna a proteggere la tua privacy.
-                    Questa Privacy Policy spiega come raccogliamo, utilizziamo e proteggiamo i tuoi dati personali.
-                </p>
+                <h1 style={{ fontSize: '2.5rem', marginBottom: '1.5rem', color: 'var(--color-primary)' }}>Privacy Policy</h1>
 
-                <h2 className="text-xl font-semibold mt-6 mb-3">2. Dati Raccolti</h2>
-                <p>
-                    Raccogliamo i seguenti dati necessari per l'erogazione del servizio:
-                    <ul className="list-disc ml-6 mt-2">
-                        <li>Indirizzo email (per account e recupero password)</li>
-                        <li>Dati relativi al ristorante (menu, immagini, descrizioni)</li>
-                        <li>Dati di utilizzo del servizio</li>
-                    </ul>
-                </p>
+                <div style={{ lineHeight: '1.6', color: 'var(--color-text-main)' }}>
+                    <p style={{ marginBottom: '2rem', fontStyle: 'italic' }}>Ultimo aggiornamento: {new Date().toLocaleDateString()}</p>
 
-                <h2 className="text-xl font-semibold mt-6 mb-3">3. Finalità del Trattamento</h2>
-                <p>
-                    Utilizziamo i tuoi dati per:
-                    <ul className="list-disc ml-6 mt-2">
-                        <li>Fornire e mantenere il servizio</li>
-                        <li>Gestire il tuo account e abbonamento</li>
-                        <li>Inviare comunicazioni di servizio</li>
-                    </ul>
-                </p>
+                    <section style={{ marginBottom: '2rem' }}>
+                        <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: 'var(--color-text-main)' }}>1. Introduzione</h2>
+                        <p>
+                            Gardigital Menu ("noi", "nostro") si impegna a proteggere la tua privacy.
+                            Questa Privacy Policy spiega come raccogliamo, utilizziamo e proteggiamo i tuoi dati personali.
+                        </p>
+                    </section>
 
-                <h2 className="text-xl font-semibold mt-6 mb-3">4. Terze Parti</h2>
-                <p>
-                    Potremmo condividere i dati con fornitori di servizi terzi strettamente necessari, come:
-                    <ul className="list-disc ml-6 mt-2">
-                        <li>Processori di pagamento (Stripe)</li>
-                        <li>Servizi di hosting e infrastruttura</li>
-                        <li>Servizi di invio email</li>
-                    </ul>
-                </p>
+                    <section style={{ marginBottom: '2rem' }}>
+                        <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: 'var(--color-text-main)' }}>2. Dati Raccolti</h2>
+                        <p>Raccogliamo i seguenti dati necessari per l'erogazione del servizio:</p>
+                        <ul style={{ listStyleType: 'disc', paddingLeft: '1.5rem', marginTop: '0.5rem' }}>
+                            <li>Indirizzo email (per account e recupero password)</li>
+                            <li>Dati relativi al ristorante (menu, immagini, descrizioni)</li>
+                            <li>Dati di utilizzo del servizio</li>
+                        </ul>
+                    </section>
 
-                <h2 className="text-xl font-semibold mt-6 mb-3">5. Contatti</h2>
-                <p>
-                    Per domande sulla privacy, contattaci all'indirizzo email di supporto.
-                </p>
-            </div>
+                    <section style={{ marginBottom: '2rem' }}>
+                        <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: 'var(--color-text-main)' }}>3. Finalità del Trattamento</h2>
+                        <p>Utilizziamo i tuoi dati per:</p>
+                        <ul style={{ listStyleType: 'disc', paddingLeft: '1.5rem', marginTop: '0.5rem' }}>
+                            <li>Fornire e mantenere il servizio</li>
+                            <li>Gestire il tuo account e abbonamento</li>
+                            <li>Inviare comunicazioni di servizio</li>
+                        </ul>
+                    </section>
+
+                    <section style={{ marginBottom: '2rem' }}>
+                        <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: 'var(--color-text-main)' }}>4. Terze Parti</h2>
+                        <p>Potremmo condividere i dati con fornitori di servizi terzi strettamente necessari, come:</p>
+                        <ul style={{ listStyleType: 'disc', paddingLeft: '1.5rem', marginTop: '0.5rem' }}>
+                            <li>Processori di pagamento (Stripe)</li>
+                            <li>Servizi di hosting e infrastruttura</li>
+                            <li>Servizi di invio email</li>
+                        </ul>
+                    </section>
+
+                    <section style={{ marginBottom: '2rem' }}>
+                        <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: 'var(--color-text-main)' }}>5. Contatti</h2>
+                        <p>
+                            Per domande sulla privacy, contattaci all'indirizzo email di supporto.
+                        </p>
+                    </section>
+                </div>
+            </main>
+
+            <footer className={styles.footer}>
+                <p>&copy; {new Date().getFullYear()} Gardigital Menu. Tutti i diritti riservati.</p>
+            </footer>
         </div>
     );
 }

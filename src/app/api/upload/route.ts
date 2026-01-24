@@ -16,10 +16,12 @@ export async function POST(req: Request) {
     try {
         const data = await req.formData();
         const file: File | null = data.get('file') as unknown as File;
-        const itemId = data.get('itemId') as string;
+        const itemId = data.get('itemId') as string | null;
+        const restaurantId = data.get('restaurantId') as string | null;
+        const fieldName = data.get('fieldName') as string | null;
 
-        if (!file || !itemId) {
-            return NextResponse.json({ error: 'File and Item ID required' }, { status: 400 });
+        if (!file) {
+            return NextResponse.json({ error: 'File required' }, { status: 400 });
         }
 
         const bytes = await file.arrayBuffer();
@@ -42,10 +44,20 @@ export async function POST(req: Request) {
         const imageUrl = uploadResult.secure_url;
 
         // Update Prisma
-        await prisma.menuItem.update({
-            where: { id: itemId },
-            data: { imageUrl }
-        });
+        if (itemId) {
+            await prisma.menuItem.update({
+                where: { id: itemId },
+                data: { imageUrl }
+            });
+        } else if (restaurantId && fieldName) {
+            if (fieldName !== 'logoUrl' && fieldName !== 'coverImageUrl') {
+                return NextResponse.json({ error: 'Invalid field name' }, { status: 400 });
+            }
+            await prisma.restaurant.update({
+                where: { id: restaurantId },
+                data: { [fieldName]: imageUrl }
+            });
+        }
 
         return NextResponse.json({ success: true, imageUrl });
 

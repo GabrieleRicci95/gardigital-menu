@@ -17,6 +17,8 @@ interface Subscription {
     };
 }
 
+import styles from '../admin.module.css';
+
 export default function AdminSubscriptionsPage() {
     const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
     const [loading, setLoading] = useState(true);
@@ -39,60 +41,62 @@ export default function AdminSubscriptionsPage() {
         fetchSubs();
     }, []);
 
-    if (loading) return <div className="p-4">Caricamento Abbonamenti...</div>;
+    if (loading) return <div className={styles.container} style={{ padding: '2rem' }}>Caricamento Abbonamenti...</div>;
 
     return (
-        <div>
-            <h1 className="h2 mb-4" style={{ color: '#1a237e' }}>Abbonamenti Attivi</h1>
+        <div className={styles.container}>
+            <header className={styles.header}>
+                <h1 className={styles.title}>Abbonamenti Attivi</h1>
+            </header>
 
-            <div className="card">
-                <div style={{ overflowX: 'auto' }}>
-                    <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+            <div className={styles.tableCard}>
+                <div className={styles.tableContainer}>
+                    <table className={styles.table}>
                         <thead>
-                            <tr style={{ borderBottom: '2px solid #eee', color: '#666' }}>
-                                <th style={{ padding: '12px' }}>Utente</th>
-                                <th style={{ padding: '12px' }}>Ristorante</th>
-                                <th style={{ padding: '12px' }}>Piano</th>
-                                <th style={{ padding: '12px' }}>Stato</th>
-                                <th style={{ padding: '12px' }}>Scadenza</th>
+                            <tr>
+                                <th>Utente</th>
+                                <th>Ristorante</th>
+                                <th>Piano</th>
+                                <th>Stato</th>
+                                <th>Scadenza</th>
                             </tr>
                         </thead>
                         <tbody>
                             {subscriptions.length === 0 ? (
                                 <tr>
-                                    <td colSpan={5} style={{ padding: '20px', textAlign: 'center', color: '#888' }}>
+                                    <td colSpan={5} style={{ padding: '2rem', textAlign: 'center', color: 'var(--color-text-secondary)' }}>
                                         Nessun abbonamento trovato.
                                     </td>
                                 </tr>
                             ) : (
                                 subscriptions.map((sub) => (
-                                    <tr key={sub.id} style={{ borderBottom: '1px solid #eee' }}>
-                                        <td style={{ padding: '12px' }}>
-                                            <strong>{sub.restaurant?.owner?.name || 'N/A'}</strong><br />
-                                            <span style={{ fontSize: '0.8rem', color: '#666' }}>{sub.restaurant?.owner?.email}</span>
+                                    <tr key={sub.id}>
+                                        <td>
+                                            <div className={styles.ownerName}>{sub.restaurant?.owner?.name || 'N/A'}</div>
+                                            <div className={styles.ownerEmail}>{sub.restaurant?.owner?.email}</div>
                                         </td>
-                                        <td style={{ padding: '12px' }}>
+                                        <td style={{ fontWeight: '500' }}>
                                             {sub.restaurant?.name}
                                         </td>
-                                        <td style={{ padding: '12px' }}>
-                                            <span style={{
-                                                padding: '4px 8px', borderRadius: '12px', fontSize: '0.8rem', fontWeight: 'bold',
-                                                background: sub.plan === 'PREMIUM' ? 'linear-gradient(135deg, #ffd700 0%, #ff6f00 100%)' : '#e0e0e0',
-                                                color: sub.plan === 'PREMIUM' ? 'white' : '#333'
-                                            }}>
-                                                {sub.plan}
+                                        <td>
+                                            <span className={`${styles.badge} ${sub.plan === 'PREMIUM' ? styles.badgePremium : styles.badgeBase}`}>
+                                                {sub.plan === 'PREMIUM' ? '✨ PREMIUM' : sub.plan}
                                             </span>
                                         </td>
-                                        <td style={{ padding: '12px' }}>
+                                        <td>
                                             <span style={{
-                                                color: sub.status === 'ACTIVE' ? '#43a047' : '#d32f2f',
-                                                fontWeight: 'bold'
+                                                color: sub.status === 'ACTIVE' ? '#2e7d32' : '#c62828',
+                                                fontWeight: '700',
+                                                fontSize: '0.85rem',
+                                                background: sub.status === 'ACTIVE' ? '#e8f5e9' : '#ffebee',
+                                                padding: '4px 8px',
+                                                borderRadius: '4px'
                                             }}>
-                                                {sub.status}
+                                                {sub.status === 'ACTIVE' ? 'ATTIVO' : sub.status}
                                             </span>
                                         </td>
-                                        <td style={{ padding: '12px', fontSize: '0.9rem' }}>
-                                            {sub.endDate ? new Date(sub.endDate).toLocaleDateString() : 'Illimitato'}
+                                        <td style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem' }}>
+                                            {sub.endDate ? new Date(sub.endDate).toLocaleDateString('it-IT') : 'Illimitato'}
                                         </td>
                                     </tr>
                                 ))

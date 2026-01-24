@@ -22,11 +22,12 @@ export async function GET(request: Request) {
             where: { menuId: menuId },
             include: {
                 items: {
-                    include: { translations: true }
+                    include: { translations: true },
+                    orderBy: { createdAt: 'asc' }
                 },
                 translations: true
             },
-            orderBy: { sortOrder: 'asc' },
+            orderBy: [{ sortOrder: 'asc' }, { createdAt: 'asc' }],
         });
 
         return NextResponse.json({ categories });

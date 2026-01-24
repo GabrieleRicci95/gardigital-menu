@@ -16,6 +16,8 @@ interface Restaurant {
     } | null;
 }
 
+import styles from '../admin.module.css';
+
 export default function AdminRestaurantsPage() {
     const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
     const [loading, setLoading] = useState(true);
@@ -39,14 +41,27 @@ export default function AdminRestaurantsPage() {
         }
     };
 
-    const handlePlanChange = async (restaurantId: string, newPlan: 'FREE' | 'PREMIUM', durationMonths?: number) => {
+    const handlePlanChange = async (restaurantId: string, newPlan: string, durationMonths: number = 0) => {
         // Optimistic update
-        setRestaurants(prev => prev.map(r => {
-            if (r.id === restaurantId) {
-                return { ...r, subscription: { ...r.subscription, plan: newPlan, status: 'ACTIVE' } };
+        setRestaurants(prev => {
+            if (newPlan === 'DELETED') {
+                return prev.filter(r => r.id !== restaurantId);
             }
-            return r;
-        }));
+            return prev.map(r => {
+                if (r.id === restaurantId) {
+                    return {
+                        ...r,
+                        subscription: newPlan === 'BLOCKED' ? null : {
+                            ...r.subscription,
+                            plan: newPlan,
+                            status: 'ACTIVE',
+                            endDate: durationMonths > 0 ? new Date(Date.now() + durationMonths * 30 * 24 * 60 * 60 * 1000).toISOString() : null
+                        }
+                    };
+                }
+                return r;
+            });
+        });
 
         const res = await fetch('/api/admin/restaurants/update-plan', {
             method: 'POST',
@@ -66,107 +81,126 @@ export default function AdminRestaurantsPage() {
         r.owner.email.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    if (loading) return <div className="p-4">Caricamento ristoranti...</div>;
+    if (loading) return <div className={styles.container} style={{ padding: '2rem' }}>Caricamento ristoranti...</div>;
 
     return (
-        <div style={{ padding: '2rem' }}>
-            <h1 className="h2 mb-4">Gestione Ristoranti</h1>
+        <div className={styles.container}>
+            <header className={styles.header}>
+                <h1 className={styles.title}>Gestione Ristoranti</h1>
+            </header>
 
-            <input
-                type="text"
-                placeholder="Cerca ristorante o proprietario..."
-                value={searchTerm}
-                onChange={e => setSearchTerm(e.target.value)}
-                style={{
-                    padding: '10px',
-                    borderRadius: '8px',
-                    border: '1px solid #ddd',
-                    width: '100%',
-                    maxWidth: '400px',
-                    marginBottom: '2rem'
-                }}
-            />
+            <div className={styles.searchContainer}>
+                <span className={styles.searchIcon}>In</span>
+                <input
+                    type="text"
+                    placeholder="Cerca ristorante o proprietario..."
+                    value={searchTerm}
+                    onChange={e => setSearchTerm(e.target.value)}
+                    className={styles.searchInput}
+                />
+            </div>
 
-            <div style={{ overflowX: 'auto', background: 'white', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '800px' }}>
-                    <thead>
-                        <tr style={{ borderBottom: '1px solid #eee', textAlign: 'left', color: '#666' }}>
-                            <th style={{ padding: '1rem' }}>Ristorante</th>
-                            <th style={{ padding: '1rem' }}>Proprietario</th>
-                            <th style={{ padding: '1rem' }}>Stato Abbonamento</th>
-                            <th style={{ padding: '1rem' }}>Scadenza</th>
-                            <th style={{ padding: '1rem' }}>Azioni</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredRestaurants.map(r => {
-                            const isPremium = r.subscription?.plan === 'PREMIUM';
-                            return (
-                                <tr key={r.id} style={{ borderBottom: '1px solid #f9f9f9' }}>
-                                    <td style={{ padding: '1rem', fontWeight: 'bold' }}>{r.name}</td>
-                                    <td style={{ padding: '1rem' }}>
-                                        <div style={{ fontWeight: '500' }}>{r.owner.name || 'N/D'}</div>
-                                        <div style={{ fontSize: '0.8rem', color: '#888' }}>{r.owner.email}</div>
-                                    </td>
-                                    <td style={{ padding: '1rem' }}>
-                                        <span style={{
-                                            padding: '4px 10px',
-                                            borderRadius: '20px',
-                                            fontSize: '0.8rem',
-                                            fontWeight: 'bold',
-                                            background: isPremium ? '#e8f5e9' : '#f5f5f5',
-                                            color: isPremium ? '#2e7d32' : '#616161'
-                                        }}>
-                                            {isPremium ? 'PREMIUM ✨' : 'BASE'}
-                                        </span>
-                                    </td>
-                                    <td style={{ padding: '1rem', fontSize: '0.9rem', color: '#555' }}>
-                                        {isPremium
-                                            ? (r.subscription?.endDate
-                                                ? new Date(r.subscription.endDate).toLocaleDateString('it-IT')
-                                                : '♾️ Illimitato')
-                                            : '-'
-                                        }
-                                    </td>
-                                    <td style={{ padding: '1rem' }}>
-                                        {isPremium ? (
-                                            <button
-                                                onClick={() => handlePlanChange(r.id, 'FREE')}
-                                                style={{ border: '1px solid #ddd', background: 'white', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.85rem' }}
-                                            >
-                                                ⬇️ Downgrade a Base
-                                            </button>
-                                        ) : (
-                                            <div style={{ display: 'flex', gap: '5px' }}>
+            <div className={styles.tableCard}>
+                <div className={styles.tableContainer}>
+                    <table className={styles.table}>
+                        <thead>
+                            <tr>
+                                <th>Ristorante</th>
+                                <th>Proprietario</th>
+                                <th>Stato Abbonamento</th>
+                                <th>Scadenza</th>
+                                <th>Azioni</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {filteredRestaurants.map(r => {
+                                const isPremium = r.subscription?.plan === 'PREMIUM';
+                                return (
+                                    <tr key={r.id}>
+                                        <td style={{ fontWeight: '600' }}>{r.name}</td>
+                                        <td>
+                                            <div className={styles.ownerName}>{r.owner.name || 'N/D'}</div>
+                                            <div className={styles.ownerEmail}>{r.owner.email}</div>
+                                        </td>
+                                        <td>
+                                            {(!r.subscription || r.subscription.status !== 'ACTIVE') ? (
+                                                <span style={{
+                                                    padding: '4px 8px',
+                                                    borderRadius: '4px',
+                                                    fontSize: '0.8rem',
+                                                    fontWeight: 'bold',
+                                                    backgroundColor: '#fff3e0',
+                                                    color: '#e65100',
+                                                    border: '1px solid #ffe0b2'
+                                                }}>
+                                                    In attesa di convalidazione
+                                                </span>
+                                            ) : (
+                                                <span style={{
+                                                    padding: '4px 8px',
+                                                    borderRadius: '4px',
+                                                    fontSize: '0.8rem',
+                                                    fontWeight: 'bold',
+                                                    backgroundColor: r.subscription?.plan === 'PREMIUM' ? '#e8f5e9' : r.subscription?.plan === 'WEBSITE' ? '#f3e5f5' : '#f5f5f5',
+                                                    color: r.subscription?.plan === 'PREMIUM' ? '#2e7d32' : r.subscription?.plan === 'WEBSITE' ? '#7b1fa2' : '#757575',
+                                                    border: r.subscription?.plan === 'PREMIUM' ? '1px solid #c8e6c9' : r.subscription?.plan === 'WEBSITE' ? '1px solid #e1bee7' : '1px solid #e0e0e0'
+                                                }}>
+                                                    {r.subscription?.plan === 'FREE' ? 'BASE' : r.subscription?.plan}
+                                                </span>
+                                            )}
+                                        </td>
+                                        <td style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem' }}>
+                                            {r.subscription?.plan === 'PREMIUM'
+                                                ? (r.subscription?.endDate
+                                                    ? new Date(r.subscription.endDate).toLocaleDateString('it-IT')
+                                                    : '♾️ Illimitato')
+                                                : '-'
+                                            }
+                                        </td>
+                                        <td>
+                                            <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
                                                 <button
-                                                    onClick={() => handlePlanChange(r.id, 'PREMIUM', 1)}
-                                                    style={{ border: 'none', background: '#4caf50', color: 'white', padding: '5px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.75rem' }}
-                                                    title="Regala 1 Mese"
+                                                    onClick={() => handlePlanChange(r.id, 'FREE')}
+                                                    className={`${styles.btnAction} ${styles.btnOutline}`}
+                                                    style={{ backgroundColor: '#757575', color: 'white', border: 'none', fontSize: '0.75rem', padding: '4px 8px' }}
                                                 >
-                                                    +1 Mese
+                                                    Base
                                                 </button>
                                                 <button
-                                                    onClick={() => handlePlanChange(r.id, 'PREMIUM', 12)}
-                                                    style={{ border: 'none', background: '#2196f3', color: 'white', padding: '5px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.75rem' }}
-                                                    title="Regala 1 Anno"
+                                                    onClick={() => handlePlanChange(r.id, 'PREMIUM', 0)}
+                                                    className={`${styles.btnAction} ${styles.btnGreen}`}
+                                                    style={{ backgroundColor: '#2e7d32', color: 'white', border: 'none', fontSize: '0.75rem', padding: '4px 8px' }}
                                                 >
-                                                    +1 Anno
+                                                    Premium
                                                 </button>
                                                 <button
-                                                    onClick={() => handlePlanChange(r.id, 'PREMIUM')}
-                                                    style={{ border: 'none', background: '#1a237e', color: 'white', padding: '5px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.75rem' }}
-                                                    title="Attiva senza scadenza (o standard)"
+                                                    onClick={() => handlePlanChange(r.id, 'BLOCKED')}
+                                                    className={`${styles.btnAction} ${styles.btnRed}`}
+                                                    style={{ backgroundColor: '#e53935', color: 'white', border: 'none', fontSize: '0.75rem', padding: '4px 8px' }}
+                                                    title="Rimuovi abbonamento (torna in attesa)"
                                                 >
-                                                    ♾️ Illimitato
+                                                    Blocca
+                                                </button>
+                                                <button
+                                                    onClick={() => {
+                                                        if (confirm('Sei sicuro di voler ELIMINARE definitivamente questo ristorante e utente?')) {
+                                                            handlePlanChange(r.id, 'DELETED');
+                                                        }
+                                                    }}
+                                                    className={`${styles.btnAction}`}
+                                                    style={{ backgroundColor: '#000', color: 'white', border: 'none', fontSize: '0.75rem', padding: '4px 8px' }}
+                                                    title="Elimina account definitivamente"
+                                                >
+                                                    Elimina
                                                 </button>
                                             </div>
-                                        )}
-                                    </td>
-                                </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     );

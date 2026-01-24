@@ -14,21 +14,26 @@ export default function DashboardLayout({
     const router = useRouter(); // Import useRouter
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+    const [restaurantName, setRestaurantName] = useState('');
+
     useEffect(() => {
-        const checkSubscription = async () => {
+        const fetchRestaurantData = async () => {
             try {
                 const res = await fetch('/api/restaurant');
                 if (res.ok) {
                     const data = await res.json();
-                    if (!data.restaurant?.subscription) {
-                        router.push('/onboarding');
+                    if (data.restaurant) {
+                        setRestaurantName(data.restaurant.name);
+                        if (!data.restaurant.subscription) {
+                            router.push('/onboarding');
+                        }
                     }
                 }
             } catch (error) {
-                console.error("Subscription check failed", error);
+                console.error("Restaurant data fetch failed", error);
             }
         };
-        checkSubscription();
+        fetchRestaurantData();
     }, [router]);
 
     const navItems = [
@@ -56,6 +61,7 @@ export default function DashboardLayout({
                             key={item.href}
                             href={item.href}
                             className={`${styles.navItem} ${pathname === item.href ? styles.active : ''}`}
+                            onClick={() => setIsMobileMenuOpen(false)}
                         >
                             {item.label}
                         </Link>
@@ -72,7 +78,7 @@ export default function DashboardLayout({
                         Menu
                     </button>
                     <div className={styles.userMenu}>
-                        Bentornato, Ristoratore
+                        Bentornato {restaurantName || 'Ristoratore'}
                     </div>
                 </header>
                 <div className={styles.content}>

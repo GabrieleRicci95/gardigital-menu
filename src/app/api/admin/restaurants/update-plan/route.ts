@@ -14,7 +14,38 @@ export async function POST(req: Request) {
     try {
         const { restaurantId, newPlan, durationMonths } = await req.json();
 
-        if (!restaurantId || !['FREE', 'PREMIUM'].includes(newPlan)) {
+        if (newPlan === 'BLOCKED') {
+            // "Blocca" means remove subscription (status: In attesa)
+            try {
+                await prisma.subscription.delete({ where: { restaurantId } });
+                return NextResponse.json({ success: true, status: 'BLOCKED' });
+            } catch (ignore) {
+                return NextResponse.json({ success: true, status: 'BLOCKED' });
+            }
+        }
+
+        if (newPlan === 'DELETED') {
+            // "Elimina" means DELETE everything (User, Restaurant, Subscription)
+            try {
+                const restaurant = await prisma.restaurant.findUnique({
+                    where: { id: restaurantId },
+                    select: { ownerId: true }
+                });
+
+                if (restaurant) {
+                    try { await prisma.subscription.delete({ where: { restaurantId } }); } catch (e) { }
+                    await prisma.restaurant.delete({ where: { id: restaurantId } });
+                    await prisma.user.delete({ where: { id: restaurant.ownerId } });
+                }
+
+                return NextResponse.json({ success: true, status: 'DELETED' });
+            } catch (error) {
+                console.error("Delete error:", error);
+                return NextResponse.json({ error: 'Delete failed' }, { status: 500 });
+            }
+        }
+
+        if (!restaurantId || !['FREE', 'PREMIUM', 'WEBSITE'].includes(newPlan)) {
             return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
         }
 
