@@ -281,6 +281,30 @@ export default function MenuBuilderPage() {
         }
     };
 
+    const handleQuickUpdate = async (item: MenuItem, updates: any) => {
+        const res = await fetch('/api/menu/items', {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id: item.id,
+                name: item.name,
+                description: item.description,
+                price: item.price,
+                isVegan: item.isVegan,
+                isGlutenFree: item.isGlutenFree,
+                isVegetarian: item.isVegetarian,
+                spiciness: item.spiciness,
+                translations: item.translations,
+                ...updates
+            }),
+        });
+        if (res.ok) {
+            if (selectedMenuId) fetchCategories(selectedMenuId);
+        } else {
+            alert('Errore aggiornamento piatto');
+        }
+    };
+
     const requestDelete = (id: string, categoryId: string | null, isCategory: boolean = false, isMenu: boolean = false) => {
         setDeleteConfirmation({
             isOpen: true,
@@ -620,7 +644,7 @@ export default function MenuBuilderPage() {
                                                                 <button
                                                                     onClick={(e) => {
                                                                         e.stopPropagation();
-                                                                        handleUpdateItem(e as any, item.id, { imageUrl: null });
+                                                                        handleQuickUpdate(item, { imageUrl: null });
                                                                     }}
                                                                     className={styles.iconBtn}
                                                                     style={{
