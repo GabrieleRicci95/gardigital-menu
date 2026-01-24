@@ -75,23 +75,30 @@ export async function PATCH(request: Request) {
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     try {
-        const { id, name, description, price, isVegan, isGlutenFree, isVegetarian, spiciness, translations } = await request.json();
+        const { id, name, description, price, isVegan, isGlutenFree, isVegetarian, spiciness, imageUrl, translations } = await request.json();
 
         if (!id || !name || !price) {
             return NextResponse.json({ error: 'Dati incompleti' }, { status: 400 });
         }
 
+        const dataToUpdate: any = {
+            name,
+            description: description || '',
+            price: parseFloat(price),
+            isVegan: isVegan || false,
+            isGlutenFree: isGlutenFree || false,
+            isVegetarian: isVegetarian || false,
+            spiciness: spiciness || 0,
+        };
+
+        // Only update imageUrl if it's explicitly passed (null means delete, undefined means ignore)
+        if (imageUrl !== undefined) {
+            dataToUpdate.imageUrl = imageUrl;
+        }
+
         const item = await prisma.menuItem.update({
             where: { id },
-            data: {
-                name,
-                description: description || '',
-                price: parseFloat(price),
-                isVegan: isVegan || false,
-                isGlutenFree: isGlutenFree || false,
-                isVegetarian: isVegetarian || false,
-                spiciness: spiciness || 0,
-            }
+            data: dataToUpdate
         });
 
         if (translations && Array.isArray(translations)) {

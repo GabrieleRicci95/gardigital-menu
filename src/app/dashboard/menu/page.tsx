@@ -254,15 +254,25 @@ export default function MenuBuilderPage() {
         } catch (e) { setError('Errore connessione'); }
     };
 
-    const handleUpdateItem = async (e: React.FormEvent, id: string) => {
-        e.preventDefault();
+    const handleUpdateItem = async (e: React.FormEvent | null, id: string, overrideData: any = null) => {
+        if (e) e.preventDefault();
+
+        // Prepare data: merge current editItemData with possible overrideData (e.g., imageUrl: null)
+        // If overrideData is provided, we use that for the specific fields, but mostly we need it for 'imageUrl' which isn't in the form state usually.
+        // Actually, for imageUrl deletion, we might just want to send that single field.
+        // Let's make it robust: use editItemData BUT if overrideData has keys, use them.
+
+        // Note: editItemData only holds form fields, it doesn't hold 'imageUrl'. So if we only send editItemData, imageUrl is undefined (ignored).
+        // If we want to delete image, we pass { imageUrl: null }.
+
         const res = await fetch('/api/menu/items', {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 id,
                 ...editItemData,
-                translations: Object.entries(editItemData.translations).map(([lang, t]) => ({ language: lang, ...t }))
+                translations: Object.entries(editItemData.translations).map(([lang, t]) => ({ language: lang, ...t })),
+                ...overrideData // This will override anything, or add new fields like imageUrl
             }),
         });
         if (res.ok) {
@@ -599,19 +609,40 @@ export default function MenuBuilderPage() {
                                                 {/* IMAGE SECTION */}
                                                 <div style={{ marginRight: '1rem', position: 'relative' }}>
                                                     {item.imageUrl ? (
-                                                        <img
-                                                            src={item.imageUrl}
-                                                            alt={item.name}
-                                                            className={styles.itemImage}
-                                                            onClick={() => setExpandedImage(item.imageUrl!)}
-                                                        />
+                                                        <div style={{ position: 'relative', width: '64px', height: '64px' }}>
+                                                            <img
+                                                                src={item.imageUrl}
+                                                                alt={item.name}
+                                                                className={styles.itemImage}
+                                                                onClick={() => setExpandedImage(item.imageUrl!)}
+                                                            />
+                                                            {isPremium && (
+                                                                <button
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        handleUpdateItem(e as any, item.id, { imageUrl: null });
+                                                                    }}
+                                                                    className={styles.iconBtn}
+                                                                    style={{
+                                                                        position: 'absolute', top: '-5px', right: '-5px',
+                                                                        background: '#ffcdd2', border: '1px solid #e57373',
+                                                                        width: '20px', height: '20px', fontSize: '0.8rem', padding: 0,
+                                                                        boxShadow: '0 2px 5px rgba(0,0,0,0.1)', color: '#c62828',
+                                                                        zIndex: 2, display: 'flex', alignItems: 'center', justifyContent: 'center'
+                                                                    }}
+                                                                    title="Rimuovi Foto"
+                                                                >
+                                                                    ×
+                                                                </button>
+                                                            )}
+                                                        </div>
                                                     ) : (
                                                         <div className={styles.itemImage} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ccc', fontSize: '1.5rem' }}>
                                                             🍽️
                                                         </div>
                                                     )}
 
-                                                    {isPremium && (
+                                                    {isPremium && !item.imageUrl && (
                                                         <>
                                                             <input
                                                                 type="file"
