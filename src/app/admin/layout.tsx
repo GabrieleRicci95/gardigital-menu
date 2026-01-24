@@ -49,10 +49,26 @@ export default function AdminLayout({
 
             <main className={styles.main}>
                 <header className={styles.header}>
+                    <button
+                        className={styles.mobileToggle}
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer', marginRight: 'auto' }}
+                    >
+                        ☰
+                    </button>
                     <div className={styles.userMenu}>
                         Pannello Amministratore
                     </div>
                 </header>
+                {isMobileMenuOpen && (
+                    <div
+                        className={styles.overlay}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        style={{
+                            position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 45
+                        }}
+                    />
+                )}
                 <div className={styles.content}>
                     {children}
                 </div>
