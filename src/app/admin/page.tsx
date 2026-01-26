@@ -7,7 +7,7 @@ async function getStats() {
     const totalRestaurants = await prisma.restaurant.count({
         where: { owner: { email: { not: 'gabrielericci234@gmail.com' } } }
     });
-    const totalVisits = await prisma.visit.count(); // Visits usually don't need filtering but maybe better be consistent if linked to rest
+    // Removed totalVisits query
 
     const activeSubscriptions = await prisma.subscription.count({
         where: {
@@ -37,7 +37,6 @@ async function getStats() {
 
     return {
         totalRestaurants,
-        totalVisits,
         activeSubscriptions,
         estimatedRevenue
     };
@@ -95,19 +94,6 @@ export default async function AdminDashboardPage() {
                     </div>
                 </div>
 
-                {/* Visite */}
-                <div className={`${styles.card} ${styles.cardGreen}`}>
-                    <div className={styles.cardHeader}>
-                        <span className={styles.cardTitle}>Visite Totali</span>
-                        <div className={`${styles.icon} ${styles.iconGreen}`}>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
-                        </div>
-                    </div>
-                    <div>
-                        <p className={styles.stat}>{stats.totalVisits}</p>
-                        <span className={styles.subtext}>Views aggregate</span>
-                    </div>
-                </div>
             </div>
         </div>
     );
