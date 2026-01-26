@@ -5,14 +5,14 @@ const prisma = new PrismaClient();
 
 async function getStats() {
     const totalRestaurants = await prisma.restaurant.count({
-        where: { owner: { email: { not: 'gabrielericci234@gmail.com' } } }
+        where: { owner: { email: { not: 'gardigital234@gmail.com' } } }
     });
     const totalVisits = await prisma.visit.count(); // Visits usually don't need filtering but maybe better be consistent if linked to rest
 
     const activeSubscriptions = await prisma.subscription.count({
         where: {
             status: 'ACTIVE',
-            restaurant: { owner: { email: { not: 'gabrielericci234@gmail.com' } } }
+            restaurant: { owner: { email: { not: 'gardigital234@gmail.com' } } }
         }
     });
 
@@ -20,7 +20,7 @@ async function getStats() {
         where: {
             status: 'ACTIVE',
             plan: 'PREMIUM',
-            restaurant: { owner: { email: { not: 'gabrielericci234@gmail.com' } } }
+            restaurant: { owner: { email: { not: 'gardigital234@gmail.com' } } }
         }
     });
 
@@ -28,7 +28,7 @@ async function getStats() {
         where: {
             status: 'ACTIVE',
             plan: 'BASE',
-            restaurant: { owner: { email: { not: 'gabrielericci234@gmail.com' } } }
+            restaurant: { owner: { email: { not: 'gardigital234@gmail.com' } } }
         }
     });
 

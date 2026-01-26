@@ -16,7 +16,7 @@ export async function GET() {
                 restaurant: {
                     owner: {
                         email: {
-                            not: 'gabrielericci234@gmail.com'
+                            not: 'gardigital234@gmail.com'
                         }
                     }
                 }
