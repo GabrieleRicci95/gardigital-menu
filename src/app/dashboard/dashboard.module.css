@@ -15,12 +15,16 @@
     height: 100vh;
     transition: transform 0.3s ease;
     z-index: 50;
+    overflow-y: auto;
+    /* Enable vertical scrolling */
 }
 
 .logo {
     margin-bottom: var(--spacing-2xl);
     display: flex;
     justify-content: center;
+    flex-shrink: 0;
+    /* Prevent logo from shrinking */
 }
 
 .logoImage {
@@ -34,6 +38,8 @@
     display: flex;
     flex-direction: column;
     gap: var(--spacing-sm);
+    flex: 1;
+    /* Take remaining height */
 }
 
 .navItem {
