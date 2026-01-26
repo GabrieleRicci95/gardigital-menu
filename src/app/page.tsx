@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Footer from "@/components/layout/Footer";
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -113,14 +114,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className={styles.footer}>
-        <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap' }}>
-          <Link href="/privacy" style={{ color: 'rgba(255,255,255,0.6)', textDecoration: 'none', fontSize: '0.9rem' }}>Privacy Policy</Link>
-          <Link href="/terms" style={{ color: 'rgba(255,255,255,0.6)', textDecoration: 'none', fontSize: '0.9rem' }}>Termini e Condizioni</Link>
-          <Link href="/cookies" style={{ color: 'rgba(255,255,255,0.6)', textDecoration: 'none', fontSize: '0.9rem' }}>Cookie Policy</Link>
-        </div>
-        <p>&copy; {new Date().getFullYear()} Gardigital Menu. Tutti i diritti riservati.</p>
-      </footer>
+      <Footer />
     </div>
   );
 }

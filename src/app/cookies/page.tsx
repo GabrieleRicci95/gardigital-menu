@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Footer from '@/components/layout/Footer';
 import styles from '../page.module.css'; // Reusing main styles for consistency
 
 export default function CookiePolicy() {
@@ -48,9 +49,7 @@ export default function CookiePolicy() {
                 </section>
             </main>
 
-            <footer className={styles.footer}>
-                <p>&copy; {new Date().getFullYear()} Gardigital Menu. Tutti i diritti riservati.</p>
-            </footer>
+            <Footer />
         </div>
     );
 }

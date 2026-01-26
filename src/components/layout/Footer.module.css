@@ -1,0 +1,30 @@
+.footer {
+    text-align: center;
+    padding: 3rem 2rem;
+    background-color: #1a1a1a;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    width: 100%;
+    margin-top: auto;
+    /* Push to bottom if flex container allows */
+}
+
+.linksContainer {
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.link {
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+}
+
+.link:hover {
+    color: white;
+    text-decoration: underline;
+}

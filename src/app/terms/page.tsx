@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Footer from '@/components/layout/Footer';
 import styles from '../page.module.css';
 
 export default function TermsPage() {
@@ -65,9 +66,7 @@ export default function TermsPage() {
                 </div>
             </main>
 
-            <footer className={styles.footer}>
-                <p>&copy; {new Date().getFullYear()} Gardigital Menu. Tutti i diritti riservati.</p>
-            </footer>
+            <Footer />
         </div>
     );
 }
