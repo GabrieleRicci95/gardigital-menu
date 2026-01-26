@@ -6,12 +6,14 @@ export default function TermsPage() {
     return (
         <div className={styles.container}>
             <div className={styles.content}>
-                <Link href="/" className={styles.backLink}>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
-                    Torna alla Home
-                </Link>
-
-                <h1 className={styles.title}>Termini e Condizioni</h1>
+                <div className={styles.header}>
+                    <img src="/gardigital-logo-legal.png" alt="Gardigital" className={styles.logo} />
+                    <Link href="/" className={styles.backLink}>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
+                        Torna alla Home
+                    </Link>
+                    <h1 className={styles.title}>Termini e Condizioni</h1>
+                </div>
 
                 <div className={styles.text}>
                     <p style={{ fontStyle: 'italic', marginBottom: '2rem' }}>Ultimo aggiornamento: {new Date().toLocaleDateString()}</p>
