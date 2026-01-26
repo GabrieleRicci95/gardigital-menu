@@ -59,7 +59,7 @@ export default function PrivacyPage() {
                     <section className={styles.section}>
                         <h2 className={styles.sectionTitle}>5. Contatti</h2>
                         <p className={styles.text}>
-                            Per domande sulla privacy, contattaci all'indirizzo email di supporto.
+                            Per domande sulla privacy, contattaci all'indirizzo email: <a href="mailto:gardigital234@gmail.com" style={{ color: 'var(--color-primary)', textDecoration: 'underline' }}>gardigital234@gmail.com</a>.
                         </p>
                     </section>
                 </div>

@@ -64,6 +64,13 @@ export default function TermsPage() {
                             Questi termini sono regolati dalle leggi vigenti in Italia.
                         </p>
                     </section>
+
+                    <section className={styles.section}>
+                        <h2 className={styles.sectionTitle}>7. Contatti</h2>
+                        <p className={styles.text}>
+                            Per qualsiasi domanda riguardante questi Termini, puoi contattarci a: <a href="mailto:gardigital234@gmail.com" style={{ color: 'var(--color-primary)', textDecoration: 'underline' }}>gardigital234@gmail.com</a>.
+                        </p>
+                    </section>
                 </div>
             </div>
             <Footer />
