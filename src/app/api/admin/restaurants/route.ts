@@ -16,7 +16,7 @@ export async function GET() {
             where: {
                 owner: {
                     email: {
-                        not: 'gardigital234@gmail.com'
+                        not: 'gabrielericci234@gmail.com'
                     }
                 }
             },
