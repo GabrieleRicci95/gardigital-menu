@@ -1,0 +1,76 @@
+.container {
+    background-color: #001f2f;
+    /* Dark teal/blue from image */
+    color: white;
+    padding: 3rem 1rem;
+    width: 100%;
+    border-radius: 0;
+    margin-top: 4rem;
+    font-family: sans-serif;
+    text-align: center;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    justify-content: center;
+}
+
+.item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.iconCircle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border: 2px solid #e2b13c;
+    /* Gold border default */
+    background-color: transparent;
+}
+
+.label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #e2b13c;
+    /* Gold text */
+    text-transform: capitalize;
+}
+
+.warningBox {
+    border: 3px solid #f44336;
+    /* Red border */
+    padding: 1rem;
+    background-color: white;
+    color: #001f2f;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+    line-height: 1.4;
+}
+
+.footerText {
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: #ccc;
+    text-align: justify;
+    /* Justify text as in image? Or left/center */
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 600px) {
+    .grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

@@ -7,12 +7,13 @@ interface MenuItem {
     id: string;
     name: string;
     description: string;
-    price: number;
+    price: number | null;
     imageUrl?: string;
     isVegan: boolean;
     isGlutenFree: boolean;
     isVegetarian: boolean;
     spiciness: number;
+    allergens: string | null;
     translations: { language: string; name: string; description: string | null }[];
 }
 
@@ -50,6 +51,8 @@ export default function MenuBuilderPage() {
 
     // Forms states
     const [newMenuName, setNewMenuName] = useState('');
+    const [editingMenuId, setEditingMenuId] = useState<string | null>(null);
+    const [editMenuName, setEditMenuName] = useState('');
 
     // Category Form State
     const [activeCatLang, setActiveCatLang] = useState('it');
@@ -70,10 +73,12 @@ export default function MenuBuilderPage() {
     const [newItem, setNewItem] = useState<{
         name: string; description: string; price: string;
         isVegan: boolean; isGlutenFree: boolean; isVegetarian: boolean; spiciness: number;
+        allergens: number[];
         translations: Record<string, { name: string; description: string }>;
     }>({
         name: '', description: '', price: '',
         isVegan: false, isGlutenFree: false, isVegetarian: false, spiciness: 0,
+        allergens: [],
         translations: {}
     });
 
@@ -81,10 +86,12 @@ export default function MenuBuilderPage() {
     const [editItemData, setEditItemData] = useState<{
         name: string; description: string; price: string;
         isVegan: boolean; isGlutenFree: boolean; isVegetarian: boolean; spiciness: number;
+        allergens: number[];
         translations: Record<string, { name: string; description: string }>;
     }>({
         name: '', description: '', price: '',
         isVegan: false, isGlutenFree: false, isVegetarian: false, spiciness: 0,
+        allergens: [],
         translations: {}
     });
 
@@ -228,7 +235,7 @@ export default function MenuBuilderPage() {
     const handleAddItem = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
-        if (!addingItemTo || !newItem.name || !newItem.price) return;
+        if (!addingItemTo || !newItem.name) return;
 
         try {
             const res = await fetch('/api/menu/items', {
@@ -236,6 +243,7 @@ export default function MenuBuilderPage() {
                 body: JSON.stringify({
                     ...newItem,
                     categoryId: addingItemTo,
+                    allergens: JSON.stringify(newItem.allergens), // Send as JSON string
                     translations: Object.entries(newItem.translations).map(([lang, t]) => ({ language: lang, ...t }))
                 }),
             });
@@ -243,6 +251,7 @@ export default function MenuBuilderPage() {
                 setNewItem({
                     name: '', description: '', price: '',
                     isVegan: false, isGlutenFree: false, isVegetarian: false, spiciness: 0,
+                    allergens: [],
                     translations: {}
                 });
                 setAddingItemTo(null);
@@ -272,6 +281,7 @@ export default function MenuBuilderPage() {
                 id,
                 ...editItemData,
                 translations: Object.entries(editItemData.translations).map(([lang, t]) => ({ language: lang, ...t })),
+                allergens: JSON.stringify(editItemData.allergens),
                 ...overrideData // This will override anything, or add new fields like imageUrl
             }),
         });
@@ -359,6 +369,30 @@ export default function MenuBuilderPage() {
         const res = await fetch('/api/upload', { method: 'POST', body: formData });
         if (res.ok && selectedMenuId) fetchCategories(selectedMenuId);
         setUploadingId(null);
+    };
+
+    const handleUpdateMenuName = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!editingMenuId || !editMenuName.trim()) return;
+
+        try {
+            const res = await fetch('/api/menus', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: editingMenuId, name: editMenuName })
+            });
+
+            if (res.ok) {
+                const updatedMenu = await res.json();
+                setMenus(prev => prev.map(m => m.id === editingMenuId ? updatedMenu : m));
+                setEditingMenuId(null);
+            } else {
+                alert('Errore aggiornamento nome menu');
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Errore di connessione');
+        }
     };
 
     if (loading) return <div className={styles.container}>Caricamento Menu...</div>;
@@ -503,9 +537,38 @@ export default function MenuBuilderPage() {
                 <div className="animation-fade-in">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
                         <div>
-                            <h2 className="h3" style={{ color: '#1a237e', marginBottom: '5px' }}>
-                                Modifica: {menus.find(m => m.id === selectedMenuId)?.name}
-                            </h2>
+                            {editingMenuId === selectedMenuId ? (
+                                <form onSubmit={handleUpdateMenuName} style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                                    <input
+                                        autoFocus
+                                        value={editMenuName}
+                                        onChange={e => setEditMenuName(e.target.value)}
+                                        className={styles.formInput}
+                                        style={{ fontSize: '1.2rem', padding: '0.4rem' }}
+                                    />
+                                    <button type="submit" className={`${styles.button} ${styles.btnPrimary}`} style={{ width: 'auto', padding: '0.5rem 1rem' }}>Salva</button>
+                                    <button type="button" className={styles.btnSm} onClick={() => setEditingMenuId(null)}>Annulla</button>
+                                </form>
+                            ) : (
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                    <h2 className="h3" style={{ color: '#1a237e', marginBottom: '5px' }}>
+                                        Modifica: {menus.find(m => m.id === selectedMenuId)?.name}
+                                    </h2>
+                                    <button
+                                        onClick={() => {
+                                            const menu = menus.find(m => m.id === selectedMenuId);
+                                            if (menu) {
+                                                setEditingMenuId(menu.id);
+                                                setEditMenuName(menu.name);
+                                            }
+                                        }}
+                                        className={styles.btnActionEdit}
+                                        title="Rinomina Menu"
+                                    >
+                                        Modifica
+                                    </button>
+                                </div>
+                            )}
                             <p style={{ color: '#666', fontSize: '0.9rem', margin: 0 }}>
                                 ✅ Salvataggio automatico attivo
                             </p>
@@ -592,12 +655,27 @@ export default function MenuBuilderPage() {
 
                                             <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
                                                 <input placeholder="Nome Piatto" value={newItem.name} onChange={e => setNewItem({ ...newItem, name: e.target.value })} required autoFocus className={styles.formInput} style={{ flex: 2 }} />
-                                                <input placeholder="Prezzo €" type="number" step="0.5" value={newItem.price} onChange={e => setNewItem({ ...newItem, price: e.target.value })} required className={styles.formInput} style={{ flex: 1 }} />
+                                                <input placeholder="Prezzo €" type="number" step="0.5" value={newItem.price} onChange={e => setNewItem({ ...newItem, price: e.target.value })} className={styles.formInput} style={{ flex: 1 }} />
                                             </div>
                                             <textarea placeholder="Descrizione ingredienti..." value={newItem.description} onChange={e => setNewItem({ ...newItem, description: e.target.value })} className={styles.formTextarea} style={{ minHeight: '80px', marginBottom: '1rem' }} />
 
-                                            <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem' }}>
-                                                <label className={styles.badge} style={{ display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer', background: '#fff3e0', border: '1px solid #ffe0b2', padding: '0.5rem 1rem' }}><input type="checkbox" checked={newItem.isGlutenFree} onChange={e => setNewItem({ ...newItem, isGlutenFree: e.target.checked })} /> Senza Glutine</label>
+                                            <div style={{ marginBottom: '1rem' }}>
+                                                <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '0.5rem' }}>Allergeni:</label>
+                                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '0.5rem' }}>
+                                                    {Array.from({ length: 14 }, (_, i) => i + 1).map(num => (
+                                                        <label key={num} style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.9rem', cursor: 'pointer' }}>
+                                                            <input
+                                                                type="checkbox"
+                                                                checked={newItem.allergens.includes(num)}
+                                                                onChange={e => {
+                                                                    if (e.target.checked) setNewItem({ ...newItem, allergens: [...newItem.allergens, num] });
+                                                                    else setNewItem({ ...newItem, allergens: newItem.allergens.filter(n => n !== num) });
+                                                                }}
+                                                            />
+                                                            {num}
+                                                        </label>
+                                                    ))}
+                                                </div>
                                             </div>
                                             <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
                                                 <button type="button" onClick={() => setAddingItemTo(null)} className={styles.btnSm}>Annulla</button>
@@ -615,12 +693,27 @@ export default function MenuBuilderPage() {
                                                 <form onSubmit={(e) => handleUpdateItem(e, item.id)}>
                                                     <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem', marginTop: '1rem' }}>
                                                         <input value={editItemData.name} onChange={e => setEditItemData({ ...editItemData, name: e.target.value })} required className={styles.formInput} style={{ flex: 2 }} />
-                                                        <input type="number" step="0.5" value={editItemData.price} onChange={e => setEditItemData({ ...editItemData, price: e.target.value })} required className={styles.formInput} style={{ flex: 1 }} />
+                                                        <input type="number" step="0.5" value={editItemData.price} onChange={e => setEditItemData({ ...editItemData, price: e.target.value })} className={styles.formInput} style={{ flex: 1 }} />
                                                     </div>
                                                     <textarea value={editItemData.description} onChange={e => setEditItemData({ ...editItemData, description: e.target.value })} className={styles.formTextarea} style={{ minHeight: '80px', marginBottom: '1rem' }} />
 
-                                                    <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
-                                                        <label><input type="checkbox" checked={editItemData.isGlutenFree} onChange={e => setEditItemData({ ...editItemData, isGlutenFree: e.target.checked })} /> Senza Glutine</label>
+                                                    <div style={{ marginBottom: '1rem' }}>
+                                                        <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '0.5rem' }}>Allergeni:</label>
+                                                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '0.5rem' }}>
+                                                            {Array.from({ length: 14 }, (_, i) => i + 1).map(num => (
+                                                                <label key={num} style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.9rem', cursor: 'pointer' }}>
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        checked={editItemData.allergens.includes(num)}
+                                                                        onChange={e => {
+                                                                            if (e.target.checked) setEditItemData({ ...editItemData, allergens: [...editItemData.allergens, num] });
+                                                                            else setEditItemData({ ...editItemData, allergens: editItemData.allergens.filter(n => n !== num) });
+                                                                        }}
+                                                                    />
+                                                                    {num}
+                                                                </label>
+                                                            ))}
+                                                        </div>
                                                     </div>
                                                     <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
                                                         <button type="button" onClick={() => setEditingId(null)} className={styles.btnSm}>Annulla</button>
@@ -698,24 +791,42 @@ export default function MenuBuilderPage() {
                                                     <div className={styles.itemDesc}>{item.description}</div>
                                                     <div className={styles.itemBadges}>
                                                         {item.isVegan && <span className={`${styles.badge} ${styles.badgeVegan}`}>Vegan</span>}
-                                                        {item.isGlutenFree && <span className={`${styles.badge} ${styles.badgeGf}`}>Senza Glutine</span>}
+                                                        {item.allergens && (
+                                                            (() => {
+                                                                try {
+                                                                    const nums = JSON.parse(item.allergens);
+                                                                    if (Array.isArray(nums) && nums.length > 0) {
+                                                                        return <span className={styles.badge} style={{ background: '#e0f7fa', color: '#006064', border: '1px solid #b2ebf2' }}>All: {nums.join(', ')}</span>;
+                                                                    }
+                                                                } catch (e) { }
+                                                                return null;
+                                                            })()
+                                                        )}
                                                         {item.isVegetarian && <span className={`${styles.badge} ${styles.badgeVeg}`}>Veg</span>}
                                                         {item.spiciness > 0 && <span style={{ fontSize: '0.7rem' }}>{'🌶️'.repeat(item.spiciness)}</span>}
                                                     </div>
                                                 </div>
-                                                <div className={styles.itemPrice}>€ {Number(item.price).toFixed(2)}</div>
+                                                <div className={styles.itemPrice}>
+                                                    {item.price !== null && Number(item.price) > 0 ? `€ ${Number(item.price).toFixed(2)}` : ''}
+                                                </div>
                                                 <div style={{ display: 'flex', gap: '0.5rem' }}>
                                                     <button className={styles.btnActionEdit} title="Modifica" onClick={() => {
                                                         setEditingId(item.id);
                                                         setActiveItemLang('it');
+                                                        let parsedAllergens: number[] = [];
+                                                        try {
+                                                            parsedAllergens = item.allergens ? JSON.parse(item.allergens) : [];
+                                                        } catch (e) { console.error('Error parsing allergens', e); }
+
                                                         setEditItemData({
                                                             name: item.name,
                                                             description: item.description,
-                                                            price: item.price.toString(),
+                                                            price: item.price !== null ? item.price.toString() : '',
                                                             isVegan: item.isVegan,
                                                             isGlutenFree: item.isGlutenFree,
                                                             isVegetarian: item.isVegetarian,
                                                             spiciness: item.spiciness,
+                                                            allergens: parsedAllergens,
                                                             translations: item.translations?.reduce((acc, t) => ({ ...acc, [t.language]: { name: t.name, description: t.description } }), {}) || {}
                                                         });
                                                     }}>Modifica</button>

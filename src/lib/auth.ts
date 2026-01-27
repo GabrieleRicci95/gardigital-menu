@@ -33,7 +33,6 @@ export async function login(userData: { id: string; email: string; role: string 
     (await cookies()).set('session', session, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
         path: '/'
     });
 }

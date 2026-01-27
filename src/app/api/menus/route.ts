@@ -77,3 +77,38 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: 'Errore Server: ' + (error instanceof Error ? error.message : String(error)) }, { status: 500 });
     }
 }
+
+export async function PATCH(req: Request) {
+    try {
+        const session = await getSession();
+        if (!session || !session.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+        const body = await req.json();
+        const { id, name } = body;
+
+        if (!id || !name) {
+            return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
+        }
+
+        // Verify ownership
+        const menu = await prisma.menu.findUnique({
+            where: { id },
+            include: { restaurant: true }
+        });
+
+        if (!menu || menu.restaurant.ownerId !== session.user.id) {
+            return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+        }
+
+        const updatedMenu = await prisma.menu.update({
+            where: { id },
+            data: { name },
+            include: { _count: { select: { categories: true } } }
+        });
+
+        return NextResponse.json(updatedMenu);
+    } catch (error) {
+        console.error("Update Menu Error:", error);
+        return NextResponse.json({ error: 'Errore Server' }, { status: 500 });
+    }
+}

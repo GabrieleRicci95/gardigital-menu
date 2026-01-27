@@ -39,6 +39,7 @@ model Restaurant {
   fontFamily      String   @default("inter") // "inter", "playfair", "roboto", "lato", "montserrat"
   
   whatsappNumber  String?  // Added for Reservation System
+  wineListUrl     String?  // URL to Wine List PDF or Image
   
   cardStyle       String   @default("minimal") // "minimal", "shadow", "border", "glass"
   ownerId     String
@@ -48,6 +49,9 @@ model Restaurant {
   subscription Subscription?
   // VISITS: Added for Analytics
   visits      Visit[]
+  fixedMenus  FixedMenu[]
+  wineList    WineList?
+  champagneList ChampagneList?
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -83,7 +87,7 @@ model MenuItem {
   id          String   @id @default(cuid())
   name        String
   description String?
-  price       Decimal
+  price       Decimal?
   imageUrl    String?
   isVisible   Boolean  @default(true)
   categoryId  String
@@ -143,4 +147,109 @@ model Visit {
   restaurantId String
   restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
   createdAt    DateTime   @default(now())
+}
+
+model FixedMenu {
+  id           String     @id @default(cuid())
+  name         String
+  subtitle     String?    // Short description under title
+  price        Decimal
+  description  String?
+  isActive     Boolean    @default(true)
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  sections     FixedMenuSection[]
+  
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model FixedMenuSection {
+  id           String     @id @default(cuid())
+  name         String     // e.g. "Antipasti", "Primi"
+  description  String?    // e.g. "6 Portate..."
+  fixedMenuId  String
+  fixedMenu    FixedMenu  @relation(fields: [fixedMenuId], references: [id], onDelete: Cascade)
+  items        FixedMenuItem[]
+  
+  sortOrder    Int        @default(0) // To control order of sections
+}
+
+model FixedMenuItem {
+  id                 String           @id @default(cuid())
+  name               String
+  description        String?
+  allergens          String?          // JSON string storing array of allergen IDs
+  fixedMenuSectionId String
+  fixedMenuSection   FixedMenuSection @relation(fields: [fixedMenuSectionId], references: [id], onDelete: Cascade)
+}
+
+model WineList {
+  id           String            @id @default(cuid())
+  isActive     Boolean           @default(true)
+  restaurantId String            @unique
+  restaurant   Restaurant        @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  sections     WineListSection[]
+  
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+}
+
+model WineListSection {
+  id          String     @id @default(cuid())
+  name        String     // e.g. "Vini Rossi", "Bollicine"
+  sortOrder   Int        @default(0)
+  wineListId  String
+  wineList    WineList   @relation(fields: [wineListId], references: [id], onDelete: Cascade)
+  items       WineItem[]
+  
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model WineItem {
+  id                String          @id @default(cuid())
+  name              String
+  description       String?         // e.g. "Cantina X, Annata 2020"
+  price             Decimal
+  wineListSectionId String
+  wineListSection   WineListSection @relation(fields: [wineListSectionId], references: [id], onDelete: Cascade)
+  
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+}
+
+model ChampagneList {
+  id           String            @id @default(cuid())
+  isActive     Boolean           @default(true)
+  restaurantId String            @unique
+  restaurant   Restaurant        @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  sections     ChampagneSection[]
+  
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+}
+
+model ChampagneSection {
+  id              String     @id @default(cuid())
+  name            String     // e.g. "Magnum", "Rosé"
+  sortOrder       Int        @default(0)
+  champagneListId String
+  champagneList   ChampagneList @relation(fields: [champagneListId], references: [id], onDelete: Cascade)
+  items           ChampagneItem[]
+  
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+}
+
+model ChampagneItem {
+  id                  String          @id @default(cuid())
+  name                String
+  description         String?
+  price               Decimal
+  champagneSectionId  String
+  champagneSection    ChampagneSection @relation(fields: [champagneSectionId], references: [id], onDelete: Cascade)
+  
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
 }

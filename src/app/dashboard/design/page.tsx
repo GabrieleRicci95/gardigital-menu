@@ -169,7 +169,6 @@ export default function DesignPage() {
                             </div>
                         </div>
 
-
                     </div>
 
                     {/* Style Section */}

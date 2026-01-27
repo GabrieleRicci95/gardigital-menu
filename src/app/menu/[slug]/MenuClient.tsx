@@ -1,19 +1,22 @@
 'use client';
 
+import Link from 'next/link';
 import { useState } from 'react';
 import styles from './menu-public.module.css';
 import ReservationModal from '@/components/menu/ReservationModal';
+import AllergenInfo from '@/components/menu/AllergenInfo';
 
 interface MenuPageItem {
     id: string;
     name: string;
     description: string | null;
-    price: number;
+    price: number | null;
     imageUrl: string | null;
     isVegan: boolean;
     isGlutenFree: boolean;
     isVegetarian: boolean;
     spiciness: number;
+    allergens: string | null;
     translations?: { language: string; name: string; description: string | null }[];
 }
 
@@ -26,6 +29,7 @@ interface MenuPageCategory {
 
 export interface MenuPageRestaurant {
     name: string;
+    slug: string;
     description: string | null;
     logoUrl: string | null;
     coverImageUrl: string | null;
@@ -35,6 +39,9 @@ export interface MenuPageRestaurant {
     fontFamily: string;
     cardStyle: string;
     whatsappNumber: string | null;
+    wineListUrl: string | null;
+    wineList?: { isActive: boolean } | null;
+    champagneList?: { isActive: boolean } | null;
     categories: MenuPageCategory[];
 }
 
@@ -184,17 +191,112 @@ export default function MenuClient({ restaurant }: { restaurant: MenuPageRestaur
             {/* Filter Bar Removed */}
 
             {/* Sticky Navigation */}
-            <nav className={styles.categoryNav} style={{ backgroundColor: restaurant.backgroundColor }}>
-                {restaurant.categories.map(cat => (
-                    <a
-                        key={cat.id}
-                        href={`#cat-${cat.id}`}
-                        className={styles.navLink}
-                    >
-                        {getCatName(cat)}
-                    </a>
-                ))}
-            </nav>
+            <div style={{ position: 'sticky', top: 0, zIndex: 90, backgroundColor: restaurant.backgroundColor, display: 'flex', alignItems: 'center', paddingRight: '10px' }}>
+                <div style={{ padding: '0 0 0 15px', flexShrink: 0, display: 'flex', gap: '10px' }}>
+                    {/* Events & Fixed Menus - Currently specific to Aperifish */}
+                    {restaurant.name.toLowerCase().includes('aperifish') && (
+                        <>
+                            <Link
+                                href={`/menu/${restaurant.slug}/events`}
+                                style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '6px',
+                                    backgroundColor: '#001f2f',
+                                    color: 'white',
+                                    padding: '8px 16px',
+                                    borderRadius: '50px',
+                                    textDecoration: 'none',
+                                    fontWeight: 'bold',
+                                    fontSize: '0.85rem',
+                                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                                    whiteSpace: 'nowrap'
+                                }}
+                            >
+                                Eventi e Promozioni
+                            </Link>
+                            <Link
+                                href={`/menu/${restaurant.slug}/fixed-menus`}
+                                style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '6px',
+                                    backgroundColor: '#001f2f',
+                                    color: 'white',
+                                    padding: '8px 16px',
+                                    borderRadius: '50px',
+                                    textDecoration: 'none',
+                                    fontWeight: 'bold',
+                                    fontSize: '0.85rem',
+                                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                                    whiteSpace: 'nowrap'
+                                }}
+                            >
+                                Menu Fissi
+                            </Link>
+                        </>
+                    )}
+
+                    {/* Carta dei Vini Button - Internal Link */}
+                    {(restaurant.wineList?.isActive || restaurant.wineListUrl) && (
+                        <Link
+                            href={restaurant.wineList?.isActive ? `/menu/${restaurant.slug}/wine-list` : (restaurant.wineListUrl || '#')}
+                            target={restaurant.wineList?.isActive ? "_self" : "_blank"}
+                            rel={restaurant.wineList?.isActive ? undefined : "noopener noreferrer"}
+                            style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '6px',
+                                backgroundColor: '#001f2f',
+                                color: 'white',
+                                padding: '8px 16px',
+                                borderRadius: '50px',
+                                textDecoration: 'none',
+                                fontWeight: 'bold',
+                                fontSize: '0.85rem',
+                                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                                whiteSpace: 'nowrap'
+                            }}
+                        >
+                            Vini
+                        </Link>
+                    )}
+
+                    {/* Carta Champagne Button */}
+                    {(restaurant.champagneList?.isActive) && (
+                        <Link
+                            href={`/menu/${restaurant.slug}/champagne-list`}
+                            style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '6px',
+                                backgroundColor: '#001f2f',
+                                color: 'white', // Changed to white as requested
+                                padding: '8px 16px',
+                                borderRadius: '50px',
+                                textDecoration: 'none',
+                                fontWeight: 'bold',
+                                fontSize: '0.85rem',
+                                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                                whiteSpace: 'nowrap'
+                            }}
+                        >
+                            Champagne
+                        </Link>
+                    )}
+                </div>
+                <nav className={styles.categoryNav} style={{ position: 'relative', top: 'auto', backgroundColor: 'transparent', boxShadow: 'none', flex: 1 }}>
+                    {restaurant.categories.map(cat => (
+                        <a
+                            key={cat.id}
+                            href={`#cat-${cat.id}`}
+                            className={styles.navLink}
+                        >
+                            {getCatName(cat)}
+                        </a>
+                    ))}
+                </nav>
+            </div>
 
             {/* Menu Content */}
             <main>
@@ -223,16 +325,32 @@ export default function MenuClient({ restaurant }: { restaurant: MenuPageRestaur
                                             <div className={styles.itemInfo}>
                                                 <div className={styles.itemHeader}>
                                                     <h3 className={styles.itemName} style={{ color: restaurant.textColor }}>{getItemName(item)}</h3>
-                                                    <span className={styles.itemPrice} style={{ color: restaurant.themeColor }}>
-                                                        € {Number(item.price).toFixed(2)}
-                                                    </span>
+                                                    {item.price !== null && Number(item.price) > 0 && (
+                                                        <span className={styles.itemPrice} style={{ color: restaurant.themeColor }}>
+                                                            € {Number(item.price).toFixed(2)}
+                                                        </span>
+                                                    )}
                                                 </div>
                                                 <p className={styles.itemDesc} style={{ color: restaurant.textColor, opacity: 0.8 }}>{getItemDesc(item)}</p>
 
                                                 <div className={styles.itemTags}>
                                                     {item.isVegetarian && <span className={styles.tagVeg} title="Vegetariano">Veg</span>}
                                                     {item.isVegan && <span className={styles.tagVegan} title="Vegano">Vegan</span>}
-                                                    {item.isGlutenFree && <span className={styles.tagGf} title="Senza Glutine">Senza Glutine</span>}
+                                                    {item.allergens && (
+                                                        (() => {
+                                                            try {
+                                                                const nums = JSON.parse(item.allergens);
+                                                                if (Array.isArray(nums) && nums.length > 0) {
+                                                                    return (
+                                                                        <span className={styles.tagGf} style={{ background: '#e3f2fd', color: '#0d47a1' }} title="Allergeni">
+                                                                            All: {nums.join(', ')}
+                                                                        </span>
+                                                                    );
+                                                                }
+                                                            } catch (e) { }
+                                                            return null;
+                                                        })()
+                                                    )}
                                                     {item.spiciness > 0 && <span className={styles.tagSpicy} title={`Piccantezza ${item.spiciness}/3`}>{'🌶️'.repeat(item.spiciness)}</span>}
                                                 </div>
                                             </div>
@@ -251,6 +369,11 @@ export default function MenuClient({ restaurant }: { restaurant: MenuPageRestaur
                     })
                 )}
             </main>
+
+            {/* Show allergen info only for Aperifish */}
+            {restaurant.name.toLowerCase().includes('aperifish') && (
+                <AllergenInfo />
+            )}
 
             <footer className={styles.footer} style={{ backgroundColor: 'transparent', color: restaurant.textColor, opacity: 0.6 }}>
                 Powered by <strong>Gardigital Menu</strong>

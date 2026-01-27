@@ -40,6 +40,9 @@ export default function DashboardLayout({
         { label: 'Panoramica', href: '/dashboard', icon: 'Items' },
         { label: 'Il mio Ristorante', href: '/dashboard/restaurant', icon: 'Store' },
         { label: 'Menu', href: '/dashboard/menu', icon: 'Menu' },
+        { label: 'Menu Fissi', href: '/dashboard/fixed-menus', icon: 'Star' },
+        { label: 'Carta dei Vini', href: '/dashboard/wine-list', icon: 'Wine' },
+        { label: 'Carta Champagne', href: '/dashboard/champagne-list', icon: 'Glass' }, // Added icon
         { label: 'Aspetto & Design', href: '/dashboard/design', icon: 'Palette' },
         { label: 'QR Code', href: '/dashboard/qrcode', icon: 'QR' },
     ];
