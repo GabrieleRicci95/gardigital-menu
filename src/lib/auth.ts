@@ -29,10 +29,14 @@ export async function decrypt(input: string): Promise<any> {
 }
 
 export async function login(userData: { id: string; email: string; role: string }) {
-    const session = await encrypt({ user: userData, expires: new Date(Date.now() + 24 * 60 * 60 * 1000) });
+    const expires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+    const session = await encrypt({ user: userData, expires });
+
     (await cookies()).set('session', session, {
+        expires,
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
         path: '/'
     });
 }
