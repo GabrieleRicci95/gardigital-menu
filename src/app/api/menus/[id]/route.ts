@@ -47,55 +47,21 @@ export async function DELETE(
         // User didn't specify. Safe bet: allow, but if active, maybe warn? 
         // For API, just allow. Frontend can warn.
 
-        // Robust Manual Cascade Delete
+        // Optimized Transactional Delete
         try {
-            // Find all categories first
-            const categories = await prisma.category.findMany({
-                where: { menuId: id },
-                select: { id: true }
-            });
-            const categoryIds = categories.map(c => c.id);
-
-            if (categoryIds.length > 0) {
-                // Find all items in these categories
-                const items = await prisma.menuItem.findMany({
-                    where: { categoryId: { in: categoryIds } },
-                    select: { id: true }
-                });
-                const itemIds = items.map(i => i.id);
-
-                if (itemIds.length > 0) {
-                    // 1. Delete Item Translations
-                    await prisma.menuItemTranslation.deleteMany({
-                        where: { menuItemId: { in: itemIds } }
-                    });
-
-                    // 2. Delete Items
-                    await prisma.menuItem.deleteMany({
-                        where: { id: { in: itemIds } }
-                    });
-                }
-
-                // 3. Delete Category Translations
-                await prisma.categoryTranslation.deleteMany({
-                    where: { categoryId: { in: categoryIds } }
-                });
-
-                // 4. Delete Categories
-                await prisma.category.deleteMany({
-                    where: { id: { in: categoryIds } }
-                });
-            }
-
-        } catch (cascadeError) {
-            console.error("Error in robust cascade:", cascadeError);
-            // We continue to try main delete, or return error?
-            // If this fails, main delete will likely fail too.
+            await prisma.$transaction([
+                prisma.menuItemTranslation.deleteMany({ where: { menuItem: { category: { menuId: id } } } }),
+                prisma.menuItem.deleteMany({ where: { category: { menuId: id } } }),
+                prisma.categoryTranslation.deleteMany({ where: { category: { menuId: id } } }),
+                prisma.category.deleteMany({ where: { menuId: id } }),
+                prisma.menu.delete({ where: { id } })
+            ]);
+        } catch (error) {
+            console.error("Delete Transaction Error:", error);
+            return NextResponse.json({
+                error: 'Errore durante eliminazione: ' + (error instanceof Error ? error.message : String(error))
+            }, { status: 500 });
         }
-
-        await prisma.menu.delete({
-            where: { id }
-        });
 
         return NextResponse.json({ success: true });
     } catch (error) {
