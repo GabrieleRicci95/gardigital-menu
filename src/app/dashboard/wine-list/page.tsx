@@ -258,9 +258,7 @@ export default function WineListPage() {
                             alignItems: 'center'
                         }}>
                             <div style={{ flex: 1 }}>
-                                <label style={{ display: 'block', textTransform: 'uppercase', fontSize: '0.75rem', fontWeight: '700', color: '#888', marginBottom: '0.25rem', letterSpacing: '0.5px' }}>
-                                    Categoria {sIndex + 1}
-                                </label>
+
                                 <input
                                     type="text"
                                     value={section.name}
@@ -358,15 +356,15 @@ export default function WineListPage() {
                                         </div>
 
                                         <div className={styles.priceContainer}>
-                                            <label style={{ fontSize: '0.7rem', fontWeight: 'bold', color: '#999', marginBottom: '2px', display: 'block' }}>PREZZO €</label>
                                             <input
                                                 type="number"
                                                 value={item.price}
                                                 onChange={e => updateWine(sIndex, iIndex, 'price', e.target.value)}
-                                                placeholder="0.00"
+                                                placeholder="0"
                                                 onFocus={(e) => e.target.style.borderColor = '#3b82f6'}
                                                 onBlur={(e) => e.target.style.borderColor = '#e5e5e5'}
                                             />
+                                            <span className={styles.priceSymbol}>€</span>
                                         </div>
 
                                         <button
@@ -429,33 +427,7 @@ export default function WineListPage() {
                 ))}
             </div>
 
-            <button
-                onClick={addSection}
-                style={{
-                    marginTop: '3rem',
-                    width: '100%',
-                    padding: '1.5rem',
-                    borderRadius: '16px',
-                    border: '2px dashed #e5e7eb',
-                    background: 'white',
-                    color: '#6b7280',
-                    cursor: 'pointer',
-                    fontSize: '1.1rem',
-                    fontWeight: '600',
-                    transition: 'all 0.2s',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '10px'
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#d1d5db'; e.currentTarget.style.color = '#374151'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#e5e7eb'; e.currentTarget.style.color = '#6b7280'; }}
-            >
-                <div style={{ background: '#f3f4f6', padding: '10px', borderRadius: '50%' }}>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                </div>
-                Aggiungi Nuova Categoria
-            </button>
+
 
             {/* Sticky Save Bar */}
             <div style={{

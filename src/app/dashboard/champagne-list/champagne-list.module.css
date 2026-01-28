@@ -10,9 +10,25 @@
     transition: all 0.2s;
 }
 
+.priceContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.priceSymbol {
+    position: absolute;
+    right: 8px;
+    color: #d4af37;
+    /* Gold for Champagne */
+    font-size: 0.9rem;
+    pointer-events: none;
+}
+
 .priceContainer input {
     width: 100%;
-    padding: 10px;
+    padding: 10px 25px 10px 10px;
+    /* Right padding for symbol */
     border-radius: 8px;
     border: 1px solid #e5e5e5;
     font-size: 1.1rem;
@@ -30,8 +46,15 @@
     }
 
     .priceContainer input {
-        padding: 5px 2px;
+        padding: 5px 18px 5px 5px;
+        /* Adjust right padding for mobile symbol */
         font-size: 0.9rem;
-        text-align: center;
+        text-align: right;
+        /* Keep right aligned */
+    }
+
+    .priceSymbol {
+        right: 4px;
+        font-size: 0.8rem;
     }
 }
