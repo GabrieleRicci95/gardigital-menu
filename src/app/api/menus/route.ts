@@ -19,7 +19,7 @@ export async function GET() {
 
         const menus = await prisma.menu.findMany({
             where: { restaurantId: restaurant.id },
-            orderBy: { createdAt: 'desc' },
+            orderBy: { createdAt: 'asc' },
             include: { _count: { select: { categories: true } } }
         });
 
