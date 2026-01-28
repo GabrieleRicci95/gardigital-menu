@@ -204,16 +204,18 @@ export default function ChampagneListPage() {
             {/* Global Settings Card */}
             <div style={{
                 background: 'white',
-                padding: '1.5rem 2rem',
+                padding: '1.5rem',
                 borderRadius: '16px',
                 boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
                 marginBottom: '2.5rem',
                 display: 'flex',
+                flexWrap: 'wrap',
+                gap: '1rem',
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 border: '1px solid #f0f0f0'
             }}>
-                <div>
+                <div style={{ flex: 1, minWidth: '200px' }}>
                     <h3 style={{ fontSize: '1.1rem', fontWeight: '600', marginBottom: '0.25rem' }}>Stato Pubblicazione</h3>
                     <p style={{ fontSize: '0.9rem', color: '#666', margin: 0 }}>Rendi visibile la carta champagne sul menu pubblico</p>
                 </div>
