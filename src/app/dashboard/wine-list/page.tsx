@@ -213,7 +213,7 @@ export default function WineListPage() {
                 justifyContent: 'space-between',
                 border: '1px solid #f0f0f0'
             }}>
-                <div>
+                <div style={{ flex: 1, minWidth: '200px' }}>
                     <h3 style={{ fontSize: '1.1rem', fontWeight: '600', marginBottom: '0.25rem' }}>Stato Pubblicazione</h3>
                     <p style={{ fontSize: '0.9rem', color: '#666', margin: 0 }}>Rendi visibile la carta dei vini sul menu pubblico</p>
                 </div>
