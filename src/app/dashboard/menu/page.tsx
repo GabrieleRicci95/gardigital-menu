@@ -48,6 +48,7 @@ export default function MenuBuilderPage() {
     const [uploadingId, setUploadingId] = useState<string | null>(null);
     const [expandedImage, setExpandedImage] = useState<string | null>(null);
     const [showCreateInput, setShowCreateInput] = useState(false);
+    const [showAllMenus, setShowAllMenus] = useState(false);
 
     // Forms states
     const [newMenuName, setNewMenuName] = useState('');
@@ -499,7 +500,7 @@ export default function MenuBuilderPage() {
                     <div className={styles.plusButton}>+</div>
                     <span style={{ fontWeight: 600, color: 'var(--color-primary)' }}>Nuovo Menu</span>
                 </div>
-                {menus.map(menu => (
+                {(showAllMenus ? menus : menus.slice(0, 2)).map(menu => (
                     <div key={menu.id}
                         className={`${styles.menuCard} ${selectedMenuId === menu.id ? styles.menuCardActive : ''}`}
                         onClick={() => setSelectedMenuId(menu.id)}
@@ -533,6 +534,18 @@ export default function MenuBuilderPage() {
                     </div>
                 ))}
             </div>
+
+            {menus.length > 2 && (
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>
+                    <button
+                        onClick={() => setShowAllMenus(!showAllMenus)}
+                        className={styles.btnSm}
+                        style={{ border: 'none', background: 'transparent', color: '#1a237e', fontSize: '1rem' }}
+                    >
+                        {showAllMenus ? '▲ Vedi Meno' : '▼ Vedi Tutti (' + (menus.length - 2) + ')'}
+                    </button>
+                </div>
+            )}
 
             {selectedMenuId ? (
                 <div className="animation-fade-in">

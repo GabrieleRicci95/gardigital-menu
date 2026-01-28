@@ -311,13 +311,10 @@
 
 /* Menu Editor Specifics */
 .menuList {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1.5rem;
-    overflow-x: auto;
-    padding-bottom: 1rem;
     margin-bottom: 2rem;
-    scrollbar-width: thin;
-    scrollbar-color: #ddd transparent;
 }
 
 .menuCard {
