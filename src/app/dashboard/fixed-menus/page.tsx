@@ -52,8 +52,8 @@ export default function FixedMenusPage() {
 
     return (
         <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '2rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-                <h1 style={{ fontSize: '2rem', fontWeight: 'bold' }}>Menu Fissi</h1>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
+                <h1 style={{ fontSize: '2rem', fontWeight: 'bold', margin: 0 }}>Menu Fissi</h1>
                 <Link
                     href="/dashboard/fixed-menus/new"
                     style={{
@@ -88,13 +88,15 @@ export default function FixedMenusPage() {
                             borderRadius: '12px',
                             boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
                             display: 'flex',
+                            flexWrap: 'wrap', // Allow wrapping
+                            gap: '1rem', // Add gap between wrapped items
                             justifyContent: 'space-between',
                             alignItems: 'center',
                             border: '1px solid #eaeaea'
                         }}>
-                            <div>
+                            <div style={{ minWidth: '200px' }}>
                                 <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.2rem' }}>{menu.name}</h3>
-                                <div style={{ display: 'flex', gap: '1rem', color: '#666', fontSize: '0.9rem' }}>
+                                <div style={{ display: 'flex', gap: '1rem', color: '#666', fontSize: '0.9rem', flexWrap: 'wrap' }}>
                                     <span style={{ fontWeight: 'bold', color: '#0070f3' }}>€{Number(menu.price).toFixed(2)}</span>
                                     <span>{menu.sections.length} Sezioni</span>
                                     {menu.isActive ? (
@@ -104,7 +106,7 @@ export default function FixedMenusPage() {
                                     )}
                                 </div>
                             </div>
-                            <div style={{ display: 'flex', gap: '10px' }}>
+                            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', width: '100%', maxWidth: '300px', justifyContent: 'flex-end' }}>
                                 <Link
                                     href={`/dashboard/fixed-menus/${menu.id}`}
                                     style={{
@@ -113,7 +115,9 @@ export default function FixedMenusPage() {
                                         background: '#f0f0f0',
                                         color: '#333',
                                         textDecoration: 'none',
-                                        fontSize: '0.9rem'
+                                        fontSize: '0.9rem',
+                                        textAlign: 'center',
+                                        flex: 1
                                     }}
                                 >
                                     Modifica
@@ -127,7 +131,9 @@ export default function FixedMenusPage() {
                                         color: '#d32f2f',
                                         border: 'none',
                                         cursor: 'pointer',
-                                        fontSize: '0.9rem'
+                                        fontSize: '0.9rem',
+                                        textAlign: 'center',
+                                        flex: 1
                                     }}
                                 >
                                     Elimina
