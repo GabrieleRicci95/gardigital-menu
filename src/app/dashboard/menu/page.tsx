@@ -733,7 +733,7 @@ export default function MenuBuilderPage() {
                                                 {/* IMAGE SECTION */}
                                                 <div style={{ marginRight: '1rem', position: 'relative' }}>
                                                     {item.imageUrl ? (
-                                                        <div style={{ position: 'relative', width: '64px', height: '64px' }}>
+                                                        <div className={styles.itemImageContainer}>
                                                             <img
                                                                 src={item.imageUrl}
                                                                 alt={item.name}
