@@ -165,7 +165,7 @@ export default function MenuBuilderPage() {
             if (contentType && contentType.indexOf("application/json") !== -1) {
                 const data = await res.json();
                 if (res.ok) {
-                    setMenus([data, ...menus]);
+                    setMenus([...menus, data]);
                     setSelectedMenuId(data.id);
                     setNewMenuName('');
                 } else {
