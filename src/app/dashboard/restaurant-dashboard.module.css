@@ -463,6 +463,35 @@
     flex-shrink: 0;
 }
 
+.btnDeletePhoto {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: white;
+    border: 1px solid #ef5350;
+    color: #ef5350;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+    z-index: 5;
+    padding: 0;
+    font-size: 14px;
+    line-height: 1;
+}
+
+.btnDeletePhoto:hover {
+    background: #ffebee;
+    transform: scale(1.15);
+    box-shadow: 0 4px 8px rgba(239, 83, 80, 0.2);
+    color: #c62828;
+}
+
 .itemImage {
     width: 64px;
     height: 64px;
@@ -721,6 +750,15 @@
         /* Force square */
         margin-bottom: 1rem;
         position: relative;
+    }
+
+    .btnDeletePhoto {
+        width: 28px;
+        height: 28px;
+        font-size: 16px;
+        top: -10px;
+        right: -10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
     .itemImage {

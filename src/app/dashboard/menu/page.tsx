@@ -746,14 +746,7 @@ export default function MenuBuilderPage() {
                                                                         e.stopPropagation();
                                                                         handleQuickUpdate(item, { imageUrl: null });
                                                                     }}
-                                                                    className={styles.iconBtn}
-                                                                    style={{
-                                                                        position: 'absolute', top: '-5px', right: '-5px',
-                                                                        background: '#ffcdd2', border: '1px solid #e57373',
-                                                                        width: '20px', height: '20px', fontSize: '0.8rem', padding: 0,
-                                                                        boxShadow: '0 2px 5px rgba(0,0,0,0.1)', color: '#c62828',
-                                                                        zIndex: 2, display: 'flex', alignItems: 'center', justifyContent: 'center'
-                                                                    }}
+                                                                    className={styles.btnDeletePhoto}
                                                                     title="Rimuovi Foto"
                                                                 >
                                                                     ×
