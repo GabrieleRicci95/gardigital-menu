@@ -168,4 +168,24 @@
     .content {
         padding: var(--spacing-md);
     }
+
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5);
+        /* Semi-transparent black */
+        z-index: 999;
+        /* Below sidebar (1000), above content */
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .overlay.open {
+        opacity: 1;
+        visibility: visible;
+    }
 }

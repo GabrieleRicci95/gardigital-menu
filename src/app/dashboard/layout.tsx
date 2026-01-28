@@ -114,6 +114,12 @@ export default function DashboardLayout({
                 </nav>
             </aside>
 
+            {/* Backdrop Overlay for Mobile */}
+            <div
+                className={`${styles.overlay} ${isMobileMenuOpen ? styles.open : ''}`}
+                onClick={() => setIsMobileMenuOpen(false)}
+            />
+
             <main className={styles.main}>
                 <header className={styles.header}>
                     <button className={styles.mobileToggle} onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
