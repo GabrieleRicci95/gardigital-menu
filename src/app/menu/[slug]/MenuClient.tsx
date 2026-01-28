@@ -191,7 +191,25 @@ export default function MenuClient({ restaurant }: { restaurant: MenuPageRestaur
             {/* Filter Bar Removed */}
 
             {/* Sticky Navigation */}
-            <div style={{ position: 'sticky', top: 0, zIndex: 90, backgroundColor: restaurant.backgroundColor, display: 'flex', alignItems: 'center', paddingRight: '10px' }}>
+            <div className="sticky-nav-container" style={{
+                position: 'sticky',
+                top: 0,
+                zIndex: 90,
+                backgroundColor: restaurant.backgroundColor,
+                display: 'flex',
+                alignItems: 'center',
+                paddingRight: '10px',
+                overflowX: 'auto',
+                whiteSpace: 'nowrap',
+                scrollbarWidth: 'none', // Firefox
+                msOverflowStyle: 'none', // IE/Edge
+                WebkitOverflowScrolling: 'touch'
+            }}>
+                <style jsx>{`
+                    .sticky-nav-container::-webkit-scrollbar {
+                        display: none;
+                    }
+                `}</style>
                 <div style={{ padding: '0 0 0 15px', flexShrink: 0, display: 'flex', gap: '10px' }}>
                     {/* Events & Fixed Menus - Currently specific to Aperifish */}
                     {restaurant.name.toLowerCase().includes('aperifish') && (
@@ -285,7 +303,14 @@ export default function MenuClient({ restaurant }: { restaurant: MenuPageRestaur
                         </Link>
                     )}
                 </div>
-                <nav className={styles.categoryNav} style={{ position: 'relative', top: 'auto', backgroundColor: 'transparent', boxShadow: 'none', flex: 1 }}>
+                <nav className={styles.categoryNav} style={{
+                    position: 'relative',
+                    top: 'auto',
+                    backgroundColor: 'transparent',
+                    boxShadow: 'none',
+                    flex: '0 0 auto',
+                    overflow: 'visible' // Disable internal scroll
+                }}>
                     {restaurant.categories.map(cat => (
                         <a
                             key={cat.id}
