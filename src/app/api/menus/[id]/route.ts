@@ -47,6 +47,33 @@ export async function DELETE(
         // User didn't specify. Safe bet: allow, but if active, maybe warn? 
         // For API, just allow. Frontend can warn.
 
+        // Manual Cascade Delete (in case DB constraints are missing)
+        try {
+            // 1. Delete Item Translations
+            await prisma.menuItemTranslation.deleteMany({
+                where: { menuItem: { category: { menuId: id } } }
+            });
+
+            // 2. Delete Items
+            await prisma.menuItem.deleteMany({
+                where: { category: { menuId: id } }
+            });
+
+            // 3. Delete Category Translations
+            await prisma.categoryTranslation.deleteMany({
+                where: { category: { menuId: id } }
+            });
+
+            // 4. Delete Categories
+            await prisma.category.deleteMany({
+                where: { menuId: id }
+            });
+
+        } catch (cascadeError) {
+            console.log("Error in manual cascade (might be handled by DB):", cascadeError);
+            // Verify if we can proceed, or just ignore and let the DB try
+        }
+
         await prisma.menu.delete({
             where: { id }
         });
