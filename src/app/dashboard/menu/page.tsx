@@ -588,14 +588,7 @@ export default function MenuBuilderPage() {
                             </p>
                         </div>
                         <div style={{ display: 'flex', gap: '10px' }}>
-                            <a
-                                href={`/menu/${restaurantSlug}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={styles.btnPreview}
-                            >
-                                Anteprima Menu
-                            </a>
+                            {/* Anteprima Menu removed */}
                         </div>
                     </div>
 
