@@ -119,7 +119,7 @@ export default function RestaurantPage() {
 
                 {formData.slug && (
                     <div className={styles.linkBox}>
-                        <h3 className={styles.cardTitle}>Il tuo Menu Pubblico 🌐</h3>
+                        <h3 className={styles.cardTitle}>Il tuo Menu Pubblico</h3>
                         <p className={styles.cardDesc}>
                             Condividi questo link con i tuoi clienti o genera il QR Code.
                         </p>
@@ -134,7 +134,7 @@ export default function RestaurantPage() {
                                 rel="noopener noreferrer"
                                 className={styles.btnSm}
                             >
-                                Apri Menu ↗
+                                Anteprima Menu ↗
                             </a>
                         </div>
                     </div>
