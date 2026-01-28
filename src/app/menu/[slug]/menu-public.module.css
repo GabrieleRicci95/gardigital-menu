@@ -126,6 +126,26 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
+.stickyNavContainer {
+    position: sticky;
+    top: 0;
+    z-index: 90;
+    display: flex;
+    align-items: center;
+    padding-right: 10px;
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE/Edge */
+    -webkit-overflow-scrolling: touch;
+}
+
+.stickyNavContainer::-webkit-scrollbar {
+    display: none;
+}
+
 /* Sticky Category Navigation */
 .categoryNav {
     position: sticky;

@@ -75,7 +75,11 @@ export default async function PublicMenuPage({ params }: PageProps) {
     // Convert keys that might be missing or null (though strict mode might complain, but for now we cast)
     // Actually getRestaurant already returns MenuPageRestaurant with number prices now.
 
+    // Fix for "Only plain objects can be passed to Client Components"
+    // This handles Prisma Decimals, Dates, etc.
+    const serializedRestaurant = JSON.parse(JSON.stringify(restaurant));
+
     return (
-        <MenuClient restaurant={restaurant} />
+        <MenuClient restaurant={serializedRestaurant} />
     );
 }
