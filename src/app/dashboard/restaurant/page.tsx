@@ -63,7 +63,7 @@ export default function RestaurantPage() {
     return (
         <div className={styles.container}>
             <header className={styles.header}>
-                <h1 className={styles.title}>Il Mio Ristorante 🍽️</h1>
+                <h1 className={styles.title}>Il Mio Ristorante</h1>
                 <p className={styles.subtitle}>Gestisci le informazioni principali del tuo locale.</p>
             </header>
 
