@@ -570,9 +570,7 @@ export default function MenuBuilderPage() {
                                     </h2>
                                 </div>
                             )}
-                            <p style={{ color: '#666', fontSize: '0.9rem', margin: 0 }}>
-                                ✅ Salvataggio automatico attivo
-                            </p>
+
                         </div>
                         <div style={{ display: 'flex', gap: '10px' }}>
                             {/* Anteprima Menu removed */}
