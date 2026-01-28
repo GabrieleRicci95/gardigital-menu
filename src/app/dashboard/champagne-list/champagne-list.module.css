@@ -1,0 +1,37 @@
+.itemGrid {
+    display: grid;
+    grid-template-columns: 1fr 100px 40px;
+    gap: 1rem;
+    align-items: start;
+    background: #fff;
+    padding: 1.25rem;
+    border-radius: 12px;
+    border: 1px solid #e5e5e5;
+    transition: all 0.2s;
+}
+
+.priceContainer input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #e5e5e5;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-align: right;
+    outline: none;
+    color: #333;
+}
+
+@media (max-width: 768px) {
+    .itemGrid {
+        grid-template-columns: 1fr 70px 35px;
+        gap: 0.5rem;
+        padding: 0.75rem;
+    }
+
+    .priceContainer input {
+        padding: 8px 4px;
+        /* Reduced padding for mobile */
+        font-size: 1rem;
+    }
+}

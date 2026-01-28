@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import styles from './wine-list.module.css';
 
 interface WineItem {
     id?: string;
@@ -303,17 +304,7 @@ export default function WineListPage() {
                         <div style={{ padding: '1.5rem' }}>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                                 {section.items.map((item, iIndex) => (
-                                    <div key={item.id || iIndex} style={{
-                                        display: 'grid',
-                                        gridTemplateColumns: '1fr 90px 40px',
-                                        gap: '1rem',
-                                        alignItems: 'start',
-                                        background: '#fff',
-                                        padding: '1.25rem',
-                                        borderRadius: '12px',
-                                        border: '1px solid #e5e5e5',
-                                        transition: 'all 0.2s',
-                                    }}>
+                                    <div key={item.id || iIndex} className={styles.itemGrid}>
                                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                                             <div>
                                                 <input
@@ -366,24 +357,13 @@ export default function WineListPage() {
                                             </div>
                                         </div>
 
-                                        <div style={{ position: 'relative' }}>
+                                        <div className={styles.priceContainer}>
                                             <label style={{ fontSize: '0.7rem', fontWeight: 'bold', color: '#999', marginBottom: '2px', display: 'block' }}>PREZZO €</label>
                                             <input
                                                 type="number"
                                                 value={item.price}
                                                 onChange={e => updateWine(sIndex, iIndex, 'price', e.target.value)}
                                                 placeholder="0.00"
-                                                style={{
-                                                    width: '100%',
-                                                    padding: '10px',
-                                                    borderRadius: '8px',
-                                                    border: '1px solid #e5e5e5',
-                                                    fontSize: '1.1rem',
-                                                    fontWeight: '700',
-                                                    textAlign: 'right',
-                                                    outline: 'none',
-                                                    color: '#333'
-                                                }}
                                                 onFocus={(e) => e.target.style.borderColor = '#3b82f6'}
                                                 onBlur={(e) => e.target.style.borderColor = '#e5e5e5'}
                                             />
