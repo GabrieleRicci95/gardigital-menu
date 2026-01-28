@@ -36,7 +36,7 @@ export default function DashboardPage() {
     return (
         <div className={styles.container}>
             <header className={styles.header}>
-                <h1 className={styles.title}>Bentornato 👋</h1>
+                <h1 className={styles.title}>Bentornato</h1>
                 <p className={styles.subtitle}>Ecco una panoramica del tuo ristorante digitale.</p>
             </header>
 
@@ -44,7 +44,6 @@ export default function DashboardPage() {
                 {/* Status Card */}
                 <div className={`${styles.card} ${styles.cardPremium}`}>
                     <div className={styles.cardTitle}>
-                        <span className={styles.icon}>💎</span>
                         Stato Abbonamento
                     </div>
                     <div>
@@ -64,7 +63,6 @@ export default function DashboardPage() {
                 {/* Menu Link Card */}
                 <div className={`${styles.card} ${styles.cardMenu}`}>
                     <div className={styles.cardTitle}>
-                        <span className={styles.icon}>🍽️</span>
                         I Tuoi Menu
                     </div>
                     <p className={styles.cardDesc}>Gestisci i piatti, i prezzi e organizza le categorie del tuo menu digitale.</p>
@@ -78,7 +76,6 @@ export default function DashboardPage() {
                 {/* QR Code Card */}
                 <div className={`${styles.card} ${styles.cardQr}`}>
                     <div className={styles.cardTitle}>
-                        <span className={styles.icon}>📱</span>
                         Il Tuo QR Code
                     </div>
                     <p className={styles.cardDesc}>Scarica e stampa il codice QR da posizionare sui tavoli per i tuoi clienti.</p>

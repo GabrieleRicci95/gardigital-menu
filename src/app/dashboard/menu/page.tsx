@@ -485,7 +485,7 @@ export default function MenuBuilderPage() {
             <header className={styles.header}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div>
-                        <h1 className={styles.title}>I Tuoi Menu 📖</h1>
+                        <h1 className={styles.title}>I Tuoi Menu</h1>
                         <p className={styles.subtitle}>Crea e gestisci i menu digitali del tuo ristorante.</p>
                     </div>
                 </div>
