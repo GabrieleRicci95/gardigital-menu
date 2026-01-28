@@ -211,10 +211,7 @@ export default function DesignPage() {
                 <div className={styles.linkBox} style={{ marginTop: '0rem' }}>
                     <div className={styles.linkContainer} style={{ justifyContent: 'space-between', background: 'white', border: 'none', padding: 0 }}>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                            <span className={styles.helperText}>Anteprima pubblica</span>
-                            <a href={`/menu/${restaurant.slug}`} target="_blank" className={styles.linkUrl} style={{ background: '#f8f9fa', textDecoration: 'none' }}>
-                                🔗 /menu/{restaurant.slug}
-                            </a>
+                            {/* Preview link removed */}
                         </div>
                         <button
                             type="submit"
