@@ -1,9 +1,17 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "@fontsource/inter";
 import "@fontsource/playfair-display";
 import "./globals.css";
 
 import CookieBanner from "@/components/common/CookieBanner";
+
+export const viewport: Viewport = {
+  themeColor: "#ffffff",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
 
 export const metadata: Metadata = {
   title: "Gardigital Menu - Crea il Menu Digitale Premium per il tuo Ristorante",
