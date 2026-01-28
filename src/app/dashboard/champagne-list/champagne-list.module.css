@@ -24,14 +24,14 @@
 
 @media (max-width: 768px) {
     .itemGrid {
-        grid-template-columns: 1fr 70px 35px;
+        grid-template-columns: 1fr 50px 30px;
         gap: 0.5rem;
         padding: 0.75rem;
     }
 
     .priceContainer input {
-        padding: 8px 4px;
-        /* Reduced padding for mobile */
-        font-size: 1rem;
+        padding: 5px 2px;
+        font-size: 0.9rem;
+        text-align: center;
     }
 }
