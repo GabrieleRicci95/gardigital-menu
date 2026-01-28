@@ -240,6 +240,34 @@ export default function ChampagneListPage() {
                 </label>
             </div>
 
+            <button
+                onClick={addSection}
+                style={{
+                    width: '100%',
+                    padding: '1rem',
+                    borderRadius: '16px',
+                    border: '2px dashed #e5e7eb',
+                    background: 'white',
+                    color: '#6b7280',
+                    cursor: 'pointer',
+                    fontSize: '1rem',
+                    fontWeight: '600',
+                    transition: 'all 0.2s',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '10px',
+                    marginBottom: '2rem'
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#d1d5db'; e.currentTarget.style.color = '#374151'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#e5e7eb'; e.currentTarget.style.color = '#6b7280'; }}
+            >
+                <div style={{ background: '#f3f4f6', padding: '6px', borderRadius: '50%' }}>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                </div>
+                Aggiungi Nuova Categoria
+            </button>
+
             {/* Sections List */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
                 {champagneList.sections.map((section, sIndex) => (
