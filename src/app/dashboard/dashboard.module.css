@@ -75,7 +75,7 @@
 }
 
 .header {
-    height: 64px;
+    height: 100px;
     background-color: var(--color-surface);
     border-bottom: 1px solid var(--color-border);
     display: flex;

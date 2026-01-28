@@ -130,7 +130,7 @@ export default function DashboardLayout({
                             src="/header_logo.png"
                             alt="Logo Ristorante"
                             style={{
-                                height: '55px',
+                                height: '85px',
                                 width: 'auto',
                                 objectFit: 'contain'
                             }}
