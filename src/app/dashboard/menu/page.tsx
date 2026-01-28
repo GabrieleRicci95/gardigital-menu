@@ -566,21 +566,8 @@ export default function MenuBuilderPage() {
                             ) : (
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                                     <h2 className="h3" style={{ color: '#1a237e', marginBottom: '5px' }}>
-                                        Modifica: {menus.find(m => m.id === selectedMenuId)?.name}
+                                        {menus.find(m => m.id === selectedMenuId)?.name}
                                     </h2>
-                                    <button
-                                        onClick={() => {
-                                            const menu = menus.find(m => m.id === selectedMenuId);
-                                            if (menu) {
-                                                setEditingMenuId(menu.id);
-                                                setEditMenuName(menu.name);
-                                            }
-                                        }}
-                                        className={styles.btnActionEdit}
-                                        title="Rinomina Menu"
-                                    >
-                                        Modifica
-                                    </button>
                                 </div>
                             )}
                             <p style={{ color: '#666', fontSize: '0.9rem', margin: 0 }}>
