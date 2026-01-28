@@ -51,7 +51,14 @@ export default function FixedMenusPage() {
     };
 
     return (
-        <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '2rem' }}>
+        <div style={{
+            maxWidth: '100%',
+            width: '100%',
+            margin: '0 auto',
+            padding: '1rem',
+            overflowX: 'hidden',
+            boxSizing: 'border-box'
+        }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
                 <h1 style={{ fontSize: '2rem', fontWeight: 'bold', margin: 0 }}>Menu Fissi</h1>
                 <Link
