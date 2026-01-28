@@ -67,7 +67,7 @@ export default function QRCodePage() {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <h1 className={styles.title}>Il tuo QR Code 📱</h1>
+                <h1 className={styles.title}>Il tuo QR Code</h1>
                 <p className={styles.subtitle}>Scarica e stampa il codice per permettere ai clienti di accedere al menu.</p>
             </div>
 
@@ -121,7 +121,7 @@ export default function QRCodePage() {
 
                 {/* Instructions Card */}
                 <div className={styles.card}>
-                    <h3 className={styles.cardTitle}>Come usarlo al meglio? 🚀</h3>
+                    <h3 className={styles.cardTitle}>Come usarlo al meglio?</h3>
                     <div className={styles.cardDesc}>
                         Ecco alcuni consigli per ottenere il massimo dal tuo menu digitale:
                     </div>
