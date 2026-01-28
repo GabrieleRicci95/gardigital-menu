@@ -731,3 +731,29 @@
         }
     }
 }
+
+/* Mobile Tweaks */
+@media (max-width: 768px) {
+    .menuList {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.8rem !important;
+    }
+
+    .menuCard,
+    .newMenuCard {
+        min-width: 0 !important;
+        padding: 0.8rem !important;
+        min-height: 120px !important;
+    }
+
+    .cardTitle {
+        font-size: 1rem !important;
+        margin-bottom: 0.2rem !important;
+    }
+
+    .plusButton {
+        width: 35px;
+        height: 35px;
+        font-size: 1.4rem;
+    }
+}
