@@ -122,26 +122,41 @@ export default function MenuBuilderPage() {
 
     const fetchInitialData = async () => {
         const t = Date.now();
-        const [menuRes, restRes] = await Promise.all([
-            fetch(`/api/menus?t=${t}`),
-            fetch(`/api/restaurant?t=${t}`)
-        ]);
+        try {
+            const [menuRes, restRes] = await Promise.all([
+                fetch(`/api/menus?t=${t}`),
+                fetch(`/api/restaurant?t=${t}`)
+            ]);
 
-        if (menuRes.ok) {
-            const data = await menuRes.json();
-            setMenus(data.menus || []);
-            // Auto-select first menu if exists
-            if (data.menus && data.menus.length > 0 && !selectedMenuId) {
-                setSelectedMenuId(data.menus[0].id);
+            if (menuRes.status === 401 || restRes.status === 401) {
+                // Session expired or invalid
+                console.log("Session expired, redirecting...");
+                window.location.href = '/login';
+                return;
             }
-        }
 
-        if (restRes.ok) {
-            const data = await restRes.json();
-            setSubscription(data.restaurant?.subscription);
-            setRestaurantSlug(data.restaurant?.slug || '');
+            if (menuRes.ok) {
+                const data = await menuRes.json();
+                setMenus(data.menus || []);
+                // Auto-select first menu if exists
+                if (data.menus && data.menus.length > 0 && !selectedMenuId) {
+                    setSelectedMenuId(data.menus[0].id);
+                }
+            } else {
+                setError('Impossibile caricare i menu. Riprova.');
+            }
+
+            if (restRes.ok) {
+                const data = await restRes.json();
+                setSubscription(data.restaurant?.subscription);
+                setRestaurantSlug(data.restaurant?.slug || '');
+            }
+        } catch (err) {
+            console.error("Error loading data", err);
+            setError('Errore di connessione. Controlla la rete.');
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     };
 
     const fetchCategories = async (menuId: string) => {
