@@ -36,7 +36,6 @@ export async function login(userData: { id: string; email: string; role: string 
         expires,
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
         path: '/'
     });
 }
