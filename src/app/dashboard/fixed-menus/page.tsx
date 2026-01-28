@@ -105,7 +105,7 @@ export default function FixedMenusPage() {
                                 <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.2rem' }}>{menu.name}</h3>
                                 <div style={{ display: 'flex', gap: '1rem', color: '#666', fontSize: '0.9rem', flexWrap: 'wrap' }}>
                                     <span style={{ fontWeight: 'bold', color: '#0070f3' }}>€{Number(menu.price).toFixed(2)}</span>
-                                    <span>{menu.sections.length} Sezioni</span>
+
                                     {menu.isActive ? (
                                         <span style={{ color: 'green', background: '#e6ffe6', padding: '2px 8px', borderRadius: '10px', fontSize: '0.8rem' }}>Attivo</span>
                                     ) : (
