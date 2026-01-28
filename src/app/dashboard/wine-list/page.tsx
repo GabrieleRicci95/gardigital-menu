@@ -305,7 +305,7 @@ export default function WineListPage() {
                                 {section.items.map((item, iIndex) => (
                                     <div key={item.id || iIndex} style={{
                                         display: 'grid',
-                                        gridTemplateColumns: '1fr 120px 40px',
+                                        gridTemplateColumns: '1fr 90px 40px',
                                         gap: '1rem',
                                         alignItems: 'start',
                                         background: '#fff',
