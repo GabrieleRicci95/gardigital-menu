@@ -312,17 +312,17 @@
 /* Menu Editor Specifics */
 .menuList {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
     margin-bottom: 2rem;
 }
 
 .menuCard {
-    min-width: 220px;
+    min-width: 180px;
     background: white;
     border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 16px;
-    padding: 1.5rem;
+    border-radius: 12px;
+    padding: 1rem;
     cursor: pointer;
     transition: all 0.2s ease;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
@@ -348,9 +348,9 @@
 }
 
 .newMenuCard {
-    min-width: 220px;
+    min-width: 180px;
     border: 2px dashed rgba(0, 0, 0, 0.15);
-    border-radius: 16px;
+    border-radius: 12px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -358,8 +358,7 @@
     background: #fafafa;
     cursor: pointer;
     transition: all 0.2s ease;
-    min-height: 180px;
-    /* Adjust to match other cards approx height if needed, but flex will handle it */
+    min-height: 140px;
 }
 
 .newMenuCard:hover {
