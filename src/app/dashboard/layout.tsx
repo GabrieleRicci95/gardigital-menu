@@ -126,7 +126,15 @@ export default function DashboardLayout({
                         Menu
                     </button>
                     <div className={styles.userMenu}>
-                        Bentornato {restaurantName || 'Ristoratore'}
+                        <img
+                            src="/header_logo.png"
+                            alt="Logo Ristorante"
+                            style={{
+                                height: '55px',
+                                width: 'auto',
+                                objectFit: 'contain'
+                            }}
+                        />
                     </div>
                 </header>
                 <div className={styles.content}>
