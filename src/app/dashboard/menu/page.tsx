@@ -487,17 +487,18 @@ export default function MenuBuilderPage() {
                         <h1 className={styles.title}>I Tuoi Menu 📖</h1>
                         <p className={styles.subtitle}>Crea e gestisci i menu digitali del tuo ristorante.</p>
                     </div>
-                    <button
-                        onClick={() => setShowCreateInput(true)}
-                        className={`${styles.button} ${styles.btnPrimary} ${styles.btnCompact}`}
-                    >
-                        + Crea Menu
-                    </button>
                 </div>
             </header>
 
             {/* Menu List */}
             <div className={styles.menuList}>
+                <div
+                    className={styles.newMenuCard}
+                    onClick={() => setShowCreateInput(true)}
+                >
+                    <div className={styles.plusButton}>+</div>
+                    <span style={{ fontWeight: 600, color: 'var(--color-primary)' }}>Nuovo Menu</span>
+                </div>
                 {menus.map(menu => (
                     <div key={menu.id}
                         className={`${styles.menuCard} ${selectedMenuId === menu.id ? styles.menuCardActive : ''}`}

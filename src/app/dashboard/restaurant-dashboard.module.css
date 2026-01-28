@@ -350,6 +350,49 @@
     gap: 1.5rem;
 }
 
+.newMenuCard {
+    min-width: 220px;
+    border: 2px dashed rgba(0, 0, 0, 0.15);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #fafafa;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 180px;
+    /* Adjust to match other cards approx height if needed, but flex will handle it */
+}
+
+.newMenuCard:hover {
+    border-color: var(--color-primary);
+    background: #f0f7ff;
+    transform: translateY(-3px);
+}
+
+.plusButton {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 0.5rem;
+    transition: all 0.2s;
+}
+
+.newMenuCard:hover .plusButton {
+    background: var(--color-primary);
+    color: white;
+    box-shadow: 0 4px 15px rgba(26, 35, 126, 0.2);
+}
+
 .categoryCard {
     background: white;
     border-radius: 16px;
