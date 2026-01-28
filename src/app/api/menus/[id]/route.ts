@@ -47,31 +47,50 @@ export async function DELETE(
         // User didn't specify. Safe bet: allow, but if active, maybe warn? 
         // For API, just allow. Frontend can warn.
 
-        // Manual Cascade Delete (in case DB constraints are missing)
+        // Robust Manual Cascade Delete
         try {
-            // 1. Delete Item Translations
-            await prisma.menuItemTranslation.deleteMany({
-                where: { menuItem: { category: { menuId: id } } }
+            // Find all categories first
+            const categories = await prisma.category.findMany({
+                where: { menuId: id },
+                select: { id: true }
             });
+            const categoryIds = categories.map(c => c.id);
 
-            // 2. Delete Items
-            await prisma.menuItem.deleteMany({
-                where: { category: { menuId: id } }
-            });
+            if (categoryIds.length > 0) {
+                // Find all items in these categories
+                const items = await prisma.menuItem.findMany({
+                    where: { categoryId: { in: categoryIds } },
+                    select: { id: true }
+                });
+                const itemIds = items.map(i => i.id);
 
-            // 3. Delete Category Translations
-            await prisma.categoryTranslation.deleteMany({
-                where: { category: { menuId: id } }
-            });
+                if (itemIds.length > 0) {
+                    // 1. Delete Item Translations
+                    await prisma.menuItemTranslation.deleteMany({
+                        where: { menuItemId: { in: itemIds } }
+                    });
 
-            // 4. Delete Categories
-            await prisma.category.deleteMany({
-                where: { menuId: id }
-            });
+                    // 2. Delete Items
+                    await prisma.menuItem.deleteMany({
+                        where: { id: { in: itemIds } }
+                    });
+                }
+
+                // 3. Delete Category Translations
+                await prisma.categoryTranslation.deleteMany({
+                    where: { categoryId: { in: categoryIds } }
+                });
+
+                // 4. Delete Categories
+                await prisma.category.deleteMany({
+                    where: { id: { in: categoryIds } }
+                });
+            }
 
         } catch (cascadeError) {
-            console.log("Error in manual cascade (might be handled by DB):", cascadeError);
-            // Verify if we can proceed, or just ignore and let the DB try
+            console.error("Error in robust cascade:", cascadeError);
+            // We continue to try main delete, or return error?
+            // If this fails, main delete will likely fail too.
         }
 
         await prisma.menu.delete({
