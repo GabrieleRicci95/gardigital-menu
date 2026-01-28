@@ -263,21 +263,18 @@ export default function ChampagneListPage() {
                         }}>
                             <div style={{ flex: 1 }}>
 
-                                <input
-                                    type="text"
-                                    value={section.name}
-                                    onChange={e => updateSectionName(sIndex, e.target.value)}
-                                    placeholder="Es. Grand Cuvée"
-                                    style={{
-                                        fontSize: '1.5rem',
-                                        fontWeight: '700',
-                                        border: 'none',
-                                        background: 'transparent',
-                                        width: '100%',
-                                        outline: 'none',
-                                        color: '#333'
-                                    }}
-                                />
+                                <div style={{
+                                    fontSize: '1.5rem',
+                                    fontWeight: '700',
+                                    border: 'none',
+                                    background: 'transparent',
+                                    width: '100%',
+                                    outline: 'none',
+                                    color: '#333',
+                                    padding: '2px 0'
+                                }}>
+                                    {section.name || 'Nuova Categoria'}
+                                </div>
                             </div>
 
                         </div>
