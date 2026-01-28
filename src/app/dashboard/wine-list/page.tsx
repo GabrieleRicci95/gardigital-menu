@@ -238,33 +238,7 @@ export default function WineListPage() {
                 </label>
             </div>
 
-            <button
-                onClick={addSection}
-                style={{
-                    width: '100%',
-                    padding: '1rem',
-                    borderRadius: '16px',
-                    border: '2px dashed #e5e7eb',
-                    background: 'white',
-                    color: '#6b7280',
-                    cursor: 'pointer',
-                    fontSize: '1rem',
-                    fontWeight: '600',
-                    transition: 'all 0.2s',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '10px',
-                    marginBottom: '2rem'
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#d1d5db'; e.currentTarget.style.color = '#374151'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#e5e7eb'; e.currentTarget.style.color = '#6b7280'; }}
-            >
-                <div style={{ background: '#f3f4f6', padding: '6px', borderRadius: '50%' }}>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                </div>
-                Aggiungi Nuova Categoria
-            </button>
+
 
             {/* Sections List */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
@@ -328,6 +302,32 @@ export default function WineListPage() {
 
                         {/* Wines List */}
                         <div style={{ padding: '1.5rem' }}>
+                            <button
+                                onClick={() => addWine(sIndex)}
+                                style={{
+                                    marginBottom: '1.5rem',
+                                    width: '100%',
+                                    background: '#f0f9ff',
+                                    color: '#0369a1',
+                                    border: '1px dashed #bae6fd',
+                                    padding: '12px',
+                                    borderRadius: '10px',
+                                    cursor: 'pointer',
+                                    fontWeight: '600',
+                                    fontSize: '0.95rem',
+                                    transition: 'all 0.2s',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    gap: '8px'
+                                }}
+                                onMouseEnter={(e) => e.currentTarget.style.background = '#e0f2fe'}
+                                onMouseLeave={(e) => e.currentTarget.style.background = '#f0f9ff'}
+                            >
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                Aggiungi Vino alla categoria "{section.name || '...'}"
+                            </button>
+
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                                 {section.items.map((item, iIndex) => (
                                     <div key={item.id || iIndex} className={styles.itemGrid}>
@@ -424,38 +424,40 @@ export default function WineListPage() {
                                     </div>
                                 )}
                             </div>
-
-                            <button
-                                onClick={() => addWine(sIndex)}
-                                style={{
-                                    marginTop: '1.5rem',
-                                    width: '100%',
-                                    background: '#f0f9ff',
-                                    color: '#0369a1',
-                                    border: '1px dashed #bae6fd',
-                                    padding: '12px',
-                                    borderRadius: '10px',
-                                    cursor: 'pointer',
-                                    fontWeight: '600',
-                                    fontSize: '0.95rem',
-                                    transition: 'all 0.2s',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    gap: '8px'
-                                }}
-                                onMouseEnter={(e) => e.currentTarget.style.background = '#e0f2fe'}
-                                onMouseLeave={(e) => e.currentTarget.style.background = '#f0f9ff'}
-                            >
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                                Aggiungi Vino alla categoria "{section.name || '...'}"
-                            </button>
                         </div>
                     </div>
                 ))}
             </div>
 
 
+
+            <button
+                onClick={addSection}
+                style={{
+                    marginTop: '3rem',
+                    width: '100%',
+                    padding: '1.5rem',
+                    borderRadius: '16px',
+                    border: '2px dashed #e5e7eb',
+                    background: 'white',
+                    color: '#6b7280',
+                    cursor: 'pointer',
+                    fontSize: '1.1rem',
+                    fontWeight: '600',
+                    transition: 'all 0.2s',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '10px'
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#d1d5db'; e.currentTarget.style.color = '#374151'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#e5e7eb'; e.currentTarget.style.color = '#6b7280'; }}
+            >
+                <div style={{ background: '#f3f4f6', padding: '10px', borderRadius: '50%' }}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                </div>
+                Aggiungi Nuova Categoria
+            </button>
 
             {/* Sticky Save Bar */}
             <div style={{
