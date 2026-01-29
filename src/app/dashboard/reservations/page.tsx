@@ -76,6 +76,24 @@ export default function ReservationsPage() {
     };
 
     return (
+    const [filterStatus, setFilterStatus] = useState<string>('ALL'); // ALL, PENDING, CONFIRMED, HISTORY
+
+    // ... (keep useEffect and fetch)
+
+    const filteredReservations = reservations.filter(res => {
+        if (filterStatus === 'ALL') return true;
+        if (filterStatus === 'HISTORY') return res.status === 'REJECTED' || res.status === 'CANCELLED';
+        return res.status === filterStatus;
+    });
+
+    const counts = {
+        ALL: reservations.length,
+        PENDING: reservations.filter(r => r.status === 'PENDING').length,
+        CONFIRMED: reservations.filter(r => r.status === 'CONFIRMED').length,
+        HISTORY: reservations.filter(r => r.status === 'REJECTED' || r.status === 'CANCELLED').length
+    };
+
+    return (
         <div className={styles.container}>
             <header className={styles.header}>
                 <div>
@@ -95,17 +113,45 @@ export default function ReservationsPage() {
                 </div>
             </header>
 
+            {/* TABS */}
+            <div className={styles.tabs}>
+                <button
+                    className={`${styles.tab} ${filterStatus === 'ALL' ? styles.activeTab : ''}`}
+                    onClick={() => setFilterStatus('ALL')}
+                >
+                    Tutte ({counts.ALL})
+                </button>
+                <button
+                    className={`${styles.tab} ${filterStatus === 'PENDING' ? styles.activeTab : ''}`}
+                    onClick={() => setFilterStatus('PENDING')}
+                >
+                    In Attesa ({counts.PENDING})
+                </button>
+                <button
+                    className={`${styles.tab} ${filterStatus === 'CONFIRMED' ? styles.activeTab : ''}`}
+                    onClick={() => setFilterStatus('CONFIRMED')}
+                >
+                    Confermate ({counts.CONFIRMED})
+                </button>
+                <button
+                    className={`${styles.tab} ${filterStatus === 'HISTORY' ? styles.activeTab : ''}`}
+                    onClick={() => setFilterStatus('HISTORY')}
+                >
+                    Storico ({counts.HISTORY})
+                </button>
+            </div>
+
             {loading ? (
                 <div className={styles.loading}>Caricamento...</div>
-            ) : reservations.length === 0 ? (
+            ) : filteredReservations.length === 0 ? (
                 <div className={styles.emptyState}>
-                    <div className={styles.emptyIcon}>📅</div>
-                    <h3>Nessuna prenotazione per questa data</h3>
-                    <p>Cambia data o attendi nuove richieste.</p>
+                    <div className={styles.emptyIcon}>📂</div>
+                    <h3>Nessuna prenotazione in questa sezione</h3>
+                    <p>Prova a cambiare filtro o data.</p>
                 </div>
             ) : (
                 <div className={styles.list}>
-                    {reservations.map(res => (
+                    {filteredReservations.map(res => (
                         <div key={res.id} className={styles.card}>
                             <div className={styles.cardHeader}>
                                 <div className={styles.timeInfo}>
