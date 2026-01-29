@@ -593,7 +593,7 @@ export default function MenuBuilderPage() {
                     </div>
 
                     {/* Add Category Form */}
-                    <div className={styles.card} style={{ marginBottom: '2rem', padding: '1.5rem' }}>
+                    <div className={styles.card} style={{ marginBottom: '2rem', padding: '1rem' }}>
                         <form onSubmit={handleAddCategory} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                 <strong style={{ fontSize: '1.1rem' }}>Nuova Categoria</strong>
