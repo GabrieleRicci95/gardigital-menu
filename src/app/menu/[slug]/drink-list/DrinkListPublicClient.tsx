@@ -171,9 +171,10 @@ export default function DrinkListPublicClient({ restaurant, drinkList }: { resta
                                                             src={item.logoUrl}
                                                             alt={`${item.name} logo`}
                                                             style={{
-                                                                height: '50px',
+                                                                height: '80px',
                                                                 width: 'auto',
-                                                                maxHeight: '50px',
+                                                                maxHeight: '80px',
+                                                                maxWidth: '200px', // Allow wider logos like text brands
                                                                 objectFit: 'contain'
                                                             }}
                                                         />
