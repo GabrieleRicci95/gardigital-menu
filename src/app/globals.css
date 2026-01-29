@@ -68,7 +68,6 @@
   padding: 0;
 }
 
-html,
 body {
   overscroll-behavior-y: none;
 }
