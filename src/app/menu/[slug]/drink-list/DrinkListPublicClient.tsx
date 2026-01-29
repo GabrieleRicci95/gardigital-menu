@@ -126,7 +126,7 @@ export default function DrinkListPublicClient({ restaurant, drinkList }: { resta
                         letterSpacing: '2px',
                         fontWeight: 400
                     }}>
-                        Drink List
+                        Drink
                     </h2>
                     <span style={{ flex: 1, height: '1px', background: `${goldAccent}40` }}></span>
                 </div>
