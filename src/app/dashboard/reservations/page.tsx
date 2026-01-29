@@ -45,6 +45,27 @@ export default function ReservationsPage() {
         }
     };
 
+    const handleStatusUpdate = async (id: string, newStatus: string) => {
+        if (!confirm('Sei sicuro?')) return;
+
+        try {
+            const res = await fetch('/api/reservations', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id, status: newStatus })
+            });
+
+            if (res.ok) {
+                // Optimistic update or refetch
+                fetchReservations();
+            } else {
+                alert('Errore durante l\'aggiornamento');
+            }
+        } catch (error) {
+            console.error('Update failed', error);
+        }
+    };
+
     const getStatusBadge = (status: string) => {
         switch (status) {
             case 'CONFIRMED': return <span className={`${styles.badge} ${styles.badgeSuccess}`}>Confermata</span>;
@@ -88,7 +109,10 @@ export default function ReservationsPage() {
                         <div key={res.id} className={styles.card}>
                             <div className={styles.cardHeader}>
                                 <div className={styles.timeInfo}>
-                                    <span className={styles.time}>{new Date(res.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                    <span className={styles.time}>
+                                        {/* Force 24h format explicitly */}
+                                        {new Date(res.date).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit', hour12: false })}
+                                    </span>
                                     {getStatusBadge(res.status)}
                                 </div>
                                 <div className={styles.guestInfo}>
@@ -103,12 +127,22 @@ export default function ReservationsPage() {
                             <div className={styles.cardActions}>
                                 {res.status === 'PENDING' && (
                                     <>
-                                        <button className={styles.btnActionSuccess}>✅ Accetta</button>
-                                        <button className={styles.btnActionDanger}>❌ Rifiuta</button>
+                                        <button
+                                            className={styles.btnActionSuccess}
+                                            onClick={() => handleStatusUpdate(res.id, 'CONFIRMED')}
+                                        >
+                                            ✅ Accetta
+                                        </button>
+                                        <button
+                                            className={styles.btnActionDanger}
+                                            onClick={() => handleStatusUpdate(res.id, 'REJECTED')}
+                                        >
+                                            ❌ Rifiuta
+                                        </button>
                                     </>
                                 )}
                                 <a
-                                    href={`https://wa.me/${res.phone.replace(/\s/g, '')}?text=Ciao ${res.name}, confermiamo la tua prenotazione da noi per ${res.guests} persone alle ${new Date(res.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}!`}
+                                    href={`https://wa.me/${res.phone.replace(/\s/g, '')}?text=Ciao ${res.name}, confermiamo la tua prenotazione da noi per ${res.guests} persone alle ${new Date(res.date).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit', hour12: false })}!`}
                                     target="_blank"
                                     rel="noreferrer"
                                     className={styles.btnWhatsapp}
