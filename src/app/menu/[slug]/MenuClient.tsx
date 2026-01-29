@@ -42,6 +42,7 @@ export interface MenuPageRestaurant {
     wineListUrl: string | null;
     wineList?: { isActive: boolean } | null;
     champagneList?: { isActive: boolean } | null;
+    drinkList?: { isActive: boolean } | null;
     categories: MenuPageCategory[];
 }
 
@@ -282,6 +283,29 @@ export default function MenuClient({ restaurant }: { restaurant: MenuPageRestaur
                             }}
                         >
                             Champagne
+                        </Link>
+                    )}
+
+                    {/* Drink List Button */}
+                    {(restaurant.drinkList?.isActive) && (
+                        <Link
+                            href={`/menu/${restaurant.slug}/drink-list`}
+                            style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '6px',
+                                backgroundColor: '#001f2f',
+                                color: 'white',
+                                padding: '8px 16px',
+                                borderRadius: '50px',
+                                textDecoration: 'none',
+                                fontWeight: 'bold',
+                                fontSize: '0.85rem',
+                                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                                whiteSpace: 'nowrap'
+                            }}
+                        >
+                            Drink List
                         </Link>
                     )}
                 </div>

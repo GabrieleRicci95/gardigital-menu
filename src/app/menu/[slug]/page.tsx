@@ -39,6 +39,9 @@ async function getRestaurant(slug: string): Promise<MenuPageRestaurant | null> {
             },
             champagneList: {
                 select: { isActive: true }
+            },
+            drinkList: {
+                select: { isActive: true }
             }
         }
     });
@@ -60,6 +63,7 @@ async function getRestaurant(slug: string): Promise<MenuPageRestaurant | null> {
         ...restaurant,
         wineList: restaurant.wineList,
         champagneList: restaurant.champagneList,
+        drinkList: restaurant.drinkList,
         categories
     } as any as MenuPageRestaurant;
 }
