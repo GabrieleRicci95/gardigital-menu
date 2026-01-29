@@ -44,12 +44,14 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
     try {
         const body = await req.json();
-        const { restaurantId, name, phone, email, guests, date, notes } = body;
+        const { restaurantId, name, phone, email, guests, date, time, notes } = body;
 
         // Basic validation
-        if (!restaurantId || !name || !phone || !guests || !date) {
+        if (!restaurantId || !name || !phone || !guests || !date || !time) {
             return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
         }
+
+        const dateTimeString = `${date}T${time}:00`;
 
         const reservation = await prisma.reservation.create({
             data: {
@@ -58,7 +60,7 @@ export async function POST(req: Request) {
                 phone,
                 email,
                 guests: Number(guests),
-                date: new Date(date),
+                date: new Date(dateTimeString),
                 notes,
                 status: 'PENDING'
             }
