@@ -31,7 +31,7 @@ export async function GET(req: Request) {
 
         const reservations = await prisma.reservation.findMany({
             where: whereClause,
-            orderBy: { date: 'asc' }
+            orderBy: { createdAt: 'desc' }
         });
 
         return NextResponse.json(reservations);
