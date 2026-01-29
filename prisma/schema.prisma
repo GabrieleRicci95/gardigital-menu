@@ -283,6 +283,7 @@ model DrinkItem {
   name              String
   description       String?
   price             Decimal
+  logoUrl           String?         // URL for drink logo (e.g. Gin brand)
   drinkSectionId    String
   drinkSection      DrinkSection @relation(fields: [drinkSectionId], references: [id], onDelete: Cascade)
   

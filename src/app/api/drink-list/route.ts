@@ -91,7 +91,8 @@ export async function POST(req: Request) {
                                 create: section.items.map((item: any) => ({
                                     name: item.name,
                                     description: item.description,
-                                    price: item.price
+                                    price: item.price,
+                                    logoUrl: item.logoUrl // Add logoUrl support
                                 }))
                             }
                         }

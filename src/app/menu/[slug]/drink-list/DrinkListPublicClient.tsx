@@ -7,6 +7,7 @@ interface DrinkItem {
     name: string;
     description: string | null;
     price: number;
+    logoUrl?: string | null;
 }
 
 interface DrinkSection {
@@ -164,14 +165,28 @@ export default function DrinkListPublicClient({ restaurant, drinkList }: { resta
                                             borderBottom: '1px dashed rgba(0,0,0,0.1)'
                                         }}>
                                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.4rem' }}>
-                                                <h3 style={{
-                                                    margin: 0,
-                                                    fontSize: '1.15rem',
-                                                    fontWeight: 600,
-                                                    color: restaurant.textColor
-                                                }}>
-                                                    {item.name}
-                                                </h3>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                    {item.logoUrl && (
+                                                        <img
+                                                            src={item.logoUrl}
+                                                            alt={`${item.name} logo`}
+                                                            style={{
+                                                                height: '24px',
+                                                                width: 'auto',
+                                                                maxHeight: '24px',
+                                                                objectFit: 'contain'
+                                                            }}
+                                                        />
+                                                    )}
+                                                    <h3 style={{
+                                                        margin: 0,
+                                                        fontSize: '1.15rem',
+                                                        fontWeight: 600,
+                                                        color: restaurant.textColor
+                                                    }}>
+                                                        {item.name}
+                                                    </h3>
+                                                </div>
                                                 {Number(item.price) > 0 && (
                                                     <div style={{
                                                         fontWeight: 700,

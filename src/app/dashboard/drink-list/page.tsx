@@ -10,6 +10,7 @@ interface DrinkItem {
     name: string;
     description: string;
     price: string | number;
+    logoUrl?: string;
 }
 
 interface DrinkSection {
@@ -88,6 +89,32 @@ export default function DrinkListPage() {
     };
 
     // --- State Management Helpers ---
+
+    const handleFileUpload = async (sectionIndex: number, itemIndex: number, file: File) => {
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            const res = await fetch('/api/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                if (data.imageUrl) {
+                    updateItem(sectionIndex, itemIndex, 'logoUrl', data.imageUrl);
+                }
+            } else {
+                alert('Errore caricamento immagine');
+            }
+        } catch (error) {
+            console.error('Upload Error', error);
+            alert('Errore di connessione');
+        }
+    };
 
     const addSection = () => {
         setDrinkList(prev => ({
@@ -319,7 +346,59 @@ export default function DrinkListPage() {
 
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                                 {section.items.map((item, iIndex) => (
-                                    <div key={item.id || iIndex} className={styles.itemGrid}>
+                                    <div key={item.id || iIndex} className={styles.itemGrid} style={{ display: 'grid', gridTemplateColumns: '60px 1fr 100px 40px', gap: '1rem', alignItems: 'start' }}>
+
+                                        {/* Logo Upload */}
+                                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                            <div
+                                                style={{
+                                                    width: '50px',
+                                                    height: '50px',
+                                                    borderRadius: '8px',
+                                                    border: '1px dashed #ccc',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    overflow: 'hidden',
+                                                    position: 'relative',
+                                                    cursor: 'pointer',
+                                                    backgroundColor: '#fafafa',
+                                                    backgroundImage: item.logoUrl ? `url(${item.logoUrl})` : 'none',
+                                                    backgroundSize: 'contain',
+                                                    backgroundPosition: 'center',
+                                                    backgroundRepeat: 'no-repeat'
+                                                }}
+                                                onClick={() => document.getElementById(`file-${sIndex}-${iIndex}`)?.click()}
+                                                title="Carica Logo"
+                                            >
+                                                {!item.logoUrl && (
+                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#aaa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                                                )}
+                                                <input
+                                                    type="file"
+                                                    id={`file-${sIndex}-${iIndex}`}
+                                                    style={{ display: 'none' }}
+                                                    accept="image/*"
+                                                    onChange={(e) => {
+                                                        if (e.target.files && e.target.files[0]) {
+                                                            handleFileUpload(sIndex, iIndex, e.target.files[0]);
+                                                        }
+                                                    }}
+                                                />
+                                            </div>
+                                            {item.logoUrl && (
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        updateItem(sIndex, iIndex, 'logoUrl', '');
+                                                    }}
+                                                    style={{ border: 'none', background: 'transparent', color: '#ef4444', fontSize: '0.7rem', marginTop: '4px', cursor: 'pointer' }}
+                                                >
+                                                    Rimuovi
+                                                </button>
+                                            )}
+                                        </div>
+
                                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                                             <div>
                                                 <input
