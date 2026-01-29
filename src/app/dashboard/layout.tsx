@@ -54,6 +54,7 @@ export default function DashboardLayout({
         { label: 'Vini', href: '/dashboard/wine-list', icon: 'Wine' },
         { label: 'Champagne', href: '/dashboard/champagne-list', icon: 'Glass' },
         { label: 'Drink', href: '/dashboard/drink-list', icon: 'Cocktail' },
+        { label: 'Prenotazioni', href: '/dashboard/reservations', icon: 'Calendar' }, // New Link
         { label: 'Aspetto & Design', href: '/dashboard/design', icon: 'Palette' },
         { label: 'QR Code', href: '/dashboard/qrcode', icon: 'QR' },
     ];

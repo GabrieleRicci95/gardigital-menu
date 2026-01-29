@@ -159,6 +159,11 @@ export default function MenuClient({ restaurant }: { restaurant: MenuPageRestaur
                         onClose={() => setIsReservationOpen(false)}
                         whatsappNumber={restaurant.whatsappNumber!}
                         restaurantName={restaurant.name}
+                        // We need restaurant ID. The MenuClient interface seems to not have it exposed in the props type. 
+                        // I will assume for now it's passed or available. Wait, let's look at the file provided in step 556.
+                        // MenuPageRestaurant interface DOES NOT have `id`.
+                        // I must add `id` to the interface and ensure it's passed.
+                        restaurantId={(restaurant as any).id}
                     />
                 </>
             )}

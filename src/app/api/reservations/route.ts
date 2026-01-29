@@ -1,0 +1,72 @@
+import { NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
+import { getSession } from '@/lib/auth';
+
+// GET: Fetch reservations (Protected - Admin Only)
+export async function GET(req: Request) {
+    const session = await getSession();
+    if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    const { searchParams } = new URL(req.url);
+    const restaurantId = searchParams.get('restaurantId');
+    const date = searchParams.get('date'); // Filter by date (YYYY-MM-DD)
+
+    if (!restaurantId) return NextResponse.json({ error: 'Restaurant ID required' }, { status: 400 });
+
+    try {
+        const whereClause: any = { restaurantId };
+
+        if (date) {
+            const startOfDay = new Date(date);
+            startOfDay.setHours(0, 0, 0, 0);
+
+            const endOfDay = new Date(date);
+            endOfDay.setHours(23, 59, 59, 999);
+
+            whereClause.date = {
+                gte: startOfDay,
+                lte: endOfDay
+            };
+        }
+
+        const reservations = await prisma.reservation.findMany({
+            where: whereClause,
+            orderBy: { date: 'asc' }
+        });
+
+        return NextResponse.json(reservations);
+    } catch (error) {
+        return NextResponse.json({ error: 'Database error' }, { status: 500 });
+    }
+}
+
+// POST: Create a new reservation (Public)
+export async function POST(req: Request) {
+    try {
+        const body = await req.json();
+        const { restaurantId, name, phone, email, guests, date, notes } = body;
+
+        // Basic validation
+        if (!restaurantId || !name || !phone || !guests || !date) {
+            return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
+        }
+
+        const reservation = await prisma.reservation.create({
+            data: {
+                restaurantId,
+                name,
+                phone,
+                email,
+                guests: Number(guests),
+                date: new Date(date),
+                notes,
+                status: 'PENDING'
+            }
+        });
+
+        return NextResponse.json(reservation);
+    } catch (error) {
+        console.error('Reservation Error:', error);
+        return NextResponse.json({ error: 'Failed to create reservation' }, { status: 500 });
+    }
+}
