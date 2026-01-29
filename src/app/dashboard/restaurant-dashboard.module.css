@@ -861,6 +861,7 @@
 
 .newCategoryForm .button {
     white-space: nowrap;
+    width: auto;
 }
 
 @media (max-width: 768px) {
