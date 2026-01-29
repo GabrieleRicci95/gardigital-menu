@@ -413,6 +413,14 @@ export default function MenuClient({ restaurant }: { restaurant: MenuPageRestaur
 
             <footer className={styles.footer} style={{ backgroundColor: 'transparent', color: restaurant.textColor, opacity: 0.6 }}>
                 Powered by <strong>Gardigital Menu</strong>
+                <details style={{ marginTop: '20px', fontSize: '10px' }}>
+                    <summary>Debug Info</summary>
+                    <pre>{JSON.stringify({
+                        name: restaurant.name,
+                        whatsapp: restaurant.whatsappNumber,
+                        id: (restaurant as any).id
+                    }, null, 2)}</pre>
+                </details>
             </footer>
         </div>
     );
