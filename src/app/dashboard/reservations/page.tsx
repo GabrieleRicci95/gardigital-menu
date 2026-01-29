@@ -126,7 +126,7 @@ export default function ReservationsPage() {
                         className={styles.dateInput}
                     />
                     <button className={styles.btnPrimary} onClick={() => fetchReservations()}>
-                        🔄 Aggiorna
+                        + Aggiorna
                     </button>
                 </div>
             </header>
