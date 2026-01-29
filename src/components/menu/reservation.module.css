@@ -17,11 +17,9 @@
     background: white;
     padding: 0;
     border-radius: 16px;
-    /* Slightly smaller radius */
-    width: 85%;
-    /* Slightly narrower */
+    width: 94%;
+    /* Maximum width for mobile */
     max-width: 380px;
-    /* Reduced max-width for "smaller" feel */
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
     overflow: hidden;
     animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -31,7 +29,6 @@
 .header {
     background: linear-gradient(135deg, #1a1a1a 0%, #333 100%);
     padding: 16px;
-    /* Compact header */
     color: white;
     text-align: center;
 }
@@ -39,7 +36,6 @@
 .title {
     margin: 0;
     font-size: 1.25rem;
-    /* Smaller title */
     font-weight: 700;
     color: #ffffff !important;
 }
@@ -51,12 +47,11 @@
 }
 
 .form {
-    padding: 16px;
-    /* Reduced padding to give inputs room */
+    padding: 12px;
+    /* Minimal padding */
     display: flex;
     flex-direction: column;
     gap: 12px;
-    /* Compact vertical gap */
 }
 
 .inputGroup {
@@ -67,7 +62,6 @@
 
 .label {
     font-size: 0.75rem;
-    /* Tiny refined label */
     font-weight: 600;
     color: #4b5563;
     text-transform: uppercase;
@@ -81,13 +75,12 @@
     border: 1px solid #e5e7eb;
     border-radius: 6px;
     font-size: 0.85rem !important;
-    /* Small text */
     color: #1a1a1a;
     transition: all 0.2s;
     background: #ffffff;
     font-family: inherit;
-    height: 36px !important;
-    /* Fixed compact height */
+    height: 34px !important;
+    /* Ultra slim */
 }
 
 .input:focus,
@@ -101,20 +94,19 @@
 .textarea {
     resize: vertical;
     min-height: 60px;
-    /* Smaller textarea */
     height: auto !important;
 }
 
 .row {
     display: flex;
-    gap: 16px !important;
-    /* Safe gap to prevent overlap */
+    gap: 10px !important;
+    /* Tight gap but separated */
 }
 
 .col {
     flex: 1;
     min-width: 0;
-    /* Prevent flex overflow */
+    /* Critical for flex shrinking */
 }
 
 .submitButton {
@@ -123,7 +115,6 @@
     color: white;
     border: none;
     padding: 12px;
-    /* Compact button */
     border-radius: 10px;
     font-weight: 700;
     font-size: 1rem;
