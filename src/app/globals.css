@@ -74,8 +74,10 @@ body {
   color: var(--color-text-main);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  /* Prevent horizontal scroll and rubber-band effect */
   overflow-x: hidden;
-  width: 100%;
+  overscroll-behavior-y: none;
+  min-height: 100vh;
 }
 
 h1,
