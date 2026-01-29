@@ -305,7 +305,7 @@ export default function MenuClient({ restaurant }: { restaurant: MenuPageRestaur
                                 whiteSpace: 'nowrap'
                             }}
                         >
-                            Drink List
+                            Drink
                         </Link>
                     )}
                 </div>
