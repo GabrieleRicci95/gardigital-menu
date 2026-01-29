@@ -15,7 +15,8 @@ export default function ReservationModal({ isOpen, onClose, whatsappNumber, rest
         date: '',
         time: '',
         guests: 2,
-        notes: ''
+        notes: '',
+        phone: '' // Added phone to state
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -27,20 +28,23 @@ export default function ReservationModal({ isOpen, onClose, whatsappNumber, rest
 
         try {
             // 1. Save to Database
+            console.log('Tentativo invio API...');
             const res = await fetch('/api/reservations', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     restaurantId,
                     ...formData,
-                    phone: '0000000000' // Phone is required by DB but we might not have it if using WhatsApp flow only, or we should ask for it.
-                    // Actually, let's ask for phone in the form if we want to save it properly.
-                    // For now, I'll add a phone input to the form.
+                    phone: formData.phone || '0000000000'
                 })
             });
 
-            // If DB save fails, we should still try to open WhatsApp as fallback? 
-            // Or maybe just log it. Let's proceed to WhatsApp regardless for now to ensure user experience.
+            if (!res.ok) {
+                console.error('Errore API:', await res.text());
+                alert('Errore nel salvataggio della prenotazione, ma provo ad aprire WhatsApp comunque.');
+            } else {
+                console.log('Prenotazione salvata!');
+            }
 
             // 2. Format WhatsApp message
             const text = `Ciao ${restaurantName}! 👋\n` +
@@ -57,13 +61,18 @@ export default function ReservationModal({ isOpen, onClose, whatsappNumber, rest
             if (cleanNumber.length === 10) cleanNumber = '39' + cleanNumber;
 
             const waUrl = `https://api.whatsapp.com/send?phone=${cleanNumber}&text=${encodedText}`;
-            window.open(waUrl, '_blank');
+            console.log('Apro WhatsApp:', waUrl);
+
+            // Try to open
+            const newWindow = window.open(waUrl, '_blank');
+            if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
+                alert('Il browser ha bloccato l\'apertura di WhatsApp. Controlla il blocco popup.');
+            }
 
             onClose();
         } catch (error) {
             console.error('Error submitting reservation:', error);
-            // Fallback to purely WhatsApp if API fails?
-            // For now, simple alert or just close
+            alert('Errore imprevisto: ' + error);
             onClose();
         } finally {
             setIsSubmitting(false);
@@ -105,6 +114,7 @@ export default function ReservationModal({ isOpen, onClose, whatsappNumber, rest
                     </div>
 
                     {/* Added Phone Input for DB */}
+                    {/* Added Phone Input for DB */}
                     <div>
                         <label style={{ display: 'block', marginBottom: '4px', fontSize: '14px', fontWeight: 500 }}>Telefono</label>
                         <input
@@ -112,9 +122,8 @@ export default function ReservationModal({ isOpen, onClose, whatsappNumber, rest
                             type="tel"
                             style={{ width: '100%', padding: '8px', borderRadius: '8px', border: '1px solid #ddd' }}
                             placeholder="Il tuo numero"
-                            // We don't have phone in state yet, need to update state above
-                            // For now I will hack it into the state object in the implementation below
-                            onChange={e => setFormData({ ...formData, phone: e.target.value } as any)}
+                            value={formData.phone}
+                            onChange={e => setFormData({ ...formData, phone: e.target.value })}
                         />
                     </div>
 
