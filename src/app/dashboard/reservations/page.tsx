@@ -163,7 +163,7 @@ export default function ReservationsPage() {
                 <div className={styles.loading}>Caricamento...</div>
             ) : filteredReservations.length === 0 ? (
                 <div className={styles.emptyState}>
-                    <div className={styles.emptyIcon}>📂</div>
+                    <div className={styles.emptyIcon}></div>
                     <h3>Nessuna prenotazione in questa sezione</h3>
                     <p>Prova a cambiare filtro o data.</p>
                 </div>
@@ -185,8 +185,8 @@ export default function ReservationsPage() {
                             </div>
                             <div className={styles.cardBody}>
                                 <h3 className={styles.customerName}>{res.name}</h3>
-                                {res.phone && <a href={`tel:${res.phone}`} className={styles.contactLink}>📞 {res.phone}</a>}
-                                {res.notes && <p className={styles.notes}>📝 "{res.notes}"</p>}
+                                {res.phone && <a href={`tel:${res.phone}`} className={styles.contactLink}>Tel: {res.phone}</a>}
+                                {res.notes && <p className={styles.notes}>Note: "{res.notes}"</p>}
                             </div>
                             <div className={styles.cardActions}>
                                 {res.status === 'PENDING' && (
@@ -195,13 +195,13 @@ export default function ReservationsPage() {
                                             className={styles.btnActionSuccess}
                                             onClick={() => handleStatusUpdate(res.id, 'CONFIRMED')}
                                         >
-                                            ✅ Accetta
+                                            Accetta
                                         </button>
                                         <button
                                             className={styles.btnActionDanger}
                                             onClick={() => handleStatusUpdate(res.id, 'REJECTED')}
                                         >
-                                            ❌ Rifiuta
+                                            Rifiuta
                                         </button>
                                     </>
                                 )}
@@ -211,7 +211,7 @@ export default function ReservationsPage() {
                                     rel="noreferrer"
                                     className={styles.btnWhatsapp}
                                 >
-                                    💬 WhatsApp
+                                    WhatsApp
                                 </a>
                             </div>
                         </div>
