@@ -34,7 +34,7 @@ interface Restaurant {
 export default function DrinkListPublicClient({ restaurant, drinkList }: { restaurant: Restaurant, drinkList: DrinkList | null }) {
 
     // Premium Theme Config
-    const goldAccent = restaurant.themeColor || '#1e3a8a'; // Use restaurant theme or blue-ish for drinks
+    const goldAccent = '#d4af37'; // Matched with Wine List
 
     const containerStyle = {
         backgroundColor: restaurant.backgroundColor,
@@ -90,7 +90,7 @@ export default function DrinkListPublicClient({ restaurant, drinkList }: { resta
             <header style={{
                 padding: '10rem 1.5rem 8rem 1.5rem',
                 textAlign: 'center',
-                background: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1560512823-8db03e41604a?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat`,
+                background: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat`,
                 color: 'white',
                 marginBottom: '3rem',
                 boxShadow: '0 4px 20px rgba(0,0,0,0.2)'
@@ -106,16 +106,6 @@ export default function DrinkListPublicClient({ restaurant, drinkList }: { resta
                 }} className="animate-fade-in">
                     {restaurant.name}
                 </h1>
-                <p style={{
-                    fontSize: '1.2rem',
-                    opacity: 0.9,
-                    marginTop: '1rem',
-                    letterSpacing: '2px',
-                    textTransform: 'uppercase',
-                    fontWeight: 300
-                }} className="animate-fade-in">
-                    Bar & Drinks
-                </p>
             </header>
 
             <main style={{ maxWidth: '800px', margin: '0 auto', padding: '1rem 1.5rem 4rem 1.5rem' }}>
