@@ -26,8 +26,29 @@ export default function ReservationModal({ isOpen, onClose, whatsappNumber, rest
         e.preventDefault();
         setIsSubmitting(true);
 
+        const text = `Ciao ${restaurantName}! 👋\n` +
+            `Vorrei prenotare un tavolo.\n\n` +
+            `📅 Data: ${formData.date}\n` +
+            `⏰ Ora: ${formData.time}\n` +
+            `👥 Persone: ${formData.guests}\n` +
+            `👤 Nome: ${formData.name}\n` +
+            (formData.notes ? `📝 Note: ${formData.notes}` : '');
+
+        const encodedText = encodeURIComponent(text);
+        let cleanNumber = whatsappNumber.replace(/\D/g, '');
+        if (cleanNumber.startsWith('00')) cleanNumber = cleanNumber.substring(2);
+        if (cleanNumber.length === 10) cleanNumber = '39' + cleanNumber;
+
+        const waUrl = `https://api.whatsapp.com/send?phone=${cleanNumber}&text=${encodedText}`;
+
+        // OPEN WHATSAPP IMMEDIATELY (To avoid popup blocker)
+        window.open(waUrl, '_blank');
+
+        // Close modal immediately for better UX
+        onClose();
+
         try {
-            // 1. Save to Database
+            // Save to Database in background
             console.log('Tentativo invio API...');
             const res = await fetch('/api/reservations', {
                 method: 'POST',
@@ -41,39 +62,11 @@ export default function ReservationModal({ isOpen, onClose, whatsappNumber, rest
 
             if (!res.ok) {
                 console.error('Errore API:', await res.text());
-                alert('Errore nel salvataggio della prenotazione, ma provo ad aprire WhatsApp comunque.');
             } else {
                 console.log('Prenotazione salvata!');
             }
-
-            // 2. Format WhatsApp message
-            const text = `Ciao ${restaurantName}! 👋\n` +
-                `Vorrei prenotare un tavolo.\n\n` +
-                `📅 Data: ${formData.date}\n` +
-                `⏰ Ora: ${formData.time}\n` +
-                `👥 Persone: ${formData.guests}\n` +
-                `👤 Nome: ${formData.name}\n` +
-                (formData.notes ? `📝 Note: ${formData.notes}` : '');
-
-            const encodedText = encodeURIComponent(text);
-            let cleanNumber = whatsappNumber.replace(/\D/g, '');
-            if (cleanNumber.startsWith('00')) cleanNumber = cleanNumber.substring(2);
-            if (cleanNumber.length === 10) cleanNumber = '39' + cleanNumber;
-
-            const waUrl = `https://api.whatsapp.com/send?phone=${cleanNumber}&text=${encodedText}`;
-            console.log('Apro WhatsApp:', waUrl);
-
-            // Try to open
-            const newWindow = window.open(waUrl, '_blank');
-            if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
-                alert('Il browser ha bloccato l\'apertura di WhatsApp. Controlla il blocco popup.');
-            }
-
-            onClose();
         } catch (error) {
-            console.error('Error submitting reservation:', error);
-            alert('Errore imprevisto: ' + error);
-            onClose();
+            console.error('Error saving reservation to DB (but WhatsApp opened):', error);
         } finally {
             setIsSubmitting(false);
         }
