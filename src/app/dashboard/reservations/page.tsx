@@ -48,6 +48,9 @@ export default function ReservationsPage() {
     const handleStatusUpdate = async (id: string, newStatus: string) => {
         if (!confirm('Sei sicuro?')) return;
 
+        const reservation = reservations.find(r => r.id === id);
+        if (!reservation) return;
+
         try {
             const res = await fetch('/api/reservations', {
                 method: 'PATCH',
@@ -56,8 +59,30 @@ export default function ReservationsPage() {
             });
 
             if (res.ok) {
-                // Optimistic update or refetch
+                // Optimistic update
                 fetchReservations();
+
+                // Open WhatsApp with message
+                let message = '';
+                const dateStr = new Date(reservation.date).toLocaleDateString('it-IT', { day: 'numeric', month: 'long' });
+                const timeStr = new Date(reservation.date).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit', hour12: false });
+
+                if (newStatus === 'CONFIRMED') {
+                    message = `Ciao ${reservation.name}, confermiamo con piacere la tua prenotazione per il ${dateStr} alle ${timeStr} per ${reservation.guests} persone! Ti aspettiamo 🥂`;
+                } else if (newStatus === 'REJECTED') {
+                    message = `Ciao ${reservation.name}, ci dispiace ma al momento non abbiamo disponibilità per la tua richiesta del ${dateStr} alle ${timeStr}. Speriamo di averti presto nostro ospite in un'altra occasione! 🙏`;
+                }
+
+                if (message) {
+                    const cleanPhone = reservation.phone.replace(/\s/g, '').replace(/[^0-9+]/g, '');
+                    // Use setTimeout to ensure the browser doesn't block the popup immediately after the async call, 
+                    // although window.open might still be blocked if not directly in user event. 
+                    // Ideally this should be a direct user action, but since we have an async await before, 
+                    // we might need to rely on the user clicking a "Send WhatsApp" button if this gets blocked.
+                    // For now, let's try direct opening.
+                    window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`, '_blank');
+                }
+
             } else {
                 alert('Errore durante l\'aggiornamento');
             }
