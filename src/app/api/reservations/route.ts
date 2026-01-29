@@ -40,6 +40,38 @@ export async function GET(req: Request) {
     }
 }
 
+// PATCH: Update reservation status (Admin Only)
+export async function PATCH(req: Request) {
+    try {
+        const session = await getSession();
+        // Allow if session exists OR if we are in dev/debug mode? No, strict security.
+        // Check if session is null
+        if (!session) {
+            console.error('PATCH Reservation: Unauthorized (No Session)');
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
+        const body = await req.json();
+        const { id, status } = body;
+
+        console.log('PATCH Reservation:', { id, status, user: session.user?.email });
+
+        if (!id || !status) {
+            return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
+        }
+
+        const updated = await prisma.reservation.update({
+            where: { id },
+            data: { status }
+        });
+
+        return NextResponse.json(updated);
+    } catch (error) {
+        console.error('PATCH Reservation Error:', error);
+        return NextResponse.json({ error: 'Failed to update' }, { status: 500 });
+    }
+}
+
 // POST: Create a new reservation (Public)
 export async function POST(req: Request) {
     try {
