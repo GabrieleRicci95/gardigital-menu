@@ -79,16 +79,16 @@
     transition: all 0.2s;
     background: #ffffff;
     font-family: inherit;
-    height: 36px !important;
-    /* Very slim */
+    height: 34px !important;
+    /* Ultra slim */
 }
 
 /* ... */
 
 .row {
     display: flex;
-    gap: 20px !important;
-    /* Slightly tighter than 24px/32px but enough breathing room */
+    gap: 12px !important;
+    /* Tighter gap */
 }
 
 .col {
