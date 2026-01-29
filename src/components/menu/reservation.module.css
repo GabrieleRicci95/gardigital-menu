@@ -4,66 +4,70 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(8px);
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(12px);
+    /* Heavily blurred background */
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 9999;
-    animation: fadeIn 0.3s ease-out;
+    animation: fadeIn 0.4s ease-out;
 }
 
 .modal {
-    background: white;
-    padding: 0;
-    border-radius: 16px;
-    width: 94%;
-    /* Maximum width for mobile */
-    max-width: 380px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
-    overflow: hidden;
-    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    background: #ffffff;
+    padding: 32px;
+    border-radius: 24px;
+    /* Very round */
+    width: 90%;
+    max-width: 360px;
+    /* Narrow and tall */
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 }
 
 .header {
-    background: linear-gradient(135deg, #1a1a1a 0%, #333 100%);
-    padding: 16px;
-    color: white;
     text-align: center;
 }
 
 .title {
     margin: 0;
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #ffffff !important;
+    font-size: 1.6rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
 }
 
 .subtitle {
-    margin: 4px 0 0 0;
-    font-size: 0.8rem;
-    opacity: 0.8;
+    margin: 8px 0 0 0;
+    font-size: 0.95rem;
+    color: #888;
+    font-weight: 500;
 }
 
 .form {
-    padding: 12px;
-    /* Minimal padding */
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 16px;
 }
 
 .inputGroup {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 8px;
 }
 
 .label {
-    font-size: 0.75rem;
-    font-weight: 600;
+    font-size: 0.8rem;
+    font-weight: 700;
     color: #4b5563;
+    margin-left: 4px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
@@ -71,85 +75,85 @@
 .input,
 .textarea {
     width: 100%;
-    padding: 4px 8px !important;
-    border: 1px solid #e5e7eb;
-    border-radius: 6px;
-    font-size: 0.85rem !important;
+    padding: 16px;
+    /* Comfortable touch area */
+    border: none;
+    border-radius: 16px;
+    /* Pill shape-ish */
+    font-size: 1rem;
     color: #1a1a1a;
-    transition: all 0.2s;
-    background: #ffffff;
+    background: #f3f4f6;
+    /* Filled input style */
     font-family: inherit;
-    height: 34px !important;
-    /* Ultra slim */
+    transition: all 0.2s;
+    font-weight: 500;
 }
 
 .input:focus,
 .textarea:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-    background: white;
+    background: #ffffff;
+    box-shadow: 0 0 0 2px #25D366;
+    /* WhatsApp Green focus ring */
     outline: none;
 }
 
 .textarea {
-    resize: vertical;
-    min-height: 60px;
-    height: auto !important;
+    resize: none;
+    min-height: 80px;
 }
 
-.row {
-    display: flex;
-    gap: 10px !important;
-    /* Tight gap but separated */
-}
-
-.col {
-    flex: 1;
-    min-width: 0;
-    /* Critical for flex shrinking */
-}
-
-.submitButton {
-    margin-top: 4px;
-    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-    color: white;
+/* Close button - Minimal X top right */
+.closeButton {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #f3f4f6;
     border: none;
-    padding: 12px;
-    border-radius: 10px;
-    font-weight: 700;
-    font-size: 1rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    color: #666;
+    font-size: 1.2rem;
+    transition: all 0.2s;
+}
+
+.closeButton:hover {
+    background: #e5e7eb;
+    color: #000;
+}
+
+.submitButton {
+    margin-top: 8px;
+    background: #25D366;
+    color: white;
+    border: none;
+    padding: 18px;
+    border-radius: 18px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
     transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 6px rgba(37, 211, 102, 0.2);
+    box-shadow: 0 10px 20px -10px rgba(37, 211, 102, 0.5);
+    width: 100%;
 }
 
 .submitButton:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 15px rgba(37, 211, 102, 0.3);
+    transform: scale(1.02);
+    box-shadow: 0 15px 30px -10px rgba(37, 211, 102, 0.6);
 }
 
 .submitButton:disabled {
     opacity: 0.7;
     cursor: not-allowed;
     transform: none;
-}
-
-.cancelButton {
-    border: none;
-    background: transparent;
-    color: #6b7280;
-    padding: 8px;
-    cursor: pointer;
-    font-size: 0.8rem;
-    transition: color 0.2s;
-}
-
-.cancelButton:hover {
-    color: #1a1a1a;
 }
 
 @keyframes fadeIn {
@@ -165,7 +169,7 @@
 @keyframes slideUp {
     from {
         opacity: 0;
-        transform: translateY(20px) scale(0.95);
+        transform: translateY(40px) scale(0.9);
     }
 
     to {
