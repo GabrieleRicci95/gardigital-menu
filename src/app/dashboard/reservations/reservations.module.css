@@ -222,21 +222,26 @@
 
 /* Buttons */
 .btnPrimary {
-    background: #111;
+    background: #1e3a8a;
+    /* Deep blue from reference */
     color: white;
     border: none;
-    padding: 0.8rem 1.5rem;
+    padding: 0.8rem 1.8rem;
     border-radius: 12px;
     cursor: pointer;
-    font-weight: 600;
+    font-weight: 700;
     font-family: var(--font-inter, sans-serif);
-    transition: all 0.2s;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 14px rgba(30, 58, 138, 0.25);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .btnPrimary:hover {
+    background: #1e40af;
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 20px rgba(30, 58, 138, 0.35);
 }
 
 .btnActionSuccess {
