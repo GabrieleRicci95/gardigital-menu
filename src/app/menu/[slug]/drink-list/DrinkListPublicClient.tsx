@@ -165,10 +165,10 @@ export default function DrinkListPublicClient({ restaurant, drinkList }: { resta
                                             borderBottom: '1px dashed rgba(0,0,0,0.1)'
                                         }}>
                                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.4rem' }}>
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '20px' }}>
                                                     <h3 style={{
                                                         margin: 0,
-                                                        fontSize: '1.15rem',
+                                                        fontSize: '1.25rem', // Slightly larger text to balance
                                                         fontWeight: 600,
                                                         color: restaurant.textColor
                                                     }}>
