@@ -51,9 +51,9 @@ export default function DashboardLayout({
         { label: 'Il mio Ristorante', href: '/dashboard/restaurant', icon: 'Store' },
         { label: 'Menu', href: '/dashboard/menu', icon: 'Menu' },
         { label: 'Menu Fissi', href: '/dashboard/fixed-menus', icon: 'Star' },
-        { label: 'Carta dei Vini', href: '/dashboard/wine-list', icon: 'Wine' },
-        { label: 'Carta Champagne', href: '/dashboard/champagne-list', icon: 'Glass' },
-        { label: 'Lista Drink', href: '/dashboard/drink-list', icon: 'Cocktail' },
+        { label: 'Vini', href: '/dashboard/wine-list', icon: 'Wine' },
+        { label: 'Champagne', href: '/dashboard/champagne-list', icon: 'Glass' },
+        { label: 'Drink', href: '/dashboard/drink-list', icon: 'Cocktail' },
         { label: 'Aspetto & Design', href: '/dashboard/design', icon: 'Palette' },
         { label: 'QR Code', href: '/dashboard/qrcode', icon: 'QR' },
     ];
