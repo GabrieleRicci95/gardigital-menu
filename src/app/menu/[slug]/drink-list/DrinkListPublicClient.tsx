@@ -165,20 +165,7 @@ export default function DrinkListPublicClient({ restaurant, drinkList }: { resta
                                             borderBottom: '1px dashed rgba(0,0,0,0.1)'
                                         }}>
                                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.4rem' }}>
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                                    {item.logoUrl && (
-                                                        <img
-                                                            src={item.logoUrl}
-                                                            alt={`${item.name} logo`}
-                                                            style={{
-                                                                height: '80px',
-                                                                width: 'auto',
-                                                                maxHeight: '80px',
-                                                                maxWidth: '200px', // Allow wider logos like text brands
-                                                                objectFit: 'contain'
-                                                            }}
-                                                        />
-                                                    )}
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                                                     <h3 style={{
                                                         margin: 0,
                                                         fontSize: '1.15rem',
@@ -187,6 +174,19 @@ export default function DrinkListPublicClient({ restaurant, drinkList }: { resta
                                                     }}>
                                                         {item.name}
                                                     </h3>
+                                                    {item.logoUrl && (
+                                                        <img
+                                                            src={item.logoUrl}
+                                                            alt={`${item.name} logo`}
+                                                            style={{
+                                                                height: '110px',
+                                                                width: 'auto',
+                                                                maxHeight: '110px',
+                                                                maxWidth: '250px',
+                                                                objectFit: 'contain'
+                                                            }}
+                                                        />
+                                                    )}
                                                 </div>
                                                 {Number(item.price) > 0 && (
                                                     <div style={{
