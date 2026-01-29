@@ -69,22 +69,26 @@
 .input,
 .textarea {
     width: 100%;
-    padding: 6px 10px !important;
+    padding: 4px 8px !important;
+    /* Extremely compact */
     border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    font-size: 0.9rem !important;
+    border-radius: 6px;
+    font-size: 0.85rem !important;
+    /* Smaller text */
     color: #1a1a1a;
     transition: all 0.2s;
     background: #ffffff;
     font-family: inherit;
-    height: 40px !important;
+    height: 36px !important;
+    /* Very slim */
 }
 
 /* ... */
 
 .row {
     display: flex;
-    gap: 24px !important;
+    gap: 20px !important;
+    /* Slightly tighter than 24px/32px but enough breathing room */
 }
 
 .col {
