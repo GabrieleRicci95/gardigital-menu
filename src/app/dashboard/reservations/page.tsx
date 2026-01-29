@@ -75,7 +75,6 @@ export default function ReservationsPage() {
         }
     };
 
-    return (
     const [filterStatus, setFilterStatus] = useState<string>('ALL'); // ALL, PENDING, CONFIRMED, HISTORY
 
     // ... (keep useEffect and fetch)
