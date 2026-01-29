@@ -286,9 +286,9 @@ export default function ChampagneListPage() {
                                 style={{
                                     marginBottom: '1.5rem',
                                     width: '100%',
-                                    background: '#fffbf0',
-                                    color: '#b8860b',
-                                    border: '1px dashed #fceeb5',
+                                    background: '#f0f9ff',
+                                    color: '#0369a1',
+                                    border: '1px dashed #bae6fd',
                                     padding: '12px',
                                     borderRadius: '10px',
                                     cursor: 'pointer',
@@ -300,8 +300,8 @@ export default function ChampagneListPage() {
                                     justifyContent: 'center',
                                     gap: '8px'
                                 }}
-                                onMouseEnter={(e) => e.currentTarget.style.background = '#fff8e1'}
-                                onMouseLeave={(e) => e.currentTarget.style.background = '#fffbf0'}
+                                onMouseEnter={(e) => e.currentTarget.style.background = '#e0f2fe'}
+                                onMouseLeave={(e) => e.currentTarget.style.background = '#f0f9ff'}
                             >
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                                 Aggiungi Champagne

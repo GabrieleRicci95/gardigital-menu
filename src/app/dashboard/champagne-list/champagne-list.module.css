@@ -19,8 +19,7 @@
 .priceSymbol {
     position: absolute;
     right: 8px;
-    color: #d4af37;
-    /* Gold for Champagne */
+    color: #999;
     font-size: 0.9rem;
     pointer-events: none;
 }
