@@ -70,7 +70,7 @@ export default function ReservationModal({ isOpen, onClose, whatsappNumber, rest
 
                 <div className={styles.header}>
                     <h3 className={styles.title}>Prenota Tavolo</h3>
-                    <p className={styles.subtitle}>Inpochi click su WhatsApp</p>
+
                 </div>
 
                 <form onSubmit={handleSubmit} className={styles.form}>
