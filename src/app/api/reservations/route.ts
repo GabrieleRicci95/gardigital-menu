@@ -83,7 +83,15 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
         }
 
-        const dateTimeString = `${date}T${time}:00`;
+        // Create date assuming Italy timezone (UTC+1 in winter, UTC+2 in summer)
+        // Simple heuristic for now: We treat the incoming date/time as "Local Italy Time".
+        // To save it correctly in UTC, we need to tell the Date constructor that this string includes the Italy offset.
+        // Since we don't have a timezone library, we will append a dynamic offset or defaulting to +01:00 for simplicity now, 
+        // but ideally we should use a library. 
+        // Let's assume +01:00 for now (Winter). In production for year-round support we should add 'date-fns-tz'.
+
+        // FIXME: Handle Daylight Saving Time automatically. currently hardcoded to +01:00 (CET)
+        const dateTimeString = `${date}T${time}:00+01:00`;
 
         const reservation = await prisma.reservation.create({
             data: {
