@@ -126,6 +126,7 @@
     margin: 1rem 0;
     color: #ffb300;
     background: none;
+    background-clip: unset;
     -webkit-background-clip: unset;
     -webkit-text-fill-color: initial;
 }
@@ -848,5 +849,34 @@
         width: 35px;
         height: 35px;
         font-size: 1.4rem;
+    }
+}
+
+/* Menu Page Fixes */
+.newCategoryForm {
+    display: flex;
+    gap: 1rem;
+    align-items: stretch;
+}
+
+.newCategoryForm .button {
+    white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+    .newCategoryForm {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    .newCategoryForm input,
+    .newCategoryForm button,
+    .newCategoryForm .button {
+        width: 100% !important;
+        flex: none !important;
+    }
+
+    .newCategoryForm button {
+        justify-content: center;
     }
 }

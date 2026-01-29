@@ -599,16 +599,15 @@ export default function MenuBuilderPage() {
                                 <strong style={{ fontSize: '1.1rem' }}>Nuova Categoria</strong>
                             </div>
 
-                            <div style={{ display: 'flex', gap: '1rem' }}>
+                            <div className={styles.newCategoryForm}>
                                 <input
                                     type="text"
                                     placeholder="Nome Categoria (es. Antipasti)"
                                     value={newCatData.name}
                                     onChange={e => setNewCatData({ ...newCatData, name: e.target.value })}
                                     className={styles.formInput}
-                                    style={{ flex: 1 }}
                                 />
-                                <button type="submit" className={`${styles.button} ${styles.btnPrimary}`} style={{ width: 'auto' }}>+ Aggiungi</button>
+                                <button type="submit" className={`${styles.button} ${styles.btnPrimary}`}>+ Aggiungi</button>
                             </div>
                         </form>
                     </div>
