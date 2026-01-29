@@ -90,7 +90,7 @@ export default function DrinkListPublicClient({ restaurant, drinkList }: { resta
             <header style={{
                 padding: '10rem 1.5rem 8rem 1.5rem',
                 textAlign: 'center',
-                background: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1514362545857-3bc16549766b?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat`,
+                background: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1560512823-8db03e41604a?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat`,
                 color: 'white',
                 marginBottom: '3rem',
                 boxShadow: '0 4px 20px rgba(0,0,0,0.2)'
