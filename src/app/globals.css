@@ -68,6 +68,11 @@
   padding: 0;
 }
 
+html,
+body {
+  overscroll-behavior-y: none;
+}
+
 body {
   font-family: var(--font-family-sans);
   background-color: var(--color-background);
@@ -76,7 +81,6 @@ body {
   -webkit-font-smoothing: antialiased;
   /* Prevent horizontal scroll and rubber-band effect */
   overflow-x: hidden;
-  overscroll-behavior-y: none;
   min-height: 100vh;
 }
 
