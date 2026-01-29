@@ -5,7 +5,7 @@
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -74,7 +74,7 @@
     font-size: 1rem;
     color: #1a1a1a;
     transition: all 0.2s;
-    background: #f9fafb;
+    background: #ffffff;
     font-family: inherit;
 }
 
