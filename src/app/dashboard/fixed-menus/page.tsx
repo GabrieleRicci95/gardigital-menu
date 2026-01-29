@@ -64,15 +64,18 @@ export default function FixedMenusPage() {
                 <Link
                     href="/dashboard/fixed-menus/new"
                     style={{
-                        background: '#0070f3',
+                        background: '#1e3a8a', // Deep blue
                         color: 'white',
-                        padding: '10px 20px',
-                        borderRadius: '8px',
+                        padding: '12px 24px',
+                        borderRadius: '12px',
                         textDecoration: 'none',
-                        fontWeight: 'bold',
+                        fontWeight: '700',
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '8px'
+                        gap: '8px',
+                        boxShadow: '0 4px 14px rgba(30, 58, 138, 0.25)',
+                        transition: 'all 0.3s ease',
+                        fontFamily: 'var(--font-inter, sans-serif)',
                     }}
                 >
                     + Nuovo Menu
