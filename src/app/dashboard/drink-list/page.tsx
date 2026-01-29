@@ -272,6 +272,21 @@ export default function DrinkListPage() {
                                     }}
                                 />
                             </div>
+                            <button
+                                onClick={() => removeSection(sIndex)}
+                                style={{
+                                    background: 'transparent',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    color: '#ef4444',
+                                    padding: '8px',
+                                    borderRadius: '8px',
+                                    transition: 'all 0.2s'
+                                }}
+                                title="Elimina Categoria"
+                            >
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            </button>
                         </div>
 
                         {/* Items List */}
@@ -401,6 +416,41 @@ export default function DrinkListPage() {
                         </div>
                     </div>
                 ))}
+
+                {/* Add Category Card */}
+                <div
+                    onClick={addSection}
+                    style={{
+                        background: 'rgba(255,255,255,0.6)',
+                        border: '2px dashed #ccc',
+                        borderRadius: '20px',
+                        padding: '2rem',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s',
+                        color: '#666',
+                        gap: '1rem'
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#3b82f6'; e.currentTarget.style.background = '#f0f9ff'; e.currentTarget.style.color = '#3b82f6'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#ccc'; e.currentTarget.style.background = 'rgba(255,255,255,0.6)'; e.currentTarget.style.color = '#666'; }}
+                >
+                    <div style={{
+                        width: '50px',
+                        height: '50px',
+                        borderRadius: '50%',
+                        background: 'white',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        boxShadow: '0 4px 10px rgba(0,0,0,0.05)'
+                    }}>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    </div>
+                    <span style={{ fontSize: '1.1rem', fontWeight: '600' }}>Aggiungi Nuova Categoria</span>
+                </div>
             </div>
 
 
