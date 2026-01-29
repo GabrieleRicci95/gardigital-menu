@@ -68,36 +68,21 @@
 .input,
 .textarea {
     width: 100%;
-    padding: 12px 16px;
+    padding: 10px 14px;
     border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    font-size: 1rem;
+    border-radius: 10px;
+    font-size: 0.95rem;
     color: #1a1a1a;
     transition: all 0.2s;
     background: #ffffff;
     font-family: inherit;
 }
 
-.input:focus,
-.textarea:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-    background: white;
-    outline: none;
-}
-
-.textarea {
-    resize: vertical;
-    min-height: 80px;
-}
+/* ... */
 
 .row {
     display: flex;
-    gap: 12px;
-}
-
-.col {
-    flex: 1;
+    gap: 20px;
 }
 
 .submitButton {
