@@ -99,7 +99,7 @@ export default function ReservationModal({ isOpen, onClose, whatsappNumber, rest
                     </div>
 
                     <div className={styles.row}>
-                        <div className={`${styles.col} ${styles.inputGroup}`}>
+                        <div className={`${styles.col}`} style={{ flex: 0.8 }}> {/* Date smaller */}
                             <label className={styles.label}>Data</label>
                             <input
                                 required
@@ -109,7 +109,7 @@ export default function ReservationModal({ isOpen, onClose, whatsappNumber, rest
                                 onChange={e => setFormData({ ...formData, date: e.target.value })}
                             />
                         </div>
-                        <div className={`${styles.col} ${styles.inputGroup}`}>
+                        <div className={`${styles.col}`} style={{ flex: 1.2 }}> {/* Time wider */}
                             <label className={styles.label}>Ora</label>
                             <input
                                 required
