@@ -58,7 +58,7 @@ export default function AdminSubscriptionsPage() {
                                 <th>Ristorante</th>
                                 <th>Piano</th>
                                 <th>Stato</th>
-                                <th>Scadenza</th>
+                                <th>Iscrizione</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -79,8 +79,12 @@ export default function AdminSubscriptionsPage() {
                                             {sub.restaurant?.name}
                                         </td>
                                         <td>
-                                            <span className={`${styles.badge} ${sub.plan === 'PREMIUM' ? styles.badgePremium : styles.badgeBase}`}>
-                                                {sub.plan === 'PREMIUM' ? '✨ PREMIUM' : sub.plan}
+                                            <span className={`${styles.badge} ${sub.plan === 'PREMIUM' ? styles.badgePremium : sub.plan === 'FULL' ? styles.badgeFull : styles.badgeBase}`} style={{
+                                                backgroundColor: sub.plan === 'FULL' ? '#fff8e1' : undefined,
+                                                color: sub.plan === 'FULL' ? '#f57f17' : undefined,
+                                                border: sub.plan === 'FULL' ? '1px solid #ffecb3' : undefined
+                                            }}>
+                                                {sub.plan === 'PREMIUM' ? '✨ PREMIUM' : sub.plan === 'FULL' ? '🚀 FULL' : sub.plan}
                                             </span>
                                         </td>
                                         <td>
@@ -96,7 +100,7 @@ export default function AdminSubscriptionsPage() {
                                             </span>
                                         </td>
                                         <td style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem' }}>
-                                            {sub.endDate ? new Date(sub.endDate).toLocaleDateString('it-IT') : 'Illimitato'}
+                                            {(sub.restaurant as any).createdAt ? new Date((sub.restaurant as any).createdAt).toLocaleDateString('it-IT') : '-'}
                                         </td>
                                     </tr>
                                 ))
