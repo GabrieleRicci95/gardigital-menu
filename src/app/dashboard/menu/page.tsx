@@ -583,8 +583,30 @@ export default function MenuBuilderPage() {
                                 </div>
 
                                 {!editingCatId && (
-                                    <button className={styles.btnLink} onClick={() => setAddingItemTo(cat.id)} style={{ alignSelf: 'flex-start', marginBottom: '1rem' }}>
-                                        + Aggiungi Piatto
+                                    <button
+                                        onClick={() => setAddingItemTo(cat.id)}
+                                        style={{
+                                            marginBottom: '1.5rem',
+                                            width: '100%',
+                                            background: '#f0f9ff',
+                                            color: '#0369a1',
+                                            border: '1px dashed #bae6fd',
+                                            padding: '12px',
+                                            borderRadius: '10px',
+                                            cursor: 'pointer',
+                                            fontWeight: '600',
+                                            fontSize: '0.95rem',
+                                            transition: 'all 0.2s',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            gap: '8px'
+                                        }}
+                                        onMouseEnter={(e) => e.currentTarget.style.background = '#e0f2fe'}
+                                        onMouseLeave={(e) => e.currentTarget.style.background = '#f0f9ff'}
+                                    >
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                        Aggiungi Piatto
                                     </button>
                                 )}
 
