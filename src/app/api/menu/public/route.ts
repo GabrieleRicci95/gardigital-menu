@@ -44,10 +44,10 @@ export async function GET(request: Request) {
             return NextResponse.json({ error: 'Restaurant not found' }, { status: 404 });
         }
 
-        const activeMenu = restaurant.menus[0];
-        const categories = activeMenu ? activeMenu.categories.map(cat => ({
+        const activeMenu = (restaurant as any).menus?.[0];
+        const categories = activeMenu ? activeMenu.categories.map((cat: any) => ({
             ...cat,
-            items: cat.items.map(item => ({
+            items: cat.items.map((item: any) => ({
                 ...item,
                 price: Number(item.price)
             }))

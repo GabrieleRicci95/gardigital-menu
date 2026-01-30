@@ -52,12 +52,12 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Menu not found' }, { status: 404 });
         }
 
-        const restaurant = menu.restaurant;
+        const restaurant = (menu as any).restaurant;
 
         // Check if restaurant description needs translation
         let restaurantDescriptionTranslation = null;
         if (restaurant.description) {
-            const existingTrans = restaurant.translations[0];
+            const existingTrans = restaurant.translations?.[0];
             if (!existingTrans || existingTrans.description === restaurant.description) {
                 const res = await translator.translateText(restaurant.description, 'it' as any, targetLangCode);
                 restaurantDescriptionTranslation = res.text;
@@ -65,13 +65,14 @@ export async function POST(request: Request) {
         }
 
         // Filtering logic for categories: include placeholders or missing translations
-        const categoriesToTranslate = menu.categories.filter(cat =>
-            cat.translations.length === 0 ||
+        const categories = (menu as any).categories || [];
+        const categoriesToTranslate = categories.filter((cat: any) =>
+            !cat.translations || cat.translations.length === 0 ||
             cat.translations[0].name.startsWith(`[${targetLanguage.toUpperCase()}]`) ||
             cat.translations[0].name === cat.name
         );
 
-        const allItems = menu.categories.flatMap(cat => cat.items);
+        const allItems: any[] = categories.flatMap((cat: any) => cat.items || []);
         const itemIds = allItems.map(i => i.id);
 
         const existingItemTranslations = await prisma.menuItemTranslation.findMany({
@@ -114,7 +115,7 @@ export async function POST(request: Request) {
         await prisma.$transaction([
             // Restaurant Description
             ...(restaurantDescriptionTranslation ? [
-                prisma.restaurantTranslation.upsert({
+                (prisma as any).restaurantTranslation.upsert({
                     where: {
                         restaurantId_language: {
                             restaurantId: restaurant.id,

@@ -48,24 +48,6 @@ export interface MenuPageRestaurant {
     translations?: { language: string; description: string | null }[];
 }
 
-// ... (in handleLanguageChange)
-const needsTranslation = restaurant.categories.some(cat => {
-    const catTrans = cat.translations?.find(t => t.language === newLang);
-    if (!catTrans || catTrans.name.startsWith(`[${newLang.toUpperCase()}]`) || catTrans.name === cat.name) return true;
-
-    return cat.items.some(item => {
-        const itemTrans = item.translations?.find(t => t.language === newLang);
-        return !itemTrans || itemTrans.name.startsWith(`[${newLang.toUpperCase()}]`) || itemTrans.name === item.name;
-    });
-}) || (restaurant.description && (!restaurant.translations?.find(t => t.language === newLang) || restaurant.translations?.find(t => t.language === newLang)?.description === restaurant.description));
-
-// ... (helpers)
-const getRestaurantDesc = () => {
-    if (language === 'it') return restaurant.description;
-    return restaurant.translations?.find(t => t.language === language)?.description || restaurant.description;
-};
-
-
 const LANGUAGES = [
     { code: 'it', label: '🇮🇹' },
     { code: 'en', label: '🇬🇧' },
@@ -323,238 +305,238 @@ export default function MenuClient({ restaurant: initialRestaurant }: { restaura
                         </p>
                     )}
                 </div>
-        </div>
+            </header>
 
-            {/* Filter Bar Removed */ }
+            {/* Filter Bar Removed */}
 
-    {/* Sticky Navigation */ }
-    <div className={styles.stickyNavContainer} style={{ backgroundColor: restaurant.backgroundColor }}>
-        <div style={{ padding: '0 0 0 15px', flexShrink: 0, display: 'flex', gap: '10px' }}>
-            {/* Events & Fixed Menus - Currently specific to Aperifish */}
-            {restaurant.name.toLowerCase().includes('aperifish') && (
-                <>
-                    <Link
-                        href={`/menu/${restaurant.slug}/events`}
-                        style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '6px',
-                            backgroundColor: '#001f2f',
-                            color: 'white',
-                            padding: '8px 16px',
-                            borderRadius: '50px',
-                            textDecoration: 'none',
-                            fontWeight: 'bold',
-                            fontSize: '0.85rem',
-                            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                            whiteSpace: 'nowrap'
-                        }}
-                    >
-                        Eventi e Promozioni
-                    </Link>
-                    <Link
-                        href={`/menu/${restaurant.slug}/fixed-menus`}
-                        style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '6px',
-                            backgroundColor: '#001f2f',
-                            color: 'white',
-                            padding: '8px 16px',
-                            borderRadius: '50px',
-                            textDecoration: 'none',
-                            fontWeight: 'bold',
-                            fontSize: '0.85rem',
-                            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                            whiteSpace: 'nowrap'
-                        }}
-                    >
-                        Menu Fissi
-                    </Link>
-                </>
-            )}
+            {/* Sticky Navigation */}
+            <div className={styles.stickyNavContainer} style={{ backgroundColor: restaurant.backgroundColor }}>
+                <div style={{ padding: '0 0 0 15px', flexShrink: 0, display: 'flex', gap: '10px' }}>
+                    {/* Events & Fixed Menus - Currently specific to Aperifish */}
+                    {restaurant.name.toLowerCase().includes('aperifish') && (
+                        <>
+                            <Link
+                                href={`/menu/${restaurant.slug}/events`}
+                                style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '6px',
+                                    backgroundColor: '#001f2f',
+                                    color: 'white',
+                                    padding: '8px 16px',
+                                    borderRadius: '50px',
+                                    textDecoration: 'none',
+                                    fontWeight: 'bold',
+                                    fontSize: '0.85rem',
+                                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                                    whiteSpace: 'nowrap'
+                                }}
+                            >
+                                Eventi e Promozioni
+                            </Link>
+                            <Link
+                                href={`/menu/${restaurant.slug}/fixed-menus`}
+                                style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '6px',
+                                    backgroundColor: '#001f2f',
+                                    color: 'white',
+                                    padding: '8px 16px',
+                                    borderRadius: '50px',
+                                    textDecoration: 'none',
+                                    fontWeight: 'bold',
+                                    fontSize: '0.85rem',
+                                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                                    whiteSpace: 'nowrap'
+                                }}
+                            >
+                                Menu Fissi
+                            </Link>
+                        </>
+                    )}
 
-            {/* Carta dei Vini Button - Internal Link */}
-            {(restaurant.wineList?.isActive || restaurant.wineListUrl) && (
-                <Link
-                    href={restaurant.wineList?.isActive ? `/menu/${restaurant.slug}/wine-list` : (restaurant.wineListUrl || '#')}
-                    target={restaurant.wineList?.isActive ? "_self" : "_blank"}
-                    rel={restaurant.wineList?.isActive ? undefined : "noopener noreferrer"}
-                    style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                        backgroundColor: '#001f2f',
-                        color: 'white',
-                        padding: '8px 16px',
-                        borderRadius: '50px',
-                        textDecoration: 'none',
-                        fontWeight: 'bold',
-                        fontSize: '0.85rem',
-                        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                        whiteSpace: 'nowrap'
-                    }}
-                >
-                    Vini
-                </Link>
-            )}
+                    {/* Carta dei Vini Button - Internal Link */}
+                    {(restaurant.wineList?.isActive || restaurant.wineListUrl) && (
+                        <Link
+                            href={restaurant.wineList?.isActive ? `/menu/${restaurant.slug}/wine-list` : (restaurant.wineListUrl || '#')}
+                            target={restaurant.wineList?.isActive ? "_self" : "_blank"}
+                            rel={restaurant.wineList?.isActive ? undefined : "noopener noreferrer"}
+                            style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '6px',
+                                backgroundColor: '#001f2f',
+                                color: 'white',
+                                padding: '8px 16px',
+                                borderRadius: '50px',
+                                textDecoration: 'none',
+                                fontWeight: 'bold',
+                                fontSize: '0.85rem',
+                                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                                whiteSpace: 'nowrap'
+                            }}
+                        >
+                            Vini
+                        </Link>
+                    )}
 
-            {/* Carta Champagne Button */}
-            {(restaurant.champagneList?.isActive) && (
-                <Link
-                    href={`/menu/${restaurant.slug}/champagne-list`}
-                    style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                        backgroundColor: '#001f2f',
-                        color: 'white', // Changed to white as requested
-                        padding: '8px 16px',
-                        borderRadius: '50px',
-                        textDecoration: 'none',
-                        fontWeight: 'bold',
-                        fontSize: '0.85rem',
-                        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                        whiteSpace: 'nowrap'
-                    }}
-                >
-                    Champagne
-                </Link>
-            )}
+                    {/* Carta Champagne Button */}
+                    {(restaurant.champagneList?.isActive) && (
+                        <Link
+                            href={`/menu/${restaurant.slug}/champagne-list`}
+                            style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '6px',
+                                backgroundColor: '#001f2f',
+                                color: 'white', // Changed to white as requested
+                                padding: '8px 16px',
+                                borderRadius: '50px',
+                                textDecoration: 'none',
+                                fontWeight: 'bold',
+                                fontSize: '0.85rem',
+                                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                                whiteSpace: 'nowrap'
+                            }}
+                        >
+                            Champagne
+                        </Link>
+                    )}
 
-            {/* Drink List Button */}
-            {(restaurant.drinkList?.isActive) && (
-                <Link
-                    href={`/menu/${restaurant.slug}/drink-list`}
-                    style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                        backgroundColor: '#001f2f',
-                        color: 'white',
-                        padding: '8px 16px',
-                        borderRadius: '50px',
-                        textDecoration: 'none',
-                        fontWeight: 'bold',
-                        fontSize: '0.85rem',
-                        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                        whiteSpace: 'nowrap'
-                    }}
-                >
-                    Drink
-                </Link>
-            )}
-        </div>
-        <nav className={styles.categoryNav} style={{
-            position: 'relative',
-            top: 'auto',
-            backgroundColor: 'transparent',
-            boxShadow: 'none',
-            flex: '0 0 auto',
-            overflow: 'visible' // Disable internal scroll
-        }}>
-            {restaurant.categories.map(cat => (
-                <a
-                    key={cat.id}
-                    href={`#cat-${cat.id}`}
-                    className={styles.navLink}
-                >
-                    {getCatName(cat)}
-                </a>
-            ))}
-        </nav>
-    </div>
-
-    {/* Menu Content */ }
-    <main>
-        {restaurant.categories.length === 0 ? (
-            <div className={styles.emptyState}>
-                <p>Il menu è in fase di aggiornamento.</p>
-            </div>
-        ) : (
-            restaurant.categories.map(cat => {
-                const filteredItems = cat.items.filter(filterItem);
-                if (filteredItems.length === 0) return null;
-
-                return (
-                    <section
-                        key={cat.id}
-                        id={`cat-${cat.id}`}
-                        className={styles.menuSection}
-                        style={{ backgroundColor: 'transparent', borderBottom: '1px solid rgba(0,0,0,0.05)' }}
-                    >
-                        <h2 className={styles.categoryTitle} style={{ color: restaurant.themeColor, borderBottomColor: restaurant.themeColor }}>
+                    {/* Drink List Button */}
+                    {(restaurant.drinkList?.isActive) && (
+                        <Link
+                            href={`/menu/${restaurant.slug}/drink-list`}
+                            style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '6px',
+                                backgroundColor: '#001f2f',
+                                color: 'white',
+                                padding: '8px 16px',
+                                borderRadius: '50px',
+                                textDecoration: 'none',
+                                fontWeight: 'bold',
+                                fontSize: '0.85rem',
+                                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                                whiteSpace: 'nowrap'
+                            }}
+                        >
+                            Drink
+                        </Link>
+                    )}
+                </div>
+                <nav className={styles.categoryNav} style={{
+                    position: 'relative',
+                    top: 'auto',
+                    backgroundColor: 'transparent',
+                    boxShadow: 'none',
+                    flex: '0 0 auto',
+                    overflow: 'visible' // Disable internal scroll
+                }}>
+                    {restaurant.categories.map(cat => (
+                        <a
+                            key={cat.id}
+                            href={`#cat-${cat.id}`}
+                            className={styles.navLink}
+                        >
                             {getCatName(cat)}
-                        </h2>
-                        <div className={styles.itemsGrid}>
-                            {filteredItems.map(item => (
-                                <article key={item.id} className={`${styles.itemCard} ${getCardClass()}`} style={{ backgroundColor: restaurant.cardStyle === 'glass' ? 'rgba(255,255,255,0.7)' : 'white' }}>
-                                    <div className={styles.itemInfo}>
-                                        <div className={styles.itemHeader}>
-                                            <h3 className={styles.itemName} style={{ color: restaurant.textColor }}>{getItemName(item)}</h3>
-                                            {item.price !== null && Number(item.price) > 0 && (
-                                                <span className={styles.itemPrice} style={{ color: restaurant.themeColor }}>
-                                                    € {Number(item.price).toFixed(2)}
-                                                </span>
+                        </a>
+                    ))}
+                </nav>
+            </div>
+
+            {/* Menu Content */}
+            <main>
+                {restaurant.categories.length === 0 ? (
+                    <div className={styles.emptyState}>
+                        <p>Il menu è in fase di aggiornamento.</p>
+                    </div>
+                ) : (
+                    restaurant.categories.map(cat => {
+                        const filteredItems = cat.items.filter(filterItem);
+                        if (filteredItems.length === 0) return null;
+
+                        return (
+                            <section
+                                key={cat.id}
+                                id={`cat-${cat.id}`}
+                                className={styles.menuSection}
+                                style={{ backgroundColor: 'transparent', borderBottom: '1px solid rgba(0,0,0,0.05)' }}
+                            >
+                                <h2 className={styles.categoryTitle} style={{ color: restaurant.themeColor, borderBottomColor: restaurant.themeColor }}>
+                                    {getCatName(cat)}
+                                </h2>
+                                <div className={styles.itemsGrid}>
+                                    {filteredItems.map(item => (
+                                        <article key={item.id} className={`${styles.itemCard} ${getCardClass()}`} style={{ backgroundColor: restaurant.cardStyle === 'glass' ? 'rgba(255,255,255,0.7)' : 'white' }}>
+                                            <div className={styles.itemInfo}>
+                                                <div className={styles.itemHeader}>
+                                                    <h3 className={styles.itemName} style={{ color: restaurant.textColor }}>{getItemName(item)}</h3>
+                                                    {item.price !== null && Number(item.price) > 0 && (
+                                                        <span className={styles.itemPrice} style={{ color: restaurant.themeColor }}>
+                                                            € {Number(item.price).toFixed(2)}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                <p className={styles.itemDesc} style={{ color: restaurant.textColor, opacity: 0.8 }}>{getItemDesc(item)}</p>
+
+                                                <div className={styles.itemTags}>
+                                                    {item.isVegetarian && <span className={styles.tagVeg} title="Vegetariano">Veg</span>}
+                                                    {item.isVegan && <span className={styles.tagVegan} title="Vegano">Vegan</span>}
+                                                    {item.allergens && (
+                                                        (() => {
+                                                            try {
+                                                                const nums = JSON.parse(item.allergens);
+                                                                if (Array.isArray(nums) && nums.length > 0) {
+                                                                    return (
+                                                                        <span className={styles.tagGf} style={{ background: '#e3f2fd', color: '#0d47a1' }} title="Allergeni">
+                                                                            All: {nums.join(', ')}
+                                                                        </span>
+                                                                    );
+                                                                }
+                                                            } catch (e) { }
+                                                            return null;
+                                                        })()
+                                                    )}
+                                                    {item.spiciness > 0 && <span className={styles.tagSpicy} title={`Piccantezza ${item.spiciness}/3`}>{'🌶️'.repeat(item.spiciness)}</span>}
+                                                </div>
+                                            </div>
+                                            {item.imageUrl && (
+                                                <img
+                                                    src={item.imageUrl}
+                                                    alt={item.name}
+                                                    className={styles.itemImage}
+                                                />
                                             )}
-                                        </div>
-                                        <p className={styles.itemDesc} style={{ color: restaurant.textColor, opacity: 0.8 }}>{getItemDesc(item)}</p>
+                                        </article>
+                                    ))}
+                                </div>
+                            </section>
+                        );
+                    })
+                )}
+            </main>
 
-                                        <div className={styles.itemTags}>
-                                            {item.isVegetarian && <span className={styles.tagVeg} title="Vegetariano">Veg</span>}
-                                            {item.isVegan && <span className={styles.tagVegan} title="Vegano">Vegan</span>}
-                                            {item.allergens && (
-                                                (() => {
-                                                    try {
-                                                        const nums = JSON.parse(item.allergens);
-                                                        if (Array.isArray(nums) && nums.length > 0) {
-                                                            return (
-                                                                <span className={styles.tagGf} style={{ background: '#e3f2fd', color: '#0d47a1' }} title="Allergeni">
-                                                                    All: {nums.join(', ')}
-                                                                </span>
-                                                            );
-                                                        }
-                                                    } catch (e) { }
-                                                    return null;
-                                                })()
-                                            )}
-                                            {item.spiciness > 0 && <span className={styles.tagSpicy} title={`Piccantezza ${item.spiciness}/3`}>{'🌶️'.repeat(item.spiciness)}</span>}
-                                        </div>
-                                    </div>
-                                    {item.imageUrl && (
-                                        <img
-                                            src={item.imageUrl}
-                                            alt={item.name}
-                                            className={styles.itemImage}
-                                        />
-                                    )}
-                                </article>
-                            ))}
-                        </div>
-                    </section>
-                );
-            })
-        )}
-    </main>
+            {/* Show allergen info only for Aperifish */}
+            {
+                restaurant.name.toLowerCase().includes('aperifish') && (
+                    <AllergenInfo />
+                )
+            }
 
-    {/* Show allergen info only for Aperifish */ }
-    {
-        restaurant.name.toLowerCase().includes('aperifish') && (
-            <AllergenInfo />
-        )
-    }
-
-    <footer className={styles.footer} style={{ backgroundColor: 'transparent', color: restaurant.textColor, opacity: 0.6 }}>
-        Powered by <strong>Gardigital Menu</strong>
-        <details style={{ marginTop: '20px', fontSize: '10px' }}>
-            <summary>Debug Info</summary>
-            <pre>{JSON.stringify({
-                name: restaurant.name,
-                whatsapp: restaurant.whatsappNumber,
-                id: (restaurant as any).id
-            }, null, 2)}</pre>
-        </details>
-    </footer>
+            <footer className={styles.footer} style={{ backgroundColor: 'transparent', color: restaurant.textColor, opacity: 0.6 }}>
+                Powered by <strong>Gardigital Menu</strong>
+                <details style={{ marginTop: '20px', fontSize: '10px' }}>
+                    <summary>Debug Info</summary>
+                    <pre>{JSON.stringify({
+                        name: restaurant.name,
+                        whatsapp: restaurant.whatsappNumber,
+                        id: (restaurant as any).id
+                    }, null, 2)}</pre>
+                </details>
+            </footer>
         </div >
     );
 }
