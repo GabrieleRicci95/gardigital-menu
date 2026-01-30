@@ -293,11 +293,22 @@ export default function ReservationsPage() {
                                 </a>
                                 <button
                                     className={styles.btnActionDanger}
-                                    style={{ marginLeft: 'auto', background: '#d32f2f' }}
+                                    style={{
+                                        marginLeft: 'auto',
+                                        background: 'transparent',
+                                        border: '1px solid #ff4444',
+                                        color: '#ff4444',
+                                        borderRadius: '20px',
+                                        padding: '5px 12px',
+                                        fontSize: '0.85rem',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '5px'
+                                    }}
                                     onClick={() => handleDelete(res.id)}
                                     title="Elimina definitivamente"
                                 >
-                                    🗑️
+                                    ✕ Elimina
                                 </button>
                             </div>
                         </div>
