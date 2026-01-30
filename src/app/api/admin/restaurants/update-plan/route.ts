@@ -45,7 +45,7 @@ export async function POST(req: Request) {
             }
         }
 
-        if (!restaurantId || !['FREE', 'PREMIUM', 'WEBSITE'].includes(newPlan)) {
+        if (!restaurantId || !['FREE', 'PREMIUM', 'WEBSITE', 'FULL'].includes(newPlan)) {
             return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
         }
 
