@@ -97,8 +97,8 @@ export default function Home() {
             {/* Website / Agency Plan */}
             <div className={`${styles.pricingCard} ${styles.agencyCard}`}>
               <div className={styles.badge} style={{ backgroundColor: '#e2b13c', color: '#000' }}>BEST VALUE</div>
-              <h3 className={styles.planName}>Sito Web Completo</h3>
-              <div className={styles.price}>Su Misura</div>
+              <h3 className={styles.planName}>Full</h3>
+              <div className={styles.price}>€69,<small style={{ fontSize: '0.6em' }}>99</small><span className={styles.period}>/mese</span></div>
               <ul className={styles.planFeatures}>
                 <li><strong>Realizzazione Sito Internet</strong></li>
                 <li>Menu Digitale Premium Incluso</li>
@@ -107,7 +107,7 @@ export default function Home() {
                 <li>Sistema Prenotazioni Tavoli</li>
                 <li>Indicizzazione Google (SEO)</li>
               </ul>
-              <Link href="/contact?plan=Website" className={styles.primaryBtn} style={{ backgroundColor: '#e2b13c', color: '#000', border: 'none', textAlign: 'center' }}>Richiedi Preventivo</Link>
+              <Link href="/contact?plan=Full" className={styles.primaryBtn} style={{ backgroundColor: '#e2b13c', color: '#000', border: 'none', textAlign: 'center' }}>Richiedi Full</Link>
             </div>
 
           </div>
