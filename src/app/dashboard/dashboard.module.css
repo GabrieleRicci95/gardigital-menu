@@ -123,7 +123,7 @@
     margin-bottom: var(--spacing-md);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .sidebar {
         transform: translateX(-100%);
         box-shadow: none;

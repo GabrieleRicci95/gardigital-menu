@@ -326,3 +326,47 @@
         transform: scale(1);
     }
 }
+
+@media (max-width: 1024px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .headerTitle {
+        font-size: 1.8rem;
+    }
+
+    .actions {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .createMenuForm {
+        width: 100%;
+    }
+
+    .createInput {
+        width: 100%;
+        margin-right: -40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .categoryHeader {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .itemRow {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .itemPrice {
+        align-self: flex-end;
+    }
+}
