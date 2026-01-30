@@ -18,7 +18,6 @@ export default function Home() {
       <main>
         <section className={styles.hero}>
           <div className={styles.heroContent}>
-            <div className={styles.trustBadge}>Unisciti a oltre 100 ristoranti d'élite</div>
             <h1 className={styles.heroTitle}>
               Digitalizza il tuo Ristorante:<br />
               <span className={styles.highlight}>dal Menu alle Prenotazioni</span>
