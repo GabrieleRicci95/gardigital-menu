@@ -110,7 +110,7 @@ export default function Home() {
               <h3 className={styles.planName}>Premium</h3>
               <div className={styles.price}>€29,<small style={{ fontSize: '0.6em' }}>99</small><span className={styles.period}>/mese</span></div>
               <ul className={styles.planFeatures}>
-                <li><strong>Tutto incluso nel Base</strong></li>
+                <li>Tutto incluso nel Base</li>
                 <li>Piatti Illimitati</li>
                 <li>Immagini Piatti Personalizzabili</li>
 
