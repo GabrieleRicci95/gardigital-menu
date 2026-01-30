@@ -15,6 +15,7 @@ export default function DashboardLayout({
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const [restaurantName, setRestaurantName] = useState('');
+    const [subscriptionPlan, setSubscriptionPlan] = useState<string>('BASE');
 
     useEffect(() => {
         const fetchRestaurantData = async () => {
@@ -24,7 +25,9 @@ export default function DashboardLayout({
                     const data = await res.json();
                     if (data.restaurant) {
                         setRestaurantName(data.restaurant.name);
-                        if (!data.restaurant.subscription) {
+                        if (data.restaurant.subscription) {
+                            setSubscriptionPlan(data.restaurant.subscription.plan);
+                        } else {
                             router.push('/onboarding');
                         }
                     }
@@ -54,10 +57,10 @@ export default function DashboardLayout({
         { label: 'Vini', href: '/dashboard/wine-list', icon: 'Wine' },
         { label: 'Champagne', href: '/dashboard/champagne-list', icon: 'Glass' },
         { label: 'Drink', href: '/dashboard/drink-list', icon: 'Cocktail' },
-        { label: 'Agenda', href: '/dashboard/reservations', icon: 'Calendar' }, // New Link
+        { label: 'Agenda', href: '/dashboard/reservations', icon: 'Calendar', requiresFull: true }, // New Link
         { label: 'Aspetto & Design', href: '/dashboard/design', icon: 'Palette' },
         { label: 'QR Code', href: '/dashboard/qrcode', icon: 'QR' },
-    ];
+    ].filter(item => !item.requiresFull || subscriptionPlan === 'FULL');
 
     const handleLogout = async () => {
         await fetch('/api/auth/logout', { method: 'POST' });

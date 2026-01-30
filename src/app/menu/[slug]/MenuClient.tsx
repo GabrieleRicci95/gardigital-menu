@@ -43,6 +43,7 @@ export interface MenuPageRestaurant {
     wineList?: { isActive: boolean } | null;
     champagneList?: { isActive: boolean } | null;
     drinkList?: { isActive: boolean } | null;
+    subscription?: { plan: string } | null;
     categories: MenuPageCategory[];
 }
 
@@ -123,8 +124,8 @@ export default function MenuClient({ restaurant }: { restaurant: MenuPageRestaur
 
 
 
-            {/* Floating Reservation Button - Only if WhatsApp number exists */}
-            {restaurant.whatsappNumber && (
+            {/* Floating Reservation Button - Only if WhatsApp number exists AND Plan is FULL */}
+            {restaurant.whatsappNumber && restaurant.subscription?.plan === 'FULL' && (
                 <>
                     <button
                         onClick={() => setIsReservationOpen(true)}

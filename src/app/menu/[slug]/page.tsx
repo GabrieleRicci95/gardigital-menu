@@ -42,6 +42,9 @@ async function getRestaurant(slug: string): Promise<MenuPageRestaurant | null> {
             },
             drinkList: {
                 select: { isActive: true }
+            },
+            subscription: {
+                select: { plan: true }
             }
         }
     });
