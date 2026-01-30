@@ -54,9 +54,21 @@ model Restaurant {
   champagneList ChampagneList?
   drinkList   DrinkList?
   reservations Reservation[] // Added for Reservation System
+  translations RestaurantTranslation[]
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model RestaurantTranslation {
+    id          String   @id @default(cuid())
+    language    String   // "en", "de", "fr", "es"
+    description String?  @db.Text
+    
+    restaurantId String
+    restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+
+    @@unique([restaurantId, language])
 }
 
 model Menu {

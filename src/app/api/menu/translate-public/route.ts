@@ -26,10 +26,17 @@ export async function POST(request: Request) {
 
         const targetLangCode = langMap[targetLanguage] || (targetLanguage as any);
 
-        // 1. Fetch the menu with categories and items in Italian
+        // 1. Fetch the menu with categories and items AND restaurant in Italian
         const menu = await prisma.menu.findUnique({
             where: { id: menuId },
             include: {
+                restaurant: {
+                    include: {
+                        translations: {
+                            where: { language: targetLanguage }
+                        }
+                    }
+                },
                 categories: {
                     include: {
                         items: true,
@@ -45,7 +52,19 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Menu not found' }, { status: 404 });
         }
 
-        // Filtering logic: include placeholders or missing translations
+        const restaurant = menu.restaurant;
+
+        // Check if restaurant description needs translation
+        let restaurantDescriptionTranslation = null;
+        if (restaurant.description) {
+            const existingTrans = restaurant.translations[0];
+            if (!existingTrans || existingTrans.description === restaurant.description) {
+                const res = await translator.translateText(restaurant.description, 'it' as any, targetLangCode);
+                restaurantDescriptionTranslation = res.text;
+            }
+        }
+
+        // Filtering logic for categories: include placeholders or missing translations
         const categoriesToTranslate = menu.categories.filter(cat =>
             cat.translations.length === 0 ||
             cat.translations[0].name.startsWith(`[${targetLanguage.toUpperCase()}]`) ||
@@ -68,7 +87,7 @@ export async function POST(request: Request) {
         );
         const itemsToTranslate = allItems.filter(item => !translatedItemIds.has(item.id));
 
-        if (categoriesToTranslate.length === 0 && itemsToTranslate.length === 0) {
+        if (categoriesToTranslate.length === 0 && itemsToTranslate.length === 0 && !restaurantDescriptionTranslation) {
             return NextResponse.json({ message: 'Already translated' });
         }
 
@@ -93,6 +112,23 @@ export async function POST(request: Request) {
 
         // 4. Save translations to DB
         await prisma.$transaction([
+            // Restaurant Description
+            ...(restaurantDescriptionTranslation ? [
+                prisma.restaurantTranslation.upsert({
+                    where: {
+                        restaurantId_language: {
+                            restaurantId: restaurant.id,
+                            language: targetLanguage
+                        }
+                    },
+                    update: { description: restaurantDescriptionTranslation },
+                    create: {
+                        restaurantId: restaurant.id,
+                        language: targetLanguage,
+                        description: restaurantDescriptionTranslation
+                    }
+                })
+            ] : []),
             // Categories
             ...catTranslations.map((t) =>
                 prisma.categoryTranslation.upsert({
