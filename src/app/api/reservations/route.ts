@@ -93,6 +93,10 @@ export async function POST(req: Request) {
         // FIXME: Handle Daylight Saving Time automatically. currently hardcoded to +01:00 (CET)
         const dateTimeString = `${date}T${time}:00+01:00`;
 
+        // Check authentication to determine if we can set status manually
+        const session = await getSession();
+        const initialStatus = (session && body.status) ? body.status : 'PENDING';
+
         const reservation = await prisma.reservation.create({
             data: {
                 restaurantId,
@@ -102,7 +106,7 @@ export async function POST(req: Request) {
                 guests: Number(guests),
                 date: new Date(dateTimeString),
                 notes,
-                status: 'PENDING'
+                status: initialStatus
             }
         });
 

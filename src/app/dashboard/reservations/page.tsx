@@ -111,6 +111,61 @@ export default function ReservationsPage() {
         HISTORY: reservations.filter(r => r.status === 'REJECTED' || r.status === 'CANCELLED').length
     };
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    // New Reservation Form State
+    const [newRes, setNewRes] = useState({
+        name: '',
+        guests: 2,
+        date: new Date().toISOString().split('T')[0],
+        time: '19:30',
+        phone: '',
+        notes: ''
+    });
+
+    const handleCreateReservation = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+
+        try {
+            // Get restaurant ID first (should be optimized in a real app)
+            const restaurantRes = await fetch('/api/restaurant');
+            const restaurantData = await restaurantRes.json();
+
+            if (!restaurantData.restaurant) throw new Error('Ristorante non trovato');
+
+            const res = await fetch('/api/reservations', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    restaurantId: restaurantData.restaurant.id,
+                    name: newRes.name,
+                    guests: newRes.guests,
+                    date: newRes.date,
+                    time: newRes.time,
+                    phone: newRes.phone || 'Manuale',
+                    notes: newRes.notes,
+                    status: 'CONFIRMED' // Auto-confirm manual entries
+                })
+            });
+
+            if (res.ok) {
+                alert('Prenotazione inserita con successo! ✅');
+                setIsModalOpen(false);
+                setNewRes({ ...newRes, name: '', phone: '', notes: '' }); // Reset fields
+                fetchReservations();
+            } else {
+                const err = await res.json();
+                alert('Errore: ' + (err.error || 'Impossibile creare'));
+            }
+        } catch (error) {
+            console.error(error);
+            alert('Errore di connessione');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <div className={styles.container}>
             <header className={styles.header}>
@@ -119,6 +174,13 @@ export default function ReservationsPage() {
                     <p className={styles.subtitle}>Gestisci le richieste per il tuo locale.</p>
                 </div>
                 <div className={styles.controls}>
+                    <button
+                        className={styles.btnPrimary}
+                        style={{ backgroundColor: '#2e7d32', marginRight: '1rem' }}
+                        onClick={() => setIsModalOpen(true)}
+                    >
+                        + Nuova Prenotazione
+                    </button>
                     <input
                         type="date"
                         value={filterDate}
@@ -126,7 +188,7 @@ export default function ReservationsPage() {
                         className={styles.dateInput}
                     />
                     <button className={styles.btnPrimary} onClick={() => fetchReservations()}>
-                        + Aggiorna
+                        ↻
                     </button>
                 </div>
             </header>
@@ -216,6 +278,117 @@ export default function ReservationsPage() {
                             </div>
                         </div>
                     ))}
+                </div>
+            )}
+
+            {/* MANUAL RESERVATION MODAL */}
+            {isModalOpen && (
+                <div style={{
+                    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                    backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000
+                }}>
+                    <div style={{
+                        backgroundColor: 'white', padding: '2rem', borderRadius: '12px', width: '90%', maxWidth: '500px',
+                        boxShadow: '0 4px 20px rgba(0,0,0,0.2)'
+                    }}>
+                        <h2 style={{ marginBottom: '1.5rem', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>Nuova Prenotazione Manuale</h2>
+
+                        <form onSubmit={handleCreateReservation}>
+                            <div style={{ marginBottom: '1rem' }}>
+                                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Nome Cliente</label>
+                                <input
+                                    type="text"
+                                    required
+                                    className={styles.dateInput} // Reuse existing input style
+                                    style={{ width: '100%' }}
+                                    value={newRes.name}
+                                    onChange={e => setNewRes({ ...newRes, name: e.target.value })}
+                                />
+                            </div>
+
+                            <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
+                                <div style={{ flex: 1 }}>
+                                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Persone</label>
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        required
+                                        className={styles.dateInput}
+                                        style={{ width: '100%' }}
+                                        value={newRes.guests}
+                                        onChange={e => setNewRes({ ...newRes, guests: parseInt(e.target.value) })}
+                                    />
+                                </div>
+                                <div style={{ flex: 1 }}>
+                                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Ora</label>
+                                    <input
+                                        type="time"
+                                        required
+                                        className={styles.dateInput}
+                                        style={{ width: '100%' }}
+                                        value={newRes.time}
+                                        onChange={e => setNewRes({ ...newRes, time: e.target.value })}
+                                    />
+                                </div>
+                            </div>
+
+                            <div style={{ marginBottom: '1rem' }}>
+                                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Data</label>
+                                <input
+                                    type="date"
+                                    required
+                                    className={styles.dateInput}
+                                    style={{ width: '100%' }}
+                                    value={newRes.date}
+                                    onChange={e => setNewRes({ ...newRes, date: e.target.value })}
+                                />
+                            </div>
+
+                            <div style={{ marginBottom: '1rem' }}>
+                                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Telefono (Opzionale)</label>
+                                <input
+                                    type="tel"
+                                    className={styles.dateInput}
+                                    style={{ width: '100%' }}
+                                    placeholder="Es. 333 1234567"
+                                    value={newRes.phone}
+                                    onChange={e => setNewRes({ ...newRes, phone: e.target.value })}
+                                />
+                            </div>
+
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Note</label>
+                                <textarea
+                                    rows={3}
+                                    className={styles.dateInput}
+                                    style={{ width: '100%', fontFamily: 'inherit' }}
+                                    placeholder="Es. Seggiolone, Tavolo esterno..."
+                                    value={newRes.notes}
+                                    onChange={e => setNewRes({ ...newRes, notes: e.target.value })}
+                                />
+                            </div>
+
+                            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
+                                <button
+                                    type="button"
+                                    onClick={() => setIsModalOpen(false)}
+                                    style={{
+                                        padding: '0.75rem 1.5rem', borderRadius: '8px', border: '1px solid #ddd',
+                                        background: '#f5f5f5', cursor: 'pointer', fontWeight: 500
+                                    }}
+                                >
+                                    Annulla
+                                </button>
+                                <button
+                                    type="submit"
+                                    className={styles.btnPrimary}
+                                    style={{ backgroundColor: '#2e7d32', border: 'none' }}
+                                >
+                                    Inserisci in Agenda
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             )}
         </div>
