@@ -566,7 +566,7 @@ export default function MenuBuilderPage() {
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flex: 1, justifyContent: 'space-between' }}>
                                             <h3 style={{ margin: 0, fontSize: '1.3rem', fontFamily: 'var(--font-playfair, serif)' }}>{cat.name}</h3>
                                             <div style={{ display: 'flex', gap: '8px' }}>
-                                                <button className={styles.btnSecondary} onClick={() => {
+                                                <button className={styles.btnSecondary} style={{ width: '100px', justifyContent: 'center' }} onClick={() => {
                                                     setEditingCatId(cat.id);
                                                     setActiveCatLang('it');
                                                     setEditCatData({
@@ -574,7 +574,7 @@ export default function MenuBuilderPage() {
                                                         translations: cat.translations?.reduce((acc, t) => ({ ...acc, [t.language]: { name: t.name } }), {}) || {}
                                                     });
                                                 }}>Modifica</button>
-                                                <button className={styles.btnDanger} onClick={() => {
+                                                <button className={styles.btnDanger} style={{ width: '100px', justifyContent: 'center' }} onClick={() => {
                                                     requestDelete(cat.id, cat.id, true, false);
                                                 }}>Cancella</button>
                                             </div>
