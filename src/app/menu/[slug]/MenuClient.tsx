@@ -17,12 +17,14 @@ interface MenuPageItem {
     isVegetarian: boolean;
     spiciness: number;
     allergens: string | null;
+    translations?: { language: string; name: string; description: string | null }[];
 }
 
 interface MenuPageCategory {
     id: string;
     name: string;
     items: MenuPageItem[];
+    translations?: { language: string; name: string }[];
 }
 
 export interface MenuPageRestaurant {
@@ -46,9 +48,22 @@ export interface MenuPageRestaurant {
 }
 
 
-export default function MenuClient({ restaurant }: { restaurant: MenuPageRestaurant }) {
+const LANGUAGES = [
+    { code: 'it', label: '🇮🇹' },
+    { code: 'en', label: '🇬🇧' },
+    { code: 'fr', label: '🇫🇷' },
+    { code: 'de', label: '🇩🇪' },
+];
+
+export default function MenuClient({ restaurant: initialRestaurant }: { restaurant: MenuPageRestaurant }) {
+    const [restaurant, setRestaurant] = useState(initialRestaurant);
     const [activeFilters, setActiveFilters] = useState<Set<string>>(new Set());
+    const [language, setLanguage] = useState<string>('it');
     const [isReservationOpen, setIsReservationOpen] = useState(false);
+    const [isTranslating, setIsTranslating] = useState(false);
+
+    // Get any active categories/items context if we need it for menu lookup
+    const activeMenuId = (initialRestaurant as any).menus?.[0]?.id || (initialRestaurant as any).id;
 
     const toggleFilter = (filter: string) => {
         const newFilters = new Set(activeFilters);
@@ -65,6 +80,61 @@ export default function MenuClient({ restaurant }: { restaurant: MenuPageRestaur
         if (activeFilters.has('glutenFree') && !item.isGlutenFree) return false;
         if (activeFilters.has('vegetarian') && !item.isVegetarian) return false;
         return true;
+    };
+
+    const handleLanguageChange = async (newLang: string) => {
+        if (newLang === 'it') {
+            setLanguage('it');
+            return;
+        }
+
+        const needsTranslation = restaurant.categories.some(cat =>
+            !cat.translations?.find(t => t.language === newLang) ||
+            cat.items.some(item => !item.translations?.find(t => t.language === newLang))
+        );
+
+        if (needsTranslation) {
+            setIsTranslating(true);
+            try {
+                const res = await fetch('/api/menu/translate-public', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ menuId: activeMenuId, targetLanguage: newLang })
+                });
+
+                if (res.ok) {
+                    // Re-fetch data or update local state? For simplicity, we re-fetch briefly or just hope the next refresh catches it.
+                    // Better: re-fetch the restaurant data
+                    const slugRes = await fetch(`/api/menu/public?slug=${restaurant.slug}`);
+                    if (slugRes.ok) {
+                        const newData = await slugRes.json();
+                        setRestaurant(newData.restaurant);
+                    }
+                }
+            } catch (error) {
+                console.error('Translation failed', error);
+            } finally {
+                setIsTranslating(false);
+            }
+        }
+
+        setLanguage(newLang);
+    };
+
+    // Helper to get translated texts
+    const getCatName = (cat: MenuPageCategory) => {
+        if (language === 'it') return cat.name;
+        return cat.translations?.find(t => t.language === language)?.name || cat.name;
+    };
+
+    const getItemName = (item: MenuPageItem) => {
+        if (language === 'it') return item.name;
+        return item.translations?.find(t => t.language === language)?.name || item.name;
+    };
+
+    const getItemDesc = (item: MenuPageItem) => {
+        if (language === 'it') return item.description;
+        return item.translations?.find(t => t.language === language)?.description || item.description;
     };
 
 
@@ -99,6 +169,65 @@ export default function MenuClient({ restaurant }: { restaurant: MenuPageRestaur
             `}</style>
 
 
+
+            {/* Floating Language Selector */}
+            <div style={{
+                position: 'fixed',
+                bottom: '80px', // Above the reservation button if it exists
+                right: '20px',
+                zIndex: 100,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '8px'
+            }}>
+                {LANGUAGES.map(lang => (
+                    <button
+                        key={lang.code}
+                        onClick={() => handleLanguageChange(lang.code)}
+                        style={{
+                            width: '40px',
+                            height: '40px',
+                            borderRadius: '50%',
+                            border: 'none',
+                            backgroundColor: language === lang.code ? restaurant.themeColor : 'white',
+                            color: language === lang.code ? 'white' : 'black',
+                            fontSize: '1.2rem',
+                            cursor: 'pointer',
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            transition: 'all 0.2s',
+                            opacity: isTranslating ? 0.5 : 1,
+                            pointerEvents: isTranslating ? 'none' : 'auto'
+                        }}
+                        title={lang.code.toUpperCase()}
+                    >
+                        {lang.label}
+                    </button>
+                ))}
+            </div>
+
+            {/* Translating Overlay */}
+            {isTranslating && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    zIndex: 1000,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'white'
+                }}>
+                    <div className={styles.spinner}></div>
+                    <p style={{ marginTop: '15px', fontWeight: 'bold' }}>🪄 Traduzione AI in corso...</p>
+                </div>
+            )}
 
             {/* Floating Reservation Button - Only if WhatsApp number exists AND Plan is FULL */}
             {restaurant.whatsappNumber && restaurant.subscription?.plan === 'FULL' && (
@@ -305,7 +434,7 @@ export default function MenuClient({ restaurant }: { restaurant: MenuPageRestaur
                             href={`#cat-${cat.id}`}
                             className={styles.navLink}
                         >
-                            {cat.name}
+                            {getCatName(cat)}
                         </a>
                     ))}
                 </nav>
@@ -330,21 +459,21 @@ export default function MenuClient({ restaurant }: { restaurant: MenuPageRestaur
                                 style={{ backgroundColor: 'transparent', borderBottom: '1px solid rgba(0,0,0,0.05)' }}
                             >
                                 <h2 className={styles.categoryTitle} style={{ color: restaurant.themeColor, borderBottomColor: restaurant.themeColor }}>
-                                    {cat.name}
+                                    {getCatName(cat)}
                                 </h2>
                                 <div className={styles.itemsGrid}>
                                     {filteredItems.map(item => (
                                         <article key={item.id} className={`${styles.itemCard} ${getCardClass()}`} style={{ backgroundColor: restaurant.cardStyle === 'glass' ? 'rgba(255,255,255,0.7)' : 'white' }}>
                                             <div className={styles.itemInfo}>
                                                 <div className={styles.itemHeader}>
-                                                    <h3 className={styles.itemName} style={{ color: restaurant.textColor }}>{item.name}</h3>
+                                                    <h3 className={styles.itemName} style={{ color: restaurant.textColor }}>{getItemName(item)}</h3>
                                                     {item.price !== null && Number(item.price) > 0 && (
                                                         <span className={styles.itemPrice} style={{ color: restaurant.themeColor }}>
                                                             € {Number(item.price).toFixed(2)}
                                                         </span>
                                                     )}
                                                 </div>
-                                                <p className={styles.itemDesc} style={{ color: restaurant.textColor, opacity: 0.8 }}>{item.description}</p>
+                                                <p className={styles.itemDesc} style={{ color: restaurant.textColor, opacity: 0.8 }}>{getItemDesc(item)}</p>
 
                                                 <div className={styles.itemTags}>
                                                     {item.isVegetarian && <span className={styles.tagVeg} title="Vegetariano">Veg</span>}
