@@ -41,8 +41,8 @@ async function getStats() {
         }
     });
 
-    // Revenue: Base (€9.99) + Premium (€29) + Full (€69.99)
-    const estimatedRevenue = (baseSubscriptions * 9.99) + (premiumSubscriptions * 29) + (fullSubscriptions * 69.99);
+    // Revenue: Base (€9.99) + Premium (€29.99) + Full (€69.99)
+    const estimatedRevenue = (baseSubscriptions * 9.99) + (premiumSubscriptions * 29.99) + (fullSubscriptions * 69.99);
 
     return {
         totalRestaurants,
@@ -99,7 +99,7 @@ export default async function AdminDashboardPage() {
                     </div>
                     <div>
                         <p className={styles.stat}>€ {stats.estimatedRevenue}</p>
-                        <span className={styles.subtext}>Base €9.99 + Premium €29 + Full €69.99</span>
+                        <span className={styles.subtext}>Base €9.99 + Premium €29.99 + Full €69.99</span>
                     </div>
                 </div>
 

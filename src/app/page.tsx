@@ -108,7 +108,7 @@ export default function Home() {
             <div className={`${styles.pricingCard} ${styles.premiumCard}`}>
               <div className={styles.badge}>CONSIGLIATO</div>
               <h3 className={styles.planName}>Premium</h3>
-              <div className={styles.price}>€29<span className={styles.period}>/mese</span></div>
+              <div className={styles.price}>€29,<small style={{ fontSize: '0.6em' }}>99</small><span className={styles.period}>/mese</span></div>
               <ul className={styles.planFeatures}>
                 <li><strong>Tutto incluso nel Base</strong></li>
                 <li>Piatti Illimitati</li>
