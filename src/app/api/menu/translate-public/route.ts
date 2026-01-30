@@ -36,7 +36,11 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Menu not found' }, { status: 404 });
         }
 
-        const categoriesToTranslate = menu.categories.filter(cat => cat.translations.length === 0);
+        const categoriesToTranslate = menu.categories.filter(cat =>
+            cat.translations.length === 0 ||
+            cat.translations[0].name.startsWith(`[${targetLanguage.toUpperCase()}]`) ||
+            cat.translations[0].name === cat.name
+        );
 
         // Items also need checking for translations
         const allItems = menu.categories.flatMap(cat => cat.items);
@@ -49,7 +53,10 @@ export async function POST(request: Request) {
             }
         });
 
-        const translatedItemIds = new Set(existingItemTranslations.map(t => t.menuItemId));
+        const translatedItemIds = new Set(existingItemTranslations
+            .filter(t => !t.name.startsWith(`[${targetLanguage.toUpperCase()}]`) && t.name !== allItems.find(i => i.id === t.menuItemId)?.name)
+            .map(t => t.menuItemId)
+        );
         const itemsToTranslate = allItems.filter(item => !translatedItemIds.has(item.id));
 
         if (categoriesToTranslate.length === 0 && itemsToTranslate.length === 0) {
@@ -63,6 +70,9 @@ export async function POST(request: Request) {
         };
 
         const prompt = `Translate the following restaurant menu content from Italian to ${targetLanguage}.
+        IMPORTANT: Perform a REAL translation. Do not just prepend the language code like "[EN]". 
+        Translate names and descriptions accurately into the target language.
+        
         Return ONLY a JSON object with the following structure:
         {
           "categories": [ { "id": "...", "name": "..." } ],

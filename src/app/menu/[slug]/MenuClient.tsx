@@ -88,10 +88,15 @@ export default function MenuClient({ restaurant: initialRestaurant }: { restaura
             return;
         }
 
-        const needsTranslation = restaurant.categories.some(cat =>
-            !cat.translations?.find(t => t.language === newLang) ||
-            cat.items.some(item => !item.translations?.find(t => t.language === newLang))
-        );
+        const needsTranslation = restaurant.categories.some(cat => {
+            const catTrans = cat.translations?.find(t => t.language === newLang);
+            if (!catTrans || catTrans.name.startsWith(`[${newLang.toUpperCase()}]`) || catTrans.name === cat.name) return true;
+
+            return cat.items.some(item => {
+                const itemTrans = item.translations?.find(t => t.language === newLang);
+                return !itemTrans || itemTrans.name.startsWith(`[${newLang.toUpperCase()}]`) || itemTrans.name === item.name;
+            });
+        });
 
         if (needsTranslation) {
             setIsTranslating(true);
