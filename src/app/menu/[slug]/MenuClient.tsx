@@ -300,7 +300,7 @@ export default function MenuClient({ restaurant: initialRestaurant }: { restaura
                     )}
                     <h1 className={styles.restaurantName}>{restaurant.name}</h1>
                     {restaurant.description && (
-                        <p className={styles.restaurantDescription}>
+                        <p className={styles.restaurantDesc}>
                             {getRestaurantDesc()}
                         </p>
                     )}
