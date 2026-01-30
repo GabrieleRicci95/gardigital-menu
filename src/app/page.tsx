@@ -18,16 +18,44 @@ export default function Home() {
       <main>
         <section className={styles.hero}>
           <div className={styles.heroContent}>
+            <div className={styles.trustBadge}>Unisciti a oltre 100 ristoranti d'élite</div>
             <h1 className={styles.heroTitle}>
-              Il Menu Digitale <span className={styles.highlight}>Premium</span><br />per il tuo Ristorante
+              Digitalizza il tuo Ristorante:<br />
+              <span className={styles.highlight}>dal Menu alle Prenotazioni</span>
             </h1>
             <p className={styles.heroText}>
-              Crea menu eleganti e offri un'esperienza moderna ai tuoi clienti.
-              Realizziamo anche <strong>Siti Web Professionali</strong> su misura per la tua attività.
+              L'unico sistema che unisce Menu Digitale Premium, Agenda Elettronica e Sito Web Professionale.
+              Gestisci prenotazioni WhatsApp e clienti con un'unica piattaforma elegante e veloce.
             </p>
             <div className={styles.ctaGroup}>
-              <Link href="/register" className={styles.primaryBtn}>Crea il tuo Menu</Link>
-              <Link href="#features" className={styles.secondaryBtn}>Scopri le funzionalità</Link>
+              <Link href="/register" className={styles.primaryBtn}>Inizia Ora Gratis</Link>
+              <Link href="#why-us" className={styles.secondaryBtn}>Scopri di più</Link>
+            </div>
+          </div>
+        </section>
+
+        <section id="why-us" className={styles.whyUs}>
+          <div className={styles.featuresGrid}>
+            <div className={styles.featureCard}>
+              <div className={styles.featureIcon} style={{ color: '#e2b13c' }}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+              </div>
+              <h3 className={styles.featureTitle}>Design d'Eccellenza</h3>
+              <p className={styles.featureText}>Non un semplice menu, ma un'opera d'arte digitale che riflette l'identità e la classe del tuo locale.</p>
+            </div>
+            <div className={styles.featureCard}>
+              <div className={styles.featureIcon} style={{ color: '#4caf50' }}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+              </div>
+              <h3 className={styles.featureTitle}>Semplicità Assoluta</h3>
+              <p className={styles.featureText}>Gestisci piatti, prezzi e prenotazioni in pochi clic. Niente app da scaricare, tutto via browser.</p>
+            </div>
+            <div className={styles.featureCard}>
+              <div className={styles.featureIcon} style={{ color: '#1a237e' }}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l2.27-2.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+              </div>
+              <h3 className={styles.featureTitle}>Supporto Premium</h3>
+              <p className={styles.featureText}>Ti seguiamo personalizzate per configurare il tuo kit digitale. Supporto diretto WhatsApp a tua disposizione.</p>
             </div>
           </div>
         </section>
