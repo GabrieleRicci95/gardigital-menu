@@ -99,6 +99,7 @@ export default function Home() {
                 <li>Menu Digitale Semplice</li>
                 <li>QR Code</li>
                 <li>Limite piatti 20</li>
+                <li>Traduzione AI Multilingua</li>
                 <li>Supporto Email</li>
               </ul>
               <Link href="/contact?plan=Base" className={styles.secondaryBtn} style={{ background: '#f3f4f6', color: '#333', border: 'none', textAlign: 'center' }}>Contattaci per Info</Link>
@@ -113,9 +114,8 @@ export default function Home() {
                 <li>Tutto incluso nel Base</li>
                 <li>Piatti Illimitati</li>
                 <li>Immagini Piatti Personalizzabili</li>
-
+                <li>Traduzione AI Multilingua</li>
                 <li>QR Code</li>
-
                 <li>Supporto Prioritario WhatsApp</li>
               </ul>
               <Link href="/contact?plan=Premium" className={styles.primaryBtn} style={{ textAlign: 'center', boxShadow: 'none' }}>Richiedi Premium</Link>
@@ -129,6 +129,7 @@ export default function Home() {
               <ul className={styles.planFeatures}>
                 <li>Menu Digitale Premium Incluso</li>
                 <li>Personalizzazione del tuo Menu</li>
+                <li>Traduzione AI Multilingua</li>
                 <li>Servizio Prenotazioni su WhatsApp</li>
                 <li>Agenda Elettronica</li>
                 <li>Creazione Sito Internet del tuo Ristorante</li>
