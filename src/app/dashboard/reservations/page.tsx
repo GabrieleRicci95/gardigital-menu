@@ -266,7 +266,7 @@ export default function ReservationsPage() {
                                 {res.phone && <a href={`tel:${res.phone}`} className={styles.contactLink}>Tel: {res.phone}</a>}
                                 {res.notes && <p className={styles.notes}>Note: "{res.notes}"</p>}
                             </div>
-                            <div className={styles.cardActions}>
+                            <div className={styles.cardActions} style={{ justifyContent: 'center', gap: '10px', flexWrap: 'wrap' }}>
                                 {res.status === 'PENDING' && (
                                     <>
                                         <button
@@ -294,7 +294,6 @@ export default function ReservationsPage() {
                                 <button
                                     className={styles.btnActionDanger}
                                     style={{
-                                        marginLeft: 'auto',
                                         background: 'transparent',
                                         border: '1px solid #ff4444',
                                         color: '#ff4444',
