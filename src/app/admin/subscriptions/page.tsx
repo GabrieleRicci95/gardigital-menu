@@ -56,7 +56,7 @@ export default function AdminSubscriptionsPage() {
                             <tr>
                                 <th>Utente</th>
                                 <th>Ristorante</th>
-                                <th>Piano</th>
+                                <th style={{ textAlign: 'center' }}>Piano</th>
                                 <th>Stato</th>
                                 <th>Iscrizione</th>
                             </tr>
