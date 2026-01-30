@@ -114,10 +114,16 @@ export default function MenuClient({ restaurant: initialRestaurant }: { restaura
                     if (slugRes.ok) {
                         const newData = await slugRes.json();
                         setRestaurant(newData.restaurant);
+                    } else {
+                        alert("Errore nel recupero dei dati aggiornati.");
                     }
+                } else {
+                    const errorData = await res.json();
+                    alert(`Errore traduzione: ${errorData.error || 'Errore sconosciuto'}`);
                 }
             } catch (error) {
                 console.error('Translation failed', error);
+                alert("Si è verificato un errore durante la connessione al server.");
             } finally {
                 setIsTranslating(false);
             }
