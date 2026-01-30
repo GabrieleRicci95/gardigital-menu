@@ -14,6 +14,7 @@ interface Restaurant {
         status: string;
         endDate?: string | null;
     } | null;
+    createdAt: string;
 }
 
 import styles from '../admin.module.css';
@@ -108,7 +109,7 @@ export default function AdminRestaurantsPage() {
                                 <th>Ristorante</th>
                                 <th>Proprietario</th>
                                 <th>Stato Abbonamento</th>
-                                <th>Scadenza</th>
+                                <th>Iscrizione</th>
                                 <th>Azioni</th>
                             </tr>
                         </thead>
@@ -150,12 +151,7 @@ export default function AdminRestaurantsPage() {
                                             )}
                                         </td>
                                         <td style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem' }}>
-                                            {r.subscription?.plan === 'PREMIUM'
-                                                ? (r.subscription?.endDate
-                                                    ? new Date(r.subscription.endDate).toLocaleDateString('it-IT')
-                                                    : '♾️ Illimitato')
-                                                : '-'
-                                            }
+                                            {new Date(r.createdAt).toLocaleDateString('it-IT')}
                                         </td>
                                         <td>
                                             <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
