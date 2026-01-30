@@ -266,7 +266,7 @@ export default function ReservationsPage() {
                                 {res.phone && <a href={`tel:${res.phone}`} className={styles.contactLink}>Tel: {res.phone}</a>}
                                 {res.notes && <p className={styles.notes}>Note: "{res.notes}"</p>}
                             </div>
-                            <div className={styles.cardActions} style={{ justifyContent: 'center', gap: '10px', flexWrap: 'wrap' }}>
+                            <div className={styles.cardActions}>
                                 {res.status === 'PENDING' && (
                                     <>
                                         <button
@@ -294,20 +294,24 @@ export default function ReservationsPage() {
                                 <button
                                     className={styles.btnActionDanger}
                                     style={{
+                                        gridColumn: '1 / -1',
                                         background: 'transparent',
-                                        border: '1px solid #ff4444',
-                                        color: '#ff4444',
-                                        borderRadius: '20px',
-                                        padding: '5px 12px',
-                                        fontSize: '0.85rem',
+                                        border: '1px solid #ef4444',
+                                        color: '#ef4444',
+                                        borderRadius: '12px',
+                                        padding: '0.75rem',
+                                        fontSize: '0.95rem',
                                         display: 'flex',
+                                        justifyContent: 'center',
                                         alignItems: 'center',
-                                        gap: '5px'
+                                        gap: '8px',
+                                        width: '100%',
+                                        marginTop: '0.25rem'
                                     }}
                                     onClick={() => handleDelete(res.id)}
                                     title="Elimina definitivamente"
                                 >
-                                    ✕ Elimina
+                                    ✕ Elimina Prenotazione
                                 </button>
                             </div>
                         </div>
