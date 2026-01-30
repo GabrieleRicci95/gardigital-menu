@@ -70,7 +70,7 @@ export default function Home() {
               <div className={styles.price}>€9,<small style={{ fontSize: '0.6em' }}>99</small><span className={styles.period}>/mese</span></div>
               <ul className={styles.planFeatures}>
                 <li>Menu Digitale Semplice</li>
-                <li>QR Code Standard</li>
+                <li>QR Code</li>
                 <li>Limite piatti 20</li>
                 <li>Supporto Email</li>
               </ul>
@@ -87,7 +87,7 @@ export default function Home() {
                 <li>Piatti Illimitati</li>
                 <li>Immagini Piatti Personalizzabili</li>
 
-                <li>QR Code Personalizzato</li>
+                <li>QR Code</li>
 
                 <li>Supporto Prioritario WhatsApp</li>
               </ul>
