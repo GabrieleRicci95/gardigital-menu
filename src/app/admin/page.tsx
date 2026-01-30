@@ -25,21 +25,29 @@ async function getStats() {
         }
     });
 
-    const baseSubscriptions = await prisma.subscription.count({
+    const fullSubscriptions = await prisma.subscription.count({
         where: {
             status: 'ACTIVE',
-            plan: 'BASE',
+            plan: 'FULL',
             restaurant: { owner: { email: { not: 'gabrielericci234@gmail.com' } } }
         }
     });
 
-    // Revenue: Base (15€) + Premium (29€)
-    const estimatedRevenue = (baseSubscriptions * 15) + (premiumSubscriptions * 29);
+    const baseSubscriptions = await prisma.subscription.count({
+        where: {
+            status: 'ACTIVE',
+            plan: { in: ['BASE', 'FREE'] },
+            restaurant: { owner: { email: { not: 'gabrielericci234@gmail.com' } } }
+        }
+    });
+
+    // Revenue: Base (€9.99) + Premium (€29) + Full (€69.99)
+    const estimatedRevenue = (baseSubscriptions * 9.99) + (premiumSubscriptions * 29) + (fullSubscriptions * 69.99);
 
     return {
         totalRestaurants,
         activeSubscriptions,
-        estimatedRevenue
+        estimatedRevenue: estimatedRevenue.toFixed(2)
     };
 }
 
@@ -91,7 +99,7 @@ export default async function AdminDashboardPage() {
                     </div>
                     <div>
                         <p className={styles.stat}>€ {stats.estimatedRevenue}</p>
-                        <span className={styles.subtext}>Base €15 + Premium €29</span>
+                        <span className={styles.subtext}>Base €9.99 + Premium €29 + Full €69.99</span>
                     </div>
                 </div>
 
