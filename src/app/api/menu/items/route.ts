@@ -31,7 +31,7 @@ export async function POST(request: Request) {
 
         if (!restaurant) return NextResponse.json({ error: 'Ristorante non trovato' }, { status: 404 });
 
-        const isPremium = restaurant.subscription?.status === 'ACTIVE' && restaurant.subscription?.plan === 'PREMIUM';
+        const isPremium = restaurant.subscription?.status === 'ACTIVE' && (restaurant.subscription?.plan === 'PREMIUM' || restaurant.subscription?.plan === 'FULL');
 
         if (!isPremium) {
             // Count total items across all menus

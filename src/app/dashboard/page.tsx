@@ -28,7 +28,7 @@ export default function DashboardPage() {
 
     if (loading) return <div className={styles.container}>Caricamento Dashboard...</div>;
 
-    const isPremium = subscription?.plan === 'PREMIUM' && subscription?.status === 'ACTIVE';
+    const isPremium = (subscription?.plan === 'PREMIUM' || subscription?.plan === 'FULL') && subscription?.status === 'ACTIVE';
 
     // Mock Name for greeting (could come from API)
     const restaurantName = subscription?.restaurant?.name || "Ristoratore";
@@ -48,7 +48,7 @@ export default function DashboardPage() {
                     </div>
                     <div>
                         {isPremium ? (
-                            <div className={styles.statusText}>PREMIUM</div>
+                            <div className={styles.statusText} style={{ color: subscription?.plan === 'FULL' ? '#fbc02d' : undefined }}>{subscription?.plan}</div>
                         ) : (
                             <div className={styles.statusBase}>BASE</div>
                         )}
