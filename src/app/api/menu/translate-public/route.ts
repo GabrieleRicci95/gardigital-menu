@@ -2,12 +2,15 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import OpenAI from 'openai';
 
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-});
-
 export async function POST(request: Request) {
     try {
+        const apiKey = process.env.OPENAI_API_KEY;
+        if (!apiKey) {
+            return NextResponse.json({ error: 'OpenAI API Key non configurata nel server.' }, { status: 500 });
+        }
+
+        const openai = new OpenAI({ apiKey });
+
         const { menuId, targetLanguage } = await request.json();
 
         if (!menuId || !targetLanguage) {
