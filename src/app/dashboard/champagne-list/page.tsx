@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import styles from './champagne-list.module.css';
+import styles from '../premium-dashboard.module.css';
 
 interface ChampagneItem {
     id?: string;
@@ -432,8 +432,8 @@ export default function ChampagneListPage() {
                     onClick={handleSave}
                     disabled={saving}
                     style={{
-                        background: '#1a1a1a',
-                        color: '#d4af37', // Gold text
+                        background: '#000',
+                        color: 'white',
                         padding: '12px 30px',
                         borderRadius: '40px',
                         fontSize: '1rem',

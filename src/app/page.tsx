@@ -67,11 +67,11 @@ export default function Home() {
             {/* Basic Plan */}
             <div className={styles.pricingCard}>
               <h3 className={styles.planName}>Base</h3>
-              <div className={styles.price}>€15<span className={styles.period}>/mese</span></div>
+              <div className={styles.price}>€9,99<span className={styles.period}>/mese</span></div>
               <ul className={styles.planFeatures}>
                 <li>Menu Digitale Semplice</li>
                 <li>QR Code Standard</li>
-                <li>Limite piatti 15</li>
+                <li>Limite piatti 20</li>
                 <li>Supporto Email</li>
               </ul>
               <Link href="/contact?plan=Base" className={styles.secondaryBtn} style={{ background: '#f3f4f6', color: '#333', border: 'none', textAlign: 'center' }}>Contattaci per Info</Link>

@@ -69,10 +69,10 @@ export default function SubscriptionPage() {
                     position: 'relative'
                 }}>
                     <h3 style={{ color: '#555', fontSize: '1.2rem' }}>Piano Base</h3>
-                    <div style={{ fontSize: '2.5rem', fontWeight: 'bold', margin: '1rem 0' }}>€15<span style={{ fontSize: '1rem', fontWeight: 'normal' }}>/mese</span></div>
+                    <div style={{ fontSize: '2.5rem', fontWeight: 'bold', margin: '1rem 0' }}>€9,99<span style={{ fontSize: '1rem', fontWeight: 'normal' }}>/mese</span></div>
                     <ul style={{ listStyle: 'none', padding: 0, margin: '2rem 0', lineHeight: '2' }}>
                         <li>✅ Menu Digitale Semplice</li>
-                        <li>✅ Fino a 15 Piatti</li>
+                        <li>✅ Fino a 20 Piatti</li>
                         <li>✅ QR Code Standard</li>
                         <li style={{ color: '#ccc' }}>❌ Foto Piatti</li>
                         <li style={{ color: '#ccc' }}>❌ Descrizioni AI</li>

@@ -348,3 +348,60 @@
         grid-template-columns: 1fr;
     }
 }
+/* Item Grid & Price Inputs */
+.itemGrid {
+    display: grid;
+    grid-template-columns: 1fr 100px 40px;
+    gap: 1rem;
+    align-items: start;
+    background: #fff;
+    padding: 1.25rem;
+    border-radius: 12px;
+    border: 1px solid #e5e5e5;
+    transition: all 0.2s;
+}
+
+.priceContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.priceSymbol {
+    position: absolute;
+    right: 8px;
+    color: #999;
+    font-size: 0.9rem;
+    pointer-events: none;
+}
+
+.priceContainer input {
+    width: 100%;
+    padding: 10px 25px 10px 10px;
+    border-radius: 8px;
+    border: 1px solid #e5e5e5;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-align: right;
+    outline: none;
+    color: #333;
+}
+
+@media (max-width: 768px) {
+    .itemGrid {
+        grid-template-columns: 1fr 50px 30px;
+        gap: 0.5rem;
+        padding: 0.75rem;
+    }
+
+    .priceContainer input {
+        padding: 5px 18px 5px 5px;
+        font-size: 0.9rem;
+        text-align: right;
+    }
+
+    .priceSymbol {
+        right: 4px;
+        font-size: 0.8rem;
+    }
+}

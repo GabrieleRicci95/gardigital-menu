@@ -42,8 +42,8 @@ export async function POST(request: Request) {
                 });
             });
 
-            if (totalItems >= 15) {
-                return NextResponse.json({ error: 'Limite di 15 piatti raggiunto. Passa a Premium per piatti illimitati!' }, { status: 403 });
+            if (totalItems >= 20) {
+                return NextResponse.json({ error: 'Limite di 20 piatti raggiunto. Passa a Premium per piatti illimitati!' }, { status: 403 });
             }
         }
 
