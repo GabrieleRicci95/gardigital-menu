@@ -116,3 +116,25 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: 'Failed to create reservation' }, { status: 500 });
     }
 }
+
+// DELETE: Remove a reservation (Admin Only)
+export async function DELETE(req: Request) {
+    const session = await getSession();
+    if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    try {
+        const { searchParams } = new URL(req.url);
+        const id = searchParams.get('id');
+
+        if (!id) return NextResponse.json({ error: 'ID required' }, { status: 400 });
+
+        await prisma.reservation.delete({
+            where: { id }
+        });
+
+        return NextResponse.json({ success: true });
+    } catch (error) {
+        console.error('DELETE Reservation Error:', error);
+        return NextResponse.json({ error: 'Failed to delete' }, { status: 500 });
+    }
+}
