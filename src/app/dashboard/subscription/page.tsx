@@ -69,7 +69,7 @@ export default function SubscriptionPage() {
                     position: 'relative'
                 }}>
                     <h3 style={{ color: '#555', fontSize: '1.2rem' }}>Piano Base</h3>
-                    <div style={{ fontSize: '2.5rem', fontWeight: 'bold', margin: '1rem 0' }}>€9,99<span style={{ fontSize: '1rem', fontWeight: 'normal' }}>/mese</span></div>
+                    <div style={{ fontSize: '2.5rem', fontWeight: 'bold', margin: '1rem 0' }}>€9,<span style={{ fontSize: '0.6em' }}>99</span><span style={{ fontSize: '1rem', fontWeight: 'normal' }}>/mese</span></div>
                     <ul style={{ listStyle: 'none', padding: 0, margin: '2rem 0', lineHeight: '2' }}>
                         <li>✅ Menu Digitale Semplice</li>
                         <li>✅ Fino a 20 Piatti</li>

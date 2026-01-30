@@ -67,7 +67,7 @@ export default function Home() {
             {/* Basic Plan */}
             <div className={styles.pricingCard}>
               <h3 className={styles.planName}>Base</h3>
-              <div className={styles.price}>€9,99<span className={styles.period}>/mese</span></div>
+              <div className={styles.price}>€9,<small style={{ fontSize: '0.6em' }}>99</small><span className={styles.period}>/mese</span></div>
               <ul className={styles.planFeatures}>
                 <li>Menu Digitale Semplice</li>
                 <li>QR Code Standard</li>
