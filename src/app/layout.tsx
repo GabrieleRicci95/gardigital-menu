@@ -14,8 +14,8 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Gardigital Menu - Crea il Menu Digitale Premium per il tuo Ristorante",
-  description: "Soluzione completa per menu digitali con QR Code. Aggiorna i tuoi piatti in tempo reale, gestione allergeni, traduzioni automatiche e design elegante.",
+  title: "Gardigital Menu - Il Menu Digitale Premium per il tuo Ristorante",
+  description: "Trasforma il tuo ristorante con Gardigital Menu. Crea menu digitali QR eleganti, gestisci piatti, allergeni e traduzioni in tempo reale. Un design premium per un'esperienza cliente impeccabile.",
   keywords: [
     "software menu digitale ristoranti",
     "qr code ristorante",
