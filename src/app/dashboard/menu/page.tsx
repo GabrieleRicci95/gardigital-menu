@@ -14,21 +14,13 @@ interface MenuItem {
     isVegetarian: boolean;
     spiciness: number;
     allergens: string | null;
-    translations: { language: string; name: string; description: string | null }[];
 }
 
-const LANGUAGES = [
-    { code: 'it', label: '🇮🇹 IT', default: true },
-    { code: 'en', label: '🇬🇧 EN' },
-    { code: 'fr', label: '🇫🇷 FR' },
-    { code: 'de', label: '🇩🇪 DE' },
-];
 
 interface Category {
     id: string;
     name: string;
     items: MenuItem[];
-    translations: { language: string; name: string }[];
 }
 
 interface Menu {
@@ -56,31 +48,25 @@ export default function MenuBuilderPage() {
     const [editMenuName, setEditMenuName] = useState('');
 
     // Category Form State
-    const [activeCatLang, setActiveCatLang] = useState('it');
     const [newCatData, setNewCatData] = useState<{
         name: string;
-        translations: Record<string, { name: string }>;
-    }>({ name: '', translations: {} });
+    }>({ name: '' });
 
     const [editingCatId, setEditingCatId] = useState<string | null>(null);
     const [editCatData, setEditCatData] = useState<{
         name: string;
-        translations: Record<string, { name: string }>;
-    }>({ name: '', translations: {} });
+    }>({ name: '' });
 
     // Item Form State
     const [addingItemTo, setAddingItemTo] = useState<string | null>(null);
-    const [activeItemLang, setActiveItemLang] = useState('it');
     const [newItem, setNewItem] = useState<{
         name: string; description: string; price: string;
         isVegan: boolean; isGlutenFree: boolean; isVegetarian: boolean; spiciness: number;
         allergens: number[];
-        translations: Record<string, { name: string; description: string }>;
     }>({
         name: '', description: '', price: '',
         isVegan: false, isGlutenFree: false, isVegetarian: false, spiciness: 0,
-        allergens: [],
-        translations: {}
+        allergens: []
     });
 
     const [editingId, setEditingId] = useState<string | null>(null);
@@ -88,12 +74,10 @@ export default function MenuBuilderPage() {
         name: string; description: string; price: string;
         isVegan: boolean; isGlutenFree: boolean; isVegetarian: boolean; spiciness: number;
         allergens: number[];
-        translations: Record<string, { name: string; description: string }>;
     }>({
         name: '', description: '', price: '',
         isVegan: false, isGlutenFree: false, isVegetarian: false, spiciness: 0,
-        allergens: [],
-        translations: {}
+        allergens: []
     });
 
     const [error, setError] = useState('');
@@ -214,12 +198,11 @@ export default function MenuBuilderPage() {
             body: JSON.stringify({
                 name: newCatData.name,
                 menuId: selectedMenuId,
-                translations: Object.entries(newCatData.translations).map(([lang, t]) => ({ language: lang, ...t }))
             }),
         });
 
         if (res.ok) {
-            setNewCatData({ name: '', translations: {} });
+            setNewCatData({ name: '' });
             fetchCategories(selectedMenuId);
         }
     };
@@ -232,7 +215,6 @@ export default function MenuBuilderPage() {
             body: JSON.stringify({
                 id,
                 ...editCatData,
-                translations: Object.entries(editCatData.translations).map(([lang, t]) => ({ language: lang, ...t }))
             }),
         });
         if (res.ok) {
@@ -253,7 +235,6 @@ export default function MenuBuilderPage() {
                     ...newItem,
                     categoryId: addingItemTo,
                     allergens: JSON.stringify(newItem.allergens),
-                    translations: Object.entries(newItem.translations).map(([lang, t]) => ({ language: lang, ...t }))
                 }),
             });
             if (res.ok) {
@@ -261,7 +242,6 @@ export default function MenuBuilderPage() {
                     name: '', description: '', price: '',
                     isVegan: false, isGlutenFree: false, isVegetarian: false, spiciness: 0,
                     allergens: [],
-                    translations: {}
                 });
                 setAddingItemTo(null);
                 if (selectedMenuId) fetchCategories(selectedMenuId);
@@ -280,7 +260,6 @@ export default function MenuBuilderPage() {
             body: JSON.stringify({
                 id,
                 ...editItemData,
-                translations: Object.entries(editItemData.translations).map(([lang, t]) => ({ language: lang, ...t })),
                 allergens: JSON.stringify(editItemData.allergens),
                 ...overrideData
             }),
@@ -304,7 +283,6 @@ export default function MenuBuilderPage() {
                 isGlutenFree: item.isGlutenFree,
                 isVegetarian: item.isVegetarian,
                 spiciness: item.spiciness,
-                translations: item.translations,
                 ...updates
             }),
         });
@@ -568,10 +546,8 @@ export default function MenuBuilderPage() {
                                             <div style={{ display: 'flex', gap: '8px' }}>
                                                 <button className={styles.btnSecondary} style={{ width: '100px', justifyContent: 'center' }} onClick={() => {
                                                     setEditingCatId(cat.id);
-                                                    setActiveCatLang('it');
                                                     setEditCatData({
                                                         name: cat.name,
-                                                        translations: cat.translations?.reduce((acc, t) => ({ ...acc, [t.language]: { name: t.name } }), {}) || {}
                                                     });
                                                 }}>Modifica</button>
                                                 <button className={styles.btnDanger} style={{ width: '100px', justifyContent: 'center' }} onClick={() => {
@@ -769,7 +745,6 @@ export default function MenuBuilderPage() {
                                                     <div style={{ display: 'flex', gap: '0.5rem' }}>
                                                         <button className={styles.btnSecondary} style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }} onClick={() => {
                                                             setEditingId(item.id);
-                                                            setActiveItemLang('it');
                                                             let parsedAllergens: number[] = [];
                                                             try {
                                                                 parsedAllergens = item.allergens ? JSON.parse(item.allergens) : [];
@@ -784,7 +759,6 @@ export default function MenuBuilderPage() {
                                                                 isVegetarian: item.isVegetarian,
                                                                 spiciness: item.spiciness,
                                                                 allergens: parsedAllergens,
-                                                                translations: item.translations?.reduce((acc, t) => ({ ...acc, [t.language]: { name: t.name, description: t.description } }), {}) || {}
                                                             });
                                                         }}>Modifica</button>
                                                         <button onClick={() => requestDelete(item.id, cat.id)} className={styles.btnDanger} style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}>Cancella</button>

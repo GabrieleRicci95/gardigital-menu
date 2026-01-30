@@ -254,24 +254,6 @@
     margin-bottom: 20px;
 }
 
-.aiBtn {
-    background: linear-gradient(135deg, #6200ea, #b388ff);
-    color: white;
-    border: none;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(98, 0, 234, 0.3);
-    transition: transform 0.2s;
-    margin-top: 5px;
-    display: inline-block;
-}
-
-.aiBtn:hover {
-    transform: scale(1.05);
-}
 
 .iconBtn {
     background: none;

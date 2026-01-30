@@ -20,10 +20,8 @@ export async function GET(request: Request) {
             where: { menuId: menuId },
             include: {
                 items: {
-                    include: { translations: true },
                     orderBy: { createdAt: 'asc' }
                 },
-                translations: true
             },
             orderBy: [{ sortOrder: 'asc' }, { createdAt: 'asc' }],
         });
@@ -49,14 +47,7 @@ export async function POST(request: Request) {
             data: {
                 name,
                 menuId: menuId,
-                translations: {
-                    create: translations?.map((t: any) => ({
-                        language: t.language,
-                        name: t.name
-                    })) || []
-                }
-            },
-            include: { translations: true }
+            }
         });
 
         return NextResponse.json({ category });
@@ -77,35 +68,9 @@ export async function PATCH(request: Request) {
             return NextResponse.json({ error: 'Category ID richiesto' }, { status: 400 });
         }
 
-        // Transaction to handle updates and translations
-        const category = await prisma.$transaction(async (tx) => {
-            // 1. Update basic fields
-            const updated = await tx.category.update({
-                where: { id },
-                data: { name }
-            });
-
-            // 2. Handle translations (Wipe and Replace strategy for simplicity)
-            if (translations && Array.isArray(translations)) {
-                await tx.categoryTranslation.deleteMany({
-                    where: { categoryId: id }
-                });
-
-                if (translations.length > 0) {
-                    await tx.categoryTranslation.createMany({
-                        data: translations.map((t: any) => ({
-                            categoryId: id,
-                            language: t.language,
-                            name: t.name
-                        }))
-                    });
-                }
-            }
-
-            return tx.category.findUnique({
-                where: { id },
-                include: { translations: true }
-            });
+        const category = await prisma.category.update({
+            where: { id },
+            data: { name }
         });
 
         return NextResponse.json({ category });

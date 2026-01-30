@@ -17,14 +17,12 @@ interface MenuPageItem {
     isVegetarian: boolean;
     spiciness: number;
     allergens: string | null;
-    translations?: { language: string; name: string; description: string | null }[];
 }
 
 interface MenuPageCategory {
     id: string;
     name: string;
     items: MenuPageItem[];
-    translations?: { language: string; name: string }[];
 }
 
 export interface MenuPageRestaurant {
@@ -47,16 +45,9 @@ export interface MenuPageRestaurant {
     categories: MenuPageCategory[];
 }
 
-const LANGUAGES = [
-    { code: 'it', label: '🇮🇹' },
-    { code: 'en', label: '🇬🇧' },
-    { code: 'fr', label: '🇫🇷' },
-    { code: 'de', label: '🇩🇪' },
-];
 
 export default function MenuClient({ restaurant }: { restaurant: MenuPageRestaurant }) {
     const [activeFilters, setActiveFilters] = useState<Set<string>>(new Set());
-    const [language, setLanguage] = useState<string>('it');
     const [isReservationOpen, setIsReservationOpen] = useState(false);
 
     const toggleFilter = (filter: string) => {
@@ -76,21 +67,6 @@ export default function MenuClient({ restaurant }: { restaurant: MenuPageRestaur
         return true;
     };
 
-    // Helper to get translated texts
-    const getCatName = (cat: MenuPageCategory) => {
-        if (language === 'it') return cat.name;
-        return cat.translations?.find(t => t.language === language)?.name || cat.name;
-    };
-
-    const getItemName = (item: MenuPageItem) => {
-        if (language === 'it') return item.name;
-        return item.translations?.find(t => t.language === language)?.name || item.name;
-    };
-
-    const getItemDesc = (item: MenuPageItem) => {
-        if (language === 'it') return item.description;
-        return item.translations?.find(t => t.language === language)?.description || item.description;
-    };
 
     // Dynamic Styles
     const containerStyle = {
@@ -329,7 +305,7 @@ export default function MenuClient({ restaurant }: { restaurant: MenuPageRestaur
                             href={`#cat-${cat.id}`}
                             className={styles.navLink}
                         >
-                            {getCatName(cat)}
+                            {cat.name}
                         </a>
                     ))}
                 </nav>
@@ -339,7 +315,7 @@ export default function MenuClient({ restaurant }: { restaurant: MenuPageRestaur
             <main>
                 {restaurant.categories.length === 0 ? (
                     <div className={styles.emptyState}>
-                        <p>{language === 'it' ? 'Il menu è in fase di aggiornamento.' : 'Menu is being updated.'}</p>
+                        <p>Il menu è in fase di aggiornamento.</p>
                     </div>
                 ) : (
                     restaurant.categories.map(cat => {
@@ -354,21 +330,21 @@ export default function MenuClient({ restaurant }: { restaurant: MenuPageRestaur
                                 style={{ backgroundColor: 'transparent', borderBottom: '1px solid rgba(0,0,0,0.05)' }}
                             >
                                 <h2 className={styles.categoryTitle} style={{ color: restaurant.themeColor, borderBottomColor: restaurant.themeColor }}>
-                                    {getCatName(cat)}
+                                    {cat.name}
                                 </h2>
                                 <div className={styles.itemsGrid}>
                                     {filteredItems.map(item => (
                                         <article key={item.id} className={`${styles.itemCard} ${getCardClass()}`} style={{ backgroundColor: restaurant.cardStyle === 'glass' ? 'rgba(255,255,255,0.7)' : 'white' }}>
                                             <div className={styles.itemInfo}>
                                                 <div className={styles.itemHeader}>
-                                                    <h3 className={styles.itemName} style={{ color: restaurant.textColor }}>{getItemName(item)}</h3>
+                                                    <h3 className={styles.itemName} style={{ color: restaurant.textColor }}>{item.name}</h3>
                                                     {item.price !== null && Number(item.price) > 0 && (
                                                         <span className={styles.itemPrice} style={{ color: restaurant.themeColor }}>
                                                             € {Number(item.price).toFixed(2)}
                                                         </span>
                                                     )}
                                                 </div>
-                                                <p className={styles.itemDesc} style={{ color: restaurant.textColor, opacity: 0.8 }}>{getItemDesc(item)}</p>
+                                                <p className={styles.itemDesc} style={{ color: restaurant.textColor, opacity: 0.8 }}>{item.description}</p>
 
                                                 <div className={styles.itemTags}>
                                                     {item.isVegetarian && <span className={styles.tagVeg} title="Vegetariano">Veg</span>}

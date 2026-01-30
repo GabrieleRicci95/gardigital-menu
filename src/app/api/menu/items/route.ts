@@ -58,9 +58,6 @@ export async function POST(request: Request) {
                 isVegetarian: isVegetarian || false,
                 spiciness: spiciness || 0,
                 allergens: allergens || null, // JSON string expected from frontend
-                translations: {
-                    create: translations || [] // Expects array of { language, name, description }
-                }
             },
         });
 
@@ -102,21 +99,6 @@ export async function PATCH(request: Request) {
             where: { id },
             data: dataToUpdate
         });
-
-        if (translations && Array.isArray(translations)) {
-            // Wipe and replace translations (simplest strategy)
-            await prisma.menuItemTranslation.deleteMany({ where: { menuItemId: id } });
-            if (translations.length > 0) {
-                await prisma.menuItemTranslation.createMany({
-                    data: translations.map((t: any) => ({
-                        menuItemId: id,
-                        language: t.language,
-                        name: t.name,
-                        description: t.description
-                    }))
-                });
-            }
-        }
 
         return NextResponse.json({ item });
     } catch (error) {
