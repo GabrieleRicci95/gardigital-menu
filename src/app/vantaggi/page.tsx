@@ -20,6 +20,7 @@ export default function VantaggiPage() {
                     </Link>
                 </div>
                 <nav className={styles.nav}>
+                    <Link href="/" className={styles.navLink}>Home</Link>
                     <Link href="/login" className={styles.navLink}>Accedi</Link>
                 </nav>
             </header>
