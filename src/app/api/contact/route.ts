@@ -12,7 +12,7 @@ export async function POST(req: Request) {
         }
 
         const resendApiKey = process.env.RESEND_API_KEY;
-        const adminEmail = 'gardigital234@gmail.com'; // Target email for inquiries
+        const adminEmail = 'gabrielericci234@gmail.com'; // Target email for inquiries
 
         if (!resendApiKey) {
             console.error('RESEND_API_KEY missing');

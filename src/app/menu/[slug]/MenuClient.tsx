@@ -46,6 +46,7 @@ export interface MenuPageRestaurant {
     subscription?: { plan: string } | null;
     categories: MenuPageCategory[];
     translations?: { language: string; description: string | null }[];
+    googleReviewsUrl?: string | null;
 }
 const UI_LABELS: Record<string, any> = {
     it: {
@@ -57,7 +58,8 @@ const UI_LABELS: Record<string, any> = {
         book: "Prenota Tavolo",
         translating: "🪄 Traduzione AI in corso...",
         spiciness: "Piccantezza",
-        debug: "Info Debug"
+        debug: "Info Debug",
+        review: "Lasciaci una recensione su Google"
     },
     en: {
         events: "Events & Promos",
@@ -68,7 +70,8 @@ const UI_LABELS: Record<string, any> = {
         book: "Book Table",
         translating: "🪄 AI Translation in progress...",
         spiciness: "Spiciness",
-        debug: "Debug Info"
+        debug: "Debug Info",
+        review: "Review us on Google"
     },
     fr: {
         events: "Événements & Promos",
@@ -79,7 +82,8 @@ const UI_LABELS: Record<string, any> = {
         book: "Réserver",
         translating: "🪄 Traduction AI en cours...",
         spiciness: "Piquant",
-        debug: "Infos Debug"
+        debug: "Infos Debug",
+        review: "Laissez-nous un avis su Google"
     },
     de: {
         events: "Events & Promos",
@@ -90,7 +94,8 @@ const UI_LABELS: Record<string, any> = {
         book: "Reservieren",
         translating: "🪄 KI-Übersetzung läuft...",
         spiciness: "Schärfe",
-        debug: "Debug-Info"
+        debug: "Debug-Info",
+        review: "Review uns auf Google"
     }
 };
 
@@ -575,6 +580,36 @@ export default function MenuClient({ restaurant: initialRestaurant }: { restaura
             }
 
             <footer className={styles.footer} style={{ backgroundColor: 'transparent', color: restaurant.textColor, opacity: 0.6 }}>
+                {restaurant.googleReviewsUrl && (
+                    <div style={{ marginBottom: '30px' }}>
+                        <a
+                            href={restaurant.googleReviewsUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '10px',
+                                backgroundColor: '#4285F4',
+                                color: 'white',
+                                padding: '12px 24px',
+                                borderRadius: '50px',
+                                textDecoration: 'none',
+                                fontWeight: 'bold',
+                                fontSize: '0.95rem',
+                                boxShadow: '0 4px 15px rgba(66, 133, 244, 0.3)',
+                                transition: 'all 0.3s'
+                            }}
+                            onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
+                            onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
+                        >
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12.48 10.92v3.28h7.84c-.24 1.84-.908 3.152-1.928 4.152-1.12 1.12-2.312 2.312-5.912 2.312-5.568 0-9.856-4.48-9.856-10.048 0-5.568 4.288-10.048 9.856-10.048 3.008 0 5.256 1.184 6.848 2.688l2.304-2.304C19.16 1.016 16.32 0 12.48 0 5.648 0 0 5.648 0 12.48S5.648 24.96 12.48 24.96c3.672 0 6.44-1.208 8.616-3.48 2.24-2.24 2.952-5.4 2.952-8.032 0-.768-.064-1.32-.184-1.84H12.48v.312z" />
+                            </svg>
+                            {t.review}
+                        </a>
+                    </div>
+                )}
                 Powered by <strong>Gardigital Menu</strong>
                 <details style={{ marginTop: '20px', fontSize: '10px' }}>
                     <summary>{t.debug}</summary>

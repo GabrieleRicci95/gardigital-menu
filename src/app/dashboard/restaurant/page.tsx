@@ -14,6 +14,7 @@ export default function RestaurantPage() {
         themeColor: '#1a237e',
         slug: '',
         whatsappNumber: '',
+        googleReviewsUrl: '',
     });
 
     useEffect(() => {
@@ -27,6 +28,7 @@ export default function RestaurantPage() {
                         themeColor: data.restaurant.themeColor || '#1a237e',
                         slug: data.restaurant.slug || '',
                         whatsappNumber: data.restaurant.whatsappNumber || '',
+                        googleReviewsUrl: data.restaurant.googleReviewsUrl || '',
                     });
                 }
                 setLoading(false);
@@ -106,6 +108,21 @@ export default function RestaurantPage() {
                         />
                         <span className={styles.helperText}>
                             ℹ️ Se inserito, apparirà un pulsante "Prenota Tavolo" sul tuo menu pubblico.
+                        </span>
+                    </div>
+
+                    <div className={styles.inputGroup}>
+                        <label htmlFor="googleReviewsUrl">Link Recensioni Google</label>
+                        <input
+                            type="text"
+                            id="googleReviewsUrl"
+                            value={formData.googleReviewsUrl || ''}
+                            onChange={e => setFormData({ ...formData, googleReviewsUrl: e.target.value })}
+                            placeholder="Incolla qui il link 'Scrivi una recensione' di Google"
+                            className={styles.formInput}
+                        />
+                        <span className={styles.helperText}>
+                            ℹ️ Se inserito, apparirà un invito a lasciare una recensione sul tuo menu pubblico.
                         </span>
                     </div>
 

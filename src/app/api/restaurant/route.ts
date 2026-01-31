@@ -34,7 +34,7 @@ export async function PATCH(request: Request) {
 
     try {
         const data = await request.json();
-        const { name, description, themeColor, coverImageUrl, backgroundColor, textColor, fontFamily, cardStyle, whatsappNumber, wineListUrl } = data;
+        const { name, description, themeColor, coverImageUrl, backgroundColor, textColor, fontFamily, cardStyle, whatsappNumber, wineListUrl, googleReviewsUrl } = data;
 
         if (!name) return NextResponse.json({ error: 'Il nome è obbligatorio' }, { status: 400 });
 
@@ -61,7 +61,8 @@ export async function PATCH(request: Request) {
                     fontFamily,
                     cardStyle,
                     whatsappNumber,
-                    wineListUrl, // Add this
+                    wineListUrl,
+                    googleReviewsUrl,
                     slug: existingRestaurant.name !== name ? slug + '-' + Math.floor(Math.random() * 1000) : existingRestaurant.slug
                 },
             });
@@ -82,7 +83,8 @@ export async function PATCH(request: Request) {
                     fontFamily,
                     cardStyle,
                     whatsappNumber,
-                    wineListUrl, // Add this
+                    wineListUrl,
+                    googleReviewsUrl,
                     ownerId: session.user.id,
                 },
             });
