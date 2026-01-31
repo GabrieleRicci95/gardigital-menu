@@ -28,7 +28,7 @@ export default function Home() {
             </p>
             <div className={styles.ctaGroup}>
               <Link href="/contact?plan=Informazioni" className={styles.primaryBtn}>Contattaci per informazioni</Link>
-              <Link href="#why-us" className={styles.secondaryBtn}>Scopri di più</Link>
+              <Link href="/vantaggi" className={styles.secondaryBtn}>Scopri di più</Link>
             </div>
           </div>
         </section>
