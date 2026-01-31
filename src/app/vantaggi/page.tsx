@@ -70,7 +70,7 @@ export default function VantaggiPage() {
                                 </div>
                                 <div className={`${styles.cell} ${styles.cellDigital}`}>
                                     <div className={`${styles.featureIcon} ${styles.iconGreen}`}>🌍</div>
-                                    <div className={styles.featureLabel}>DeepL AI Integration</div>
+                                    <div className={styles.featureLabel}>Traduzione con AI Integration</div>
                                     <p className={styles.featureDesc}>Traduzione istantanea in 4 lingue. I tuoi clienti stranieri ordinano con totale sicurezza e autonomia.</p>
                                 </div>
                             </div>
