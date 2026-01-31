@@ -244,7 +244,7 @@
 }
 
 .primaryBtn {
-    background: #f59e0b;
+    background: #ffd600;
     color: #000;
     padding: 1.2rem 3rem;
     border-radius: 50px;
@@ -253,7 +253,7 @@
     font-size: 1.2rem;
     display: inline-block;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 10px 25px rgba(245, 158, 11, 0.4);
+    box-shadow: 0 10px 25px rgba(255, 214, 0, 0.3);
     text-transform: uppercase;
     letter-spacing: 1px;
     border: none;
@@ -261,8 +261,8 @@
 
 .primaryBtn:hover {
     transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 15px 35px rgba(245, 158, 11, 0.5);
-    background-color: #fbbf24;
+    box-shadow: 0 15px 35px rgba(255, 214, 0, 0.4);
+    background-color: #ffea00;
 }
 
 @media (max-width: 900px) {
