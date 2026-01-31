@@ -6,71 +6,70 @@
 }
 
 .header {
-    background: rgba(26, 35, 126, 0.95);
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
-    padding: 1rem 5%;
+    -webkit-backdrop-filter: blur(10px);
+    padding: 0 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .logoImage {
-    height: 38px;
-    filter: brightness(1.1);
+    height: 90px;
+    width: auto;
+    object-fit: contain;
 }
 
 .navLink {
-    color: white;
+    color: #1a237e;
     text-decoration: none;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     padding: 8px 16px;
     border-radius: 8px;
-    transition: background 0.2s;
+    transition: all 0.2s;
 }
 
 .navLink:hover {
-    background: rgba(255, 255, 255, 0.1);
+    color: #1a237e;
+    background: rgba(26, 35, 126, 0.05);
 }
 
 .hero {
-    background: linear-gradient(135deg, #1a237e 0%, #0d47a1 50%, #01579b 100%);
+    background:
+        linear-gradient(rgba(0, 0, 50, 0.75), rgba(0, 0, 80, 0.7)),
+        url('https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80');
+    background-size: cover;
+    background-position: center;
     color: white;
-    padding: 120px 5% 140px;
+    padding: 120px 5% 160px;
     text-align: center;
     position: relative;
     overflow: hidden;
 }
 
-.hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.05) 0%, transparent 20%),
-        radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.05) 0%, transparent 20%);
-    pointer-events: none;
-}
-
 .title {
-    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
     margin-bottom: 1.5rem;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: -0.02em;
     line-height: 1.1;
+    color: white;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .subtitle {
-    font-size: clamp(1.1rem, 2vw, 1.4rem);
-    opacity: 0.9;
+    font-size: clamp(1.1rem, 2vw, 1.3rem);
+    opacity: 0.95;
     max-width: 800px;
     margin: 0 auto;
     line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .section {
