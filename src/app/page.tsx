@@ -11,7 +11,7 @@ export default function Home() {
         </div>
         <nav className={styles.nav}>
           <Link href="/login" className={styles.navLink}>Accedi</Link>
-          <Link href="/register" className={styles.primaryBtn} style={{ padding: '0.5rem 1.5rem', fontSize: '0.9rem' }}>Registrati</Link>
+          <Link href="/contact?plan=Informazioni" className={styles.primaryBtn} style={{ padding: '0.5rem 1.5rem', fontSize: '0.9rem' }}>Richiedi Info</Link>
         </nav>
       </header>
 
@@ -27,7 +27,7 @@ export default function Home() {
               Gestisci prenotazioni WhatsApp e clienti con un'unica piattaforma elegante e veloce.
             </p>
             <div className={styles.ctaGroup}>
-              <Link href="/register" className={styles.primaryBtn}>Inizia Ora Gratis</Link>
+              <Link href="/contact?plan=Informazioni" className={styles.primaryBtn}>Contattaci per informazioni</Link>
               <Link href="#why-us" className={styles.secondaryBtn}>Scopri di più</Link>
             </div>
           </div>
