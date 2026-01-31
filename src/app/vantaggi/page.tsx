@@ -129,7 +129,7 @@ export default function VantaggiPage() {
                 <section className={styles.ctaSection}>
                     <h2 className={styles.ctaTitle}>Porta il tuo locale al livello successivo.</h2>
                     <Link href="/contact?plan=Informazioni" className={styles.primaryBtn}>
-                        Richiedi Informazioni Gratis 🚀
+                        Richiedi Informazioni Gratis
                     </Link>
                 </section>
             </main>
