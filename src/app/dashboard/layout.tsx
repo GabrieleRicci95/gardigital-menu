@@ -149,19 +149,9 @@ export default function DashboardLayout({
                         Menu
                     </button>
                     <div className={styles.userMenu}>
-                        {restaurantSlug?.toLowerCase() === 'demo' || ownerEmail?.toLowerCase() === 'demo@gardigital.it' || restaurantName?.toLowerCase().includes('demo') ? (
-                            <span style={{ fontWeight: 'bold', fontSize: '1.5rem', marginRight: '20px' }}>Benvenuto</span>
-                        ) : (
-                            <img
-                                src="/header_logo.png"
-                                alt="Logo Ristorante"
-                                style={{
-                                    height: '85px',
-                                    width: 'auto',
-                                    objectFit: 'contain'
-                                }}
-                            />
-                        )}
+                        <span style={{ fontWeight: 'bold', fontSize: '1.5rem', marginRight: '20px' }}>
+                            {restaurantSlug?.toLowerCase() === 'demo' || ownerEmail?.toLowerCase() === 'demo@gardigital.it' || !restaurantName ? 'Benvenuto' : restaurantName}
+                        </span>
                     </div>
                 </header>
                 <div className={styles.content}>
