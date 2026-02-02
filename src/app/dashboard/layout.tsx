@@ -111,7 +111,7 @@ export default function DashboardLayout({
                 onTouchEnd={onTouchEnd}
             >
                 <div className={styles.logo}>
-                    {restaurantSlug === 'demo' || ownerEmail === 'demo@gardigital.it' ? (
+                    {restaurantSlug?.toLowerCase() === 'demo' || ownerEmail?.toLowerCase() === 'demo@gardigital.it' || restaurantName?.toLowerCase().includes('demo') ? (
                         <span style={{ color: 'white', fontWeight: 'bold', fontSize: '1.2rem' }}>Benvenuto</span>
                     ) : (
                         <img src="/logo_dashboard.png" alt="Logo" className={styles.logoImage} />
@@ -146,7 +146,7 @@ export default function DashboardLayout({
                         Menu
                     </button>
                     <div className={styles.userMenu}>
-                        {restaurantSlug === 'demo' || ownerEmail === 'demo@gardigital.it' ? (
+                        {restaurantSlug?.toLowerCase() === 'demo' || ownerEmail?.toLowerCase() === 'demo@gardigital.it' || restaurantName?.toLowerCase().includes('demo') ? (
                             <span style={{ fontWeight: 'bold', fontSize: '1.5rem', marginRight: '20px' }}>Benvenuto</span>
                         ) : (
                             <img

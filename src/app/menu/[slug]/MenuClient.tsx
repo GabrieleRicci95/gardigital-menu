@@ -348,7 +348,7 @@ export default function MenuClient({ restaurant: initialRestaurant }: { restaura
                 {/* Removed dynamic background overlay */}
 
                 <div className={styles.heroContent} style={{ position: 'relative', zIndex: 1 }}>
-                    {restaurant.slug === 'demo' ? (
+                    {restaurant.slug?.toLowerCase() === 'demo' || restaurant.name?.toLowerCase().includes('demo') ? (
                         <h2 style={{ fontSize: '2.5rem', marginBottom: '10px', fontWeight: 'bold' }}>Benvenuto</h2>
                     ) : restaurant.logoUrl ? (
                         <img src={restaurant.logoUrl} alt={restaurant.name} className={styles.logo} />
@@ -437,7 +437,7 @@ export default function MenuClient({ restaurant: initialRestaurant }: { restaura
                     )}
 
                     {/* Carta Champagne Button */}
-                    {(restaurant.champagneList?.isActive && restaurant.slug !== 'demo') && (
+                    {(restaurant.champagneList?.isActive && restaurant.slug?.toLowerCase() !== 'demo' && !restaurant.name?.toLowerCase().includes('demo')) && (
                         <Link
                             href={`/menu/${restaurant.slug}/champagne-list`}
                             style={{
@@ -460,7 +460,7 @@ export default function MenuClient({ restaurant: initialRestaurant }: { restaura
                     )}
 
                     {/* Drink List Button */}
-                    {(restaurant.drinkList?.isActive && restaurant.slug !== 'demo') && (
+                    {(restaurant.drinkList?.isActive && restaurant.slug?.toLowerCase() !== 'demo' && !restaurant.name?.toLowerCase().includes('demo')) && (
                         <Link
                             href={`/menu/${restaurant.slug}/drink-list`}
                             style={{
@@ -492,7 +492,7 @@ export default function MenuClient({ restaurant: initialRestaurant }: { restaura
                 }}>
                     {restaurant.categories
                         .filter(cat => {
-                            if (restaurant.slug === 'demo') {
+                            if (restaurant.slug?.toLowerCase() === 'demo' || restaurant.name?.toLowerCase().includes('demo')) {
                                 const name = cat.name.toLowerCase();
                                 return !name.includes('champagne') && !name.includes('drink');
                             }
