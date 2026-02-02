@@ -304,3 +304,36 @@
     font-size: 0.85rem;
     color: var(--color-text-secondary);
 }
+
+.button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    font-size: 0.9rem;
+}
+
+.buttonPrimary {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.buttonPrimary:hover {
+    background-color: var(--color-primary-dark);
+    transform: translateY(-2px);
+}
+
+.input {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.input:focus {
+    border-color: var(--color-primary);
+}
