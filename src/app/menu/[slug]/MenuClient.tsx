@@ -517,13 +517,14 @@ export default function MenuClient({ restaurant: initialRestaurant }: { restaura
                         <p>Il menu è in fase di aggiornamento.</p>
                     </div>
                 ) : (
+                    restaurant.categories
                         .filter(cat => {
-                    if (restaurant.slug === 'demo') {
-                        const name = cat.name.toLowerCase();
-                        return !name.includes('champagne') && !name.includes('drink');
-                    }
-                    return true;
-                })
+                            if (restaurant.slug === 'demo') {
+                                const name = cat.name.toLowerCase();
+                                return !name.includes('champagne') && !name.includes('drink');
+                            }
+                            return true;
+                        })
                         .map(cat => {
                             const filteredItems = cat.items.filter(filterItem);
                             if (filteredItems.length === 0) return null;
