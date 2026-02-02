@@ -21,6 +21,7 @@ export default function DashboardLayout({
     const [isWineActive, setIsWineActive] = useState(false);
     const [isChampagneActive, setIsChampagneActive] = useState(false);
     const [isDrinkActive, setIsDrinkActive] = useState(false);
+    const [restaurantLogo, setRestaurantLogo] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchRestaurantData = async () => {
@@ -35,6 +36,7 @@ export default function DashboardLayout({
                         setIsWineActive(!!data.restaurant.wineList?.isActive);
                         setIsChampagneActive(!!data.restaurant.champagneList?.isActive);
                         setIsDrinkActive(!!data.restaurant.drinkList?.isActive);
+                        setRestaurantLogo(data.restaurant.logoUrl || null);
                         if (data.restaurant.subscription) {
                             setSubscriptionPlan(data.restaurant.subscription.plan);
                         } else {
@@ -163,9 +165,17 @@ export default function DashboardLayout({
                         Menu
                     </button>
                     <div className={styles.userMenu}>
-                        <span style={{ fontWeight: 'bold', fontSize: '1.5rem', marginRight: '20px' }}>
-                            {restaurantSlug?.toLowerCase() === 'demo' || ownerEmail?.toLowerCase() === 'demo@gardigital.it' || !restaurantName ? 'Benvenuto' : restaurantName}
-                        </span>
+                        {restaurantLogo ? (
+                            <img
+                                src={restaurantLogo}
+                                alt="Logo Ristorante"
+                                style={{ height: '50px', width: 'auto', objectFit: 'contain' }}
+                            />
+                        ) : (
+                            <span style={{ fontWeight: 'bold', fontSize: '1.2rem', marginRight: '20px' }}>
+                                {restaurantSlug?.toLowerCase() === 'demo' || ownerEmail?.toLowerCase() === 'demo@gardigital.it' || !restaurantName ? 'Benvenuto' : restaurantName}
+                            </span>
+                        )}
                     </div>
                 </header>
                 <div className={styles.content}>

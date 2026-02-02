@@ -19,6 +19,9 @@ export async function GET() {
     try {
         const restaurant = await prisma.restaurant.findFirst({
             where: { ownerId: session.user.id },
+            // Since no 'select' clause is specified at the top level,
+            // all scalar fields of the 'restaurant' model, including 'logoUrl',
+            // are already returned by default.
             include: {
                 subscription: true,
                 owner: {
