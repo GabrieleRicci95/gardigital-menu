@@ -519,7 +519,7 @@ export default function MenuClient({ restaurant: initialRestaurant }: { restaura
                 ) : (
                     restaurant.categories
                         .filter(cat => {
-                            if (restaurant.slug === 'demo') {
+                            if (restaurant.slug?.toLowerCase() === 'demo' || restaurant.name?.toLowerCase().includes('demo')) {
                                 const name = cat.name.toLowerCase();
                                 return !name.includes('champagne') && !name.includes('drink');
                             }

@@ -67,7 +67,10 @@ export default function DashboardLayout({
     ].filter(item => {
         if (item.requiresFull && subscriptionPlan !== 'FULL') return false;
 
-        const isDemo = restaurantSlug === 'demo' || ownerEmail === 'demo@gardigital.it';
+        const isDemo = restaurantSlug?.toLowerCase() === 'demo' ||
+            ownerEmail?.toLowerCase() === 'demo@gardigital.it' ||
+            restaurantName?.toLowerCase().includes('demo');
+
         if (isDemo && (item.label === 'Champagne' || item.label === 'Drink')) return false;
 
         return true;
