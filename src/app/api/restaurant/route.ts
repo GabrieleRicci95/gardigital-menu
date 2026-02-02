@@ -23,7 +23,10 @@ export async function GET() {
                 subscription: true,
                 owner: {
                     select: { email: true }
-                }
+                },
+                wineList: { select: { isActive: true } },
+                champagneList: { select: { isActive: true } },
+                drinkList: { select: { isActive: true } }
             }
         });
 

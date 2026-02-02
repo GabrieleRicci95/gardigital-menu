@@ -18,6 +18,9 @@ export default function DashboardLayout({
     const [restaurantSlug, setRestaurantSlug] = useState('');
     const [ownerEmail, setOwnerEmail] = useState('');
     const [subscriptionPlan, setSubscriptionPlan] = useState<string>('BASE');
+    const [isWineActive, setIsWineActive] = useState(false);
+    const [isChampagneActive, setIsChampagneActive] = useState(false);
+    const [isDrinkActive, setIsDrinkActive] = useState(false);
 
     useEffect(() => {
         const fetchRestaurantData = async () => {
@@ -29,6 +32,9 @@ export default function DashboardLayout({
                         setRestaurantName(data.restaurant.name);
                         setRestaurantSlug(data.restaurant.slug);
                         setOwnerEmail(data.restaurant.owner?.email || '');
+                        setIsWineActive(!!data.restaurant.wineList?.isActive);
+                        setIsChampagneActive(!!data.restaurant.champagneList?.isActive);
+                        setIsDrinkActive(!!data.restaurant.drinkList?.isActive);
                         if (data.restaurant.subscription) {
                             setSubscriptionPlan(data.restaurant.subscription.plan);
                         } else {
@@ -72,6 +78,14 @@ export default function DashboardLayout({
             restaurantName?.toLowerCase().includes('demo');
 
         if (isDemo && (item.label === 'Champagne' || item.label === 'Drink')) return false;
+
+        // Hide special lists if not active for normal users (except if they are Aperifish)
+        const isAperifish = restaurantSlug?.toLowerCase() === 'aperifish';
+        if (!isAperifish && !isDemo) {
+            if (item.label === 'Vini' && !isWineActive) return false;
+            if (item.label === 'Champagne' && !isChampagneActive) return false;
+            if (item.label === 'Drink' && !isDrinkActive) return false;
+        }
 
         return true;
     });
