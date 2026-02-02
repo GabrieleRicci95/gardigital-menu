@@ -79,51 +79,7 @@ export default function LoginPage() {
 
                     </form>
 
-                    <div style={{ marginTop: '20px', textAlign: 'center' }}>
-                        <div style={{ position: 'relative', margin: '20px 0' }}>
-                            <div style={{ position: 'absolute', left: 0, top: '50%', width: '100%', height: '1px', backgroundColor: '#e2e8f0' }}></div>
-                            <span style={{ position: 'relative', backgroundColor: 'white', padding: '0 10px', color: '#64748b', fontSize: '0.9rem' }}>oppure</span>
-                        </div>
-                        <button
-                            type="button"
-                            onClick={() => {
-                                setEmail('demo@gardigital.it');
-                                setPassword('demo');
-                                // Trigger form submission programmatically or just call a login function
-                                // Since state is updated async, we can't submit immediately safely with state.
-                                // Instead, let's call the API directly here or use a timeout.
-                                // Better: call internal login logic.
-                                // But to keep it simple and reuse existing logic, let's just prefill and focus or submit.
-                                // Actually, let's just do a direct fetch since we have the handle submit logic.
-                                fetch('/api/auth/login', {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({ email: 'demo@gardigital.it', password: 'demo' }),
-                                }).then(res => res.json()).then(data => {
-                                    if (data.redirect || data.success) router.push(data.redirect || '/dashboard');
-                                    else setError('Errore login demo');
-                                });
-                            }}
-                            style={{
-                                width: '100%',
-                                padding: '12px',
-                                backgroundColor: '#2563eb', // A distinct blue
-                                color: 'white',
-                                border: 'none',
-                                borderRadius: '8px',
-                                fontSize: '1rem',
-                                fontWeight: '600',
-                                cursor: 'pointer',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                gap: '8px',
-                                boxShadow: '0 4px 6px -1px rgba(37, 99, 235, 0.2)'
-                            }}
-                        >
-                            <span>🚀</span> Prova la Demo
-                        </button>
-                    </div>
+
 
                     <div className={styles.forgotPassword}>
                         <Link href="/forgot-password" className={styles.forgotPasswordLink}>

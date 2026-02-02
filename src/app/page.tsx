@@ -28,7 +28,22 @@ export default function Home() {
             </p>
             <div className={styles.ctaGroup}>
               <Link href="/contact?plan=Informazioni" className={styles.primaryBtn}>Contattaci per informazioni</Link>
-              <Link href="/vantaggi" className={styles.secondaryBtn}>Scopri di più</Link>
+              <button
+                onClick={() => {
+                  fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: 'demo@gardigital.it', password: 'demo' }),
+                  }).then(res => res.json()).then(data => {
+                    if (data.redirect || data.success) window.location.href = data.redirect || '/dashboard';
+                  });
+                }}
+                className={styles.secondaryBtn}
+                style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '8px', border: 'none' }}
+              >
+                <span>🚀</span> Prova la Demo
+              </button>
+              <Link href="/vantaggi" className={styles.secondaryBtn} style={{ backgroundColor: 'transparent', border: '1px solid currentColor' }}>Scopri di più</Link>
             </div>
           </div>
         </section>
