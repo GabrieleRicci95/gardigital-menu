@@ -773,7 +773,7 @@ export default function MenuBuilderPage() {
                     </div>
                 </div>
             ) : (
-                <div style={{ textAlign: 'center', padding: '4rem 2rem', background: '#f8f9fa', borderRadius: '20px', border: '2px dashed #e0e0e0', color: '#757575' }}>
+                <div style={{ textAlign: 'center', padding: '4rem 2rem', background: '#f8f9fa', borderRadius: '20px', border: '2px dashed #e0e0e0', color: '#757575', marginTop: '2.5rem' }}>
                     <h3 style={{ marginBottom: '1rem', color: '#555' }}>Seleziona o crea un menu per iniziare</h3>
                     <p>Clicca su "+ Crea Menu" o seleziona una delle schede in alto.</p>
                 </div>
