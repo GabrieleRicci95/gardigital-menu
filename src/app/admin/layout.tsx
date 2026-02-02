@@ -17,6 +17,7 @@ export default function AdminLayout({
         { label: 'Panoramica', href: '/admin' },
         { label: 'Ristoranti', href: '/admin/restaurants' },
         { label: 'Abbonamenti', href: '/admin/subscriptions' },
+        { label: 'Utenti', href: '/admin/users' },
     ];
 
     const handleLogout = async () => {
