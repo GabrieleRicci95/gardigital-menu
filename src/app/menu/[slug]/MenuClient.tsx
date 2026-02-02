@@ -348,9 +348,11 @@ export default function MenuClient({ restaurant: initialRestaurant }: { restaura
                 {/* Removed dynamic background overlay */}
 
                 <div className={styles.heroContent} style={{ position: 'relative', zIndex: 1 }}>
-                    {restaurant.logoUrl && (
+                    {restaurant.slug === 'demo' ? (
+                        <h2 style={{ fontSize: '2.5rem', marginBottom: '10px', fontWeight: 'bold' }}>Benvenuto</h2>
+                    ) : restaurant.logoUrl ? (
                         <img src={restaurant.logoUrl} alt={restaurant.name} className={styles.logo} />
-                    )}
+                    ) : null}
                     <h1 className={styles.restaurantName}>{restaurant.name}</h1>
                     {restaurant.description && (
                         <p className={styles.restaurantDesc}>
@@ -435,7 +437,7 @@ export default function MenuClient({ restaurant: initialRestaurant }: { restaura
                     )}
 
                     {/* Carta Champagne Button */}
-                    {(restaurant.champagneList?.isActive) && (
+                    {(restaurant.champagneList?.isActive && restaurant.slug !== 'demo') && (
                         <Link
                             href={`/menu/${restaurant.slug}/champagne-list`}
                             style={{
@@ -458,7 +460,7 @@ export default function MenuClient({ restaurant: initialRestaurant }: { restaura
                     )}
 
                     {/* Drink List Button */}
-                    {(restaurant.drinkList?.isActive) && (
+                    {(restaurant.drinkList?.isActive && restaurant.slug !== 'demo') && (
                         <Link
                             href={`/menu/${restaurant.slug}/drink-list`}
                             style={{
@@ -488,15 +490,23 @@ export default function MenuClient({ restaurant: initialRestaurant }: { restaura
                     flex: '0 0 auto',
                     overflow: 'visible' // Disable internal scroll
                 }}>
-                    {restaurant.categories.map(cat => (
-                        <a
-                            key={cat.id}
-                            href={`#cat-${cat.id}`}
-                            className={styles.navLink}
-                        >
-                            {getCatName(cat)}
-                        </a>
-                    ))}
+                    {restaurant.categories
+                        .filter(cat => {
+                            if (restaurant.slug === 'demo') {
+                                const name = cat.name.toLowerCase();
+                                return !name.includes('champagne') && !name.includes('drink');
+                            }
+                            return true;
+                        })
+                        .map(cat => (
+                            <a
+                                key={cat.id}
+                                href={`#cat-${cat.id}`}
+                                className={styles.navLink}
+                            >
+                                {getCatName(cat)}
+                            </a>
+                        ))}
                 </nav>
             </div>
 
@@ -507,68 +517,75 @@ export default function MenuClient({ restaurant: initialRestaurant }: { restaura
                         <p>Il menu è in fase di aggiornamento.</p>
                     </div>
                 ) : (
-                    restaurant.categories.map(cat => {
-                        const filteredItems = cat.items.filter(filterItem);
-                        if (filteredItems.length === 0) return null;
+                        .filter(cat => {
+                    if (restaurant.slug === 'demo') {
+                        const name = cat.name.toLowerCase();
+                        return !name.includes('champagne') && !name.includes('drink');
+                    }
+                    return true;
+                })
+                        .map(cat => {
+                            const filteredItems = cat.items.filter(filterItem);
+                            if (filteredItems.length === 0) return null;
 
-                        return (
-                            <section
-                                key={cat.id}
-                                id={`cat-${cat.id}`}
-                                className={styles.menuSection}
-                                style={{ backgroundColor: 'transparent', borderBottom: '1px solid rgba(0,0,0,0.05)' }}
-                            >
-                                <h2 className={styles.categoryTitle} style={{ color: restaurant.themeColor, borderBottomColor: restaurant.themeColor }}>
-                                    {getCatName(cat)}
-                                </h2>
-                                <div className={styles.itemsGrid}>
-                                    {filteredItems.map(item => (
-                                        <article key={item.id} className={`${styles.itemCard} ${getCardClass()}`} style={{ backgroundColor: restaurant.cardStyle === 'glass' ? 'rgba(255,255,255,0.7)' : 'white' }}>
-                                            <div className={styles.itemInfo}>
-                                                <div className={styles.itemHeader}>
-                                                    <h3 className={styles.itemName} style={{ color: restaurant.textColor }}>{getItemName(item)}</h3>
-                                                    {item.price !== null && Number(item.price) > 0 && (
-                                                        <span className={styles.itemPrice} style={{ color: restaurant.themeColor }}>
-                                                            € {Number(item.price).toFixed(2)}
-                                                        </span>
-                                                    )}
-                                                </div>
-                                                <p className={styles.itemDesc} style={{ color: restaurant.textColor, opacity: 0.8 }}>{getItemDesc(item)}</p>
+                            return (
+                                <section
+                                    key={cat.id}
+                                    id={`cat-${cat.id}`}
+                                    className={styles.menuSection}
+                                    style={{ backgroundColor: 'transparent', borderBottom: '1px solid rgba(0,0,0,0.05)' }}
+                                >
+                                    <h2 className={styles.categoryTitle} style={{ color: restaurant.themeColor, borderBottomColor: restaurant.themeColor }}>
+                                        {getCatName(cat)}
+                                    </h2>
+                                    <div className={styles.itemsGrid}>
+                                        {filteredItems.map(item => (
+                                            <article key={item.id} className={`${styles.itemCard} ${getCardClass()}`} style={{ backgroundColor: restaurant.cardStyle === 'glass' ? 'rgba(255,255,255,0.7)' : 'white' }}>
+                                                <div className={styles.itemInfo}>
+                                                    <div className={styles.itemHeader}>
+                                                        <h3 className={styles.itemName} style={{ color: restaurant.textColor }}>{getItemName(item)}</h3>
+                                                        {item.price !== null && Number(item.price) > 0 && (
+                                                            <span className={styles.itemPrice} style={{ color: restaurant.themeColor }}>
+                                                                € {Number(item.price).toFixed(2)}
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                    <p className={styles.itemDesc} style={{ color: restaurant.textColor, opacity: 0.8 }}>{getItemDesc(item)}</p>
 
-                                                <div className={styles.itemTags}>
-                                                    {item.isVegetarian && <span className={styles.tagVeg} title="Vegetariano">Veg</span>}
-                                                    {item.isVegan && <span className={styles.tagVegan} title="Vegano">Vegan</span>}
-                                                    {item.allergens && (
-                                                        (() => {
-                                                            try {
-                                                                const nums = JSON.parse(item.allergens);
-                                                                if (Array.isArray(nums) && nums.length > 0) {
-                                                                    return (
-                                                                        <span className={styles.tagGf} style={{ background: '#e3f2fd', color: '#0d47a1' }} title="Allergeni">
-                                                                            All: {nums.join(', ')}
-                                                                        </span>
-                                                                    );
-                                                                }
-                                                            } catch (e) { }
-                                                            return null;
-                                                        })()
-                                                    )}
-                                                    {item.spiciness > 0 && <span className={styles.tagSpicy} title={`${t.spiciness} ${item.spiciness}/3`}>{'🌶️'.repeat(item.spiciness)}</span>}
+                                                    <div className={styles.itemTags}>
+                                                        {item.isVegetarian && <span className={styles.tagVeg} title="Vegetariano">Veg</span>}
+                                                        {item.isVegan && <span className={styles.tagVegan} title="Vegano">Vegan</span>}
+                                                        {item.allergens && (
+                                                            (() => {
+                                                                try {
+                                                                    const nums = JSON.parse(item.allergens);
+                                                                    if (Array.isArray(nums) && nums.length > 0) {
+                                                                        return (
+                                                                            <span className={styles.tagGf} style={{ background: '#e3f2fd', color: '#0d47a1' }} title="Allergeni">
+                                                                                All: {nums.join(', ')}
+                                                                            </span>
+                                                                        );
+                                                                    }
+                                                                } catch (e) { }
+                                                                return null;
+                                                            })()
+                                                        )}
+                                                        {item.spiciness > 0 && <span className={styles.tagSpicy} title={`${t.spiciness} ${item.spiciness}/3`}>{'🌶️'.repeat(item.spiciness)}</span>}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            {item.imageUrl && (
-                                                <img
-                                                    src={item.imageUrl}
-                                                    alt={item.name}
-                                                    className={styles.itemImage}
-                                                />
-                                            )}
-                                        </article>
-                                    ))}
-                                </div>
-                            </section>
-                        );
-                    })
+                                                {item.imageUrl && (
+                                                    <img
+                                                        src={item.imageUrl}
+                                                        alt={item.name}
+                                                        className={styles.itemImage}
+                                                    />
+                                                )}
+                                            </article>
+                                        ))}
+                                    </div>
+                                </section>
+                            );
+                        })
                 )}
             </main>
 
