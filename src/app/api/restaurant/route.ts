@@ -19,7 +19,12 @@ export async function GET() {
     try {
         const restaurant = await prisma.restaurant.findFirst({
             where: { ownerId: session.user.id },
-            include: { subscription: true }
+            include: {
+                subscription: true,
+                owner: {
+                    select: { email: true }
+                }
+            }
         });
 
         return NextResponse.json({ restaurant });

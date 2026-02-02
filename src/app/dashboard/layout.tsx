@@ -15,6 +15,8 @@ export default function DashboardLayout({
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const [restaurantName, setRestaurantName] = useState('');
+    const [restaurantSlug, setRestaurantSlug] = useState('');
+    const [ownerEmail, setOwnerEmail] = useState('');
     const [subscriptionPlan, setSubscriptionPlan] = useState<string>('BASE');
 
     useEffect(() => {
@@ -25,6 +27,8 @@ export default function DashboardLayout({
                     const data = await res.json();
                     if (data.restaurant) {
                         setRestaurantName(data.restaurant.name);
+                        setRestaurantSlug(data.restaurant.slug);
+                        setOwnerEmail(data.restaurant.owner?.email || '');
                         if (data.restaurant.subscription) {
                             setSubscriptionPlan(data.restaurant.subscription.plan);
                         } else {
@@ -60,7 +64,14 @@ export default function DashboardLayout({
         { label: 'Agenda', href: '/dashboard/reservations', icon: 'Calendar', requiresFull: true }, // New Link
         { label: 'Aspetto & Design', href: '/dashboard/design', icon: 'Palette' },
         { label: 'QR Code', href: '/dashboard/qrcode', icon: 'QR' },
-    ].filter(item => !item.requiresFull || subscriptionPlan === 'FULL');
+    ].filter(item => {
+        if (item.requiresFull && subscriptionPlan !== 'FULL') return false;
+
+        const isDemo = restaurantSlug === 'demo' || ownerEmail === 'demo@gardigital.it';
+        if (isDemo && (item.label === 'Champagne' || item.label === 'Drink')) return false;
+
+        return true;
+    });
 
     const handleLogout = async () => {
         await fetch('/api/auth/logout', { method: 'POST' });
@@ -100,7 +111,11 @@ export default function DashboardLayout({
                 onTouchEnd={onTouchEnd}
             >
                 <div className={styles.logo}>
-                    <img src="/logo_dashboard.png" alt="Logo" className={styles.logoImage} />
+                    {restaurantSlug === 'demo' || ownerEmail === 'demo@gardigital.it' ? (
+                        <span style={{ color: 'white', fontWeight: 'bold', fontSize: '1.2rem' }}>Benvenuto</span>
+                    ) : (
+                        <img src="/logo_dashboard.png" alt="Logo" className={styles.logoImage} />
+                    )}
                 </div>
                 <nav className={styles.nav}>
                     {navItems.map((item) => (
@@ -131,15 +146,19 @@ export default function DashboardLayout({
                         Menu
                     </button>
                     <div className={styles.userMenu}>
-                        <img
-                            src="/header_logo.png"
-                            alt="Logo Ristorante"
-                            style={{
-                                height: '85px',
-                                width: 'auto',
-                                objectFit: 'contain'
-                            }}
-                        />
+                        {restaurantSlug === 'demo' || ownerEmail === 'demo@gardigital.it' ? (
+                            <span style={{ fontWeight: 'bold', fontSize: '1.5rem', marginRight: '20px' }}>Benvenuto</span>
+                        ) : (
+                            <img
+                                src="/header_logo.png"
+                                alt="Logo Ristorante"
+                                style={{
+                                    height: '85px',
+                                    width: 'auto',
+                                    objectFit: 'contain'
+                                }}
+                            />
+                        )}
                     </div>
                 </header>
                 <div className={styles.content}>
