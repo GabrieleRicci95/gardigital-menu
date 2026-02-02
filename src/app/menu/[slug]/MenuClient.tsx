@@ -58,7 +58,7 @@ const UI_LABELS: Record<string, any> = {
         book: "Prenota Tavolo",
         translating: "🪄 Traduzione AI in corso...",
         spiciness: "Piccantezza",
-        debug: "Info Debug",
+
         review: "Lasciaci una recensione su Google"
     },
     en: {
@@ -70,7 +70,7 @@ const UI_LABELS: Record<string, any> = {
         book: "Book Table",
         translating: "🪄 AI Translation in progress...",
         spiciness: "Spiciness",
-        debug: "Debug Info",
+
         review: "Review us on Google"
     },
     fr: {
@@ -82,7 +82,7 @@ const UI_LABELS: Record<string, any> = {
         book: "Réserver",
         translating: "🪄 Traduction AI en cours...",
         spiciness: "Piquant",
-        debug: "Infos Debug",
+
         review: "Laissez-nous un avis su Google"
     },
     de: {
@@ -94,7 +94,7 @@ const UI_LABELS: Record<string, any> = {
         book: "Reservieren",
         translating: "🪄 KI-Übersetzung läuft...",
         spiciness: "Schärfe",
-        debug: "Debug-Info",
+
         review: "Review uns auf Google"
     }
 };
@@ -611,14 +611,7 @@ export default function MenuClient({ restaurant: initialRestaurant }: { restaura
                     </div>
                 )}
                 Powered by <strong>Gardigital Menu</strong>
-                <details style={{ marginTop: '20px', fontSize: '10px' }}>
-                    <summary>{t.debug}</summary>
-                    <pre>{JSON.stringify({
-                        name: restaurant.name,
-                        whatsapp: restaurant.whatsappNumber,
-                        id: (restaurant as any).id
-                    }, null, 2)}</pre>
-                </details>
+
             </footer>
         </div >
     );
