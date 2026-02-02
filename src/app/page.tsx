@@ -41,9 +41,9 @@ export default function Home() {
                   });
                 }}
                 className={styles.secondaryBtn}
-                style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '8px', border: 'none' }}
+                style={{ cursor: 'pointer', backgroundColor: 'transparent', border: '1px solid currentColor' }}
               >
-                <span>🚀</span> Prova la Demo
+                Prova la demo
               </button>
               <Link href="/vantaggi" className={styles.secondaryBtn} style={{ backgroundColor: 'transparent', border: '1px solid currentColor' }}>Scopri di più</Link>
             </div>
