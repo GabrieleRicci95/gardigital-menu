@@ -153,6 +153,7 @@ export default function MenuBuilderPage() {
 
     const handleCreateMenu = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (isDemo) return alert('Modalità Demo: modifiche non consentite');
         if (!newMenuName.trim()) return;
         setLoading(true);
         try {
@@ -184,6 +185,7 @@ export default function MenuBuilderPage() {
     };
 
     const handleActivateMenu = async (menuId: string) => {
+        if (isDemo) return alert('Modalità Demo: modifiche non consentite');
         const res = await fetch(`/api/menus/${menuId}/activate`, { method: 'POST' });
         if (res.ok) {
             setMenus(prev => prev.map(m => ({ ...m, isActive: m.id === menuId })));
@@ -192,6 +194,7 @@ export default function MenuBuilderPage() {
 
     const handleAddCategory = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (isDemo) return alert('Modalità Demo: modifiche non consentite');
         if (!newCatData.name || !selectedMenuId) return;
 
         const res = await fetch('/api/menu/categories', {
@@ -211,6 +214,7 @@ export default function MenuBuilderPage() {
 
     const handleUpdateCategory = async (e: React.FormEvent, id: string) => {
         e.preventDefault();
+        if (isDemo) return alert('Modalità Demo: modifiche non consentite');
         const res = await fetch('/api/menu/categories', {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
@@ -228,6 +232,7 @@ export default function MenuBuilderPage() {
     const handleAddItem = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
+        if (isDemo) return alert('Modalità Demo: modifiche non consentite');
         if (!addingItemTo || !newItem.name) return;
 
         try {
@@ -256,6 +261,7 @@ export default function MenuBuilderPage() {
 
     const handleUpdateItem = async (e: React.FormEvent | null, id: string, overrideData: any = null) => {
         if (e) e.preventDefault();
+        if (isDemo) return alert('Modalità Demo: modifiche non consentite');
         const res = await fetch('/api/menu/items', {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
@@ -273,6 +279,7 @@ export default function MenuBuilderPage() {
     };
 
     const handleQuickUpdate = async (item: MenuItem, updates: any) => {
+        if (isDemo) return alert('Modalità Demo: modifiche non consentite');
         const res = await fetch('/api/menu/items', {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
@@ -296,6 +303,7 @@ export default function MenuBuilderPage() {
     };
 
     const requestDelete = (id: string, categoryId: string | null, isCategory: boolean = false, isMenu: boolean = false) => {
+        if (isDemo) return alert('Modalità Demo: modifiche non consentite');
         setDeleteConfirmation({
             isOpen: true,
             itemId: (isCategory || isMenu) ? null : id,
@@ -331,7 +339,10 @@ export default function MenuBuilderPage() {
         }
     };
 
-    const handleUploadClick = (itemId: string) => document.getElementById(`file-input-${itemId}`)?.click();
+    const handleUploadClick = (itemId: string) => {
+        if (isDemo) return alert('Modalità Demo: caricamento non consentito');
+        document.getElementById(`file-input-${itemId}`)?.click();
+    };
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>, itemId: string) => {
         const file = e.target.files?.[0];
@@ -347,6 +358,7 @@ export default function MenuBuilderPage() {
 
     const handleUpdateMenuName = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (isDemo) return alert('Modalità Demo: modifiche non consentite');
         if (!editingMenuId || !editMenuName.trim()) return;
         try {
             const res = await fetch('/api/menus', {
@@ -503,7 +515,7 @@ export default function MenuBuilderPage() {
                                         className={styles.input}
                                         style={{ fontSize: '1.2rem', padding: '0.4rem' }}
                                     />
-                                    <button type="submit" className={styles.btnPrimary} style={{ width: 'auto', padding: '0.5rem 1rem' }}>Salva</button>
+                                    <button type="submit" className={styles.btnPrimary} style={{ width: 'auto', padding: '0.5rem 1rem' }} disabled={isDemo}>Salva</button>
                                     <button type="button" className={styles.btnSecondary} onClick={() => setEditingMenuId(null)}>Annulla</button>
                                 </form>
                             ) : (
@@ -548,8 +560,8 @@ export default function MenuBuilderPage() {
                                         <form onSubmit={(e) => handleUpdateCategory(e, cat.id)} style={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: 1 }}>
                                             <div style={{ display: 'flex', gap: '10px' }}>
                                                 <input value={editCatData.name} onChange={e => setEditCatData({ ...editCatData, name: e.target.value })} className={styles.input} autoFocus style={{ flex: 1 }} />
-                                                <button type="submit" className={styles.btnPrimary} style={{ padding: '0.5rem 1rem', width: 'auto' }}>Salva</button>
-                                                <button type="button" className={styles.btnSecondary} onClick={() => setEditingCatId(null)}>Annulla</button>
+                                                <button type="submit" className={styles.btnPrimary} style={{ padding: '0.5rem 1rem', width: 'auto' }} disabled={isDemo}>Salva</button>
+                                                <button type="button" className={styles.btnSecondary} onClick={() => setEditingMenuId(null)}>Annulla</button>
                                             </div>
                                         </form>
                                     ) : (
@@ -573,7 +585,7 @@ export default function MenuBuilderPage() {
 
                                 {!editingCatId && (
                                     <button
-                                        onClick={() => setAddingItemTo(cat.id)}
+                                        onClick={() => !isDemo && setAddingItemTo(cat.id)}
                                         style={{
                                             marginBottom: '1.5rem',
                                             width: '100%',
@@ -582,17 +594,19 @@ export default function MenuBuilderPage() {
                                             border: '1px dashed #bae6fd',
                                             padding: '12px',
                                             borderRadius: '10px',
-                                            cursor: 'pointer',
+                                            cursor: isDemo ? 'not-allowed' : 'pointer',
                                             fontWeight: '600',
                                             fontSize: '0.95rem',
                                             transition: 'all 0.2s',
                                             display: 'flex',
                                             alignItems: 'center',
                                             justifyContent: 'center',
-                                            gap: '8px'
+                                            gap: '8px',
+                                            opacity: isDemo ? 0.6 : 1
                                         }}
-                                        onMouseEnter={(e) => e.currentTarget.style.background = '#e0f2fe'}
-                                        onMouseLeave={(e) => e.currentTarget.style.background = '#f0f9ff'}
+                                        onMouseEnter={(e) => !isDemo && (e.currentTarget.style.background = '#e0f2fe')}
+                                        onMouseLeave={(e) => !isDemo && (e.currentTarget.style.background = '#f0f9ff')}
+                                        disabled={isDemo}
                                     >
                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                                         {isDemo ? 'Aggiunta disabilitata (Demo)' : 'Aggiungi Piatto'}
@@ -632,7 +646,9 @@ export default function MenuBuilderPage() {
                                             </div>
                                             <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
                                                 <button type="button" onClick={() => setAddingItemTo(null)} className={styles.btnSecondary}>Annulla</button>
-                                                <button type="submit" className={styles.btnPrimary} style={{ width: 'auto', padding: '0.5rem 1.5rem' }}>Salva Piatto</button>
+                                                <button type="submit" className={styles.btnPrimary} style={{ width: 'auto', padding: '0.5rem 1.5rem' }} disabled={isDemo}>
+                                                    {isDemo ? 'Bloccato' : 'Salva Piatto'}
+                                                </button>
                                             </div>
                                         </form>
                                     </div>
@@ -669,7 +685,7 @@ export default function MenuBuilderPage() {
                                                     </div>
                                                     <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
                                                         <button type="button" onClick={() => setEditingId(null)} className={styles.btnSecondary}>Annulla</button>
-                                                        <button type="submit" className={styles.btnPrimary} style={{ width: 'auto', padding: '0.4rem 1rem' }}>Salva</button>
+                                                        <button type="submit" className={styles.btnPrimary} style={{ width: 'auto', padding: '0.4rem 1rem' }} disabled={isDemo}>Salva</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -756,7 +772,8 @@ export default function MenuBuilderPage() {
                                                         {item.price !== null && Number(item.price) > 0 ? `€ ${Number(item.price).toFixed(2)}` : ''}
                                                     </div>
                                                     <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                                        <button className={styles.btnSecondary} style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }} onClick={() => {
+                                                        <button className={styles.btnSecondary} style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }} disabled={isDemo} onClick={() => {
+                                                            if (isDemo) return;
                                                             setEditingId(item.id);
                                                             let parsedAllergens: number[] = [];
                                                             try {
