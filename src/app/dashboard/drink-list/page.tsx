@@ -60,8 +60,6 @@ export default function DrinkListPage() {
                             }))
                         }))
                     });
-                } else {
-                    // Empty state is fine
                 }
             }
         } catch (error) {
@@ -130,6 +128,7 @@ export default function DrinkListPage() {
     };
 
     const addSection = () => {
+        if (isDemo) return alert('Modalità Demo: modifiche non consentite');
         setDrinkList(prev => ({
             ...prev,
             sections: [
@@ -144,6 +143,7 @@ export default function DrinkListPage() {
     };
 
     const removeSection = (index: number) => {
+        if (isDemo) return alert('Modalità Demo: modifiche non consentite');
         if (!confirm('Eliminare questa categoria e tutti i drink inclusi?')) return;
         setDrinkList(prev => {
             const newSections = [...prev.sections];
@@ -153,6 +153,7 @@ export default function DrinkListPage() {
     };
 
     const updateSectionName = (index: number, name: string) => {
+        if (isDemo) return;
         setDrinkList(prev => {
             const newSections = [...prev.sections];
             newSections[index] = { ...newSections[index], name };
@@ -161,6 +162,7 @@ export default function DrinkListPage() {
     };
 
     const addItem = (sectionIndex: number) => {
+        if (isDemo) return alert('Modalità Demo: modifiche non consentite');
         setDrinkList(prev => {
             const newSections = prev.sections.map((section, sIdx) => {
                 if (sIdx !== sectionIndex) return section;
@@ -182,6 +184,7 @@ export default function DrinkListPage() {
     };
 
     const removeItem = (sectionIndex: number, itemIndex: number) => {
+        if (isDemo) return alert('Modalità Demo: modifiche non consentite');
         setDrinkList(prev => {
             const newSections = prev.sections.map((section, sIdx) => {
                 if (sIdx !== sectionIndex) return section;
@@ -195,6 +198,7 @@ export default function DrinkListPage() {
     };
 
     const updateItem = (sectionIndex: number, itemIndex: number, field: keyof DrinkItem, value: any) => {
+        if (isDemo) return;
         setDrinkList(prev => {
             const newSections = prev.sections.map((section, sIdx) => {
                 if (sIdx !== sectionIndex) return section;
@@ -218,7 +222,7 @@ export default function DrinkListPage() {
                 <div style={{
                     width: '60px',
                     height: '60px',
-                    background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)', // Blue gradient for Drinks
+                    background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)',
                     borderRadius: '20px',
                     display: 'flex',
                     alignItems: 'center',
@@ -256,7 +260,7 @@ export default function DrinkListPage() {
                     <h3 style={{ fontSize: '1.1rem', fontWeight: '600', marginBottom: '0.25rem' }}>Stato Pubblicazione</h3>
                     <p style={{ fontSize: '0.9rem', color: '#666', margin: 0 }}>Rendi visibile la lista drink sul menu pubblico</p>
                 </div>
-                <label style={{ position: 'relative', display: 'inline-block', width: '56px', height: '30px', cursor: 'pointer' }}>
+                <label style={{ position: 'relative', display: 'inline-block', width: '56px', height: '30px', cursor: isDemo ? 'not-allowed' : 'pointer' }}>
                     <input
                         type="checkbox"
                         checked={drinkList.isActive}
@@ -265,7 +269,7 @@ export default function DrinkListPage() {
                         style={{ opacity: 0, width: 0, height: 0 }}
                     />
                     <span style={{
-                        position: 'absolute', cursor: 'pointer', top: 0, left: 0, right: 0, bottom: 0,
+                        position: 'absolute', cursor: isDemo ? 'not-allowed' : 'pointer', top: 0, left: 0, right: 0, bottom: 0,
                         backgroundColor: drinkList.isActive ? '#10b981' : '#e5e7eb',
                         transition: '.4s', borderRadius: '34px',
                     }}></span>
@@ -311,6 +315,7 @@ export default function DrinkListPage() {
                                         outline: 'none',
                                         color: '#333'
                                     }}
+                                    readOnly={isDemo}
                                 />
                             </div>
                             <button
@@ -318,8 +323,8 @@ export default function DrinkListPage() {
                                 style={{
                                     background: 'transparent',
                                     border: 'none',
-                                    cursor: 'pointer',
-                                    color: '#ef4444',
+                                    cursor: isDemo ? 'not-allowed' : 'pointer',
+                                    color: isDemo ? '#ccc' : '#ef4444',
                                     padding: '8px',
                                     borderRadius: '8px',
                                     transition: 'all 0.2s'
@@ -338,12 +343,12 @@ export default function DrinkListPage() {
                                 style={{
                                     marginBottom: '1.5rem',
                                     width: '100%',
-                                    background: '#f0f9ff',
-                                    color: '#0369a1',
-                                    border: '1px dashed #bae6fd',
+                                    background: isDemo ? '#f5f5f5' : '#f0f9ff',
+                                    color: isDemo ? '#aaa' : '#0369a1',
+                                    border: isDemo ? '1px dashed #ddd' : '1px dashed #bae6fd',
                                     padding: '12px',
                                     borderRadius: '10px',
-                                    cursor: 'pointer',
+                                    cursor: isDemo ? 'not-allowed' : 'pointer',
                                     fontWeight: '600',
                                     fontSize: '0.95rem',
                                     transition: 'all 0.2s',
@@ -352,11 +357,12 @@ export default function DrinkListPage() {
                                     justifyContent: 'center',
                                     gap: '8px'
                                 }}
-                                onMouseEnter={(e) => e.currentTarget.style.background = '#e0f2fe'}
-                                onMouseLeave={(e) => e.currentTarget.style.background = '#f0f9ff'}
+                                onMouseEnter={(e) => !isDemo && (e.currentTarget.style.background = '#e0f2fe')}
+                                onMouseLeave={(e) => !isDemo && (e.currentTarget.style.background = '#f0f9ff')}
+                                disabled={isDemo}
                             >
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                                {isDemo ? 'Aggiunta non consentita (Demo)' : `Aggiungi Drink alla categoria "${section.name || '...'}"`}
+                                {isDemo ? 'Inibito (Demo)' : `Aggiungi Drink alla categoria "${section.name || '...'}"`}
                             </button>
 
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -376,12 +382,13 @@ export default function DrinkListPage() {
                                                     justifyContent: 'center',
                                                     overflow: 'hidden',
                                                     position: 'relative',
-                                                    cursor: 'pointer',
+                                                    cursor: isDemo ? 'not-allowed' : 'pointer',
                                                     backgroundColor: '#fafafa',
                                                     backgroundImage: item.logoUrl ? `url(${item.logoUrl})` : 'none',
                                                     backgroundSize: 'contain',
                                                     backgroundPosition: 'center',
-                                                    backgroundRepeat: 'no-repeat'
+                                                    backgroundRepeat: 'no-repeat',
+                                                    opacity: isDemo ? 0.6 : 1
                                                 }}
                                                 onClick={() => !isDemo && document.getElementById(`file-${sIndex}-${iIndex}`)?.click()}
                                                 title={isDemo ? "Caricamento disabilitato" : "Carica Logo"}
@@ -399,13 +406,13 @@ export default function DrinkListPage() {
                                                             handleFileUpload(sIndex, iIndex, e.target.files[0]);
                                                         }
                                                     }}
+                                                    disabled={isDemo}
                                                 />
                                             </div>
-                                            {item.logoUrl && (
+                                            {item.logoUrl && !isDemo && (
                                                 <button
                                                     onClick={(e) => {
                                                         e.stopPropagation();
-                                                        if (isDemo) return;
                                                         updateItem(sIndex, iIndex, 'logoUrl', '');
                                                     }}
                                                     style={{ border: 'none', background: 'transparent', color: '#ef4444', fontSize: '0.7rem', marginTop: '4px', cursor: 'pointer' }}
@@ -431,10 +438,12 @@ export default function DrinkListPage() {
                                                         fontSize: '1.1rem',
                                                         fontWeight: '600',
                                                         outline: 'none',
-                                                        transition: 'border-color 0.2s'
+                                                        transition: 'border-color 0.2s',
+                                                        backgroundColor: 'transparent'
                                                     }}
-                                                    onFocus={(e) => e.target.style.borderColor = '#3b82f6'}
-                                                    onBlur={(e) => e.target.style.borderColor = '#eee'}
+                                                    onFocus={(e) => !isDemo && (e.target.style.borderColor = '#3b82f6')}
+                                                    onBlur={(e) => !isDemo && (e.target.style.borderColor = '#eee')}
+                                                    readOnly={isDemo}
                                                 />
                                             </div>
                                             <div>
@@ -454,15 +463,18 @@ export default function DrinkListPage() {
                                                         outline: 'none'
                                                     }}
                                                     onFocus={(e) => {
+                                                        if (isDemo) return;
                                                         e.target.style.backgroundColor = '#fff';
                                                         e.target.style.borderColor = '#ddd';
                                                         e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
                                                     }}
                                                     onBlur={(e) => {
+                                                        if (isDemo) return;
                                                         e.target.style.backgroundColor = '#f9f9f9';
                                                         e.target.style.borderColor = 'transparent';
                                                         e.target.style.boxShadow = 'none';
                                                     }}
+                                                    readOnly={isDemo}
                                                 />
                                             </div>
                                         </div>
@@ -474,8 +486,10 @@ export default function DrinkListPage() {
                                                 onChange={e => updateItem(sIndex, iIndex, 'price', e.target.value)}
                                                 onWheel={(e) => (e.target as HTMLInputElement).blur()}
                                                 placeholder="0"
-                                                onFocus={(e) => e.target.style.borderColor = '#3b82f6'}
-                                                onBlur={(e) => e.target.style.borderColor = '#e5e5e5'}
+                                                style={{ border: '1px solid #e5e5e5', borderRadius: '8px', padding: '10px', width: '100%', textAlign: 'right', outline: 'none' }}
+                                                onFocus={(e) => !isDemo && (e.target.style.borderColor = '#3b82f6')}
+                                                onBlur={(e) => !isDemo && (e.target.style.borderColor = '#e5e5e5')}
+                                                readOnly={isDemo}
                                             />
                                             <span className={styles.priceSymbol}>€</span>
                                         </div>
@@ -486,16 +500,16 @@ export default function DrinkListPage() {
                                                 marginTop: '1.2rem',
                                                 background: 'transparent',
                                                 border: 'none',
-                                                cursor: 'pointer',
-                                                color: '#bbb',
+                                                cursor: isDemo ? 'not-allowed' : 'pointer',
+                                                color: isDemo ? '#ddd' : '#bbb',
                                                 display: 'flex',
                                                 justifyContent: 'center',
                                                 padding: '5px',
                                                 borderRadius: '6px',
                                                 transition: 'all 0.2s'
                                             }}
-                                            onMouseEnter={(e) => { e.currentTarget.style.color = '#ef4444'; e.currentTarget.style.backgroundColor = '#fee2e2'; }}
-                                            onMouseLeave={(e) => { e.currentTarget.style.color = '#bbb'; e.currentTarget.style.backgroundColor = 'transparent'; }}
+                                            onMouseEnter={(e) => !isDemo && (e.currentTarget.style.color = '#ef4444', e.currentTarget.style.backgroundColor = '#fee2e2')}
+                                            onMouseLeave={(e) => !isDemo && (e.currentTarget.style.color = '#bbb', e.currentTarget.style.backgroundColor = 'transparent')}
                                             title="Rimuovi Drink"
                                             disabled={isDemo}
                                         >
@@ -551,7 +565,6 @@ export default function DrinkListPage() {
                     </div>
                 )}
             </div>
-
 
             {/* Sticky Save Bar */}
             <div style={{
@@ -609,8 +622,6 @@ export default function DrinkListPage() {
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </Link>
             </div>
-
-
         </div>
     );
 }

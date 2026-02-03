@@ -177,12 +177,13 @@ export default function RestaurantPage() {
                         <p style={{ fontSize: '0.9rem', color: '#666', marginBottom: '1.5rem' }}>Attiva le sezioni speciali per il tuo menu digitale.</p>
 
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
-                            <label style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer', padding: '15px', borderRadius: '12px', background: '#f8fafc', border: '1px solid #e2e8f0', transition: 'all 0.2s' }}>
+                            <label style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: isDemo ? 'not-allowed' : 'pointer', padding: '15px', borderRadius: '12px', background: '#f8fafc', border: '1px solid #e2e8f0', transition: 'all 0.2s', opacity: isDemo ? 0.7 : 1 }}>
                                 <input
                                     type="checkbox"
                                     checked={formData.isWineActive}
-                                    onChange={e => setFormData({ ...formData, isWineActive: e.target.checked })}
-                                    style={{ width: '20px', height: '20px', cursor: 'pointer' }}
+                                    onChange={e => !isDemo && setFormData({ ...formData, isWineActive: e.target.checked })}
+                                    disabled={isDemo}
+                                    style={{ width: '20px', height: '20px', cursor: isDemo ? 'not-allowed' : 'pointer' }}
                                 />
                                 <div>
                                     <span style={{ fontWeight: 600, display: 'block', color: '#1e293b' }}>Carta dei Vini</span>
@@ -190,12 +191,13 @@ export default function RestaurantPage() {
                                 </div>
                             </label>
 
-                            <label style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer', padding: '15px', borderRadius: '12px', background: '#f8fafc', border: '1px solid #e2e8f0', transition: 'all 0.2s' }}>
+                            <label style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: isDemo ? 'not-allowed' : 'pointer', padding: '15px', borderRadius: '12px', background: '#f8fafc', border: '1px solid #e2e8f0', transition: 'all 0.2s', opacity: isDemo ? 0.7 : 1 }}>
                                 <input
                                     type="checkbox"
                                     checked={formData.isChampagneActive}
-                                    onChange={e => setFormData({ ...formData, isChampagneActive: e.target.checked })}
-                                    style={{ width: '20px', height: '20px', cursor: 'pointer' }}
+                                    onChange={e => !isDemo && setFormData({ ...formData, isChampagneActive: e.target.checked })}
+                                    disabled={isDemo}
+                                    style={{ width: '20px', height: '20px', cursor: isDemo ? 'not-allowed' : 'pointer' }}
                                 />
                                 <div>
                                     <span style={{ fontWeight: 600, display: 'block', color: '#1e293b' }}>Carta degli Champagne</span>
@@ -203,12 +205,13 @@ export default function RestaurantPage() {
                                 </div>
                             </label>
 
-                            <label style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer', padding: '15px', borderRadius: '12px', background: '#f8fafc', border: '1px solid #e2e8f0', transition: 'all 0.2s' }}>
+                            <label style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: isDemo ? 'not-allowed' : 'pointer', padding: '15px', borderRadius: '12px', background: '#f8fafc', border: '1px solid #e2e8f0', transition: 'all 0.2s', opacity: isDemo ? 0.7 : 1 }}>
                                 <input
                                     type="checkbox"
                                     checked={formData.isDrinkActive}
-                                    onChange={e => setFormData({ ...formData, isDrinkActive: e.target.checked })}
-                                    style={{ width: '20px', height: '20px', cursor: 'pointer' }}
+                                    onChange={e => !isDemo && setFormData({ ...formData, isDrinkActive: e.target.checked })}
+                                    disabled={isDemo}
+                                    style={{ width: '20px', height: '20px', cursor: isDemo ? 'not-allowed' : 'pointer' }}
                                 />
                                 <div>
                                     <span style={{ fontWeight: 600, display: 'block', color: '#1e293b' }}>Carta dei Drink / Cocktail</span>
@@ -217,23 +220,33 @@ export default function RestaurantPage() {
                             </label>
                         </div>
 
-                        <div style={{ marginTop: '2rem', background: '#fff', padding: '1.5rem', borderRadius: '12px', border: '1px dashed #cbd5e1' }}>
+                        <div style={{ marginTop: '2rem', background: '#fff', padding: '1.5rem', borderRadius: '12px', border: '1px dashed #cbd5e1', opacity: isDemo ? 0.7 : 1 }}>
                             <h4 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.5rem' }}>+ Crea un Modulo Personalizzato</h4>
                             <p style={{ fontSize: '0.8rem', color: '#64748b', marginBottom: '1rem' }}>Esempio: "I nostri Amari", "Carta dei Dessert", "Angolo Sigari".</p>
                             <div style={{ display: 'flex', gap: '10px' }}>
                                 <input
                                     type="text"
                                     value={newModuleTitle}
-                                    onChange={e => setNewModuleTitle(e.target.value)}
-                                    placeholder="Nome del modulo..."
-                                    style={{ flex: 1, padding: '10px', borderRadius: '8px', border: '1px solid #e2e8f0' }}
+                                    onChange={e => !isDemo && setNewModuleTitle(e.target.value)}
+                                    placeholder={isDemo ? "Creazione disabilitata (Demo)" : "Nome del modulo..."}
+                                    style={{ flex: 1, padding: '10px', borderRadius: '8px', border: '1px solid #e2e8f0', cursor: isDemo ? 'not-allowed' : 'text' }}
+                                    readOnly={isDemo}
                                 />
                                 <button
                                     onClick={handleCreateModule}
-                                    disabled={creatingModule || !newModuleTitle.trim()}
-                                    style={{ padding: '10px 20px', borderRadius: '8px', background: '#1a237e', color: 'white', border: 'none', cursor: 'pointer', fontWeight: 600, opacity: (creatingModule || !newModuleTitle.trim()) ? 0.6 : 1 }}
+                                    disabled={creatingModule || isDemo || !newModuleTitle.trim()}
+                                    style={{
+                                        padding: '10px 20px',
+                                        borderRadius: '8px',
+                                        background: isDemo ? '#ccc' : '#1a237e',
+                                        color: 'white',
+                                        border: 'none',
+                                        cursor: (creatingModule || isDemo) ? 'not-allowed' : 'pointer',
+                                        fontWeight: 600,
+                                        opacity: (creatingModule || isDemo || !newModuleTitle.trim()) ? 0.6 : 1
+                                    }}
                                 >
-                                    {creatingModule ? 'Creazione...' : 'Crea'}
+                                    {creatingModule ? 'Creazione...' : (isDemo ? 'Disabilitato' : 'Crea')}
                                 </button>
                             </div>
                         </div>

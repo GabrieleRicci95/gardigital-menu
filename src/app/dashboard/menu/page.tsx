@@ -497,11 +497,22 @@ export default function MenuBuilderPage() {
                             <span className={`${styles.badge} ${styles.badgeSuccess}`}>PUBBLICO</span>
                         ) : (
                             <button
-                                onClick={(e) => { e.stopPropagation(); handleActivateMenu(menu.id); }}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    if (isDemo) return alert('Modalità Demo: modifiche non consentite');
+                                    handleActivateMenu(menu.id);
+                                }}
                                 className={styles.btnSecondary}
-                                style={{ fontSize: '0.8rem', padding: '0.4rem 0.8rem', width: 'fit-content' }}
+                                style={{
+                                    fontSize: '0.8rem',
+                                    padding: '0.4rem 0.8rem',
+                                    width: 'fit-content',
+                                    cursor: isDemo ? 'not-allowed' : 'pointer',
+                                    opacity: isDemo ? 0.6 : 1
+                                }}
+                                disabled={isDemo}
                             >
-                                Pubblica
+                                {isDemo ? 'Privato (Demo)' : 'Pubblica'}
                             </button>
                         )}
                     </div>
@@ -582,12 +593,25 @@ export default function MenuBuilderPage() {
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flex: 1, justifyContent: 'space-between' }}>
                                             <h3 style={{ margin: 0, fontSize: '1.3rem', fontFamily: 'var(--font-playfair, serif)' }}>{cat.name}</h3>
                                             <div style={{ display: 'flex', gap: '8px' }}>
-                                                <button className={styles.btnSecondary} style={{ width: '100px', justifyContent: 'center' }} onClick={() => {
-                                                    setEditingCatId(cat.id);
-                                                    setEditCatData({
-                                                        name: cat.name,
-                                                    });
-                                                }}>Modifica</button>
+                                                <button
+                                                    className={styles.btnSecondary}
+                                                    style={{
+                                                        width: '100px',
+                                                        justifyContent: 'center',
+                                                        cursor: isDemo ? 'not-allowed' : 'pointer',
+                                                        opacity: isDemo ? 0.6 : 1
+                                                    }}
+                                                    disabled={isDemo}
+                                                    onClick={() => {
+                                                        if (isDemo) return;
+                                                        setEditingCatId(cat.id);
+                                                        setEditCatData({
+                                                            name: cat.name,
+                                                        });
+                                                    }}
+                                                >
+                                                    {isDemo ? 'Inibito' : 'Modifica'}
+                                                </button>
                                                 <button className={styles.btnDanger} style={{ width: '100px', justifyContent: 'center' }} disabled={isDemo} onClick={() => {
                                                     if (isDemo) return;
                                                     requestDelete(cat.id, cat.id, true, false);
@@ -714,7 +738,7 @@ export default function MenuBuilderPage() {
                                                                 style={{ width: '100%', height: '100%', objectFit: 'cover', cursor: 'pointer' }}
                                                                 onClick={() => setExpandedImage(item.imageUrl!)}
                                                             />
-                                                            {isPremium && (
+                                                            {isPremium && !isDemo && (
                                                                 <button
                                                                     onClick={(e) => {
                                                                         e.stopPropagation();
@@ -735,7 +759,7 @@ export default function MenuBuilderPage() {
                                                         </div>
                                                     )}
 
-                                                    {isPremium && !item.imageUrl && (
+                                                    {isPremium && !isDemo && !item.imageUrl && (
                                                         <>
                                                             <input
                                                                 type="file"
