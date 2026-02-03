@@ -77,3 +77,45 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: 'Errore nella creazione dell\'utente' }, { status: 500 });
     }
 }
+
+export async function DELETE(request: Request) {
+    const session = await getSession();
+    if (!session || session.user.role !== 'ADMIN') {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    try {
+        const { searchParams } = new URL(request.url);
+        const userId = searchParams.get('userId');
+
+        if (!userId) {
+            return NextResponse.json({ error: 'ID utente mancante' }, { status: 400 });
+        }
+
+        // Fetch user to check role
+        const userToDelete = await prisma.user.findUnique({
+            where: { id: userId }
+        });
+
+        if (!userToDelete) {
+            return NextResponse.json({ error: 'Utente non trovato' }, { status: 404 });
+        }
+
+        // Protection: cannot delete an ADMIN
+        if (userToDelete.role === 'ADMIN') {
+            return NextResponse.json({ error: 'Non è possibile eliminare un amministratore' }, { status: 403 });
+        }
+
+        // Proceed to delete
+        // Note: Prisma should handle cascading deletions if configured in schema,
+        // otherwise we might need to delete related data first.
+        await prisma.user.delete({
+            where: { id: userId }
+        });
+
+        return NextResponse.json({ success: true });
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        return NextResponse.json({ error: 'Errore durante l\'eliminazione dell\'utente' }, { status: 500 });
+    }
+}

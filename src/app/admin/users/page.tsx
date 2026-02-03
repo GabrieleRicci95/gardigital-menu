@@ -75,6 +75,27 @@ export default function AdminUsersPage() {
         }
     };
 
+    const handleDeleteUser = async (userId: string) => {
+        if (!confirm('Sei sicuro di voler eliminare questo utente? Questa azione eliminerà anche il suo ristorante.')) return;
+
+        try {
+            const res = await fetch(`/api/admin/users?userId=${userId}`, {
+                method: 'DELETE'
+            });
+
+            if (res.ok) {
+                setMessage({ type: 'success', text: 'Utente eliminato correttamente' });
+                fetchUsers();
+                setTimeout(() => setMessage(null), 3000);
+            } else {
+                const data = await res.json();
+                setMessage({ type: 'error', text: data.error || 'Errore durante l\'eliminazione' });
+            }
+        } catch (error) {
+            setMessage({ type: 'error', text: 'Errore di connessione' });
+        }
+    };
+
     if (loading) return <div className={styles.container}>Caricamento utenti...</div>;
 
     return (
@@ -99,6 +120,7 @@ export default function AdminUsersPage() {
                             <th style={{ padding: '15px' }}>Ruolo</th>
                             <th style={{ padding: '15px' }}>Ristoranti</th>
                             <th style={{ padding: '15px' }}>Data Creazione</th>
+                            <th style={{ padding: '15px' }}>Azioni</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -122,6 +144,24 @@ export default function AdminUsersPage() {
                                 </td>
                                 <td style={{ padding: '15px' }}>
                                     {new Date(user.createdAt).toLocaleDateString('it-IT')}
+                                </td>
+                                <td style={{ padding: '15px' }}>
+                                    {user.role !== 'ADMIN' && (
+                                        <button
+                                            onClick={() => handleDeleteUser(user.id)}
+                                            style={{
+                                                background: '#ef4444',
+                                                color: 'white',
+                                                border: 'none',
+                                                padding: '6px 12px',
+                                                borderRadius: '6px',
+                                                cursor: 'pointer',
+                                                fontSize: '0.8rem'
+                                            }}
+                                        >
+                                            Elimina
+                                        </button>
+                                    )}
                                 </td>
                             </tr>
                         ))}
