@@ -46,7 +46,12 @@ export async function PATCH(request: Request) {
 
     try {
         const data = await request.json();
-        const { name, description, themeColor, coverImageUrl, backgroundColor, textColor, fontFamily, cardStyle, whatsappNumber, wineListUrl, googleReviewsUrl } = data;
+        const {
+            name, description, themeColor, coverImageUrl, backgroundColor,
+            textColor, fontFamily, cardStyle, whatsappNumber, wineListUrl,
+            googleReviewsUrl,
+            isWineActive, isChampagneActive, isDrinkActive // New flags
+        } = data;
 
         if (!name) return NextResponse.json({ error: 'Il nome è obbligatorio' }, { status: 400 });
 
@@ -55,6 +60,11 @@ export async function PATCH(request: Request) {
         // Check if user already has a restaurant
         const existingRestaurant = await prisma.restaurant.findFirst({
             where: { ownerId: session.user.id },
+            include: {
+                wineList: true,
+                champagneList: true,
+                drinkList: true
+            }
         });
 
         let restaurant;
@@ -75,12 +85,35 @@ export async function PATCH(request: Request) {
                     whatsappNumber,
                     wineListUrl,
                     googleReviewsUrl,
-                    slug: existingRestaurant.name !== name ? slug + '-' + Math.floor(Math.random() * 1000) : existingRestaurant.slug
+                    slug: existingRestaurant.name !== name ? slug + '-' + Math.floor(Math.random() * 1000) : existingRestaurant.slug,
+                    // Handle related lists
+                    wineList: {
+                        upsert: {
+                            create: { isActive: isWineActive ?? true },
+                            update: { isActive: isWineActive ?? true }
+                        }
+                    },
+                    champagneList: {
+                        upsert: {
+                            create: { isActive: isChampagneActive ?? false },
+                            update: { isActive: isChampagneActive ?? false }
+                        }
+                    },
+                    drinkList: {
+                        upsert: {
+                            create: { isActive: isDrinkActive ?? false },
+                            update: { isActive: isDrinkActive ?? false }
+                        }
+                    }
                 },
+                include: {
+                    wineList: { select: { isActive: true } },
+                    champagneList: { select: { isActive: true } },
+                    drinkList: { select: { isActive: true } }
+                }
             });
         } else {
             // Create
-            // Ensure slug uniqueness simply
             const uniqueSlug = slug + '-' + Math.floor(Math.random() * 10000);
 
             restaurant = await prisma.restaurant.create({
@@ -98,7 +131,15 @@ export async function PATCH(request: Request) {
                     wineListUrl,
                     googleReviewsUrl,
                     ownerId: session.user.id,
+                    wineList: { create: { isActive: isWineActive ?? true } },
+                    champagneList: { create: { isActive: isChampagneActive ?? false } },
+                    drinkList: { create: { isActive: isDrinkActive ?? false } }
                 },
+                include: {
+                    wineList: { select: { isActive: true } },
+                    champagneList: { select: { isActive: true } },
+                    drinkList: { select: { isActive: true } }
+                }
             });
         }
 

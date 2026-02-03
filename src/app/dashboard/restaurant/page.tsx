@@ -16,6 +16,9 @@ export default function RestaurantPage() {
         slug: '',
         whatsappNumber: '',
         googleReviewsUrl: '',
+        isWineActive: false,
+        isChampagneActive: false,
+        isDrinkActive: false,
     });
 
     useEffect(() => {
@@ -31,6 +34,9 @@ export default function RestaurantPage() {
                         slug: data.restaurant.slug || '',
                         whatsappNumber: data.restaurant.whatsappNumber || '',
                         googleReviewsUrl: data.restaurant.googleReviewsUrl || '',
+                        isWineActive: !!data.restaurant.wineList?.isActive,
+                        isChampagneActive: !!data.restaurant.champagneList?.isActive,
+                        isDrinkActive: !!data.restaurant.drinkList?.isActive,
                     });
                 }
                 setLoading(false);
@@ -130,6 +136,52 @@ export default function RestaurantPage() {
                         <span className={styles.helperText}>
                             ℹ️ Se inserito, apparirà un invito a lasciare una recensione sul tuo menu pubblico.
                         </span>
+                    </div>
+
+                    <div style={{ marginTop: '2.5rem', borderTop: '1px solid #eee', paddingTop: '2rem' }}>
+                        <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '0.5rem', color: '#1a237e' }}>Moduli Menù Extra</h3>
+                        <p style={{ fontSize: '0.9rem', color: '#666', marginBottom: '1.5rem' }}>Attiva le sezioni speciali per il tuo menu digitale.</p>
+
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
+                            <label style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer', padding: '15px', borderRadius: '12px', background: '#f8fafc', border: '1px solid #e2e8f0', transition: 'all 0.2s' }}>
+                                <input
+                                    type="checkbox"
+                                    checked={formData.isWineActive}
+                                    onChange={e => setFormData({ ...formData, isWineActive: e.target.checked })}
+                                    style={{ width: '20px', height: '20px', cursor: 'pointer' }}
+                                />
+                                <div>
+                                    <span style={{ fontWeight: 600, display: 'block', color: '#1e293b' }}>Carta dei Vini</span>
+                                    <p style={{ margin: 0, fontSize: '0.8rem', color: '#64748b' }}>Gestisci una lista vini professionale.</p>
+                                </div>
+                            </label>
+
+                            <label style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer', padding: '15px', borderRadius: '12px', background: '#f8fafc', border: '1px solid #e2e8f0', transition: 'all 0.2s' }}>
+                                <input
+                                    type="checkbox"
+                                    checked={formData.isChampagneActive}
+                                    onChange={e => setFormData({ ...formData, isChampagneActive: e.target.checked })}
+                                    style={{ width: '20px', height: '20px', cursor: 'pointer' }}
+                                />
+                                <div>
+                                    <span style={{ fontWeight: 600, display: 'block', color: '#1e293b' }}>Carta degli Champagne</span>
+                                    <p style={{ margin: 0, fontSize: '0.8rem', color: '#64748b' }}>Ideale per wine bar o ristoranti chic.</p>
+                                </div>
+                            </label>
+
+                            <label style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer', padding: '15px', borderRadius: '12px', background: '#f8fafc', border: '1px solid #e2e8f0', transition: 'all 0.2s' }}>
+                                <input
+                                    type="checkbox"
+                                    checked={formData.isDrinkActive}
+                                    onChange={e => setFormData({ ...formData, isDrinkActive: e.target.checked })}
+                                    style={{ width: '20px', height: '20px', cursor: 'pointer' }}
+                                />
+                                <div>
+                                    <span style={{ fontWeight: 600, display: 'block', color: '#1e293b' }}>Carta dei Drink / Cocktail</span>
+                                    <p style={{ margin: 0, fontSize: '0.8rem', color: '#64748b' }}>Sezione dedicata ai Barman e mixology.</p>
+                                </div>
+                            </label>
+                        </div>
                     </div>
 
                     <div className={styles.actions}>
