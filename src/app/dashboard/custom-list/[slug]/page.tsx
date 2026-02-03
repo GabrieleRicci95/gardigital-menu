@@ -192,13 +192,13 @@ export default function CustomListPage() {
                 <div style={{
                     width: '60px',
                     height: '60px',
-                    background: 'linear-gradient(135deg, #1a237e 0%, #3949ab 100%)',
+                    background: 'linear-gradient(135deg, #1a237e 0%, #121858 100%)', // Premium Deep Indigo
                     borderRadius: '20px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     margin: '0 auto 1.5rem',
-                    boxShadow: '0 10px 25px rgba(26, 35, 126, 0.2)'
+                    boxShadow: '0 10px 25px rgba(26, 35, 126, 0.3)'
                 }}>
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
@@ -254,7 +254,7 @@ export default function CustomListPage() {
             <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
                 <button
                     onClick={addSection}
-                    style={{ background: '#1a237e', color: 'white', padding: '12px 24px', borderRadius: '12px', border: 'none', cursor: 'pointer', fontWeight: 600, boxShadow: '0 4px 12px rgba(26, 35, 126, 0.2)' }}
+                    style={{ background: '#000', color: 'white', padding: '12px 24px', borderRadius: '12px', border: 'none', cursor: 'pointer', fontWeight: 600, boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)' }}
                 >
                     + Aggiungi Nuova Categoria
                 </button>
@@ -300,7 +300,9 @@ export default function CustomListPage() {
                             </div>
                             <button
                                 onClick={() => removeSection(sIndex)}
-                                style={{ background: 'transparent', border: 'none', color: '#ef4444', cursor: 'pointer', padding: '8px' }}
+                                style={{ background: 'transparent', border: 'none', color: '#ccc', cursor: 'pointer', padding: '8px', transition: 'all 0.2s' }}
+                                onMouseEnter={(e) => e.currentTarget.style.color = '#ef4444'}
+                                onMouseLeave={(e) => e.currentTarget.style.color = '#ccc'}
                                 title="Elimina Categoria"
                                 disabled={isDemo}
                             >
@@ -330,6 +332,8 @@ export default function CustomListPage() {
                                     gap: '8px',
                                     opacity: isDemo ? 0.6 : 1
                                 }}
+                                onMouseEnter={(e) => !isDemo && (e.currentTarget.style.background = '#e0f2fe')}
+                                onMouseLeave={(e) => !isDemo && (e.currentTarget.style.background = '#f0f9ff')}
                                 disabled={isDemo}
                             >
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
@@ -354,8 +358,11 @@ export default function CustomListPage() {
                                                         borderBottom: '2px solid #eee',
                                                         fontSize: '1.1rem',
                                                         fontWeight: '600',
-                                                        outline: 'none'
+                                                        outline: 'none',
+                                                        transition: 'border-color 0.2s'
                                                     }}
+                                                    onFocus={(e) => e.target.style.borderColor = '#1a237e'}
+                                                    onBlur={(e) => e.target.style.borderColor = '#eee'}
                                                     readOnly={isDemo}
                                                 />
                                             </div>
@@ -375,6 +382,16 @@ export default function CustomListPage() {
                                                         color: '#555',
                                                         outline: 'none'
                                                     }}
+                                                    onFocus={(e) => {
+                                                        e.target.style.backgroundColor = '#fff';
+                                                        e.target.style.borderColor = '#ddd';
+                                                        e.target.style.boxShadow = '0 0 0 3px rgba(26, 35, 126, 0.1)';
+                                                    }}
+                                                    onBlur={(e) => {
+                                                        e.target.style.backgroundColor = '#f9f9f9';
+                                                        e.target.style.borderColor = 'transparent';
+                                                        e.target.style.boxShadow = 'none';
+                                                    }}
                                                     readOnly={isDemo}
                                                 />
                                             </div>
@@ -387,6 +404,8 @@ export default function CustomListPage() {
                                                 onChange={e => updateItem(sIndex, iIndex, 'price', e.target.value)}
                                                 onWheel={(e) => (e.target as HTMLInputElement).blur()}
                                                 placeholder="0"
+                                                onFocus={(e) => e.target.style.borderColor = '#1a237e'}
+                                                onBlur={(e) => e.target.style.borderColor = '#e5e5e5'}
                                                 readOnly={isDemo}
                                             />
                                             <span className={styles.priceSymbol}>€</span>
@@ -406,6 +425,8 @@ export default function CustomListPage() {
                                                 borderRadius: '6px',
                                                 transition: 'all 0.2s'
                                             }}
+                                            onMouseEnter={(e) => { e.currentTarget.style.color = '#ef4444'; e.currentTarget.style.backgroundColor = '#fee2e2'; }}
+                                            onMouseLeave={(e) => { e.currentTarget.style.color = '#bbb'; e.currentTarget.style.backgroundColor = 'transparent'; }}
                                             disabled={isDemo}
                                         >
                                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -444,7 +465,7 @@ export default function CustomListPage() {
                     onClick={handleSave}
                     disabled={saving || isDemo}
                     style={{
-                        background: isDemo ? '#ccc' : '#1a237e',
+                        background: isDemo ? '#ccc' : '#000', // Black for premium consistency
                         color: 'white',
                         padding: '12px 30px',
                         borderRadius: '40px',
@@ -456,7 +477,7 @@ export default function CustomListPage() {
                         display: 'flex',
                         alignItems: 'center',
                         gap: '8px',
-                        boxShadow: isDemo ? 'none' : '0 4px 12px rgba(26, 35, 126, 0.2)'
+                        boxShadow: isDemo ? 'none' : '0 4px 12px rgba(0,0,0,0.2)'
                     }}
                 >
                     {saving ? 'Salvataggio...' : (isDemo ? 'Modifiche Disabilitate (Demo)' : (
