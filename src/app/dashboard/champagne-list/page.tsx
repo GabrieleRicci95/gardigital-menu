@@ -32,6 +32,7 @@ export default function ChampagneListPage() {
     });
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
+    const [isDemo, setIsDemo] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
@@ -41,6 +42,10 @@ export default function ChampagneListPage() {
     const fetchChampagneList = async () => {
         try {
             const res = await fetch('/api/champagne-list');
+            const resRest = await fetch('/api/restaurant');
+            const dataRest = await resRest.json();
+            setIsDemo(!!dataRest.isDemo);
+
             if (res.ok) {
                 const data = await res.json();
                 if (data && data.sections) {
@@ -66,6 +71,10 @@ export default function ChampagneListPage() {
     };
 
     const handleSave = async () => {
+        if (isDemo) {
+            alert('Modalità Demo: modifiche non consentite');
+            return;
+        }
         setSaving(true);
         try {
             const res = await fetch('/api/champagne-list', {
@@ -224,7 +233,8 @@ export default function ChampagneListPage() {
                     <input
                         type="checkbox"
                         checked={champagneList.isActive}
-                        onChange={e => setChampagneList({ ...champagneList, isActive: e.target.checked })}
+                        onChange={e => !isDemo && setChampagneList({ ...champagneList, isActive: e.target.checked })}
+                        disabled={isDemo}
                         style={{ opacity: 0, width: 0, height: 0 }}
                     />
                     <span style={{
@@ -304,7 +314,7 @@ export default function ChampagneListPage() {
                                 onMouseLeave={(e) => e.currentTarget.style.background = '#f0f9ff'}
                             >
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                                Aggiungi Champagne
+                                {isDemo ? 'Aggiunta non consentita (Demo)' : 'Aggiungi Champagne'}
                             </button>
 
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -394,6 +404,7 @@ export default function ChampagneListPage() {
                                             title="Rimuovi Champagne"
                                         >
                                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                            {isDemo ? '' : ''}
                                         </button>
                                     </div>
                                 ))}
@@ -431,9 +442,9 @@ export default function ChampagneListPage() {
             }}>
                 <button
                     onClick={handleSave}
-                    disabled={saving}
+                    disabled={saving || isDemo}
                     style={{
-                        background: '#000',
+                        background: isDemo ? '#ccc' : '#000',
                         color: 'white',
                         padding: '12px 30px',
                         borderRadius: '40px',
@@ -448,12 +459,12 @@ export default function ChampagneListPage() {
                         boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
                     }}
                 >
-                    {saving ? 'Salvataggio...' : (
+                    {saving ? 'Salvataggio...' : (isDemo ? 'Disabilitato (Demo)' : (
                         <>
                             <span>Salva Modifiche</span>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                         </>
-                    )}
+                    ))}
                 </button>
                 <Link href="/dashboard" style={{
                     background: '#f3f4f6',

@@ -64,6 +64,7 @@ export default function FixedMenuEditorPage({ params }: { params: Promise<{ id: 
     const [id, setId] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
+    const [isDemo, setIsDemo] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
@@ -102,6 +103,7 @@ export default function FixedMenuEditorPage({ params }: { params: Promise<{ id: 
                         }))
                     }))
                 });
+                setIsDemo(!!data.isDemo);
             } else {
                 alert('Menu non trovato');
                 router.push('/dashboard/fixed-menus');
@@ -119,6 +121,11 @@ export default function FixedMenuEditorPage({ params }: { params: Promise<{ id: 
             return;
         }
 
+        if (isDemo) {
+            alert('Modalità Demo: modifiche non consentite');
+            setSaving(false);
+            return;
+        }
         setSaving(true);
         try {
             let res;
@@ -355,18 +362,18 @@ export default function FixedMenuEditorPage({ params }: { params: Promise<{ id: 
                         onClick={handleSave}
                         disabled={saving}
                         style={{
-                            background: '#0070f3',
+                            background: isDemo ? '#ccc' : '#0070f3',
                             color: 'white',
                             padding: '12px 40px',
                             borderRadius: '50px',
                             fontSize: '1.1rem',
                             fontWeight: 'bold',
                             border: 'none',
-                            cursor: saving ? 'not-allowed' : 'pointer',
-                            opacity: saving ? 0.7 : 1
+                            cursor: (saving || isDemo) ? 'not-allowed' : 'pointer',
+                            opacity: (saving || isDemo) ? 0.7 : 1
                         }}
                     >
-                        {saving ? 'Salvataggio...' : 'Salva Modifiche'}
+                        {saving ? 'Salvataggio...' : (isDemo ? 'Disabilitato (Demo)' : 'Salva Modifiche')}
                     </button>
                 </div>
             </div >

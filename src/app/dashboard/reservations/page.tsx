@@ -17,6 +17,7 @@ interface Reservation {
 export default function ReservationsPage() {
     const [reservations, setReservations] = useState<Reservation[]>([]);
     const [loading, setLoading] = useState(true);
+    const [isDemo, setIsDemo] = useState(false);
     const [filterDate, setFilterDate] = useState(new Date().toISOString().split('T')[0]); // Default today
 
     useEffect(() => {
@@ -32,6 +33,7 @@ export default function ReservationsPage() {
             const restaurantData = await restaurantRes.json();
 
             if (restaurantData.restaurant) {
+                setIsDemo(!!restaurantData.isDemo);
                 const res = await fetch(`/api/reservations?restaurantId=${restaurantData.restaurant.id}&date=${filterDate}`);
                 if (res.ok) {
                     const data = await res.json();
@@ -46,6 +48,7 @@ export default function ReservationsPage() {
     };
 
     const handleStatusUpdate = async (id: string, newStatus: string) => {
+        if (isDemo) return alert('Modalità Demo: modifiche non consentite');
         if (!confirm('Sei sicuro?')) return;
 
         const reservation = reservations.find(r => r.id === id);
@@ -167,6 +170,7 @@ export default function ReservationsPage() {
     };
 
     const handleDelete = async (id: string) => {
+        if (isDemo) return alert('Modalità Demo: modifiche non consentite');
         if (!confirm('Sei sicuro di voler eliminare questa prenotazione? Questa azione è irreversibile.')) return;
 
         try {
@@ -192,10 +196,11 @@ export default function ReservationsPage() {
                 <div className={styles.controls}>
                     <button
                         className={styles.btnPrimary}
-                        style={{ backgroundColor: '#2e7d32', marginRight: '1rem' }}
-                        onClick={() => setIsModalOpen(true)}
+                        style={{ backgroundColor: isDemo ? '#ccc' : '#2e7d32', marginRight: '1rem', cursor: isDemo ? 'not-allowed' : 'pointer' }}
+                        onClick={() => !isDemo && setIsModalOpen(true)}
+                        disabled={isDemo}
                     >
-                        + Nuova Prenotazione
+                        {isDemo ? 'Nuova Prenotazione Bloccatas' : '+ Nuova Prenotazione'}
                     </button>
                     <input
                         type="date"

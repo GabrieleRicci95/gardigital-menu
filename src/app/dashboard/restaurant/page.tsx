@@ -7,6 +7,7 @@ export default function RestaurantPage() {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [message, setMessage] = useState('');
+    const [isDemo, setIsDemo] = useState(false);
 
     const [formData, setFormData] = useState({
         name: '',
@@ -22,6 +23,7 @@ export default function RestaurantPage() {
             .then(res => res.json())
             .then(data => {
                 if (data.restaurant) {
+                    setIsDemo(!!data.isDemo);
                     setFormData({
                         name: data.restaurant.name || '',
                         description: data.restaurant.description || '',
@@ -38,6 +40,10 @@ export default function RestaurantPage() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (isDemo) {
+            setMessage('Modalità Demo: modifiche non consentite');
+            return;
+        }
         setSaving(true);
         setMessage('');
 
@@ -127,8 +133,8 @@ export default function RestaurantPage() {
                     </div>
 
                     <div className={styles.actions}>
-                        <button type="submit" className={`${styles.button} ${styles.btnPrimary}`} style={{ width: 'auto' }} disabled={saving}>
-                            {saving ? 'Salvataggio...' : 'Salva Modifiche'}
+                        <button type="submit" className={`${styles.button} ${styles.btnPrimary}`} style={{ width: 'auto', background: isDemo ? '#ccc' : '' }} disabled={saving || isDemo}>
+                            {saving ? 'Salvataggio...' : (isDemo ? 'Disabilitato (Demo)' : 'Salva Modifiche')}
                         </button>
                         {message && <span className={styles.message}>✅ {message}</span>}
                     </div>

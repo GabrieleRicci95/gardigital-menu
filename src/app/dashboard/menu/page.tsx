@@ -41,6 +41,7 @@ export default function MenuBuilderPage() {
     const [expandedImage, setExpandedImage] = useState<string | null>(null);
     const [showCreateInput, setShowCreateInput] = useState(false);
     const [showAllMenus, setShowAllMenus] = useState(false);
+    const [isDemo, setIsDemo] = useState(false);
 
     // Forms states
     const [newMenuName, setNewMenuName] = useState('');
@@ -132,6 +133,7 @@ export default function MenuBuilderPage() {
                 const data = await restRes.json();
                 setSubscription(data.restaurant?.subscription);
                 setRestaurantSlug(data.restaurant?.slug || '');
+                setIsDemo(!!data.isDemo);
             }
         } catch (err) {
             console.error("Error loading data", err);
@@ -407,7 +409,9 @@ export default function MenuBuilderPage() {
                             />
                             <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
                                 <button type="button" onClick={() => setShowCreateInput(false)} className={styles.btnSecondary}>Annulla</button>
-                                <button type="submit" className={styles.btnPrimary} disabled={(!isPremium && menus.length >= 1) || !newMenuName.trim()}>Crea Menu</button>
+                                <button type="submit" className={styles.btnPrimary} disabled={isDemo || (!isPremium && menus.length >= 1) || !newMenuName.trim()}>
+                                    {isDemo ? 'Disabilitato (Demo)' : 'Crea Menu'}
+                                </button>
                             </div>
                             {!isPremium && menus.length >= 1 && (
                                 <p style={{ color: '#d32f2f', marginTop: '1rem', fontSize: '0.9rem' }}>
@@ -445,10 +449,15 @@ export default function MenuBuilderPage() {
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                             <h3 style={{ fontSize: '1.5rem', margin: '0 0 0.5rem 0', fontFamily: 'var(--font-playfair, serif)', fontWeight: '700' }}>{menu.name}</h3>
                             <button
-                                onClick={(e) => { e.stopPropagation(); requestDelete(menu.id, null, false, true); }}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    if (isDemo) return alert('Modalità Demo: modifiche non consentite');
+                                    requestDelete(menu.id, null, false, true);
+                                }}
                                 className={styles.btnLink}
-                                title="Elimina Menu"
+                                title={isDemo ? "Eliminazione non consentita in Demo" : "Elimina Menu"}
                                 style={{ fontSize: '1.5rem', lineHeight: 1, padding: 0 }}
+                                disabled={isDemo}
                             >
                                 ×
                             </button>
@@ -519,11 +528,14 @@ export default function MenuBuilderPage() {
                                     type="text"
                                     placeholder="Nome Categoria (es. Antipasti)"
                                     value={newCatData.name}
-                                    onChange={e => setNewCatData({ ...newCatData, name: e.target.value })}
+                                    onChange={e => !isDemo && setNewCatData({ ...newCatData, name: e.target.value })}
                                     className={styles.input}
                                     style={{ flex: 1 }}
+                                    readOnly={isDemo}
                                 />
-                                <button type="submit" className={styles.btnPrimary} style={{ width: 'auto' }}>+ Aggiungi</button>
+                                <button type="submit" className={styles.btnPrimary} style={{ width: 'auto' }} disabled={isDemo}>
+                                    {isDemo ? 'Bloccato' : '+ Aggiungi'}
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -550,7 +562,8 @@ export default function MenuBuilderPage() {
                                                         name: cat.name,
                                                     });
                                                 }}>Modifica</button>
-                                                <button className={styles.btnDanger} style={{ width: '100px', justifyContent: 'center' }} onClick={() => {
+                                                <button className={styles.btnDanger} style={{ width: '100px', justifyContent: 'center' }} disabled={isDemo} onClick={() => {
+                                                    if (isDemo) return;
                                                     requestDelete(cat.id, cat.id, true, false);
                                                 }}>Cancella</button>
                                             </div>
@@ -582,7 +595,7 @@ export default function MenuBuilderPage() {
                                         onMouseLeave={(e) => e.currentTarget.style.background = '#f0f9ff'}
                                     >
                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                                        Aggiungi Piatto
+                                        {isDemo ? 'Aggiunta disabilitata (Demo)' : 'Aggiungi Piatto'}
                                     </button>
                                 )}
 
@@ -761,7 +774,10 @@ export default function MenuBuilderPage() {
                                                                 allergens: parsedAllergens,
                                                             });
                                                         }}>Modifica</button>
-                                                        <button onClick={() => requestDelete(item.id, cat.id)} className={styles.btnDanger} style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}>Cancella</button>
+                                                        <button onClick={() => {
+                                                            if (isDemo) return alert('Modalità Demo: modifiche non consentite');
+                                                            requestDelete(item.id, cat.id);
+                                                        }} className={styles.btnDanger} style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }} disabled={isDemo}>Cancella</button>
                                                     </div>
                                                 </div>
                                             </div>

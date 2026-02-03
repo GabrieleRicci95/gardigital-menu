@@ -17,6 +17,7 @@ interface FixedMenu {
 export default function FixedMenusPage() {
     const [menus, setMenus] = useState<FixedMenu[]>([]);
     const [loading, setLoading] = useState(true);
+    const [isDemo, setIsDemo] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
@@ -28,6 +29,12 @@ export default function FixedMenusPage() {
             const res = await fetch('/api/fixed-menus');
             if (res.ok) {
                 const data = await res.json();
+                // If it's the overview route it might be different structure, let's check restaurant api too
+                const restRes = await fetch('/api/restaurant');
+                if (restRes.ok) {
+                    const restData = await restRes.json();
+                    setIsDemo(!!restData.isDemo);
+                }
                 setMenus(data);
             }
         } catch (error) {
@@ -38,6 +45,7 @@ export default function FixedMenusPage() {
     };
 
     const handleDelete = async (id: string) => {
+        if (isDemo) return alert('Modalità Demo: modifiche non consentite');
         if (!confirm('Sei sicuro di voler eliminare questo menu?')) return;
 
         try {
@@ -104,9 +112,10 @@ export default function FixedMenusPage() {
                                 <button
                                     onClick={() => handleDelete(menu.id)}
                                     className={styles.btnDanger}
-                                    style={{ flex: 1 }}
+                                    style={{ flex: 1, opacity: isDemo ? 0.5 : 1 }}
+                                    disabled={isDemo}
                                 >
-                                    Elimina
+                                    {isDemo ? 'Bloccato' : 'Elimina'}
                                 </button>
                             </div>
                         </div>

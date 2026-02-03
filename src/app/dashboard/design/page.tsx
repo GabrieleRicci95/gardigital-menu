@@ -23,6 +23,7 @@ export default function DesignPage() {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [uploading, setUploading] = useState<string | null>(null); // 'logo' or 'cover'
+    const [isDemo, setIsDemo] = useState(false);
     const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
 
     useEffect(() => {
@@ -35,6 +36,7 @@ export default function DesignPage() {
             const data = await res.json();
             if (data.restaurant) {
                 setRestaurant(data.restaurant);
+                setIsDemo(!!data.isDemo);
             }
         } catch (error) {
             console.error('Error fetching restaurant:', error);
@@ -45,6 +47,10 @@ export default function DesignPage() {
 
     const handleSave = async (e?: React.FormEvent) => {
         if (e) e.preventDefault();
+        if (isDemo) {
+            setMessage({ type: 'error', text: 'Modalità Demo: modifiche non consentite' });
+            return;
+        }
         setSaving(true);
         setMessage(null);
 
@@ -70,6 +76,10 @@ export default function DesignPage() {
     const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, fieldName: 'logoUrl' | 'coverImageUrl') => {
         const file = e.target.files?.[0];
         if (!file || !restaurant) return;
+        if (isDemo) {
+            setMessage({ type: 'error', text: 'Modalità Demo: caricamento non consentito' });
+            return;
+        }
 
         setUploading(fieldName);
         const formData = new FormData();
@@ -162,8 +172,8 @@ export default function DesignPage() {
                                         onChange={(e) => handleFileUpload(e, 'logoUrl')}
                                         style={{ display: 'none' }}
                                     />
-                                    <label htmlFor="logo-upload" className={styles.btnSm} style={{ cursor: 'pointer', display: 'inline-flex' }}>
-                                        {uploading === 'logoUrl' ? 'Caricamento...' : 'Carica Logo'}
+                                    <label htmlFor="logo-upload" className={styles.btnSm} style={{ cursor: isDemo ? 'not-allowed' : 'pointer', display: 'inline-flex', opacity: isDemo ? 0.6 : 1 }}>
+                                        {uploading === 'logoUrl' ? 'Caricamento...' : (isDemo ? 'Disabilitato' : 'Carica Logo')}
                                     </label>
                                     <p className={styles.helperText}>Formato consigliato: PNG o JPG quadrata (500x500px)</p>
                                 </div>
@@ -229,29 +239,29 @@ export default function DesignPage() {
             }}>
                 <button
                     onClick={() => handleSave()}
-                    disabled={saving}
+                    disabled={saving || isDemo}
                     style={{
-                        background: '#000',
+                        background: isDemo ? '#ccc' : '#000',
                         color: 'white',
                         padding: '12px 30px',
                         borderRadius: '40px',
                         fontSize: '1rem',
                         fontWeight: '600',
                         border: 'none',
-                        cursor: saving ? 'not-allowed' : 'pointer',
-                        opacity: saving ? 0.7 : 1,
+                        cursor: (saving || isDemo) ? 'not-allowed' : 'pointer',
+                        opacity: (saving || isDemo) ? 0.7 : 1,
                         display: 'flex',
                         alignItems: 'center',
                         gap: '8px',
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
+                        boxShadow: isDemo ? 'none' : '0 4px 12px rgba(0,0,0,0.2)'
                     }}
                 >
-                    {saving ? 'Salvataggio...' : (
+                    {saving ? 'Salvataggio...' : (isDemo ? 'Disabilitato (Demo)' : (
                         <>
                             <span>Salva Modifiche</span>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                         </>
-                    )}
+                    ))}
                 </button>
                 <Link href="/dashboard" style={{
                     background: '#f3f4f6',

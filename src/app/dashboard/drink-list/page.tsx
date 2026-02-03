@@ -33,6 +33,7 @@ export default function DrinkListPage() {
     });
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
+    const [isDemo, setIsDemo] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
@@ -42,6 +43,10 @@ export default function DrinkListPage() {
     const fetchDrinkList = async () => {
         try {
             const res = await fetch('/api/drink-list');
+            const resRest = await fetch('/api/restaurant');
+            const dataRest = await resRest.json();
+            setIsDemo(!!dataRest.isDemo);
+
             if (res.ok) {
                 const data = await res.json();
                 if (data && data.sections) {
@@ -67,6 +72,10 @@ export default function DrinkListPage() {
     };
 
     const handleSave = async () => {
+        if (isDemo) {
+            alert('Modalità Demo: modifiche non consentite');
+            return;
+        }
         setSaving(true);
         try {
             const res = await fetch('/api/drink-list', {
@@ -92,6 +101,10 @@ export default function DrinkListPage() {
 
     const handleFileUpload = async (sectionIndex: number, itemIndex: number, file: File) => {
         if (!file) return;
+        if (isDemo) {
+            alert('Modalità Demo: caricamento non consentito');
+            return;
+        }
 
         const formData = new FormData();
         formData.append('file', file);
@@ -247,7 +260,8 @@ export default function DrinkListPage() {
                     <input
                         type="checkbox"
                         checked={drinkList.isActive}
-                        onChange={e => setDrinkList({ ...drinkList, isActive: e.target.checked })}
+                        onChange={e => !isDemo && setDrinkList({ ...drinkList, isActive: e.target.checked })}
+                        disabled={isDemo}
                         style={{ opacity: 0, width: 0, height: 0 }}
                     />
                     <span style={{
@@ -311,6 +325,7 @@ export default function DrinkListPage() {
                                     transition: 'all 0.2s'
                                 }}
                                 title="Elimina Categoria"
+                                disabled={isDemo}
                             >
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                             </button>
@@ -341,7 +356,7 @@ export default function DrinkListPage() {
                                 onMouseLeave={(e) => e.currentTarget.style.background = '#f0f9ff'}
                             >
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                                Aggiungi Drink alla categoria "{section.name || '...'}"
+                                {isDemo ? 'Aggiunta non consentita (Demo)' : `Aggiungi Drink alla categoria "${section.name || '...'}"`}
                             </button>
 
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -368,8 +383,8 @@ export default function DrinkListPage() {
                                                     backgroundPosition: 'center',
                                                     backgroundRepeat: 'no-repeat'
                                                 }}
-                                                onClick={() => document.getElementById(`file-${sIndex}-${iIndex}`)?.click()}
-                                                title="Carica Logo"
+                                                onClick={() => !isDemo && document.getElementById(`file-${sIndex}-${iIndex}`)?.click()}
+                                                title={isDemo ? "Caricamento disabilitato" : "Carica Logo"}
                                             >
                                                 {!item.logoUrl && (
                                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#aaa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
@@ -390,6 +405,7 @@ export default function DrinkListPage() {
                                                 <button
                                                     onClick={(e) => {
                                                         e.stopPropagation();
+                                                        if (isDemo) return;
                                                         updateItem(sIndex, iIndex, 'logoUrl', '');
                                                     }}
                                                     style={{ border: 'none', background: 'transparent', color: '#ef4444', fontSize: '0.7rem', marginTop: '4px', cursor: 'pointer' }}
@@ -481,6 +497,7 @@ export default function DrinkListPage() {
                                             onMouseEnter={(e) => { e.currentTarget.style.color = '#ef4444'; e.currentTarget.style.backgroundColor = '#fee2e2'; }}
                                             onMouseLeave={(e) => { e.currentTarget.style.color = '#bbb'; e.currentTarget.style.backgroundColor = 'transparent'; }}
                                             title="Rimuovi Drink"
+                                            disabled={isDemo}
                                         >
                                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                                         </button>
@@ -498,39 +515,41 @@ export default function DrinkListPage() {
                 ))}
 
                 {/* Add Category Card */}
-                <div
-                    onClick={addSection}
-                    style={{
-                        background: 'rgba(255,255,255,0.6)',
-                        border: '2px dashed #ccc',
-                        borderRadius: '20px',
-                        padding: '2rem',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s',
-                        color: '#666',
-                        gap: '1rem'
-                    }}
-                    onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#3b82f6'; e.currentTarget.style.background = '#f0f9ff'; e.currentTarget.style.color = '#3b82f6'; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#ccc'; e.currentTarget.style.background = 'rgba(255,255,255,0.6)'; e.currentTarget.style.color = '#666'; }}
-                >
-                    <div style={{
-                        width: '50px',
-                        height: '50px',
-                        borderRadius: '50%',
-                        background: 'white',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        boxShadow: '0 4px 10px rgba(0,0,0,0.05)'
-                    }}>
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                {!isDemo && (
+                    <div
+                        onClick={addSection}
+                        style={{
+                            background: 'rgba(255,255,255,0.6)',
+                            border: '2px dashed #ccc',
+                            borderRadius: '20px',
+                            padding: '2rem',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s',
+                            color: '#666',
+                            gap: '1rem'
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#3b82f6'; e.currentTarget.style.background = '#f0f9ff'; e.currentTarget.style.color = '#3b82f6'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#ccc'; e.currentTarget.style.background = 'rgba(255,255,255,0.6)'; e.currentTarget.style.color = '#666'; }}
+                    >
+                        <div style={{
+                            width: '50px',
+                            height: '50px',
+                            borderRadius: '50%',
+                            background: 'white',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            boxShadow: '0 4px 10px rgba(0,0,0,0.05)'
+                        }}>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        </div>
+                        <span style={{ fontSize: '1.1rem', fontWeight: '600' }}>Aggiungi Nuova Categoria</span>
                     </div>
-                    <span style={{ fontSize: '1.1rem', fontWeight: '600' }}>Aggiungi Nuova Categoria</span>
-                </div>
+                )}
             </div>
 
 
@@ -552,9 +571,9 @@ export default function DrinkListPage() {
             }}>
                 <button
                     onClick={handleSave}
-                    disabled={saving}
+                    disabled={saving || isDemo}
                     style={{
-                        background: '#000',
+                        background: isDemo ? '#ccc' : '#000',
                         color: 'white',
                         padding: '12px 30px',
                         borderRadius: '40px',
@@ -569,12 +588,12 @@ export default function DrinkListPage() {
                         boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
                     }}
                 >
-                    {saving ? 'Salvataggio...' : (
+                    {saving ? 'Salvataggio...' : (isDemo ? 'Disabilitato (Demo)' : (
                         <>
                             <span>Salva Modifiche</span>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                         </>
-                    )}
+                    ))}
                 </button>
                 <Link href="/dashboard" style={{
                     background: '#f3f4f6',

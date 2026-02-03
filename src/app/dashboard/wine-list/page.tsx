@@ -32,6 +32,7 @@ export default function WineListPage() {
     });
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
+    const [isDemo, setIsDemo] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
@@ -43,6 +44,7 @@ export default function WineListPage() {
             const res = await fetch('/api/wine-list');
             if (res.ok) {
                 const data = await res.json();
+                setIsDemo(!!data.isDemo);
                 if (data && data.sections) {
                     setWineList({
                         ...data,
@@ -67,6 +69,11 @@ export default function WineListPage() {
 
     const handleSave = async () => {
         setSaving(true);
+        if (isDemo) {
+            alert('Modalità Demo: modifiche non consentite');
+            setSaving(false);
+            return;
+        }
         try {
             const res = await fetch('/api/wine-list', {
                 method: 'POST',
@@ -222,7 +229,8 @@ export default function WineListPage() {
                     <input
                         type="checkbox"
                         checked={wineList.isActive}
-                        onChange={e => setWineList({ ...wineList, isActive: e.target.checked })}
+                        onChange={e => !isDemo && setWineList({ ...wineList, isActive: e.target.checked })}
+                        disabled={isDemo}
                         style={{ opacity: 0, width: 0, height: 0 }}
                     />
                     <span style={{
@@ -300,7 +308,7 @@ export default function WineListPage() {
                                 onMouseLeave={(e) => e.currentTarget.style.background = '#f0f9ff'}
                             >
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                                Aggiungi Vino
+                                {isDemo ? 'Aggiunta non consentita (Demo)' : 'Aggiungi Vino'}
                             </button>
 
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -326,6 +334,7 @@ export default function WineListPage() {
                                                     }}
                                                     onFocus={(e) => e.target.style.borderColor = '#a31d1d'}
                                                     onBlur={(e) => e.target.style.borderColor = '#eee'}
+                                                    readOnly={isDemo}
                                                 />
                                             </div>
                                             <div>
@@ -354,6 +363,7 @@ export default function WineListPage() {
                                                         e.target.style.borderColor = 'transparent';
                                                         e.target.style.boxShadow = 'none';
                                                     }}
+                                                    readOnly={isDemo}
                                                 />
                                             </div>
                                         </div>
@@ -367,6 +377,7 @@ export default function WineListPage() {
                                                 placeholder="0"
                                                 onFocus={(e) => e.target.style.borderColor = '#a31d1d'}
                                                 onBlur={(e) => e.target.style.borderColor = '#e5e5e5'}
+                                                readOnly={isDemo}
                                             />
                                             <span className={styles.priceSymbol}>€</span>
                                         </div>
@@ -387,7 +398,8 @@ export default function WineListPage() {
                                             }}
                                             onMouseEnter={(e) => { e.currentTarget.style.color = '#ef4444'; e.currentTarget.style.backgroundColor = '#fee2e2'; }}
                                             onMouseLeave={(e) => { e.currentTarget.style.color = '#bbb'; e.currentTarget.style.backgroundColor = 'transparent'; }}
-                                            title="Rimuovi Vino"
+                                            title={isDemo ? "Eliminazione non consentita in Demo" : "Rimuovi Vino"}
+                                            disabled={isDemo}
                                         >
                                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                                         </button>
@@ -423,29 +435,29 @@ export default function WineListPage() {
             }}>
                 <button
                     onClick={handleSave}
-                    disabled={saving}
+                    disabled={saving || isDemo}
                     style={{
-                        background: '#000',
+                        background: isDemo ? '#ccc' : '#000',
                         color: 'white',
                         padding: '12px 30px',
                         borderRadius: '40px',
                         fontSize: '1rem',
                         fontWeight: '600',
                         border: 'none',
-                        cursor: saving ? 'not-allowed' : 'pointer',
-                        opacity: saving ? 0.7 : 1,
+                        cursor: (saving || isDemo) ? 'not-allowed' : 'pointer',
+                        opacity: (saving || isDemo) ? 0.7 : 1,
                         display: 'flex',
                         alignItems: 'center',
                         gap: '8px',
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
+                        boxShadow: isDemo ? 'none' : '0 4px 12px rgba(0,0,0,0.2)'
                     }}
                 >
-                    {saving ? 'Salvataggio...' : (
+                    {saving ? 'Salvataggio...' : (isDemo ? 'Modifiche Disabilitate (Demo)' : (
                         <>
                             <span>Salva Modifiche</span>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                         </>
-                    )}
+                    ))}
                 </button>
                 <Link href="/dashboard" style={{
                     background: '#f3f4f6',
