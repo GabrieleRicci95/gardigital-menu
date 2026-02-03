@@ -30,7 +30,10 @@ export async function GET() {
             }
         });
 
-        return NextResponse.json({ restaurant });
+        return NextResponse.json({
+            restaurant,
+            isDemo: isDemoSession(session)
+        });
     } catch (error) {
         return NextResponse.json({ error: 'Errore nel recupero del ristorante' }, { status: 500 });
     }

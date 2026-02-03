@@ -446,11 +446,25 @@ export default function MenuBuilderPage() {
             <div className={styles.grid}>
                 <div
                     className={styles.card}
-                    onClick={() => setShowCreateInput(true)}
-                    style={{ cursor: 'pointer', border: '2px dashed #e5e7eb', boxShadow: 'none', background: 'transparent', justifyContent: 'center', alignItems: 'center', minHeight: '200px' }}
+                    onClick={() => {
+                        if (isDemo) return alert('Modalità Demo: modifiche non consentite');
+                        setShowCreateInput(true);
+                    }}
+                    style={{
+                        cursor: isDemo ? 'not-allowed' : 'pointer',
+                        border: '2px dashed #e5e7eb',
+                        boxShadow: 'none',
+                        background: 'transparent',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        minHeight: '200px',
+                        opacity: isDemo ? 0.6 : 1
+                    }}
                 >
                     <div style={{ fontSize: '3rem', color: '#1a1a1a', fontWeight: '300' }}>+</div>
-                    <span style={{ fontWeight: 600, color: '#1a1a1a', fontSize: '1.2rem' }}>Nuovo Menu</span>
+                    <span style={{ fontWeight: 600, color: '#1a1a1a', fontSize: '1.2rem' }}>
+                        {isDemo ? 'Bloccato (Demo)' : 'Nuovo Menu'}
+                    </span>
                 </div>
                 {(showAllMenus ? menus : menus.slice(0, 2)).map(menu => (
                     <div key={menu.id}
