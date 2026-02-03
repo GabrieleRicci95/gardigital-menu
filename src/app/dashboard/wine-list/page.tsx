@@ -97,6 +97,7 @@ export default function WineListPage() {
     // --- State Management Helpers ---
 
     const addSection = () => {
+        if (isDemo) return alert('Modalità Demo: modifiche non consentite');
         setWineList(prev => ({
             ...prev,
             sections: [
@@ -111,6 +112,7 @@ export default function WineListPage() {
     };
 
     const removeSection = (index: number) => {
+        if (isDemo) return alert('Modalità Demo: modifiche non consentite');
         if (!confirm('Eliminare questa categoria e tutti i vini inclusi?')) return;
         setWineList(prev => {
             const newSections = [...prev.sections];
@@ -128,6 +130,7 @@ export default function WineListPage() {
     };
 
     const addItem = (sectionIndex: number) => {
+        if (isDemo) return alert('Modalità Demo: modifiche non consentite');
         setWineList(prev => {
             const newSections = prev.sections.map((section, sIdx) => {
                 if (sIdx !== sectionIndex) return section;
@@ -149,6 +152,7 @@ export default function WineListPage() {
     };
 
     const removeItem = (sectionIndex: number, itemIndex: number) => {
+        if (isDemo) return alert('Modalità Demo: modifiche non consentite');
         setWineList(prev => {
             const newSections = prev.sections.map((section, sIdx) => {
                 if (sIdx !== sectionIndex) return section;
@@ -286,7 +290,7 @@ export default function WineListPage() {
                         {/* Items List */}
                         <div style={{ padding: '1.5rem' }}>
                             <button
-                                onClick={() => addItem(sIndex)}
+                                onClick={() => !isDemo && addItem(sIndex)}
                                 style={{
                                     marginBottom: '1.5rem',
                                     width: '100%',
@@ -295,17 +299,19 @@ export default function WineListPage() {
                                     border: '1px dashed #bae6fd',
                                     padding: '12px',
                                     borderRadius: '10px',
-                                    cursor: 'pointer',
+                                    cursor: isDemo ? 'not-allowed' : 'pointer',
                                     fontWeight: '600',
                                     fontSize: '0.95rem',
                                     transition: 'all 0.2s',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    gap: '8px'
+                                    gap: '8px',
+                                    opacity: isDemo ? 0.6 : 1
                                 }}
-                                onMouseEnter={(e) => e.currentTarget.style.background = '#e0f2fe'}
-                                onMouseLeave={(e) => e.currentTarget.style.background = '#f0f9ff'}
+                                onMouseEnter={(e) => !isDemo && (e.currentTarget.style.background = '#e0f2fe')}
+                                onMouseLeave={(e) => !isDemo && (e.currentTarget.style.background = '#f0f9ff')}
+                                disabled={isDemo}
                             >
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                                 {isDemo ? 'Aggiunta non consentita (Demo)' : 'Aggiungi Vino'}
