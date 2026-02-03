@@ -5,15 +5,17 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 async function getStats() {
+    const excludedEmails = ['gabrielericci234@gmail.com', 'demo@gardigital.it'];
+
     const totalRestaurants = await prisma.restaurant.count({
-        where: { owner: { email: { not: 'gabrielericci234@gmail.com' } } }
+        where: { owner: { email: { notIn: excludedEmails } } }
     });
     // Removed totalVisits query
 
     const activeSubscriptions = await prisma.subscription.count({
         where: {
             status: 'ACTIVE',
-            restaurant: { owner: { email: { not: 'gabrielericci234@gmail.com' } } }
+            restaurant: { owner: { email: { notIn: excludedEmails } } }
         }
     });
 
@@ -21,7 +23,7 @@ async function getStats() {
         where: {
             status: 'ACTIVE',
             plan: 'PREMIUM',
-            restaurant: { owner: { email: { not: 'gabrielericci234@gmail.com' } } }
+            restaurant: { owner: { email: { notIn: excludedEmails } } }
         }
     });
 
@@ -29,7 +31,7 @@ async function getStats() {
         where: {
             status: 'ACTIVE',
             plan: 'FULL',
-            restaurant: { owner: { email: { not: 'gabrielericci234@gmail.com' } } }
+            restaurant: { owner: { email: { notIn: excludedEmails } } }
         }
     });
 
@@ -37,7 +39,7 @@ async function getStats() {
         where: {
             status: 'ACTIVE',
             plan: { in: ['BASE', 'FREE'] },
-            restaurant: { owner: { email: { not: 'gabrielericci234@gmail.com' } } }
+            restaurant: { owner: { email: { notIn: excludedEmails } } }
         }
     });
 

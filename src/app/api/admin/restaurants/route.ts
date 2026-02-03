@@ -13,6 +13,13 @@ export async function GET() {
 
     try {
         const restaurants = await prisma.restaurant.findMany({
+            where: {
+                owner: {
+                    email: {
+                        not: 'gabrielericci234@gmail.com'
+                    }
+                }
+            },
             include: {
                 owner: {
                     select: {
