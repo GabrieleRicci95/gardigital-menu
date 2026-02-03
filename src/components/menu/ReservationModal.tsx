@@ -131,6 +131,7 @@ export default function ReservationModal({ isOpen, onClose, whatsappNumber, rest
                             className={styles.input}
                             value={formData.guests}
                             onChange={e => setFormData({ ...formData, guests: parseInt(e.target.value) })}
+                            onWheel={(e) => (e.target as HTMLInputElement).blur()}
                         />
                     </div>
 

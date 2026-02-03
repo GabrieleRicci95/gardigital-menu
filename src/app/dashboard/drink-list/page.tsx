@@ -456,6 +456,7 @@ export default function DrinkListPage() {
                                                 type="number"
                                                 value={item.price}
                                                 onChange={e => updateItem(sIndex, iIndex, 'price', e.target.value)}
+                                                onWheel={(e) => (e.target as HTMLInputElement).blur()}
                                                 placeholder="0"
                                                 onFocus={(e) => e.target.style.borderColor = '#3b82f6'}
                                                 onBlur={(e) => e.target.style.borderColor = '#e5e5e5'}

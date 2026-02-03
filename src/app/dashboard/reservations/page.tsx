@@ -357,6 +357,7 @@ export default function ReservationsPage() {
                                             style={{ width: '100%' }}
                                             value={newRes.guests}
                                             onChange={e => setNewRes({ ...newRes, guests: parseInt(e.target.value) })}
+                                            onWheel={(e) => (e.target as HTMLInputElement).blur()}
                                         />
                                     </div>
                                     <div style={{ flex: 1 }}>

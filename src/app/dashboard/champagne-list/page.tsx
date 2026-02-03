@@ -367,6 +367,7 @@ export default function ChampagneListPage() {
                                                 type="number"
                                                 value={item.price}
                                                 onChange={e => updateItem(sIndex, iIndex, 'price', e.target.value)}
+                                                onWheel={(e) => (e.target as HTMLInputElement).blur()}
                                                 placeholder="0"
                                                 onFocus={(e) => e.target.style.borderColor = '#d4af37'}
                                                 onBlur={(e) => e.target.style.borderColor = '#e5e5e5'}

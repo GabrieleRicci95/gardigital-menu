@@ -298,6 +298,7 @@ export default function FixedMenuEditorPage({ params }: { params: Promise<{ id: 
                             type="number"
                             value={menu.price}
                             onChange={e => setMenu({ ...menu, price: e.target.value })}
+                            onWheel={(e) => (e.target as HTMLInputElement).blur()}
                             placeholder="0.00"
                             style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #ccc', fontSize: '1rem' }}
                         />
