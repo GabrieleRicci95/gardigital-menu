@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/lib/prisma';
 import { getSession } from '@/lib/auth';
-
-const prisma = new PrismaClient();
 
 function generateSlug(name: string) {
     return name
@@ -22,7 +20,7 @@ export async function GET() {
 
         if (!restaurant) return NextResponse.json({ error: 'Restaurant not found' }, { status: 404 });
 
-        const customLists = await prisma.customList.findMany({
+        const customLists = await (prisma as any).customList.findMany({
             where: { restaurantId: restaurant.id },
             include: {
                 sections: {
@@ -47,7 +45,7 @@ export async function POST(request: Request) {
         const { name } = await request.json();
         if (!name) return NextResponse.json({ error: 'Il nome è obbligatorio' }, { status: 400 });
 
-        const restaurant = await prisma.restaurant.findFirst({
+        const restaurant = await (prisma as any).restaurant.findFirst({
             where: { ownerId: session.user.id }
         });
 
@@ -55,12 +53,20 @@ export async function POST(request: Request) {
 
         const slug = generateSlug(name);
 
-        const customList = await prisma.customList.create({
+        const customList = await (prisma as any).customList.create({
             data: {
                 name,
                 slug,
                 restaurantId: restaurant.id,
-                isActive: true
+                isActive: true,
+                sections: {
+                    create: [
+                        {
+                            name: 'Categoria 1',
+                            sortOrder: 0
+                        }
+                    ]
+                }
             }
         });
 

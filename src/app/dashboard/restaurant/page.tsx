@@ -1,9 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from '../restaurant-dashboard.module.css';
 
 export default function RestaurantPage() {
+    const router = useRouter();
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [message, setMessage] = useState('');
@@ -89,9 +91,11 @@ export default function RestaurantPage() {
                 body: JSON.stringify({ name: newModuleTitle }),
             });
             if (res.ok) {
-                setMessage('Nuovo modulo creato con successo! Ricarica per vedere le modifiche.');
+                const data = await res.json();
+                const newSlug = data.customList.slug;
+                setMessage('Nuovo modulo creato con successo!');
                 setNewModuleTitle('');
-                window.location.reload();
+                router.push(`/dashboard/custom-list/${newSlug}`);
             } else {
                 setMessage('Errore nella creazione del modulo.');
             }

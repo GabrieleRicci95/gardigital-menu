@@ -6,23 +6,24 @@ const prisma = new PrismaClient();
 
 export async function GET(
     request: Request,
-    { params }: { params: { slug: string } }
+    { params }: { params: Promise<{ slug: string }> }
 ) {
+    const { slug } = await params;
     const session = await getSession();
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     try {
-        const restaurant = await prisma.restaurant.findFirst({
+        const restaurant = await (prisma as any).restaurant.findFirst({
             where: { ownerId: session.user.id }
         });
 
         if (!restaurant) return NextResponse.json({ error: 'Restaurant not found' }, { status: 404 });
 
-        const customList = await prisma.customList.findUnique({
+        const customList = await (prisma as any).customList.findUnique({
             where: {
                 restaurantId_slug: {
                     restaurantId: restaurant.id,
-                    slug: params.slug
+                    slug: slug
                 }
             },
             include: {
@@ -44,20 +45,22 @@ export async function GET(
             isDemo: isDemoSession(session)
         });
     } catch (error) {
+        console.error(error);
         return NextResponse.json({ error: 'Errore nel recupero del modulo' }, { status: 500 });
     }
 }
 
 export async function POST(
     request: Request,
-    { params }: { params: { slug: string } }
+    { params }: { params: Promise<{ slug: string }> }
 ) {
+    const { slug } = await params;
     const session = await getSession();
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     if (isDemoSession(session)) return NextResponse.json({ error: 'Modalità Demo: modifiche non consentite' }, { status: 403 });
 
     try {
-        const restaurant = await prisma.restaurant.findFirst({
+        const restaurant = await (prisma as any).restaurant.findFirst({
             where: { ownerId: session.user.id }
         });
 
@@ -66,18 +69,18 @@ export async function POST(
         const data = await request.json();
         const { sections } = data;
 
-        const customList = await prisma.customList.findUnique({
+        const customList = await (prisma as any).customList.findUnique({
             where: {
                 restaurantId_slug: {
                     restaurantId: restaurant.id,
-                    slug: params.slug
+                    slug: slug
                 }
             }
         });
 
         if (!customList) return NextResponse.json({ error: 'Modulo non trovato' }, { status: 404 });
 
-        await prisma.$transaction(async (tx) => {
+        await (prisma as any).$transaction(async (tx: any) => {
             // Delete existing sections (cascade deletes items)
             await tx.customListSection.deleteMany({
                 where: { customListId: customList.id }
@@ -113,8 +116,9 @@ export async function POST(
 
 export async function PATCH(
     request: Request,
-    { params }: { params: { slug: string } }
+    { params }: { params: Promise<{ slug: string }> }
 ) {
+    const { slug } = await params;
     const session = await getSession();
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     if (isDemoSession(session)) return NextResponse.json({ error: 'Modalità Demo: modifiche non consentite' }, { status: 403 });
@@ -122,17 +126,17 @@ export async function PATCH(
     try {
         const { name, isActive } = await request.json();
 
-        const restaurant = await prisma.restaurant.findFirst({
+        const restaurant = await (prisma as any).restaurant.findFirst({
             where: { ownerId: session.user.id }
         });
 
         if (!restaurant) return NextResponse.json({ error: 'Restaurant not found' }, { status: 404 });
 
-        const customList = await prisma.customList.update({
+        const customList = await (prisma as any).customList.update({
             where: {
                 restaurantId_slug: {
                     restaurantId: restaurant.id,
-                    slug: params.slug
+                    slug: slug
                 }
             },
             data: {
@@ -149,24 +153,25 @@ export async function PATCH(
 
 export async function DELETE(
     request: Request,
-    { params }: { params: { slug: string } }
+    { params }: { params: Promise<{ slug: string }> }
 ) {
+    const { slug } = await params;
     const session = await getSession();
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     if (isDemoSession(session)) return NextResponse.json({ error: 'Modalità Demo: modifiche non consentite' }, { status: 403 });
 
     try {
-        const restaurant = await prisma.restaurant.findFirst({
+        const restaurant = await (prisma as any).restaurant.findFirst({
             where: { ownerId: session.user.id }
         });
 
         if (!restaurant) return NextResponse.json({ error: 'Restaurant not found' }, { status: 404 });
 
-        await prisma.customList.delete({
+        await (prisma as any).customList.delete({
             where: {
                 restaurantId_slug: {
                     restaurantId: restaurant.id,
-                    slug: params.slug
+                    slug: slug
                 }
             }
         });
