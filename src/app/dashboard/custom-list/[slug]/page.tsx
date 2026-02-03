@@ -254,7 +254,20 @@ export default function CustomListPage() {
             <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
                 <button
                     onClick={addSection}
-                    style={{ background: '#000', color: 'white', padding: '12px 24px', borderRadius: '12px', border: 'none', cursor: 'pointer', fontWeight: 600, boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)' }}
+                    style={{
+                        background: isDemo ? '#ccc' : '#000',
+                        color: 'white',
+                        padding: '12px 30px',
+                        borderRadius: '40px',
+                        border: 'none',
+                        cursor: isDemo ? 'not-allowed' : 'pointer',
+                        fontWeight: 600,
+                        boxShadow: isDemo ? 'none' : '0 4px 12px rgba(0,0,0,0.15)',
+                        transition: 'all 0.2s'
+                    }}
+                    onMouseEnter={(e) => !isDemo && (e.currentTarget.style.transform = 'translateY(-2px)')}
+                    onMouseLeave={(e) => !isDemo && (e.currentTarget.style.transform = 'translateY(0)')}
+                    disabled={isDemo}
                 >
                     + Aggiungi Nuova Categoria
                 </button>
