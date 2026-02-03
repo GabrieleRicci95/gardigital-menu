@@ -79,15 +79,10 @@ export default function DashboardLayout({
             ownerEmail?.toLowerCase() === 'demo@gardigital.it' ||
             restaurantName?.toLowerCase().includes('demo');
 
-        if (isDemo && (item.label === 'Champagne' || item.label === 'Drink')) return false;
-
-        // Hide special lists if not active for normal users (except if they are Aperifish)
-        const isAperifish = restaurantSlug?.toLowerCase() === 'aperifish';
-        if (!isAperifish && !isDemo) {
-            if (item.label === 'Vini' && !isWineActive) return false;
-            if (item.label === 'Champagne' && !isChampagneActive) return false;
-            if (item.label === 'Drink' && !isDrinkActive) return false;
-        }
+        // Hide special lists if not active for normal users
+        if (item.label === 'Vini' && !isWineActive) return false;
+        if (item.label === 'Champagne' && !isChampagneActive) return false;
+        if (item.label === 'Drink' && !isDrinkActive) return false;
 
         return true;
     });
