@@ -106,9 +106,29 @@ export async function DELETE(request: Request) {
             return NextResponse.json({ error: 'Non è possibile eliminare un amministratore' }, { status: 403 });
         }
 
-        // Proceed to delete
-        // Note: Prisma should handle cascading deletions if configured in schema,
-        // otherwise we might need to delete related data first.
+        // --- Manual Cascading Deletion ---
+        // 1. Get all restaurants owned by the user
+        const userRestaurants = await prisma.restaurant.findMany({
+            where: { ownerId: userId },
+            select: { id: true }
+        });
+
+        const restaurantIds = userRestaurants.map(r => r.id);
+
+        if (restaurantIds.length > 0) {
+            // 2. Delete all subscriptions for these restaurants
+            await prisma.subscription.deleteMany({
+                where: { restaurantId: { in: restaurantIds } }
+            });
+
+            // 3. Delete the restaurants
+            // (Schemas for Menus, fixedMenus, wineList, etc. have onDelete: Cascade)
+            await prisma.restaurant.deleteMany({
+                where: { id: { in: restaurantIds } }
+            });
+        }
+
+        // 4. Finally delete the user
         await prisma.user.delete({
             where: { id: userId }
         });
