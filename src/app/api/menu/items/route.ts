@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
-import { getSession } from '@/lib/auth';
+import { getSession, isDemoSession } from '@/lib/auth';
 
 const prisma = new PrismaClient();
 
@@ -9,6 +9,7 @@ export const dynamic = 'force-dynamic';
 export async function POST(request: Request) {
     const session = await getSession();
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (isDemoSession(session)) return NextResponse.json({ error: 'Modalità Demo: modifiche non consentite' }, { status: 403 });
 
     try {
         const { name, description, price, categoryId, isVegan, isGlutenFree, isVegetarian, spiciness, translations, allergens } = await request.json();
@@ -71,6 +72,7 @@ export async function POST(request: Request) {
 export async function PATCH(request: Request) {
     const session = await getSession();
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (isDemoSession(session)) return NextResponse.json({ error: 'Modalità Demo: modifiche non consentite' }, { status: 403 });
 
     try {
         const { id, name, description, price, isVegan, isGlutenFree, isVegetarian, spiciness, imageUrl, translations, allergens } = await request.json();
@@ -110,6 +112,7 @@ export async function PATCH(request: Request) {
 export async function DELETE(request: Request) {
     const session = await getSession();
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (isDemoSession(session)) return NextResponse.json({ error: 'Modalità Demo: modifiche non consentite' }, { status: 403 });
 
     try {
         const { searchParams } = new URL(request.url);

@@ -628,7 +628,14 @@ export default function MenuClient({ restaurant: initialRestaurant }: { restaura
                         </a>
                     </div>
                 )}
-                Powered by <strong>Gardigital Menu</strong>
+                <a
+                    href={`https://www.gardigital.it?utm_source=menu_footer&utm_medium=referral&utm_campaign=${restaurant.slug}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: 'inherit', textDecoration: 'none' }}
+                >
+                    Powered by <strong>Gardigital Menu</strong>
+                </a>
 
             </footer>
         </div >

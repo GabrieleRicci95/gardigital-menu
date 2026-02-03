@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
-import { getSession } from '@/lib/auth';
+import { getSession, isDemoSession } from '@/lib/auth';
 
 const prisma = new PrismaClient();
 
@@ -19,9 +19,6 @@ export async function GET() {
     try {
         const restaurant = await prisma.restaurant.findFirst({
             where: { ownerId: session.user.id },
-            // Since no 'select' clause is specified at the top level,
-            // all scalar fields of the 'restaurant' model, including 'logoUrl',
-            // are already returned by default.
             include: {
                 subscription: true,
                 owner: {
@@ -42,6 +39,7 @@ export async function GET() {
 export async function PATCH(request: Request) {
     const session = await getSession();
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (isDemoSession(session)) return NextResponse.json({ error: 'Modalità Demo: modifiche non consentite' }, { status: 403 });
 
     try {
         const data = await request.json();

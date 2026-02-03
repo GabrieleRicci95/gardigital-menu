@@ -53,3 +53,7 @@ export async function getSession() {
         return null;
     }
 }
+
+export function isDemoSession(session: any): boolean {
+    return session?.user?.email === 'demo@gardigital.it';
+}

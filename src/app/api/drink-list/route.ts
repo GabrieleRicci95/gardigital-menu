@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { getSession } from '@/lib/auth';
+import { getSession, isDemoSession } from '@/lib/auth';
 
 export async function GET() {
     const session = await getSession();
@@ -48,6 +48,7 @@ export async function GET() {
 export async function POST(req: Request) {
     const session = await getSession();
     if (!session || !session.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (isDemoSession(session)) return NextResponse.json({ error: 'Modalità Demo: modifiche non consentite' }, { status: 403 });
 
     try {
         const body = await req.json();
@@ -71,9 +72,6 @@ export async function POST(req: Request) {
 
         // Handle Sections and Items Transaction
         await prisma.$transaction(async (tx) => {
-            // 1. Delete existing sections (cascade deletes items) to full sync
-            // A more optimized approach would be diffing, but full replace is safer for complex nested forms 
-            // and data volume is low.
             await tx.drinkSection.deleteMany({
                 where: { drinkListId: drinkList.id }
             });
@@ -92,7 +90,7 @@ export async function POST(req: Request) {
                                     name: item.name,
                                     description: item.description,
                                     price: item.price,
-                                    logoUrl: item.logoUrl // Add logoUrl support
+                                    logoUrl: item.logoUrl
                                 }))
                             }
                         }

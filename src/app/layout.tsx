@@ -3,6 +3,7 @@ import "@fontsource/inter";
 import "@fontsource/playfair-display";
 import "./globals.css";
 
+import Script from "next/script";
 import CookieBanner from "@/components/common/CookieBanner";
 
 export const viewport: Viewport = {
@@ -115,6 +116,22 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
         {children}
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+              `}
+            </Script>
+          </>
+        )}
         <CookieBanner />
       </body>
     </html>

@@ -45,6 +45,7 @@ export default function Home() {
               >
                 Prova la demo
               </button>
+              <Link href="/menu/demo" className={styles.secondaryBtn} target="_blank" style={{ backgroundColor: 'transparent', border: '1px solid currentColor' }}>Visualizza Menu</Link>
               <Link href="/vantaggi" className={styles.secondaryBtn} style={{ backgroundColor: 'transparent', border: '1px solid currentColor' }}>Scopri di più</Link>
             </div>
           </div>

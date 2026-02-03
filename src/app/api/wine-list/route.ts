@@ -1,7 +1,7 @@
 
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { getSession } from '@/lib/auth';
+import { getSession, isDemoSession } from '@/lib/auth';
 
 // GET: Fetch the wine list for the current restaurant
 export async function GET(request: Request) {
@@ -27,11 +27,6 @@ export async function GET(request: Request) {
             }
         });
 
-        // If no wine list exists, strictly return null or a default structure? 
-        // Let's return null and handle it in the frontend, or create partial.
-        // Actually, better to return an empty structure if not found to simplify frontend?
-        // No, let's just return what we find.
-
         return NextResponse.json(wineList || { sections: [] });
 
     } catch (error) {
@@ -41,10 +36,10 @@ export async function GET(request: Request) {
 }
 
 // POST: Create or Update the entire wine list structure
-// This is a "Save All" approach which is easier for reordering and bulk edits.
 export async function POST(request: Request) {
     const session = await getSession();
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (isDemoSession(session)) return NextResponse.json({ error: 'Modalità Demo: modifiche non consentite' }, { status: 403 });
 
     try {
         const restaurant = await prisma.restaurant.findFirst({
@@ -57,13 +52,6 @@ export async function POST(request: Request) {
 
         const data = await request.json();
         const { isActive, sections } = data;
-
-        // Upsert the Wine List
-        // We will use a transaction to replace sections/items if needed, or smart updates.
-        // For simplicity in this iteration: Delete all sections and recreate them? 
-        // That loses IDs but is robust for syncing order. 
-        // However, if we want to preserve stats (if linked later), we should be careful.
-        // For now, allow full replacement is fine.
 
         const result = await prisma.$transaction(async (tx) => {
             // 1. Ensure WineList exists
@@ -86,7 +74,6 @@ export async function POST(request: Request) {
             }
 
             // 2. Handle sections.
-            // If full replacement logic:
             if (sections) {
                 // Delete existing sections (cascade deletes items)
                 await tx.wineListSection.deleteMany({
