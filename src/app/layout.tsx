@@ -16,7 +16,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: "Gardigital Menu - Il Menu Digitale Premium per il tuo Ristorante",
-  description: "Trasforma il tuo ristorante con Gardigital Menu. Crea menu digitali QR eleganti, gestisci piatti, allergeni e traduzioni in tempo reale. Un design premium per un'esperienza cliente impeccabile.",
+  description: "Digitalizza il tuo ristorante con Gardigital Menu. Crea menu QR eleganti, gestisci piatti, allergeni e traduzioni AI in tempo reale. Un'esperienza premium per i tuoi clienti.",
   keywords: [
     "menu digitale",
     "qr code menu",
@@ -35,21 +35,20 @@ export const metadata: Metadata = {
     "sito web professionale ristorante",
     "digitalizzazione horeca",
     "miglior menu digitale 2026",
-    "agenda elettronica prenotazioni",
-    "creare menu online gratis",
-    "listino prezzi digitale"
+    "agenda elettronica prenotazioni"
   ],
   authors: [{ name: "Gardigital" }],
   openGraph: {
-    title: "Gardigital Menu - Menu Digitale Premium",
-    description: "La soluzione professionale per il tuo ristorante. Semplice, elegante e veloce.",
+    title: "Gardigital Menu - Menu Digitale Premium & Gestionale Ristoranti",
+    description: "L'unico sistema che unisce Menu Digitale Premium, Agenda Elettronica e Sito Web Professionale. Semplice, elegante e veloce.",
     url: "https://www.gardigital.it",
     siteName: "Gardigital Menu",
     images: [
       {
-        url: "/logo_v2.png",
-        width: 800,
-        height: 600,
+        url: "/og-banner.png",
+        width: 1200,
+        height: 630,
+        alt: "Gardigital Menu - Premium Digital Experience"
       },
     ],
     locale: "it_IT",
@@ -57,9 +56,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Gardigital Menu",
-    description: "Crea il tuo menu digitale in pochi minuti.",
-    images: ["/logo_v2.png"],
+    title: "Gardigital Menu - Menu Digitale Premium",
+    description: "Crea il tuo menu digitale in pochi minuti con un design da urlo.",
+    images: ["/og-banner.png"],
   },
   icons: {
     icon: "/logo_v2.png",

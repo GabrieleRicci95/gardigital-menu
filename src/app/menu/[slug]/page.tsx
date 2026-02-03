@@ -14,12 +14,12 @@ interface PageProps {
 
 
 async function getRestaurant(slug: string): Promise<MenuPageRestaurant | null> {
-    const restaurant = await prisma.restaurant.findUnique({
+    const restaurant = await (prisma.restaurant.findUnique as any)({
         where: { slug: slug },
         include: {
             menus: {
                 where: { isActive: true },
-                take: 1, // Only one active menu allowed
+                take: 1,
                 include: {
                     categories: {
                         orderBy: { sortOrder: 'asc' },
@@ -34,39 +34,42 @@ async function getRestaurant(slug: string): Promise<MenuPageRestaurant | null> {
                     }
                 }
             },
-            wineList: {
-                select: { isActive: true }
+            wineList: { select: { isActive: true } },
+            champagneList: { select: { isActive: true } },
+            drinkList: { select: { isActive: true } },
+            customLists: {
+                where: { isActive: true },
+                include: {
+                    sections: {
+                        orderBy: { sortOrder: 'asc' },
+                        include: {
+                            items: {
+                                orderBy: { createdAt: 'asc' }
+                            }
+                        }
+                    }
+                }
             },
-            champagneList: {
-                select: { isActive: true }
-            },
-            drinkList: {
-                select: { isActive: true }
-            },
-            subscription: {
-                select: { plan: true }
-            }
+            subscription: { select: { plan: true } }
         }
     });
 
     if (!restaurant) return null;
 
-    // Flatten structure: Restaurant -> Categories (from the active menu)
-    // If no active menu is found, we return an empty category list or a fallback
-    const activeMenu = restaurant.menus[0];
-    const categories = activeMenu ? activeMenu.categories.map(cat => ({
+    const activeMenu = (restaurant as any).menus[0];
+    const categories = activeMenu ? activeMenu.categories.map((cat: any) => ({
         ...cat,
-        items: cat.items.map(item => ({
+        items: cat.items.map((item: any) => ({
             ...item,
             price: Number(item.price)
         }))
     })) : [];
 
     return {
-        ...restaurant,
-        wineList: restaurant.wineList,
-        champagneList: restaurant.champagneList,
-        drinkList: restaurant.drinkList,
+        ...(restaurant as any),
+        wineList: (restaurant as any).wineList,
+        champagneList: (restaurant as any).champagneList,
+        drinkList: (restaurant as any).drinkList,
         categories
     } as any as MenuPageRestaurant;
 }

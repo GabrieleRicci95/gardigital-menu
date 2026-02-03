@@ -26,7 +26,11 @@ export async function GET() {
                 },
                 wineList: { select: { isActive: true } },
                 champagneList: { select: { isActive: true } },
-                drinkList: { select: { isActive: true } }
+                drinkList: { select: { isActive: true } },
+                customLists: {
+                    where: { isActive: true },
+                    select: { id: true, name: true, slug: true, isActive: true }
+                }
             }
         });
 

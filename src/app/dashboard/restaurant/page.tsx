@@ -8,6 +8,8 @@ export default function RestaurantPage() {
     const [saving, setSaving] = useState(false);
     const [message, setMessage] = useState('');
     const [isDemo, setIsDemo] = useState(false);
+    const [newModuleTitle, setNewModuleTitle] = useState('');
+    const [creatingModule, setCreatingModule] = useState(false);
 
     const [formData, setFormData] = useState({
         name: '',
@@ -69,6 +71,34 @@ export default function RestaurantPage() {
             setMessage('Errore di connessione.');
         } finally {
             setSaving(false);
+        }
+    };
+
+    const handleCreateModule = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!newModuleTitle.trim()) return;
+        if (isDemo) {
+            setMessage('Modalità Demo: modifiche non consentite');
+            return;
+        }
+        setCreatingModule(true);
+        try {
+            const res = await fetch('/api/custom-lists', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: newModuleTitle }),
+            });
+            if (res.ok) {
+                setMessage('Nuovo modulo creato con successo! Ricarica per vedere le modifiche.');
+                setNewModuleTitle('');
+                window.location.reload();
+            } else {
+                setMessage('Errore nella creazione del modulo.');
+            }
+        } catch (error) {
+            setMessage('Errore di connessione.');
+        } finally {
+            setCreatingModule(false);
         }
     };
 
@@ -181,6 +211,27 @@ export default function RestaurantPage() {
                                     <p style={{ margin: 0, fontSize: '0.8rem', color: '#64748b' }}>Sezione dedicata ai Barman e mixology.</p>
                                 </div>
                             </label>
+                        </div>
+
+                        <div style={{ marginTop: '2rem', background: '#fff', padding: '1.5rem', borderRadius: '12px', border: '1px dashed #cbd5e1' }}>
+                            <h4 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.5rem' }}>+ Crea un Modulo Personalizzato</h4>
+                            <p style={{ fontSize: '0.8rem', color: '#64748b', marginBottom: '1rem' }}>Esempio: "I nostri Amari", "Carta dei Dessert", "Angolo Sigari".</p>
+                            <div style={{ display: 'flex', gap: '10px' }}>
+                                <input
+                                    type="text"
+                                    value={newModuleTitle}
+                                    onChange={e => setNewModuleTitle(e.target.value)}
+                                    placeholder="Nome del modulo..."
+                                    style={{ flex: 1, padding: '10px', borderRadius: '8px', border: '1px solid #e2e8f0' }}
+                                />
+                                <button
+                                    onClick={handleCreateModule}
+                                    disabled={creatingModule || !newModuleTitle.trim()}
+                                    style={{ padding: '10px 20px', borderRadius: '8px', background: '#1a237e', color: 'white', border: 'none', cursor: 'pointer', fontWeight: 600, opacity: (creatingModule || !newModuleTitle.trim()) ? 0.6 : 1 }}
+                                >
+                                    {creatingModule ? 'Creazione...' : 'Crea'}
+                                </button>
+                            </div>
                         </div>
                     </div>
 

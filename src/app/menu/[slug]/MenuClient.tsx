@@ -46,6 +46,7 @@ export interface MenuPageRestaurant {
     subscription?: { plan: string } | null;
     categories: MenuPageCategory[];
     translations?: { language: string; description: string | null }[];
+    customLists?: { id: string; name: string; slug: string; isActive: boolean }[] | null;
     googleReviewsUrl?: string | null;
 }
 const UI_LABELS: Record<string, any> = {
@@ -481,6 +482,30 @@ export default function MenuClient({ restaurant: initialRestaurant }: { restaura
                             {language === 'it' ? 'Drink' : t.drinks}
                         </Link>
                     )}
+
+                    {/* Custom Lists Buttons */}
+                    {restaurant.customLists?.map(list => (
+                        <Link
+                            key={list.id}
+                            href={`/menu/${restaurant.slug}/custom/${list.slug}`}
+                            style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '6px',
+                                backgroundColor: '#001f2f',
+                                color: 'white',
+                                padding: '8px 16px',
+                                borderRadius: '50px',
+                                textDecoration: 'none',
+                                fontWeight: 'bold',
+                                fontSize: '0.85rem',
+                                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                                whiteSpace: 'nowrap'
+                            }}
+                        >
+                            {list.name}
+                        </Link>
+                    ))}
                 </div>
                 <nav className={styles.categoryNav} style={{
                     position: 'relative',

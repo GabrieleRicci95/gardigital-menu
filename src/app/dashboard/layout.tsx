@@ -22,6 +22,7 @@ export default function DashboardLayout({
     const [isChampagneActive, setIsChampagneActive] = useState(false);
     const [isDrinkActive, setIsDrinkActive] = useState(false);
     const [restaurantLogo, setRestaurantLogo] = useState<string | null>(null);
+    const [customModules, setCustomModules] = useState<{ name: string, slug: string }[]>([]);
 
     useEffect(() => {
         const fetchRestaurantData = async () => {
@@ -37,6 +38,7 @@ export default function DashboardLayout({
                         setIsChampagneActive(!!data.restaurant.champagneList?.isActive);
                         setIsDrinkActive(!!data.restaurant.drinkList?.isActive);
                         setRestaurantLogo(data.restaurant.logoUrl || null);
+                        setCustomModules(data.restaurant.customLists || []);
                         if (data.restaurant.subscription) {
                             setSubscriptionPlan(data.restaurant.subscription.plan);
                         } else {
@@ -69,10 +71,15 @@ export default function DashboardLayout({
         { label: 'Vini', href: '/dashboard/wine-list', icon: 'Wine' },
         { label: 'Champagne', href: '/dashboard/champagne-list', icon: 'Glass' },
         { label: 'Drink', href: '/dashboard/drink-list', icon: 'Cocktail' },
-        { label: 'Agenda', href: '/dashboard/reservations', icon: 'Calendar', requiresFull: true }, // New Link
+        { label: 'Agenda', href: '/dashboard/reservations', icon: 'Calendar', requiresFull: true },
         { label: 'Aspetto & Design', href: '/dashboard/design', icon: 'Palette' },
         { label: 'QR Code', href: '/dashboard/qrcode', icon: 'QR' },
-    ].filter(item => {
+        ...customModules.map(m => ({
+            label: m.name,
+            href: `/dashboard/custom-list/${m.slug}`,
+            icon: 'Layers'
+        }))
+    ].filter((item: any) => {
         if (item.requiresFull && subscriptionPlan !== 'FULL') return false;
 
         const isDemo = restaurantSlug?.toLowerCase() === 'demo' ||
