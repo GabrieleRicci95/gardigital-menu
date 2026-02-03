@@ -27,7 +27,10 @@ export async function GET(request: Request) {
             }
         });
 
-        return NextResponse.json(wineList || { sections: [] });
+        return NextResponse.json({
+            ...(wineList || { sections: [] }),
+            isDemo: isDemoSession(session)
+        });
 
     } catch (error) {
         console.error("Error fetching wine list:", error);

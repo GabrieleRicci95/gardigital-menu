@@ -37,7 +37,10 @@ export async function GET() {
             });
         }
 
-        return NextResponse.json(drinkList);
+        return NextResponse.json({
+            ...drinkList,
+            isDemo: isDemoSession(session)
+        });
 
     } catch (error) {
         console.error("Get Drink List Error:", error);

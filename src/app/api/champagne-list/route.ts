@@ -27,7 +27,10 @@ export async function GET(request: Request) {
             }
         });
 
-        return NextResponse.json(champagneList || { sections: [] });
+        return NextResponse.json({
+            ...(champagneList || { sections: [] }),
+            isDemo: isDemoSession(session)
+        });
 
     } catch (error) {
         console.error("Error fetching champagne list:", error);
