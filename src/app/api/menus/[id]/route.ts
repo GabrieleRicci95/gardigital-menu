@@ -1,7 +1,7 @@
 
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { getSession } from '@/lib/auth';
+import { getSession, isDemoSession } from '@/lib/auth';
 
 export async function DELETE(
     req: Request,
@@ -9,9 +9,10 @@ export async function DELETE(
 ) {
     const session = await getSession();
     if (!session) {
-        console.error("DELETE Menu: No session found");
         return NextResponse.json({ error: 'Unauthorized: No Session' }, { status: 401 });
     }
+
+    if (isDemoSession(session)) return NextResponse.json({ error: 'Modalità Demo: modifiche non consentite' }, { status: 403 });
 
     const { id } = await params;
 
@@ -37,15 +38,10 @@ export async function DELETE(
         }
 
         if (menu.restaurantId !== restaurant.id) {
-            console.error(`Unauthorized Delete: Menu owner ${menu.restaurantId} vs User Restaurant ${restaurant.id}`);
             return NextResponse.json({
                 error: `Non autorizzato: Questo menu non appartiene al tuo ristorante.`
             }, { status: 403 });
         }
-
-        // Optional: Block deleting active menu? Or allow and let them have no active menu?
-        // User didn't specify. Safe bet: allow, but if active, maybe warn? 
-        // For API, just allow. Frontend can warn.
 
         // Optimized Transactional Delete
         try {

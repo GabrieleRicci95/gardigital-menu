@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { getSession } from '@/lib/auth';
+import { getSession, isDemoSession } from '@/lib/auth';
 
 // GET: Fetch reservations (Protected - Admin Only)
 export async function GET(req: Request) {
@@ -44,21 +44,13 @@ export async function GET(req: Request) {
 export async function PATCH(req: Request) {
     try {
         const session = await getSession();
-        // Allow if session exists OR if we are in dev/debug mode? No, strict security.
-        // Check if session is null
-        if (!session) {
-            console.error('PATCH Reservation: Unauthorized (No Session)');
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-        }
+        if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        if (isDemoSession(session)) return NextResponse.json({ error: 'Modalità Demo: modifiche non consentite' }, { status: 403 });
 
         const body = await req.json();
         const { id, status } = body;
 
-        console.log('PATCH Reservation:', { id, status, user: session.user?.email });
-
-        if (!id || !status) {
-            return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
-        }
+        if (!id || !status) return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
 
         const updated = await prisma.reservation.update({
             where: { id },
@@ -78,24 +70,15 @@ export async function POST(req: Request) {
         const body = await req.json();
         const { restaurantId, name, phone, email, guests, date, time, notes } = body;
 
-        // Basic validation
         if (!restaurantId || !name || !phone || !guests || !date || !time) {
             return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
         }
 
-        // Create date assuming Italy timezone (UTC+1 in winter, UTC+2 in summer)
-        // Simple heuristic for now: We treat the incoming date/time as "Local Italy Time".
-        // To save it correctly in UTC, we need to tell the Date constructor that this string includes the Italy offset.
-        // Since we don't have a timezone library, we will append a dynamic offset or defaulting to +01:00 for simplicity now, 
-        // but ideally we should use a library. 
-        // Let's assume +01:00 for now (Winter). In production for year-round support we should add 'date-fns-tz'.
-
-        // FIXME: Handle Daylight Saving Time automatically. currently hardcoded to +01:00 (CET)
         const dateTimeString = `${date}T${time}:00+01:00`;
 
-        // Check authentication to determine if we can set status manually
         const session = await getSession();
-        const initialStatus = (session && body.status) ? body.status : 'PENDING';
+        // Even if session is demo, we allow creating public reservations but block status manipulation
+        const initialStatus = (session && body.status && !isDemoSession(session)) ? body.status : 'PENDING';
 
         const reservation = await prisma.reservation.create({
             data: {
@@ -121,6 +104,7 @@ export async function POST(req: Request) {
 export async function DELETE(req: Request) {
     const session = await getSession();
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (isDemoSession(session)) return NextResponse.json({ error: 'Modalità Demo: modifiche non consentite' }, { status: 403 });
 
     try {
         const { searchParams } = new URL(req.url);

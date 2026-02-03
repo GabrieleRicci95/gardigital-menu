@@ -1,7 +1,7 @@
 
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { getSession } from '@/lib/auth';
+import { getSession, isDemoSession } from '@/lib/auth';
 
 export async function GET(request: Request, context: { params: Promise<{ id: string }> }) {
     const session = await getSession();
@@ -45,6 +45,7 @@ export async function GET(request: Request, context: { params: Promise<{ id: str
 export async function PUT(request: Request, context: { params: Promise<{ id: string }> }) {
     const session = await getSession();
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (isDemoSession(session)) return NextResponse.json({ error: 'Modalità Demo: modifiche non consentite' }, { status: 403 });
 
     const { id } = await context.params;
 
@@ -63,16 +64,6 @@ export async function PUT(request: Request, context: { params: Promise<{ id: str
         if (!existingMenu) return NextResponse.json({ error: 'Menu not found' }, { status: 404 });
 
         const data = await request.json();
-
-        // Complex Update using Transaction or Nested Writes
-        // We will update the main menu fields
-        // For sections and items, we might need a more robust strategy if we want to sync perfectly.
-        // For now, let's assume the frontend sends the full structure and we might replace portions or update in place.
-        // A simple strategy for MVP: Update Menu fields, and if sections are provided, handle them.
-
-        // HOWEVER, handling deep nested updates in one PUT is tricky with Prisma without deleting/recreating or careful mapping.
-        // Let's implement basic field updates + Sections handling (Upsert/Delete/Create)
-
         const { name, subtitle, price, description, isActive, sections } = data;
 
         // 1. Update basic fields
@@ -187,6 +178,7 @@ export async function PUT(request: Request, context: { params: Promise<{ id: str
 export async function DELETE(request: Request, context: { params: Promise<{ id: string }> }) {
     const session = await getSession();
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (isDemoSession(session)) return NextResponse.json({ error: 'Modalità Demo: modifiche non consentite' }, { status: 403 });
 
     const { id } = await context.params;
 

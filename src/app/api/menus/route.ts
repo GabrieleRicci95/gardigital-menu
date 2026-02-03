@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { getSession } from '@/lib/auth';
+import { getSession, isDemoSession } from '@/lib/auth';
 
 export async function GET() {
     const session = await getSession();
@@ -31,11 +31,10 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-    console.log("POST /api/menus called");
     try {
         const session = await getSession();
-        console.log("Session retrieved:", session ? "Found" : "Null");
         if (!session || !session.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        if (isDemoSession(session)) return NextResponse.json({ error: 'Modalità Demo: modifiche non consentite' }, { status: 403 });
 
         const { name } = await req.json();
 
@@ -82,6 +81,7 @@ export async function PATCH(req: Request) {
     try {
         const session = await getSession();
         if (!session || !session.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        if (isDemoSession(session)) return NextResponse.json({ error: 'Modalità Demo: modifiche non consentite' }, { status: 403 });
 
         const body = await req.json();
         const { id, name } = body;

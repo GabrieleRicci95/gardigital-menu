@@ -1,7 +1,7 @@
 
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { getSession } from '@/lib/auth';
+import { getSession, isDemoSession } from '@/lib/auth';
 
 export async function GET(request: Request) {
     const session = await getSession();
@@ -32,6 +32,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
     const session = await getSession();
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (isDemoSession(session)) return NextResponse.json({ error: 'Modalità Demo: modifiche non consentite' }, { status: 403 });
 
     try {
         const restaurant = await prisma.restaurant.findFirst({

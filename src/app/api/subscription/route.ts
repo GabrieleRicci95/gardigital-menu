@@ -1,7 +1,7 @@
 
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { getSession } from '@/lib/auth';
+import { getSession, isDemoSession } from '@/lib/auth';
 
 export async function PUT(req: Request) {
     try {
@@ -9,6 +9,7 @@ export async function PUT(req: Request) {
         if (!session || !session.user) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
+        if (isDemoSession(session)) return NextResponse.json({ error: 'Modalità Demo: modifiche non consentite' }, { status: 403 });
 
         const { plan } = await req.json();
 
@@ -26,13 +27,12 @@ export async function PUT(req: Request) {
         }
 
         // Update Subscription
-        // Start or update subscription. If not exists, create one.
         const subscription = await prisma.subscription.upsert({
             where: { restaurantId: restaurant.id },
             update: {
                 plan: plan,
-                status: 'ACTIVE', // Ensure status is active when changing plan
-                endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // Dummy 30 days extension
+                status: 'ACTIVE',
+                endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
             },
             create: {
                 restaurantId: restaurant.id,
@@ -43,7 +43,6 @@ export async function PUT(req: Request) {
             }
         });
 
-        // Also fetch updated menu count logic if needed, but for now just return subscription
         return NextResponse.json(subscription);
 
     } catch (error) {

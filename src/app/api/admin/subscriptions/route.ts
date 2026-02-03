@@ -1,8 +1,7 @@
-import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-import { getSession } from '@/lib/auth';
 
-const prisma = new PrismaClient();
+import { NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
+import { getSession, isDemoSession } from '@/lib/auth';
 
 export async function GET() {
     const session = await getSession();
@@ -33,11 +32,6 @@ export async function GET() {
             orderBy: { createdAt: 'desc' }
         });
 
-        // Add users without subscription (Free/Expired implicitly or just not created yet)
-        // Actually, if we want to see active plans, we just return subscriptions.
-        // User asked for "active subscriptions section ... list and type of subscription".
-        // Let's return just the subscriptions for now.
-
         return NextResponse.json({ subscriptions });
     } catch (error) {
         console.error(error);
@@ -50,6 +44,7 @@ export async function POST(request: Request) {
     if (!session || session.user.role !== 'ADMIN') {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+    if (isDemoSession(session)) return NextResponse.json({ error: 'Modalità Demo: modifiche non consentite' }, { status: 403 });
 
     try {
         const { restaurantId, plan, status } = await request.json();
@@ -57,9 +52,6 @@ export async function POST(request: Request) {
         if (!restaurantId || !plan) {
             return NextResponse.json({ error: 'Dati incompleti' }, { status: 400 });
         }
-
-        // Check if subscription exists using upsert
-        // But subscription requires separate creation potentially if using relation unique
 
         // First find rest subscription
         const currentSub = await prisma.subscription.findUnique({

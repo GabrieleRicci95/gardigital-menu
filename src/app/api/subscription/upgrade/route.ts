@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { getSession } from '@/lib/auth';
+import { getSession, isDemoSession } from '@/lib/auth';
 
 export async function POST() {
     const session = await getSession();
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (isDemoSession(session)) return NextResponse.json({ error: 'Modalità Demo: modifiche non consentite' }, { status: 403 });
 
     try {
         const restaurant = await prisma.restaurant.findFirst({
@@ -15,14 +16,13 @@ export async function POST() {
             return NextResponse.json({ error: 'Restaurant not found' }, { status: 404 });
         }
 
-        // Upsert subscription (create if new, update if exists)
         const subscription = await prisma.subscription.upsert({
             where: { restaurantId: restaurant.id },
             update: {
                 plan: 'PREMIUM',
                 status: 'ACTIVE',
                 startDate: new Date(),
-                endDate: null // Indefinite for now, or +1 year
+                endDate: null
             },
             create: {
                 restaurantId: restaurant.id,

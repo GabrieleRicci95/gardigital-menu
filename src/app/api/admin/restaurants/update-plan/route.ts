@@ -1,21 +1,20 @@
+
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { getSession } from '@/lib/auth';
+import { getSession, isDemoSession } from '@/lib/auth';
 
 export async function POST(req: Request) {
     const session = await getSession();
 
-    // Security Check
-    // TEMPORARY: Allow for testing
     if (!session || session.user.role !== 'ADMIN') {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+    if (isDemoSession(session)) return NextResponse.json({ error: 'Modalità Demo: modifiche non consentite' }, { status: 403 });
 
     try {
         const { restaurantId, newPlan, durationMonths } = await req.json();
 
         if (newPlan === 'BLOCKED') {
-            // "Blocca" means remove subscription (status: In attesa)
             try {
                 await prisma.subscription.delete({ where: { restaurantId } });
                 return NextResponse.json({ success: true, status: 'BLOCKED' });
@@ -25,7 +24,6 @@ export async function POST(req: Request) {
         }
 
         if (newPlan === 'DELETED') {
-            // "Elimina" means DELETE everything (User, Restaurant, Subscription)
             try {
                 const restaurant = await prisma.restaurant.findUnique({
                     where: { id: restaurantId },
@@ -61,7 +59,7 @@ export async function POST(req: Request) {
             update: {
                 plan: newPlan,
                 status: 'ACTIVE',
-                endDate: endDate // Update end date if provided
+                endDate: endDate
             },
             create: {
                 restaurantId: restaurantId,

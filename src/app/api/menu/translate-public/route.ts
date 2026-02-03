@@ -1,8 +1,12 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { getSession, isDemoSession } from '@/lib/auth';
 import * as deepl from 'deepl-node';
 
 export async function POST(request: Request) {
+    const session = await getSession();
+    if (session && isDemoSession(session)) return NextResponse.json({ error: 'Modalità Demo: modifiche non consentite' }, { status: 403 });
+
     try {
         const apiKey = process.env.DEEPL_API_KEY;
         if (!apiKey) {
@@ -60,7 +64,7 @@ export async function POST(request: Request) {
             const existingTrans = restaurant.translations?.[0];
             if (!existingTrans || existingTrans.description === restaurant.description) {
                 const res = await translator.translateText(restaurant.description, 'it' as any, targetLangCode);
-                restaurantDescriptionTranslation = res.text;
+                restaurantDescriptionTranslation = (res as any).text;
             }
         }
 
@@ -96,7 +100,7 @@ export async function POST(request: Request) {
         const catTranslations = [];
         for (const cat of categoriesToTranslate) {
             const result = await translator.translateText(cat.name, 'it' as any, targetLangCode);
-            catTranslations.push({ id: cat.id, name: result.text });
+            catTranslations.push({ id: cat.id, name: (result as any).text });
         }
 
         // 3. Translate Items
@@ -106,9 +110,9 @@ export async function POST(request: Request) {
             let descResult = null;
             if (item.description) {
                 const res = await translator.translateText(item.description, 'it' as any, targetLangCode);
-                descResult = res.text;
+                descResult = (res as any).text;
             }
-            itemTranslations.push({ id: item.id, name: nameResult.text, description: descResult });
+            itemTranslations.push({ id: item.id, name: (nameResult as any).text, description: descResult });
         }
 
         // 4. Save translations to DB
