@@ -131,7 +131,7 @@ export default function WineListPublicClient({ restaurant, wineList }: { restaur
                         letterSpacing: '2px',
                         fontWeight: 400
                     }}>
-                        Vini
+                        Vini/Bollicine
                     </h2>
                     <span style={{ flex: 1, height: '1px', background: `${goldAccent}40` }}></span>
                 </div>
@@ -145,7 +145,7 @@ export default function WineListPublicClient({ restaurant, wineList }: { restaur
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '4rem' }}>
                         {wineList.sections.map((section, idx) => (
                             <section key={section.id} id={section.id} style={{ scrollMarginTop: '120px' }} className="animate-fade-in">
-                                {section.name.toLowerCase() !== 'vini' && (
+                                {true && (
                                     <h2 style={{
                                         color: goldAccent, // Gold for headers
                                         fontSize: '1.75rem',
