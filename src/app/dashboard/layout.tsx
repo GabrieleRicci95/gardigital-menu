@@ -68,7 +68,7 @@ export default function DashboardLayout({
         { label: 'Il mio Ristorante', href: '/dashboard/restaurant', icon: 'Store' },
         { label: 'Menu', href: '/dashboard/menu', icon: 'Menu' },
         { label: 'Menu Fissi', href: '/dashboard/fixed-menus', icon: 'Star' },
-        { label: 'Vini', href: '/dashboard/wine-list', icon: 'Wine' },
+        { label: 'Vini/Bollicine', href: '/dashboard/wine-list', icon: 'Wine' },
         { label: 'Champagne', href: '/dashboard/champagne-list', icon: 'Glass' },
         { label: 'Drink', href: '/dashboard/drink-list', icon: 'Cocktail' },
         { label: 'Agenda', href: '/dashboard/reservations', icon: 'Calendar', requiresFull: true },
@@ -87,7 +87,7 @@ export default function DashboardLayout({
             restaurantName?.toLowerCase().includes('demo');
 
         // Hide special lists if not active for normal users
-        if (item.label === 'Vini' && !isWineActive) return false;
+        if (item.label === 'Vini/Bollicine' && !isWineActive) return false;
         if (item.label === 'Champagne' && !isChampagneActive) return false;
         if (item.label === 'Drink' && !isDrinkActive) return false;
 
