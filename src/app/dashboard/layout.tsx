@@ -65,34 +65,46 @@ export default function DashboardLayout({
 
     const navItems = [
         { label: 'Panoramica', href: '/dashboard', icon: 'Items' },
+        { label: 'Agenda', href: '/dashboard/reservations', icon: 'Calendar', requiresFull: true },
         { label: 'Il mio Ristorante', href: '/dashboard/restaurant', icon: 'Store' },
         { label: 'Menu', href: '/dashboard/menu', icon: 'Menu' },
         { label: 'Menu Fissi', href: '/dashboard/fixed-menus', icon: 'Star' },
         { label: 'Vini/Bollicine', href: '/dashboard/wine-list', icon: 'Wine' },
         { label: 'Champagne', href: '/dashboard/champagne-list', icon: 'Glass' },
         { label: 'Drink', href: '/dashboard/drink-list', icon: 'Cocktail' },
-        { label: 'Agenda', href: '/dashboard/reservations', icon: 'Calendar', requiresFull: true },
+        // Add Gin Selection here if it's in custom modules
+        ...customModules
+            .filter(m => m.name.toLowerCase().includes('gin'))
+            .map(m => ({
+                label: m.name,
+                href: `/dashboard/custom-list/${m.slug}`,
+                icon: 'Layers'
+            })),
         { label: 'Aspetto & Design', href: '/dashboard/design', icon: 'Palette' },
         { label: 'QR Code', href: '/dashboard/qrcode', icon: 'QR' },
-        ...customModules.map(m => ({
-            label: m.name,
-            href: `/dashboard/custom-list/${m.slug}`,
-            icon: 'Layers'
-        }))
-    ].filter((item: any) => {
-        if (item.requiresFull && subscriptionPlan !== 'FULL') return false;
+        // Add other custom modules that are not Gin Selection
+        ...customModules
+            .filter(m => !m.name.toLowerCase().includes('gin'))
+            .map(m => ({
+                label: m.name,
+                href: `/dashboard/custom-list/${m.slug}`,
+                icon: 'Layers'
+            }))
+    ]
+        .filter((item: any) => {
+            if (item.requiresFull && subscriptionPlan !== 'FULL') return false;
 
-        const isDemo = restaurantSlug?.toLowerCase() === 'demo' ||
-            ownerEmail?.toLowerCase() === 'demo@gardigital.it' ||
-            restaurantName?.toLowerCase().includes('demo');
+            const isDemo = restaurantSlug?.toLowerCase() === 'demo' ||
+                ownerEmail?.toLowerCase() === 'demo@gardigital.it' ||
+                restaurantName?.toLowerCase().includes('demo');
 
-        // Hide special lists if not active for normal users
-        if (item.label === 'Vini/Bollicine' && !isWineActive) return false;
-        if (item.label === 'Champagne' && !isChampagneActive) return false;
-        if (item.label === 'Drink' && !isDrinkActive) return false;
+            // Hide special lists if not active for normal users
+            if (item.label === 'Vini/Bollicine' && !isWineActive) return false;
+            if (item.label === 'Champagne' && !isChampagneActive) return false;
+            if (item.label === 'Drink' && !isDrinkActive) return false;
 
-        return true;
-    });
+            return true;
+        });
 
     const handleLogout = async () => {
         await fetch('/api/auth/logout', { method: 'POST' });
