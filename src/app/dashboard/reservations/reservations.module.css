@@ -246,6 +246,37 @@
     box-shadow: 0 8px 20px rgba(30, 58, 138, 0.35);
 }
 
+.btnSettings {
+    background: white;
+    color: #374151;
+    border: 1px solid #e5e7eb;
+    padding: 0.8rem 1.5rem;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    font-family: var(--font-inter, sans-serif);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.btnSettings:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.iconGear {
+    transition: transform 0.5s ease;
+}
+
+.btnSettings:hover .iconGear {
+    transform: rotate(90deg);
+}
+
 .btnActionSuccess {
     background: white;
     color: #10b981;

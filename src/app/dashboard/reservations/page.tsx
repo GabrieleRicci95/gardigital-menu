@@ -260,11 +260,10 @@ export default function ReservationsPage() {
 
                 <div className={styles.controls}>
                     <button
-                        className={styles.btnPrimary}
-                        style={{ backgroundColor: '#2563eb', cursor: 'pointer' }}
+                        className={styles.btnSettings}
                         onClick={() => setIsSettingsOpen(true)}
                     >
-                        ⚙️ Impostazioni
+                        <span className={styles.iconGear}>⚙️</span> Impostazioni
                     </button>
                     <button
                         className={styles.btnPrimary}
