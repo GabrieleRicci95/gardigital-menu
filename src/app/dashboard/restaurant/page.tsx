@@ -108,6 +108,29 @@ export default function RestaurantPage() {
         }
     };
 
+    const handleDeleteModule = async (slug: string) => {
+        if (!confirm('Sei sicuro di voler eliminare questo modulo? Questa azione è irreversibile.')) return;
+        if (isDemo) {
+            setMessage('Modalità Demo: modifiche non consentite');
+            return;
+        }
+
+        try {
+            const res = await fetch(`/api/custom-lists?slug=${slug}`, {
+                method: 'DELETE',
+            });
+
+            if (res.ok) {
+                setCustomModules(prev => prev.filter(m => m.slug !== slug));
+                setMessage('Modulo eliminato con successo!');
+            } else {
+                setMessage('Errore durante l\'eliminazione del modulo.');
+            }
+        } catch (error) {
+            setMessage('Errore di connessione.');
+        }
+    };
+
     if (loading) return <div className={styles.container}>Caricamento...</div>;
 
     return (
@@ -230,12 +253,20 @@ export default function RestaurantPage() {
                                             <span style={{ fontWeight: 600, display: 'block', color: '#1a237e' }}>{m.name}</span>
                                             <span style={{ fontSize: '0.8rem', color: '#64748b' }}>Modulo Personalizzato</span>
                                         </div>
-                                        <button
-                                            onClick={() => router.push(`/dashboard/custom-list/${m.slug}`)}
-                                            style={{ padding: '6px 12px', borderRadius: '6px', background: '#f1f5f9', border: '1px solid #e2e8f0', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 600 }}
-                                        >
-                                            Gestisci
-                                        </button>
+                                        <div>
+                                            <button
+                                                onClick={() => router.push(`/dashboard/custom-list/${m.slug}`)}
+                                                style={{ padding: '6px 12px', borderRadius: '6px', background: '#f1f5f9', border: '1px solid #e2e8f0', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 600 }}
+                                            >
+                                                Gestisci
+                                            </button>
+                                            <button
+                                                onClick={() => handleDeleteModule(m.slug)}
+                                                style={{ padding: '6px 12px', borderRadius: '6px', background: '#fee2e2', border: '1px solid #ef4444', color: '#b91c1c', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 600, marginLeft: '10px' }}
+                                            >
+                                                Elimina
+                                            </button>
+                                        </div>
                                     </div>
                                 ))}
                             </div>
@@ -281,29 +312,31 @@ export default function RestaurantPage() {
                     </div>
                 </form>
 
-                {formData.slug && (
-                    <div className={styles.linkBox}>
-                        <h3 className={styles.cardTitle}>Il tuo Menu Pubblico</h3>
-                        <p className={styles.cardDesc}>
-                            Condividi questo link con i tuoi clienti o genera il QR Code.
-                        </p>
+                {
+                    formData.slug && (
+                        <div className={styles.linkBox}>
+                            <h3 className={styles.cardTitle}>Il tuo Menu Pubblico</h3>
+                            <p className={styles.cardDesc}>
+                                Condividi questo link con i tuoi clienti o genera il QR Code.
+                            </p>
 
-                        <div className={styles.linkContainer}>
-                            <code className={styles.linkUrl}>
-                                {`${window.location.origin}/menu/${formData.slug}`}
-                            </code>
-                            <a
-                                href={`/menu/${formData.slug}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={styles.btnSm}
-                            >
-                                Anteprima Menu ↗
-                            </a>
+                            <div className={styles.linkContainer}>
+                                <code className={styles.linkUrl}>
+                                    {`${window.location.origin}/menu/${formData.slug}`}
+                                </code>
+                                <a
+                                    href={`/menu/${formData.slug}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={styles.btnSm}
+                                >
+                                    Anteprima Menu ↗
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                )}
-            </div>
-        </div>
+                    )
+                }
+            </div >
+        </div >
     );
 }
