@@ -269,14 +269,6 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-.iconGear {
-    transition: transform 0.5s ease;
-}
-
-.btnSettings:hover .iconGear {
-    transform: rotate(90deg);
-}
-
 .btnActionSuccess {
     background: white;
     color: #10b981;

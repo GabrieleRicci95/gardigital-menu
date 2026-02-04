@@ -263,7 +263,7 @@ export default function ReservationsPage() {
                         className={styles.btnSettings}
                         onClick={() => setIsSettingsOpen(true)}
                     >
-                        <span className={styles.iconGear}>⚙️</span> Impostazioni
+                        Impostazioni
                     </button>
                     <button
                         className={styles.btnPrimary}
