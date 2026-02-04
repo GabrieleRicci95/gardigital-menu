@@ -116,6 +116,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
         {children}
+        {/* IDs are managed via environment variables (Vercel/Local .env) */}
         {process.env.NEXT_PUBLIC_GA_ID && (
           <>
             <Script
