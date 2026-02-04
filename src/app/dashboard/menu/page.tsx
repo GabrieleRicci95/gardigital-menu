@@ -790,7 +790,7 @@ export default function MenuBuilderPage() {
 
                                                 <div style={{ flex: 1 }}>
                                                     <div style={{ fontWeight: '700', fontSize: '1.1rem', marginBottom: '0.2rem', color: '#1f2937' }}>{item.name}</div>
-                                                    <div style={{ color: '#6b7280', fontSize: '0.95rem', marginBottom: '0.5rem', lineHeight: '1.4' }}>{item.description}</div>
+                                                    <div style={{ color: '#6b7280', fontSize: '0.95rem', marginBottom: '0.5rem', lineHeight: '1.4', whiteSpace: 'pre-wrap' }}>{item.description}</div>
                                                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.5rem' }}>
                                                         {item.isVegan && <span className={`${styles.badge} ${styles.badgeSuccess}`} style={{ fontSize: '0.7rem' }}>VEGAN</span>}
                                                         {item.allergens && (
