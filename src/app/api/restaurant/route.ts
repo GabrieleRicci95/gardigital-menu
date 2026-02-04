@@ -58,7 +58,7 @@ export async function PATCH(request: Request) {
             bookingMaxGuestsPerSlot, bookingAutoConfirm
         } = data;
 
-        const slug = generateSlug(name);
+        const slug = name ? generateSlug(name) : '';
 
         // Check if user already has a restaurant
         const existingRestaurant = await prisma.restaurant.findFirst({
