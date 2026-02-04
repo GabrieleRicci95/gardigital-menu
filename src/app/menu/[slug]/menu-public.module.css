@@ -139,6 +139,27 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
+.navPill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #001f2f;
+    color: white !important;
+    padding: 8px 16px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.85rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.navPill:hover {
+    transform: translateY(-1px);
+    opacity: 0.9;
+}
+
 .stickyNavContainer {
     position: sticky;
     top: 0;

@@ -366,155 +366,20 @@ export default function MenuClient({ restaurant: initialRestaurant }: { restaura
             {/* Filter Bar Removed */}
 
             {/* Sticky Navigation */}
-            <div className={styles.stickyNavContainer} style={{ backgroundColor: restaurant.backgroundColor }}>
-                <div style={{ padding: '0 0 0 15px', flexShrink: 0, display: 'flex', gap: '10px' }}>
-                    {/* Events & Fixed Menus - Currently specific to Aperifish */}
+            <div className={styles.stickyNavContainer} style={{ backgroundColor: restaurant.backgroundColor, padding: '10px 0' }}>
+                <div style={{ padding: '0 15px', display: 'flex', gap: '10px', alignItems: 'center' }}>
+
+                    {/* 1. Eventi e Promozioni */}
                     {restaurant.name.toLowerCase().includes('aperifish') && (
-                        <>
-                            <Link
-                                href={`/menu/${restaurant.slug}/events`}
-                                style={{
-                                    display: 'inline-flex',
-                                    alignItems: 'center',
-                                    gap: '6px',
-                                    backgroundColor: '#001f2f',
-                                    color: 'white',
-                                    padding: '8px 16px',
-                                    borderRadius: '50px',
-                                    textDecoration: 'none',
-                                    fontWeight: 'bold',
-                                    fontSize: '0.85rem',
-                                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                                    whiteSpace: 'nowrap'
-                                }}
-                            >
-                                {t.events}
-                            </Link>
-                            <Link
-                                href={`/menu/${restaurant.slug}/fixed-menus`}
-                                style={{
-                                    display: 'inline-flex',
-                                    alignItems: 'center',
-                                    gap: '6px',
-                                    backgroundColor: '#001f2f',
-                                    color: 'white',
-                                    padding: '8px 16px',
-                                    borderRadius: '50px',
-                                    textDecoration: 'none',
-                                    fontWeight: 'bold',
-                                    fontSize: '0.85rem',
-                                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                                    whiteSpace: 'nowrap'
-                                }}
-                            >
-                                {t.fixedMenus}
-                            </Link>
-                        </>
+                        <Link href={`/menu/${restaurant.slug}/events`} className={styles.navPill}>{t.events}</Link>
                     )}
 
-                    {/* Carta dei Vini Button - Internal Link */}
-                    {(restaurant.wineList?.isActive || restaurant.wineListUrl) && (
-                        <Link
-                            href={restaurant.wineList?.isActive ? `/menu/${restaurant.slug}/wine-list` : (restaurant.wineListUrl || '#')}
-                            target={restaurant.wineList?.isActive ? "_self" : "_blank"}
-                            rel={restaurant.wineList?.isActive ? undefined : "noopener noreferrer"}
-                            style={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '6px',
-                                backgroundColor: '#001f2f',
-                                color: 'white',
-                                padding: '8px 16px',
-                                borderRadius: '50px',
-                                textDecoration: 'none',
-                                fontWeight: 'bold',
-                                fontSize: '0.85rem',
-                                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                                whiteSpace: 'nowrap'
-                            }}
-                        >
-                            {t.wines}
-                        </Link>
+                    {/* 2. Menu Fissi */}
+                    {restaurant.name.toLowerCase().includes('aperifish') && (
+                        <Link href={`/menu/${restaurant.slug}/fixed-menus`} className={styles.navPill}>{t.fixedMenus}</Link>
                     )}
 
-                    {/* Carta Champagne Button */}
-                    {(restaurant.champagneList?.isActive && restaurant.slug?.toLowerCase() !== 'demo' && !restaurant.name?.toLowerCase().includes('demo')) && (
-                        <Link
-                            href={`/menu/${restaurant.slug}/champagne-list`}
-                            style={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '6px',
-                                backgroundColor: '#001f2f',
-                                color: 'white', // Changed to white as requested
-                                padding: '8px 16px',
-                                borderRadius: '50px',
-                                textDecoration: 'none',
-                                fontWeight: 'bold',
-                                fontSize: '0.85rem',
-                                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                                whiteSpace: 'nowrap'
-                            }}
-                        >
-                            {t.champagne}
-                        </Link>
-                    )}
-
-                    {/* Drink List Button */}
-                    {(restaurant.drinkList?.isActive && restaurant.slug?.toLowerCase() !== 'demo' && !restaurant.name?.toLowerCase().includes('demo')) && (
-                        <Link
-                            href={`/menu/${restaurant.slug}/drink-list`}
-                            style={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '6px',
-                                backgroundColor: '#001f2f',
-                                color: 'white',
-                                padding: '8px 16px',
-                                borderRadius: '50px',
-                                textDecoration: 'none',
-                                fontWeight: 'bold',
-                                fontSize: '0.85rem',
-                                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                                whiteSpace: 'nowrap'
-                            }}
-                        >
-                            {language === 'it' ? 'Drink' : t.drinks}
-                        </Link>
-                    )}
-
-                    {/* Custom Lists Buttons */}
-                    {restaurant.customLists?.map(list => (
-                        <Link
-                            key={list.id}
-                            href={`/menu/${restaurant.slug}/custom/${list.slug}`}
-                            style={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '6px',
-                                backgroundColor: '#001f2f',
-                                color: 'white',
-                                padding: '8px 16px',
-                                borderRadius: '50px',
-                                textDecoration: 'none',
-                                fontWeight: 'bold',
-                                fontSize: '0.85rem',
-                                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                                whiteSpace: 'nowrap'
-                            }}
-                        >
-                            {list.name}
-                        </Link>
-                    ))}
-                </div>
-                <nav className={styles.categoryNav} style={{
-                    position: 'relative',
-                    top: 'auto',
-                    backgroundColor: 'transparent',
-                    boxShadow: 'none',
-                    flex: '0 0 auto',
-                    overflow: 'visible' // Disable internal scroll
-                }}>
+                    {/* 3. Standard Categories (Antipasti, Primi, etc.) */}
                     {restaurant.categories
                         .filter(cat => {
                             if (restaurant.slug?.toLowerCase() === 'demo' || restaurant.name?.toLowerCase().includes('demo')) {
@@ -524,15 +389,34 @@ export default function MenuClient({ restaurant: initialRestaurant }: { restaura
                             return true;
                         })
                         .map(cat => (
-                            <a
-                                key={cat.id}
-                                href={`#cat-${cat.id}`}
-                                className={styles.navLink}
-                            >
-                                {getCatName(cat)}
-                            </a>
+                            <a key={cat.id} href={`#cat-${cat.id}`} className={styles.navPill}>{getCatName(cat)}</a>
                         ))}
-                </nav>
+
+                    {/* 4. Vini/Bollicine */}
+                    {(restaurant.wineList?.isActive || restaurant.wineListUrl) && (
+                        <Link
+                            href={restaurant.wineList?.isActive ? `/menu/${restaurant.slug}/wine-list` : (restaurant.wineListUrl || '#')}
+                            target={restaurant.wineList?.isActive ? "_self" : "_blank"}
+                            className={styles.navPill}
+                        >
+                            {t.wines}
+                        </Link>
+                    )}
+
+                    {/* 5. Drink List */}
+                    {(restaurant.drinkList?.isActive && restaurant.slug?.toLowerCase() !== 'demo' && !restaurant.name?.toLowerCase().includes('demo')) && (
+                        <Link href={`/menu/${restaurant.slug}/drink-list`} className={styles.navPill}>
+                            {language === 'it' ? 'Drink' : t.drinks}
+                        </Link>
+                    )}
+
+                    {/* 6. Custom Lists (including Gin Selection) */}
+                    {restaurant.customLists?.map(list => (
+                        <Link key={list.id} href={`/menu/${restaurant.slug}/custom/${list.slug}`} className={styles.navPill}>
+                            {list.name}
+                        </Link>
+                    ))}
+                </div>
             </div>
 
             {/* Menu Content */}
