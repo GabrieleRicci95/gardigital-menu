@@ -36,6 +36,8 @@ interface Restaurant {
 
 export default function CustomListPublicClient({ restaurant, customList }: { restaurant: Restaurant, customList: CustomList | null }) {
 
+    const goldAccent = '#d4af37';
+
     const containerStyle = {
         backgroundColor: restaurant.backgroundColor,
         color: restaurant.textColor,
@@ -100,7 +102,7 @@ export default function CustomListPublicClient({ restaurant, customList }: { res
                     color: 'white',
                     lineHeight: 1.1,
                     textShadow: '0 2px 10px rgba(0,0,0,0.5)',
-                    fontFamily: restaurant.fontFamily === 'playfair' ? '"Playfair Display", serif' : 'inherit'
+                    fontFamily: '"Playfair Display", serif'
                 }} className="animate-fade-in">
                     {customList?.name || 'Lista'}
                 </h1>
@@ -117,16 +119,20 @@ export default function CustomListPublicClient({ restaurant, customList }: { res
                         {customList.sections.map((section) => (
                             <section key={section.id} id={section.id} style={{ scrollMarginTop: '120px' }} className="animate-fade-in">
                                 <h2 style={{
-                                    color: restaurant.themeColor,
+                                    color: goldAccent,
                                     fontSize: '1.75rem',
                                     marginBottom: '1.5rem',
                                     display: 'flex',
                                     alignItems: 'center',
                                     gap: '15px',
-                                    fontWeight: 700
+                                    fontWeight: 400,
+                                    fontFamily: '"Playfair Display", serif',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '2px'
                                 }}>
+                                    <span style={{ flex: 1, height: '1px', background: `${goldAccent}30` }}></span>
                                     <span>{section.name}</span>
-                                    <span style={{ flex: 1, height: '1px', background: `${restaurant.themeColor}20` }}></span>
+                                    <span style={{ flex: 1, height: '1px', background: `${goldAccent}30` }}></span>
                                 </h2>
 
                                 <div style={{ display: 'grid', gap: '1.5rem' }}>
@@ -165,7 +171,7 @@ export default function CustomListPublicClient({ restaurant, customList }: { res
                                                     <div style={{
                                                         fontWeight: 700,
                                                         fontSize: '1.1rem',
-                                                        color: restaurant.themeColor,
+                                                        color: goldAccent,
                                                         whiteSpace: 'nowrap',
                                                         marginLeft: '1rem'
                                                     }}>
