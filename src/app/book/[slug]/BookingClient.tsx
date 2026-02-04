@@ -30,6 +30,22 @@ export default function BookingClient({ restaurant }: BookingClientProps) {
 
     const themeColorSoft = restaurant.themeColor + '15'; // 15 is hex for ~8% opacity
 
+    const waUrl = (() => {
+        const dateStr = new Date(formData.date).toLocaleDateString('it-IT', { day: 'numeric', month: 'long' });
+        const waText = `Ciao ${restaurant.name}! 👋\n` +
+            `Ho appena inviato una richiesta di prenotazione tramite il vostro sito.\n\n` +
+            `📅 Data: ${dateStr}\n` +
+            `⏰ Ora: ${formData.time}\n` +
+            `👥 Persone: ${formData.guests}\n` +
+            `👤 Nome: ${formData.name}`;
+
+        let cleanNumber = restaurant.whatsappNumber?.replace(/\D/g, '') || '';
+        if (cleanNumber.startsWith('00')) cleanNumber = cleanNumber.substring(2);
+        if (cleanNumber.length === 10) cleanNumber = '39' + cleanNumber;
+
+        return `https://wa.me/${cleanNumber}?text=${encodeURIComponent(waText)}`;
+    })();
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setStatus('SUBMITTING');
@@ -47,6 +63,10 @@ export default function BookingClient({ restaurant }: BookingClientProps) {
 
             if (res.ok) {
                 setStatus('SUCCESS');
+                // Auto-redirect to WhatsApp
+                setTimeout(() => {
+                    window.open(waUrl, '_blank');
+                }, 1000);
             } else {
                 setStatus('ERROR');
             }
@@ -58,35 +78,22 @@ export default function BookingClient({ restaurant }: BookingClientProps) {
 
     if (status === 'SUCCESS') {
         const dateStr = new Date(formData.date).toLocaleDateString('it-IT', { day: 'numeric', month: 'long' });
-        const waText = `Ciao ${restaurant.name}! 👋\n` +
-            `Ho appena inviato una richiesta di prenotazione tramite il vostro sito.\n\n` +
-            `📅 Data: ${dateStr}\n` +
-            `⏰ Ora: ${formData.time}\n` +
-            `👥 Persone: ${formData.guests}\n` +
-            `👤 Nome: ${formData.name}`;
-
-        let cleanNumber = restaurant.whatsappNumber?.replace(/\D/g, '') || '';
-        if (cleanNumber.startsWith('00')) cleanNumber = cleanNumber.substring(2);
-        if (cleanNumber.length === 10) cleanNumber = '39' + cleanNumber;
-
-        const waUrl = `https://wa.me/${cleanNumber}?text=${encodeURIComponent(waText)}`;
-
         return (
             <div className={styles.container} style={{ '--theme-color': restaurant.themeColor, '--theme-color-soft': themeColorSoft } as any}>
                 <div className={styles.card}>
                     <div className={styles.successCard}>
-                        <div className={styles.successIcon}>✓</div>
-                        <h2 className={styles.title}>Richiesta Inviata!</h2>
+                        <div className={styles.successIcon}>📱</div>
+                        <h2 className={styles.title}>Quasi fatto!</h2>
                         <p className={styles.subtitle}>
-                            Grazie {formData.name}, la tua richiesta per il <strong>{dateStr}</strong> alle <strong>{formData.time}</strong> è stata ricevuta.
+                            Dati salvati. **Per completare la prenotazione, inviaci ora il messaggio preimpostato su WhatsApp.**
                         </p>
-                        <p className={styles.subtitle}>
-                            Ti ricontatteremo a breve per la conferma. Nel frattempo, puoi scriverci direttamente su WhatsApp.
+                        <p style={{ fontSize: '0.9rem', color: '#666', margin: '15px 0' }}>
+                            Se non si è aperta la chat automaticamente, clicca il tasto qui sotto:
                         </p>
 
                         {restaurant.whatsappNumber && (
                             <a href={waUrl} target="_blank" rel="noopener noreferrer" className={styles.waBtn}>
-                                Scrivici su WhatsApp
+                                Invia Messaggio di Conferma
                             </a>
                         )}
                     </div>
