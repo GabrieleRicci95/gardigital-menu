@@ -56,8 +56,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Gardigital Menu - Menu Digitale Premium",
-    description: "Crea il tuo menu digitale in pochi minuti con un design da urlo.",
+    title: "Gardigital Menu | Il Menu Digitale Premium",
+    description: "Crea il tuo menu digitale premium in pochi minuti. Elegante, veloce e completo di agenda prenotazioni.",
     images: ["/og-banner.png"],
   },
   icons: {
@@ -76,6 +76,7 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     "name": "Gardigital Menu",
+    "description": "Piattaforma premium per la creazione di Menu Digitali QR, Agenda Elettronica e Siti Web per il settore HoReCa.",
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Web",
     "offers": {
