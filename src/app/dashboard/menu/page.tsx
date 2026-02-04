@@ -275,6 +275,9 @@ export default function MenuBuilderPage() {
         if (res.ok) {
             setEditingId(null);
             if (selectedMenuId) fetchCategories(selectedMenuId);
+        } else {
+            const data = await res.json();
+            alert('Errore nel salvataggio: ' + (data.error || 'Errore sconosciuto'));
         }
     };
 
