@@ -12,6 +12,7 @@ export default function RestaurantPage() {
     const [isDemo, setIsDemo] = useState(false);
     const [newModuleTitle, setNewModuleTitle] = useState('');
     const [creatingModule, setCreatingModule] = useState(false);
+    const [customModules, setCustomModules] = useState<{ id: string, name: string, slug: string }[]>([]);
 
     const [formData, setFormData] = useState({
         name: '',
@@ -42,6 +43,7 @@ export default function RestaurantPage() {
                         isChampagneActive: !!data.restaurant.champagneList?.isActive,
                         isDrinkActive: !!data.restaurant.drinkList?.isActive,
                     });
+                    setCustomModules(data.restaurant.customLists || []);
                 }
                 setLoading(false);
             })
@@ -219,6 +221,25 @@ export default function RestaurantPage() {
                                 </div>
                             </label>
                         </div>
+
+                        {customModules.length > 0 && (
+                            <div style={{ marginTop: '1.5rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
+                                {customModules.map(m => (
+                                    <div key={m.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '15px', borderRadius: '12px', background: 'white', border: '1px solid #e2e8f0' }}>
+                                        <div>
+                                            <span style={{ fontWeight: 600, display: 'block', color: '#1a237e' }}>{m.name}</span>
+                                            <span style={{ fontSize: '0.8rem', color: '#64748b' }}>Modulo Personalizzato</span>
+                                        </div>
+                                        <button
+                                            onClick={() => router.push(`/dashboard/custom-list/${m.slug}`)}
+                                            style={{ padding: '6px 12px', borderRadius: '6px', background: '#f1f5f9', border: '1px solid #e2e8f0', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 600 }}
+                                        >
+                                            Gestisci
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
 
                         <div style={{ marginTop: '2rem', background: '#fff', padding: '1.5rem', borderRadius: '12px', border: '1px dashed #cbd5e1', opacity: isDemo ? 0.7 : 1 }}>
                             <h4 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.5rem' }}>+ Crea un Modulo Personalizzato</h4>
