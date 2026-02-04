@@ -76,9 +76,12 @@ export async function POST(req: Request) {
 
         const dateTimeString = `${date}T${time}:00+01:00`;
 
-        const session = await getSession();
-        // Even if session is demo, we allow creating public reservations but block status manipulation
-        const initialStatus = (session && body.status && !isDemoSession(session)) ? body.status : 'PENDING';
+        const restaurant = await prisma.restaurant.findUnique({
+            where: { id: restaurantId },
+            select: { bookingAutoConfirm: true }
+        });
+
+        const initialStatus = (restaurant?.bookingAutoConfirm) ? 'CONFIRMED' : 'PENDING';
 
         const reservation = await prisma.reservation.create({
             data: {

@@ -58,6 +58,10 @@ model Restaurant {
   reservations Reservation[] // Added for Reservation System
   translations RestaurantTranslation[]
 
+  // Booking Configuration
+  bookingMaxGuestsPerSlot Int     @default(10)
+  bookingAutoConfirm      Boolean @default(false)
+
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

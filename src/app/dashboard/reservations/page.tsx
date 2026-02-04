@@ -17,28 +17,52 @@ interface Reservation {
 export default function ReservationsPage() {
     const [reservations, setReservations] = useState<Reservation[]>([]);
     const [loading, setLoading] = useState(true);
+    const [restaurant, setRestaurant] = useState<any>(null);
     const [isDemo, setIsDemo] = useState(false);
-    const [filterDate, setFilterDate] = useState(new Date().toISOString().split('T')[0]); // Default today
+    const [filterDate, setFilterDate] = useState(new Date().toISOString().split('T')[0]);
+    const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
+    // Settings state
+    const [bookingSettings, setBookingSettings] = useState({
+        bookingMaxGuestsPerSlot: 10,
+        bookingAutoConfirm: false
+    });
 
     useEffect(() => {
-        fetchReservations();
-    }, [filterDate]);
+        fetchRestaurant();
+    }, []);
+
+    useEffect(() => {
+        if (restaurant) {
+            fetchReservations();
+        }
+    }, [filterDate, restaurant]);
+
+    const fetchRestaurant = async () => {
+        try {
+            const res = await fetch('/api/restaurant');
+            const data = await res.json();
+            if (data.restaurant) {
+                setRestaurant(data.restaurant);
+                setIsDemo(!!data.isDemo);
+                setBookingSettings({
+                    bookingMaxGuestsPerSlot: data.restaurant.bookingMaxGuestsPerSlot,
+                    bookingAutoConfirm: data.restaurant.bookingAutoConfirm
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching restaurant:', error);
+        }
+    };
 
     const fetchReservations = async () => {
+        if (!restaurant) return;
         setLoading(true);
         try {
-            // Need to get restaurantId somehow - usually from a context or a separate API call
-            // For now, let's assume we can get it from the /api/restaurant endpoint which returns the current user's restaurant
-            const restaurantRes = await fetch('/api/restaurant');
-            const restaurantData = await restaurantRes.json();
-
-            if (restaurantData.restaurant) {
-                setIsDemo(!!restaurantData.isDemo);
-                const res = await fetch(`/api/reservations?restaurantId=${restaurantData.restaurant.id}&date=${filterDate}`);
-                if (res.ok) {
-                    const data = await res.json();
-                    setReservations(data);
-                }
+            const res = await fetch(`/api/reservations?restaurantId=${restaurant.id}&date=${filterDate}`);
+            if (res.ok) {
+                const data = await res.json();
+                setReservations(data);
             }
         } catch (error) {
             console.error('Error fetching reservations:', error);
@@ -126,40 +150,27 @@ export default function ReservationsPage() {
         notes: ''
     });
 
-    const handleCreateReservation = async (e: React.FormEvent) => {
+    const handleUpdateSettings = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (isDemo) return alert('Modalità Demo: modifiche non consentite');
         setLoading(true);
 
         try {
-            // Get restaurant ID first (should be optimized in a real app)
-            const restaurantRes = await fetch('/api/restaurant');
-            const restaurantData = await restaurantRes.json();
-
-            if (!restaurantData.restaurant) throw new Error('Ristorante non trovato');
-
-            const res = await fetch('/api/reservations', {
-                method: 'POST',
+            const res = await fetch('/api/restaurant', {
+                method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    restaurantId: restaurantData.restaurant.id,
-                    name: newRes.name,
-                    guests: newRes.guests,
-                    date: newRes.date,
-                    time: newRes.time,
-                    phone: newRes.phone || 'Manuale',
-                    notes: newRes.notes,
-                    status: 'CONFIRMED' // Auto-confirm manual entries
+                    bookingMaxGuestsPerSlot: bookingSettings.bookingMaxGuestsPerSlot,
+                    bookingAutoConfirm: bookingSettings.bookingAutoConfirm
                 })
             });
 
             if (res.ok) {
-                alert('Prenotazione inserita con successo! ✅');
-                setIsModalOpen(false);
-                setNewRes({ ...newRes, name: '', phone: '', notes: '' }); // Reset fields
-                fetchReservations();
+                alert('Impostazioni salvate con successo! ✅');
+                setIsSettingsOpen(false);
+                fetchRestaurant();
             } else {
-                const err = await res.json();
-                alert('Errore: ' + (err.error || 'Impossibile creare'));
+                alert('Errore durante il salvataggio');
             }
         } catch (error) {
             console.error(error);
@@ -190,17 +201,78 @@ export default function ReservationsPage() {
         <div className={styles.container}>
             <header className={styles.header}>
                 <div>
-                    <h1 className={styles.title}>Agenda</h1>
-                    <p className={styles.subtitle}>Gestisci le richieste per il tuo locale.</p>
+                    <h1 className={styles.title}>Agenda Prenotazioni</h1>
+                    <p className={styles.subtitle}>Gestisci le richieste dei tuoi clienti in modo professionale.</p>
                 </div>
+
+                {restaurant && (
+                    <div className={styles.linkBanner} style={{
+                        background: 'white',
+                        padding: '1rem 1.5rem',
+                        borderRadius: '16px',
+                        border: '1px solid #e5e7eb',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px',
+                        fontSize: '0.9rem',
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.03)'
+                    }}>
+                        <div style={{
+                            width: '40px',
+                            height: '40px',
+                            background: '#f0fdf4',
+                            borderRadius: '12px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: '#16a34a'
+                        }}>
+                            🔗
+                        </div>
+                        <div>
+                            <div style={{ fontWeight: 700, color: '#111' }}>Link Pubblico Booking</div>
+                            <div style={{ color: '#666', fontSize: '0.8rem' }}>Mettilo su Google My Business</div>
+                        </div>
+                        <input
+                            readOnly
+                            value={`https://www.gardigital.it/book/${restaurant.slug}`}
+                            style={{
+                                border: '1px solid #ddd',
+                                padding: '4px 10px',
+                                borderRadius: '6px',
+                                fontSize: '0.8rem',
+                                background: '#f9f9f9',
+                                width: '250px'
+                            }}
+                        />
+                        <button
+                            onClick={() => {
+                                navigator.clipboard.writeText(`https://www.gardigital.it/book/${restaurant.slug}`);
+                                alert('Link copiato!');
+                            }}
+                            className={styles.btnPrimary}
+                            style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }}
+                        >
+                            Copia
+                        </button>
+                    </div>
+                )}
+
                 <div className={styles.controls}>
                     <button
                         className={styles.btnPrimary}
-                        style={{ backgroundColor: isDemo ? '#ccc' : '#2e7d32', marginRight: '1rem', cursor: isDemo ? 'not-allowed' : 'pointer' }}
+                        style={{ backgroundColor: '#2563eb', cursor: 'pointer' }}
+                        onClick={() => setIsSettingsOpen(true)}
+                    >
+                        ⚙️ Impostazioni
+                    </button>
+                    <button
+                        className={styles.btnPrimary}
+                        style={{ backgroundColor: isDemo ? '#ccc' : '#10b981', cursor: isDemo ? 'not-allowed' : 'pointer' }}
                         onClick={() => !isDemo && setIsModalOpen(true)}
                         disabled={isDemo}
                     >
-                        {isDemo ? 'Nuova Prenotazione Bloccatas' : '+ Nuova Prenotazione'}
+                        + Nuova
                     </button>
                     <input
                         type="date"
@@ -208,9 +280,6 @@ export default function ReservationsPage() {
                         onChange={(e) => setFilterDate(e.target.value)}
                         className={styles.dateInput}
                     />
-                    <button className={styles.btnPrimary} onClick={() => fetchReservations()}>
-                        ↻
-                    </button>
                 </div>
             </header>
 
@@ -325,119 +394,72 @@ export default function ReservationsPage() {
             )
             }
 
-            {/* MANUAL RESERVATION MODAL */}
-            {
-                isModalOpen && (
+            {/* SETTINGS MODAL */}
+            {isSettingsOpen && (
+                <div style={{
+                    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                    backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000
+                }}>
                     <div style={{
-                        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-                        backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000
+                        backgroundColor: 'white', padding: '2rem', borderRadius: '12px', width: '90%', maxWidth: '500px',
+                        boxShadow: '0 4px 20px rgba(0,0,0,0.2)'
                     }}>
-                        <div style={{
-                            backgroundColor: 'white', padding: '2rem', borderRadius: '12px', width: '90%', maxWidth: '500px',
-                            boxShadow: '0 4px 20px rgba(0,0,0,0.2)'
-                        }}>
-                            <h2 style={{ marginBottom: '1.5rem', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>Nuova Prenotazione Manuale</h2>
+                        <h2 style={{ marginBottom: '1.5rem', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>Impostazioni Booking</h2>
 
-                            <form onSubmit={handleCreateReservation}>
-                                <div style={{ marginBottom: '1rem' }}>
-                                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Nome Cliente</label>
-                                    <input
-                                        type="text"
-                                        required
-                                        className={styles.dateInput} // Reuse existing input style
-                                        style={{ width: '100%' }}
-                                        value={newRes.name}
-                                        onChange={e => setNewRes({ ...newRes, name: e.target.value })}
-                                    />
-                                </div>
+                        <form onSubmit={handleUpdateSettings}>
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>Persone Massime per Slot</label>
+                                <input
+                                    type="number"
+                                    min="1"
+                                    required
+                                    className={styles.dateInput}
+                                    style={{ width: '100%' }}
+                                    value={bookingSettings.bookingMaxGuestsPerSlot}
+                                    onChange={e => setBookingSettings({ ...bookingSettings, bookingMaxGuestsPerSlot: parseInt(e.target.value) })}
+                                />
+                                <p style={{ fontSize: '0.8rem', color: '#666', marginTop: '5px' }}>
+                                    Limite massimo di persone che possono prenotare dallo stesso form.
+                                </p>
+                            </div>
 
-                                <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
-                                    <div style={{ flex: 1 }}>
-                                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Persone</label>
-                                        <input
-                                            type="number"
-                                            min="1"
-                                            required
-                                            className={styles.dateInput}
-                                            style={{ width: '100%' }}
-                                            value={newRes.guests}
-                                            onChange={e => setNewRes({ ...newRes, guests: parseInt(e.target.value) })}
-                                            onWheel={(e) => (e.target as HTMLInputElement).blur()}
-                                        />
-                                    </div>
-                                    <div style={{ flex: 1 }}>
-                                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Ora</label>
-                                        <input
-                                            type="time"
-                                            required
-                                            className={styles.dateInput}
-                                            style={{ width: '100%' }}
-                                            value={newRes.time}
-                                            onChange={e => setNewRes({ ...newRes, time: e.target.value })}
-                                        />
-                                    </div>
-                                </div>
+                            <div style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <input
+                                    type="checkbox"
+                                    id="autoConfirm"
+                                    checked={bookingSettings.bookingAutoConfirm}
+                                    onChange={e => setBookingSettings({ ...bookingSettings, bookingAutoConfirm: e.target.checked })}
+                                    style={{ width: '20px', height: '20px' }}
+                                />
+                                <label htmlFor="autoConfirm" style={{ fontWeight: 600, cursor: 'pointer' }}>Conferma Automatica</label>
+                            </div>
+                            <p style={{ fontSize: '0.8rem', color: '#666', marginTop: '-10px', marginBottom: '1.5rem' }}>
+                                Se attivo, le prenotazioni caricate dal form saranno segnate subito come "Confermate".
+                            </p>
 
-                                <div style={{ marginBottom: '1rem' }}>
-                                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Data</label>
-                                    <input
-                                        type="date"
-                                        required
-                                        className={styles.dateInput}
-                                        style={{ width: '100%' }}
-                                        value={newRes.date}
-                                        onChange={e => setNewRes({ ...newRes, date: e.target.value })}
-                                    />
-                                </div>
-
-                                <div style={{ marginBottom: '1rem' }}>
-                                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Telefono (Opzionale)</label>
-                                    <input
-                                        type="tel"
-                                        className={styles.dateInput}
-                                        style={{ width: '100%' }}
-                                        placeholder="Es. 333 1234567"
-                                        value={newRes.phone}
-                                        onChange={e => setNewRes({ ...newRes, phone: e.target.value })}
-                                    />
-                                </div>
-
-                                <div style={{ marginBottom: '1.5rem' }}>
-                                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Note</label>
-                                    <textarea
-                                        rows={3}
-                                        className={styles.dateInput}
-                                        style={{ width: '100%', fontFamily: 'inherit' }}
-                                        placeholder="Es. Seggiolone, Tavolo esterno..."
-                                        value={newRes.notes}
-                                        onChange={e => setNewRes({ ...newRes, notes: e.target.value })}
-                                    />
-                                </div>
-
-                                <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
-                                    <button
-                                        type="button"
-                                        onClick={() => setIsModalOpen(false)}
-                                        style={{
-                                            padding: '0.75rem 1.5rem', borderRadius: '8px', border: '1px solid #ddd',
-                                            background: '#f5f5f5', cursor: 'pointer', fontWeight: 500
-                                        }}
-                                    >
-                                        Annulla
-                                    </button>
-                                    <button
-                                        type="submit"
-                                        className={styles.btnPrimary}
-                                        style={{ backgroundColor: '#2e7d32', border: 'none' }}
-                                    >
-                                        Inserisci in Agenda
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
+                            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
+                                <button
+                                    type="button"
+                                    onClick={() => setIsSettingsOpen(false)}
+                                    style={{
+                                        padding: '0.75rem 1.5rem', borderRadius: '8px', border: '1px solid #ddd',
+                                        background: '#f5f5f5', cursor: 'pointer', fontWeight: 500
+                                    }}
+                                >
+                                    Annulla
+                                </button>
+                                <button
+                                    type="submit"
+                                    className={styles.btnPrimary}
+                                    style={{ backgroundColor: '#1e3a8a', border: 'none' }}
+                                >
+                                    Salva Impostazioni
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                )
-            }
+                </div>
+            )}
         </div >
     );
 }

@@ -54,10 +54,9 @@ export async function PATCH(request: Request) {
             name, description, themeColor, coverImageUrl, backgroundColor,
             textColor, fontFamily, cardStyle, whatsappNumber, wineListUrl,
             googleReviewsUrl,
-            isWineActive, isChampagneActive, isDrinkActive // New flags
+            isWineActive, isChampagneActive, isDrinkActive,
+            bookingMaxGuestsPerSlot, bookingAutoConfirm
         } = data;
-
-        if (!name) return NextResponse.json({ error: 'Il nome è obbligatorio' }, { status: 400 });
 
         const slug = generateSlug(name);
 
@@ -78,7 +77,6 @@ export async function PATCH(request: Request) {
             restaurant = await prisma.restaurant.update({
                 where: { id: existingRestaurant.id },
                 data: {
-                    name,
                     description,
                     themeColor,
                     coverImageUrl,
@@ -89,7 +87,10 @@ export async function PATCH(request: Request) {
                     whatsappNumber,
                     wineListUrl,
                     googleReviewsUrl,
-                    slug: existingRestaurant.name !== name ? slug + '-' + Math.floor(Math.random() * 1000) : existingRestaurant.slug,
+                    bookingMaxGuestsPerSlot,
+                    bookingAutoConfirm,
+                    name: name || existingRestaurant.name,
+                    slug: (name && existingRestaurant.name !== name) ? slug + '-' + Math.floor(Math.random() * 1000) : existingRestaurant.slug,
                     // Handle related lists
                     wineList: {
                         upsert: {
@@ -134,6 +135,8 @@ export async function PATCH(request: Request) {
                     whatsappNumber,
                     wineListUrl,
                     googleReviewsUrl,
+                    bookingMaxGuestsPerSlot: bookingMaxGuestsPerSlot ?? 10,
+                    bookingAutoConfirm: bookingAutoConfirm ?? false,
                     ownerId: session.user.id,
                     wineList: { create: { isActive: isWineActive ?? true } },
                     champagneList: { create: { isActive: isChampagneActive ?? false } },
