@@ -208,6 +208,7 @@
     font-size: 0.9rem;
     color: var(--color-text-secondary);
     max-width: 500px;
+    white-space: pre-wrap;
 }
 
 .itemPrice {
