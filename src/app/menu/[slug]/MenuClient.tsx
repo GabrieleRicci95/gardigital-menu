@@ -53,7 +53,7 @@ const UI_LABELS: Record<string, any> = {
     it: {
         events: "Eventi e Promozioni",
         fixedMenus: "Menu Fissi",
-        wines: "Vini",
+        wines: "Vini/Bollicine",
         champagne: "Champagne",
         drinks: "Drink",
         book: "Prenota Tavolo",
