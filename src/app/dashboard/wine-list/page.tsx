@@ -293,18 +293,27 @@ export default function WineListPage() {
                         }}>
                             <div style={{ flex: 1 }}>
 
-                                <div style={{
-                                    fontSize: '1.5rem',
-                                    fontWeight: '700',
-                                    border: 'none',
-                                    background: 'transparent',
-                                    width: '100%',
-                                    outline: 'none',
-                                    color: '#333',
-                                    padding: '2px 0'
-                                }}>
-                                    {section.name && section.name !== 'Nuova Categoria' ? section.name : 'Vini'}
-                                </div>
+                                <input
+                                    type="text"
+                                    value={section.name}
+                                    onChange={(e) => updateSectionName(sIndex, e.target.value)}
+                                    placeholder="Nome Categoria (es. Vini Rossi)"
+                                    style={{
+                                        fontSize: '1.5rem',
+                                        fontWeight: '700',
+                                        border: 'none',
+                                        borderBottom: '2px solid transparent',
+                                        background: 'transparent',
+                                        width: '100%',
+                                        outline: 'none',
+                                        color: '#333',
+                                        padding: '2px 0',
+                                        transition: 'border-color 0.2s'
+                                    }}
+                                    onFocus={(e) => e.target.style.borderBottomColor = '#a31d1d'}
+                                    onBlur={(e) => e.target.style.borderBottomColor = 'transparent'}
+                                    readOnly={isDemo}
+                                />
                             </div>
 
                         </div>
