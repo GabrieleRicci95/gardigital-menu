@@ -160,6 +160,11 @@ export default function BookingClient({ restaurant }: BookingClientProps) {
                                 value={formData.guests}
                                 onChange={e => setFormData({ ...formData, guests: parseInt(e.target.value) })}
                             />
+                            {formData.guests >= (restaurant.bookingMaxGuestsPerSlot || 20) && (
+                                <p style={{ fontSize: '0.75rem', color: '#666', marginTop: '8px', fontStyle: 'italic' }}>
+                                    Per gruppi più grandi, ti preghiamo di contattarci telefonicamente.
+                                </p>
+                            )}
                         </div>
                     </div>
 
