@@ -8,6 +8,7 @@ interface CustomItem {
     name: string;
     description: string | null;
     price: number | string;
+    imageUrl?: string | null;
 }
 
 interface CustomSection {
@@ -137,14 +138,29 @@ export default function CustomListPublicClient({ restaurant, customList }: { res
                                             borderBottom: '1px solid rgba(0,0,0,0.05)'
                                         }}>
                                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.3rem' }}>
-                                                <h3 style={{
-                                                    margin: 0,
-                                                    fontSize: '1.15rem',
-                                                    fontWeight: 600,
-                                                    color: restaurant.textColor
-                                                }}>
-                                                    {item.name}
-                                                </h3>
+                                                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '20px' }}>
+                                                    <h3 style={{
+                                                        margin: 0,
+                                                        fontSize: '1.25rem',
+                                                        fontWeight: 600,
+                                                        color: restaurant.textColor
+                                                    }}>
+                                                        {item.name}
+                                                    </h3>
+                                                    {item.imageUrl && (
+                                                        <img
+                                                            src={item.imageUrl}
+                                                            alt={`${item.name} logo`}
+                                                            style={{
+                                                                height: '110px',
+                                                                width: 'auto',
+                                                                maxHeight: '110px',
+                                                                maxWidth: '250px',
+                                                                objectFit: 'contain'
+                                                            }}
+                                                        />
+                                                    )}
+                                                </div>
                                                 {Number(item.price) > 0 && (
                                                     <div style={{
                                                         fontWeight: 700,

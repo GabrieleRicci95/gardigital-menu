@@ -357,6 +357,7 @@ model CustomListItem {
   name                String
   description         String?
   price               Decimal
+  imageUrl            String?
   customListSectionId String
   customListSection   CustomListSection @relation(fields: [customListSectionId], references: [id], onDelete: Cascade)
   

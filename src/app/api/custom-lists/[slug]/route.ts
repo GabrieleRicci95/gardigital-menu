@@ -98,7 +98,8 @@ export async function POST(
                                 create: section.items?.map((item: any) => ({
                                     name: item.name,
                                     description: item.description,
-                                    price: isNaN(parseFloat(item.price)) ? 0 : parseFloat(item.price)
+                                    price: isNaN(parseFloat(item.price)) ? 0 : parseFloat(item.price),
+                                    imageUrl: item.imageUrl
                                 }))
                             }
                         }
