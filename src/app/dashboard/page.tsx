@@ -32,7 +32,7 @@ export default function DashboardPage() {
 
     const fetchStats = async (restaurantId: string) => {
         try {
-            const res = await fetch(`/api/reservations/stats?restaurantId=${restaurantId}`);
+            const res = await fetch(`/api/reservations/stats?restaurantId=${restaurantId}&t=${Date.now()}`);
             if (res.ok) {
                 const statsData = await res.json();
                 setStats(statsData);

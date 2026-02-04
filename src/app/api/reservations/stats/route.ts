@@ -18,11 +18,11 @@ export async function GET(req: Request) {
 
         const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 
-        // Today's Confirmed Stats
+        // Today's Stats (Confirmed + Pending)
         const todayReservations = await prisma.reservation.findMany({
             where: {
                 restaurantId,
-                status: 'CONFIRMED',
+                status: { in: ['CONFIRMED', 'PENDING'] },
                 date: {
                     gte: startOfToday,
                     lte: endOfToday
@@ -33,7 +33,7 @@ export async function GET(req: Request) {
         const todayCount = todayReservations.length;
         const todayGuests = todayReservations.reduce((acc, res) => acc + res.guests, 0);
 
-        // Pending Reservations (Total)
+        // Pending Reservations (Total needing attention)
         const pendingCount = await prisma.reservation.count({
             where: {
                 restaurantId,
@@ -41,11 +41,11 @@ export async function GET(req: Request) {
             }
         });
 
-        // Monthly Confirmed Count
+        // Monthly Stats (Confirmed + Pending)
         const monthCount = await prisma.reservation.count({
             where: {
                 restaurantId,
-                status: 'CONFIRMED',
+                status: { in: ['CONFIRMED', 'PENDING'] },
                 date: {
                     gte: startOfMonth
                 }
