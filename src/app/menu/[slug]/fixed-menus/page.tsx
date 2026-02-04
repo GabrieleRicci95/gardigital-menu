@@ -155,9 +155,11 @@ export default async function FixedMenusPage({ params }: { params: Promise<{ slu
                                         <span style={{ fontWeight: 'bold', color: primaryColor, fontSize: '1.1rem' }}>Prezzo a persona</span>
                                         <span style={{ fontSize: '2rem', fontWeight: 'bold', color: primaryColor }}>{Number(menu.price).toFixed(2)}€</span>
                                     </div>
-                                    <div style={{ fontSize: '0.8rem', color: '#777', fontStyle: 'italic', marginTop: '5px' }}>
-                                        Bevande escluse
-                                    </div>
+                                    {!['apericena cotto e crudo', 'aperifish crudo', 'aperifish cotto'].map(s => s.toLowerCase()).some(s => menu.name.toLowerCase().includes(s)) && (
+                                        <div style={{ fontSize: '0.8rem', color: '#777', fontStyle: 'italic', marginTop: '5px' }}>
+                                            Bevande escluse
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
