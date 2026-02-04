@@ -77,3 +77,35 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: 'Errore nella creazione del modulo' }, { status: 500 });
     }
 }
+
+
+export async function DELETE(request: Request) {
+    const session = await getSession();
+    if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (isDemoSession(session)) return NextResponse.json({ error: 'Modalità Demo: modifiche non consentite' }, { status: 403 });
+
+    try {
+        const { searchParams } = new URL(request.url);
+        const slug = searchParams.get('slug');
+
+        if (!slug) return NextResponse.json({ error: 'Lo slug è obbligatorio' }, { status: 400 });
+
+        const restaurant = await (prisma as any).restaurant.findFirst({
+            where: { ownerId: session.user.id }
+        });
+
+        if (!restaurant) return NextResponse.json({ error: 'Restaurant not found' }, { status: 404 });
+
+        await (prisma as any).customList.deleteMany({
+            where: {
+                slug: slug,
+                restaurantId: restaurant.id
+            }
+        });
+
+        return NextResponse.json({ success: true });
+    } catch (error) {
+        console.error(error);
+        return NextResponse.json({ error: 'Errore nell\'eliminazione del modulo' }, { status: 500 });
+    }
+}
