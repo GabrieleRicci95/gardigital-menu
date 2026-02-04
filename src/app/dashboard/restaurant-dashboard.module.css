@@ -138,6 +138,83 @@
     color: #9e9e9e;
 }
 
+/* Statistics Section */
+.statsRow {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.statCard {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+}
+
+.statCard:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+}
+
+.statIcon {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.statInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.statValue {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #111;
+    line-height: 1.2;
+}
+
+.statLabel {
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: 500;
+    margin-top: 2px;
+}
+
+/* Stat Variants */
+.statToday {
+    background: #f0fdf4;
+    color: #16a34a;
+}
+
+.statPending {
+    background: #fffbeb;
+    color: #d97706;
+}
+
+.statMonth {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.statAlert {
+    background: #fef2f2;
+    color: #dc2626;
+    box-shadow: 0 4px 15px rgba(220, 38, 38, 0.1);
+}
+
 /* Buttons */
 .button {
     padding: 0.8rem 1.5rem;
