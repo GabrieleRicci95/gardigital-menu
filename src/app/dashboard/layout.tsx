@@ -171,7 +171,7 @@ export default function DashboardLayout({
                             <img
                                 src={restaurantLogo}
                                 alt="Logo Ristorante"
-                                style={{ height: '50px', width: 'auto', objectFit: 'contain' }}
+                                style={{ height: '80px', width: 'auto', objectFit: 'contain', maxHeight: '100%' }}
                             />
                         ) : (
                             <span style={{ fontWeight: 'bold', fontSize: '1.2rem', marginRight: '20px' }}>
