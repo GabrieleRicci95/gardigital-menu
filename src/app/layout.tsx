@@ -15,8 +15,8 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Gardigital Menu - Il Menu Digitale Premium per il tuo Ristorante",
-  description: "Digitalizza il tuo ristorante con Gardigital Menu. Crea menu QR eleganti, gestisci piatti, allergeni e traduzioni AI in tempo reale. Un'esperienza premium per i tuoi clienti.",
+  title: "Gardigital Menu | Il Menu Digitale QR Premium per il tuo Ristorante",
+  description: "L'unica piattaforma professionale che unisce Menu Digitale QR, Agenda Elettronica e Sito Web per Ristoranti. Gestisci piatti, allergeni e prenotazioni in un unico sistema elegante e veloce.",
   keywords: [
     "menu digitale",
     "qr code menu",
@@ -39,8 +39,8 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Gardigital" }],
   openGraph: {
-    title: "Gardigital Menu - Menu Digitale Premium & Gestionale Ristoranti",
-    description: "L'unico sistema che unisce Menu Digitale Premium, Agenda Elettronica e Sito Web Professionale. Semplice, elegante e veloce.",
+    title: "Gardigital Menu | Il Menu Digitale QR Premium & Gestionale Ristoranti",
+    description: "L'unica piattaforma professionale che unisce Menu Digitale QR, Agenda Elettronica e Sito Web. Gestisci piatti, allergeni e prenotazioni in un sistema elegante e veloce.",
     url: "https://www.gardigital.it",
     siteName: "Gardigital Menu",
     images: [
