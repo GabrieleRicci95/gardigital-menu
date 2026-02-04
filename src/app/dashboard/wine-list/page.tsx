@@ -101,12 +101,12 @@ export default function WineListPage() {
         setWineList(prev => ({
             ...prev,
             sections: [
-                ...prev.sections,
                 {
                     id: `temp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
                     name: '',
                     items: []
-                }
+                },
+                ...prev.sections
             ]
         }));
     };
