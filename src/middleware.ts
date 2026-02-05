@@ -9,9 +9,9 @@ export async function middleware(request: NextRequest) {
     // Define public paths
     const isPublicPath = path === '/login' || path === '/register' || path === '/forgot-password' || path === '/reset-password' || path === '/' || path === '/contact' || path === '/vantaggi' || path === '/privacy' || path === '/terms' || path === '/cookies' || path.startsWith('/api/auth') || path.startsWith('/api/contact');
 
-    if (!session && !isPublicPath && !path.startsWith('/menu')) {
+    if (!session && !isPublicPath && !path.startsWith('/menu') && !path.startsWith('/book')) {
         // Redirect to login if not authenticated and trying to access protected route
-        // Allow /menu public access
+        // Allow /menu and /book public access
         return NextResponse.redirect(new URL('/login', request.url));
     }
 
