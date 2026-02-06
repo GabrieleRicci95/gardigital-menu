@@ -152,6 +152,8 @@ export default function Home() {
                 <li>Agenda Elettronica</li>
                 <li>Creazione Sito Internet del tuo Ristorante</li>
                 <li>Dominio (es. .it) e Hosting</li>
+                <li>Indicizzazione Prenotazioni su Google</li>
+                <li>Inserimento del Menu su Google</li>
               </ul>
               <Link href="/contact?plan=Full" className={styles.primaryBtn} style={{ backgroundColor: '#e2b13c', color: '#000', border: 'none', textAlign: 'center' }}>Richiedi Full</Link>
             </div>
