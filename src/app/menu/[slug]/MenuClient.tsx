@@ -208,6 +208,9 @@ export default function MenuClient({ restaurant: initialRestaurant }: { restaura
     // UI Translation Helper
     const t = UI_LABELS[language] || UI_LABELS.it;
 
+    const isXL = restaurant.slug?.toLowerCase().includes('aperifish') ||
+        restaurant.name?.toLowerCase().includes('aperifish');
+
     // Dynamic Styles
     const containerStyle = {
         backgroundColor: restaurant.backgroundColor,
@@ -370,12 +373,12 @@ export default function MenuClient({ restaurant: initialRestaurant }: { restaura
                 <div style={{ padding: '0 15px', display: 'flex', gap: '10px', alignItems: 'center' }}>
 
                     {/* 1. Eventi e Promozioni */}
-                    {restaurant.name.toLowerCase().includes('aperifish') && (
+                    {isXL && (
                         <Link href={`/menu/${restaurant.slug}/events`} className={styles.navPill}>{t.events}</Link>
                     )}
 
                     {/* 2. Menu Fissi */}
-                    {restaurant.name.toLowerCase().includes('aperifish') && (
+                    {isXL && (
                         <Link href={`/menu/${restaurant.slug}/fixed-menus`} className={styles.navPill}>{t.fixedMenus}</Link>
                     )}
 
@@ -393,7 +396,7 @@ export default function MenuClient({ restaurant: initialRestaurant }: { restaura
                         ))}
 
                     {/* 4. Vini/Bollicine */}
-                    {((restaurant.wineList?.isActive || restaurant.wineListUrl) && restaurant.name.toLowerCase().includes('aperifish')) && (
+                    {((restaurant.wineList?.isActive || restaurant.wineListUrl) && isXL) && (
                         <Link
                             href={restaurant.wineList?.isActive ? `/menu/${restaurant.slug}/wine-list` : (restaurant.wineListUrl || '#')}
                             target={restaurant.wineList?.isActive ? "_self" : "_blank"}
@@ -500,11 +503,9 @@ export default function MenuClient({ restaurant: initialRestaurant }: { restaura
             </main>
 
             {/* Show allergen info only for Aperifish */}
-            {
-                restaurant.name.toLowerCase().includes('aperifish') && (
-                    <AllergenInfo language={language} />
-                )
-            }
+            {isXL && (
+                <AllergenInfo language={language} />
+            )}
 
             <footer className={styles.footer} style={{ backgroundColor: 'transparent', color: restaurant.textColor, opacity: 0.6 }}>
                 {restaurant.googleReviewsUrl && (

@@ -99,9 +99,9 @@ export default function DashboardClientLayout({
                 restaurantName?.toLowerCase().includes('demo');
 
             // Hide special lists if not active for normal users
-            if (item.label === 'Vini/Bollicine' && !isWineActive) return false;
-            if (item.label === 'Champagne' && !isChampagneActive) return false;
-            if (item.label === 'Drink' && !isDrinkActive) return false;
+            if (item.label === 'Vini/Bollicine' && (!isWineActive || isDemo)) return false;
+            if (item.label === 'Champagne' && (!isChampagneActive || isDemo)) return false;
+            if (item.label === 'Drink' && (!isDrinkActive || isDemo)) return false;
 
             return true;
         });
