@@ -249,7 +249,7 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
             {/* Floating Language Selector - Globe Dropdown */}
             <div style={{
                 position: 'fixed',
-                bottom: '100px',
+                top: '25px',
                 right: '25px',
                 zIndex: 100,
                 display: 'flex',
@@ -355,7 +355,7 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
                         onClick={() => setIsReservationOpen(true)}
                         style={{
                             position: 'fixed',
-                            bottom: '20px',
+                            top: '100px',
                             right: '25px',
                             zIndex: 100,
                             backgroundColor: '#25D366', // WhatsApp Brand Color
