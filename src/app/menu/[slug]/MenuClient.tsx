@@ -393,7 +393,7 @@ export default function MenuClient({ restaurant: initialRestaurant }: { restaura
                         ))}
 
                     {/* 4. Vini/Bollicine */}
-                    {(restaurant.wineList?.isActive || restaurant.wineListUrl) && (
+                    {((restaurant.wineList?.isActive || restaurant.wineListUrl) && restaurant.name.toLowerCase().includes('aperifish')) && (
                         <Link
                             href={restaurant.wineList?.isActive ? `/menu/${restaurant.slug}/wine-list` : (restaurant.wineListUrl || '#')}
                             target={restaurant.wineList?.isActive ? "_self" : "_blank"}
