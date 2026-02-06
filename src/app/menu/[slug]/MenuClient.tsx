@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import styles from './menu-public.module.css';
 import ReservationModal from '@/components/menu/ReservationModal';
 import AllergenInfo from '@/components/menu/AllergenInfo';
@@ -107,13 +108,16 @@ const LANGUAGES = [
     { code: 'de', label: '🇩🇪' },
 ];
 
-export default function MenuClient({ restaurant: initialRestaurant }: { restaurant: MenuPageRestaurant }) {
+export function MenuClientContent({ restaurant: initialRestaurant }: { restaurant: MenuPageRestaurant }) {
     const [restaurant, setRestaurant] = useState(initialRestaurant);
     const [activeFilters, setActiveFilters] = useState<Set<string>>(new Set());
     const [language, setLanguage] = useState<string>('it');
     const [isReservationOpen, setIsReservationOpen] = useState(false);
     const [isTranslating, setIsTranslating] = useState(false);
     const [isLangOpen, setIsLangOpen] = useState(false);
+    const searchParams = useSearchParams();
+    const router = useRouter();
+    const isPreview = searchParams.get('preview') === 'true';
 
     // Get any active categories/items context if we need it for menu lookup
     const activeMenuId = (initialRestaurant as any).menus?.[0]?.id || (initialRestaurant as any).id;
@@ -597,6 +601,57 @@ export default function MenuClient({ restaurant: initialRestaurant }: { restaura
                 </a>
 
             </footer>
-        </div >
+
+            {isReservationOpen && (
+                <ReservationModal
+                    isOpen={isReservationOpen}
+                    onClose={() => setIsReservationOpen(false)}
+                    restaurantName={restaurant.name}
+                    whatsappNumber={restaurant.whatsappNumber || ''}
+                    restaurantId={activeMenuId}
+                />
+            )}
+
+            {/* In-App Preview Back Button */}
+            {isPreview && (
+                <div style={{
+                    position: 'fixed',
+                    bottom: '24px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    zIndex: 9999,
+                    width: 'auto'
+                }}>
+                    <button
+                        onClick={() => router.push('/dashboard/restaurant')}
+                        style={{
+                            background: '#1a237e',
+                            color: 'white',
+                            padding: '14px 24px',
+                            borderRadius: '50px',
+                            border: 'none',
+                            fontSize: '0.95rem',
+                            fontWeight: 700,
+                            boxShadow: '0 8px 24px rgba(26, 35, 126, 0.4)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '10px',
+                            cursor: 'pointer'
+                        }}
+                    >
+                        <span>⬅️ Torna alla Dashboard</span>
+                    </button>
+                </div>
+            )}
+        </div>
+    );
+}
+
+// Wrap in Suspense because of useSearchParams
+export default function MenuClient(props: { restaurant: MenuPageRestaurant }) {
+    return (
+        <Suspense fallback={<div style={{ padding: '2rem', textAlign: 'center' }}>Caricamento...</div>}>
+            <MenuClientContent {...props} />
+        </Suspense>
     );
 }

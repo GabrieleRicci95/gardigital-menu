@@ -325,9 +325,7 @@ export default function RestaurantPage() {
                                     {`${window.location.origin}/menu/${formData.slug}`}
                                 </code>
                                 <a
-                                    href={`/menu/${formData.slug}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
+                                    href={`/menu/${formData.slug}?preview=true`}
                                     className={styles.btnSm}
                                 >
                                     Anteprima Menu ↗
