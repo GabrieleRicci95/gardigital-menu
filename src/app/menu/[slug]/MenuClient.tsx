@@ -265,47 +265,6 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
                     alignItems: 'center',
                     gap: '10px'
                 }}>
-                    {/* Expandable Flags Container */}
-                    <div style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '10px',
-                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                        opacity: isLangOpen ? 1 : 0,
-                        transform: isLangOpen ? 'translateY(0) scale(1)' : 'translateY(-10px) scale(0.8)', // Adjusting direction if needed, but top is fine
-                        pointerEvents: isLangOpen ? 'auto' : 'none',
-                    }}>
-                        {LANGUAGES.map(lang => (
-                            <button
-                                key={lang.code}
-                                onClick={() => {
-                                    handleLanguageChange(lang.code);
-                                    setIsLangOpen(false);
-                                }}
-                                style={{
-                                    width: '44px',
-                                    height: '44px',
-                                    borderRadius: '50%',
-                                    border: 'none',
-                                    backgroundColor: language === lang.code ? restaurant.themeColor : 'white',
-                                    color: language === lang.code ? 'white' : 'black',
-                                    fontSize: '1.3rem',
-                                    cursor: 'pointer',
-                                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    transition: 'all 0.2s',
-                                    opacity: isTranslating ? 0.5 : 1,
-                                    pointerEvents: isTranslating ? 'none' : 'auto'
-                                }}
-                                title={lang.code.toUpperCase()}
-                            >
-                                {lang.label}
-                            </button>
-                        ))}
-                    </div>
-
                     {/* Main Globe Button */}
                     <button
                         onClick={() => setIsLangOpen(!isLangOpen)}
@@ -333,6 +292,50 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
                             <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
                         </svg>
                     </button>
+
+                    {/* Expandable Flags Container */}
+                    <div style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '10px',
+                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                        opacity: isLangOpen ? 1 : 0,
+                        transform: isLangOpen ? 'translateY(0) scale(1)' : 'translateY(-20px) scale(0.8)',
+                        pointerEvents: isLangOpen ? 'auto' : 'none',
+                        height: isLangOpen ? 'auto' : 0,
+                        overflow: 'hidden'
+                    }}>
+                        {LANGUAGES.map(lang => (
+                            <button
+                                key={lang.code}
+                                onClick={() => {
+                                    handleLanguageChange(lang.code);
+                                    setIsLangOpen(false);
+                                }}
+                                style={{
+                                    width: '44px',
+                                    height: '44px',
+                                    borderRadius: '50%',
+                                    border: 'none',
+                                    backgroundColor: language === lang.code ? restaurant.themeColor : 'white',
+                                    color: language === lang.code ? 'white' : 'black',
+                                    fontSize: '1.3rem',
+                                    cursor: 'pointer',
+                                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    transition: 'all 0.2s',
+                                    opacity: isTranslating ? 0.5 : 1,
+                                    pointerEvents: isTranslating ? 'none' : 'auto',
+                                    flexShrink: 0
+                                }}
+                                title={lang.code.toUpperCase()}
+                            >
+                                {lang.label}
+                            </button>
+                        ))}
+                    </div>
                 </div>
 
                 {/* 2. WhatsApp Reservation Button (on the right) */}
