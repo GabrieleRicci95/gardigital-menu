@@ -33,7 +33,7 @@ function PreviewContent() {
     return (
         <div style={{
             position: 'fixed',
-            bottom: '24px',
+            bottom: '95px',
             left: '50%',
             transform: 'translateX(-50%)',
             zIndex: 9999,
