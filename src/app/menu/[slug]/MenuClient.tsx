@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, memo } from 'react';
+import { useState, Suspense, memo } from 'react';
 import styles from './menu-public.module.css';
+import { PreviewManager } from '@/components/menu/PreviewManager';
 import ReservationModal from '@/components/menu/ReservationModal';
 import AllergenInfo from '@/components/menu/AllergenInfo';
 
@@ -611,4 +612,12 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
     );
 }
 
-export default MenuClientContent;
+
+export default function MenuClient(props: { restaurant: MenuPageRestaurant }) {
+    return (
+        <Suspense fallback={<div style={{ padding: '2rem', textAlign: 'center' }}>Caricamento...</div>}>
+            <PreviewManager />
+            <MenuClientContent {...props} />
+        </Suspense>
+    );
+}
