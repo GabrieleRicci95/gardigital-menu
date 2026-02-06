@@ -113,6 +113,7 @@ export default function MenuClient({ restaurant: initialRestaurant }: { restaura
     const [language, setLanguage] = useState<string>('it');
     const [isReservationOpen, setIsReservationOpen] = useState(false);
     const [isTranslating, setIsTranslating] = useState(false);
+    const [isLangOpen, setIsLangOpen] = useState(false);
 
     // Get any active categories/items context if we need it for menu lookup
     const activeMenuId = (initialRestaurant as any).menus?.[0]?.id || (initialRestaurant as any).id;
@@ -243,42 +244,85 @@ export default function MenuClient({ restaurant: initialRestaurant }: { restaura
 
 
 
-            {/* Floating Language Selector */}
+            {/* Floating Language Selector - Globe Dropdown */}
             <div style={{
                 position: 'fixed',
-                bottom: '80px', // Above the reservation button if it exists
-                right: '20px',
+                bottom: '100px',
+                right: '25px',
                 zIndex: 100,
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '8px'
+                alignItems: 'center',
+                gap: '10px'
             }}>
-                {LANGUAGES.map(lang => (
-                    <button
-                        key={lang.code}
-                        onClick={() => handleLanguageChange(lang.code)}
-                        style={{
-                            width: '40px',
-                            height: '40px',
-                            borderRadius: '50%',
-                            border: 'none',
-                            backgroundColor: language === lang.code ? restaurant.themeColor : 'white',
-                            color: language === lang.code ? 'white' : 'black',
-                            fontSize: '1.2rem',
-                            cursor: 'pointer',
-                            boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            transition: 'all 0.2s',
-                            opacity: isTranslating ? 0.5 : 1,
-                            pointerEvents: isTranslating ? 'none' : 'auto'
-                        }}
-                        title={lang.code.toUpperCase()}
-                    >
-                        {lang.label}
-                    </button>
-                ))}
+                {/* Expandable Flags Container */}
+                <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '10px',
+                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                    opacity: isLangOpen ? 1 : 0,
+                    transform: isLangOpen ? 'translateY(0) scale(1)' : 'translateY(10px) scale(0.8)',
+                    pointerEvents: isLangOpen ? 'auto' : 'none',
+                }}>
+                    {LANGUAGES.map(lang => (
+                        <button
+                            key={lang.code}
+                            onClick={() => {
+                                handleLanguageChange(lang.code);
+                                setIsLangOpen(false);
+                            }}
+                            style={{
+                                width: '44px',
+                                height: '44px',
+                                borderRadius: '50%',
+                                border: 'none',
+                                backgroundColor: language === lang.code ? restaurant.themeColor : 'white',
+                                color: language === lang.code ? 'white' : 'black',
+                                fontSize: '1.3rem',
+                                cursor: 'pointer',
+                                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                transition: 'all 0.2s',
+                                opacity: isTranslating ? 0.5 : 1,
+                                pointerEvents: isTranslating ? 'none' : 'auto'
+                            }}
+                            title={lang.code.toUpperCase()}
+                        >
+                            {lang.label}
+                        </button>
+                    ))}
+                </div>
+
+                {/* Main Globe Button */}
+                <button
+                    onClick={() => setIsLangOpen(!isLangOpen)}
+                    style={{
+                        width: '56px',
+                        height: '56px',
+                        borderRadius: '50%',
+                        border: 'none',
+                        backgroundColor: isLangOpen ? 'white' : restaurant.themeColor,
+                        color: isLangOpen ? restaurant.themeColor : 'white',
+                        fontSize: '1.5rem',
+                        cursor: 'pointer',
+                        boxShadow: '0 4px 15px rgba(0,0,0,0.25)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                        transform: isLangOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                    }}
+                    title="Translate"
+                >
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                    </svg>
+                </button>
             </div>
 
             {/* Translating Overlay */}
