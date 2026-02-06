@@ -132,12 +132,12 @@ export default function DrinkListPage() {
         setDrinkList(prev => ({
             ...prev,
             sections: [
-                ...prev.sections,
                 {
                     id: `temp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
                     name: '',
                     items: []
-                }
+                },
+                ...prev.sections
             ]
         }));
     };
@@ -169,13 +169,13 @@ export default function DrinkListPage() {
                 return {
                     ...section,
                     items: [
-                        ...section.items,
                         {
                             id: `temp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}_item`,
                             name: '',
                             description: '',
                             price: ''
-                        }
+                        },
+                        ...section.items
                     ]
                 };
             });
@@ -279,6 +279,29 @@ export default function DrinkListPage() {
                         transform: drinkList.isActive ? 'translateX(26px)' : 'translateX(0)'
                     }}></span>
                 </label>
+            </div>
+
+            {/* Add Category Button - Now at the Top */}
+            <div style={{ marginBottom: '2.5rem', display: 'flex', justifyContent: 'center' }}>
+                <button
+                    onClick={addSection}
+                    style={{
+                        background: isDemo ? '#ccc' : '#1e3a8a',
+                        color: 'white',
+                        padding: '12px 30px',
+                        borderRadius: '40px',
+                        border: 'none',
+                        cursor: isDemo ? 'not-allowed' : 'pointer',
+                        fontWeight: 600,
+                        boxShadow: isDemo ? 'none' : '0 4px 12px rgba(30, 58, 138, 0.2)',
+                        transition: 'all 0.2s'
+                    }}
+                    onMouseEnter={(e) => !isDemo && (e.currentTarget.style.transform = 'translateY(-2px)')}
+                    onMouseLeave={(e) => !isDemo && (e.currentTarget.style.transform = 'translateY(0)')}
+                    disabled={isDemo}
+                >
+                    + Aggiungi Nuova Categoria
+                </button>
             </div>
 
             {/* Sections List */}
@@ -528,42 +551,6 @@ export default function DrinkListPage() {
                     </div>
                 ))}
 
-                {/* Add Category Card */}
-                {!isDemo && (
-                    <div
-                        onClick={addSection}
-                        style={{
-                            background: 'rgba(255,255,255,0.6)',
-                            border: '2px dashed #ccc',
-                            borderRadius: '20px',
-                            padding: '2rem',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            cursor: 'pointer',
-                            transition: 'all 0.2s',
-                            color: '#666',
-                            gap: '1rem'
-                        }}
-                        onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#3b82f6'; e.currentTarget.style.background = '#f0f9ff'; e.currentTarget.style.color = '#3b82f6'; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#ccc'; e.currentTarget.style.background = 'rgba(255,255,255,0.6)'; e.currentTarget.style.color = '#666'; }}
-                    >
-                        <div style={{
-                            width: '50px',
-                            height: '50px',
-                            borderRadius: '50%',
-                            background: 'white',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            boxShadow: '0 4px 10px rgba(0,0,0,0.05)'
-                        }}>
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <span style={{ fontSize: '1.1rem', fontWeight: '600' }}>Aggiungi Nuova Categoria</span>
-                    </div>
-                )}
             </div>
 
             {/* Sticky Save Bar */}

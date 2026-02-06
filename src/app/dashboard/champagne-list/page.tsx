@@ -102,12 +102,12 @@ export default function ChampagneListPage() {
         setChampagneList(prev => ({
             ...prev,
             sections: [
-                ...prev.sections,
                 {
                     id: `temp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
                     name: '',
                     items: []
-                }
+                },
+                ...prev.sections
             ]
         }));
     };
@@ -136,13 +136,13 @@ export default function ChampagneListPage() {
                 return {
                     ...section,
                     items: [
-                        ...section.items,
                         {
                             id: `temp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}_item`,
                             name: '',
                             description: '',
                             price: ''
-                        }
+                        },
+                        ...section.items
                     ]
                 };
             });

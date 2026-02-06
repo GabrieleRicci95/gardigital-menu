@@ -137,13 +137,13 @@ export default function WineListPage() {
                 return {
                     ...section,
                     items: [
-                        ...section.items,
                         {
                             id: `temp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}_item`,
                             name: '',
                             description: '',
                             price: ''
-                        }
+                        },
+                        ...section.items
                     ]
                 };
             });
