@@ -251,7 +251,7 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
             {/* Top-Right Floating Controls (Language & WhatsApp) */}
             <div style={{
                 position: 'fixed',
-                top: '20px',
+                top: '100px',
                 right: '20px',
                 zIndex: 100,
                 display: 'flex',
