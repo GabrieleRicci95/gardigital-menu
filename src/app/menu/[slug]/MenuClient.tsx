@@ -627,19 +627,24 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
                         style={{
                             background: '#1a237e',
                             color: 'white',
-                            padding: '14px 24px',
-                            borderRadius: '50px',
+                            padding: '12px 24px',
+                            borderRadius: '12px',
                             border: 'none',
-                            fontSize: '0.95rem',
+                            fontSize: '0.85rem',
                             fontWeight: 700,
-                            boxShadow: '0 8px 24px rgba(26, 35, 126, 0.4)',
+                            letterSpacing: '1px',
+                            boxShadow: '0 10px 25px rgba(26, 35, 126, 0.3)',
                             display: 'flex',
                             alignItems: 'center',
                             gap: '10px',
-                            cursor: 'pointer'
+                            cursor: 'pointer',
+                            textTransform: 'uppercase'
                         }}
                     >
-                        <span>⬅️ Torna alla Dashboard</span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M19 12H5M12 19l-7-7 7-7" />
+                        </svg>
+                        <span>Torna alla Dashboard</span>
                     </button>
                 </div>
             )}
