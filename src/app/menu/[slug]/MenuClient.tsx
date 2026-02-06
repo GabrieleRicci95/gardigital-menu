@@ -1,8 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, Suspense, memo } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useState, memo } from 'react';
 import styles from './menu-public.module.css';
 import ReservationModal from '@/components/menu/ReservationModal';
 import AllergenInfo from '@/components/menu/AllergenInfo';
@@ -608,55 +607,6 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
                     restaurantId={activeMenuId}
                 />
             )}
-
-            {/* In-App Preview Back Button */}
-            <Suspense fallback={null}>
-                <BackButton />
-            </Suspense>
-        </div>
-    );
-}
-
-function BackButton() {
-    const searchParams = useSearchParams();
-    const router = useRouter();
-    const isPreview = searchParams.get('preview') === 'true';
-
-    if (!isPreview) return null;
-
-    return (
-        <div style={{
-            position: 'fixed',
-            bottom: '24px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            zIndex: 9999,
-            width: 'auto'
-        }}>
-            <button
-                onClick={() => router.push('/dashboard/restaurant')}
-                style={{
-                    background: '#1a237e',
-                    color: 'white',
-                    padding: '12px 24px',
-                    borderRadius: '12px',
-                    border: 'none',
-                    fontSize: '0.85rem',
-                    fontWeight: 700,
-                    letterSpacing: '1px',
-                    boxShadow: '0 10px 25px rgba(26, 35, 126, 0.3)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '10px',
-                    cursor: 'pointer',
-                    textTransform: 'uppercase'
-                }}
-            >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M19 12H5M12 19l-7-7 7-7" />
-                </svg>
-                <span>Torna alla Dashboard</span>
-            </button>
         </div>
     );
 }
