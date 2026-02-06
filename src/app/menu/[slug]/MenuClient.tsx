@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, Suspense } from 'react';
+import { useState, Suspense, memo } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import styles from './menu-public.module.css';
 import ReservationModal from '@/components/menu/ReservationModal';
@@ -115,9 +115,6 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
     const [isReservationOpen, setIsReservationOpen] = useState(false);
     const [isTranslating, setIsTranslating] = useState(false);
     const [isLangOpen, setIsLangOpen] = useState(false);
-    const searchParams = useSearchParams();
-    const router = useRouter();
-    const isPreview = searchParams.get('preview') === 'true';
 
     // Get any active categories/items context if we need it for menu lookup
     const activeMenuId = (initialRestaurant as any).menus?.[0]?.id || (initialRestaurant as any).id;
@@ -613,50 +610,55 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
             )}
 
             {/* In-App Preview Back Button */}
-            {isPreview && (
-                <div style={{
-                    position: 'fixed',
-                    bottom: '24px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    zIndex: 9999,
-                    width: 'auto'
-                }}>
-                    <button
-                        onClick={() => router.push('/dashboard/restaurant')}
-                        style={{
-                            background: '#1a237e',
-                            color: 'white',
-                            padding: '12px 24px',
-                            borderRadius: '12px',
-                            border: 'none',
-                            fontSize: '0.85rem',
-                            fontWeight: 700,
-                            letterSpacing: '1px',
-                            boxShadow: '0 10px 25px rgba(26, 35, 126, 0.3)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '10px',
-                            cursor: 'pointer',
-                            textTransform: 'uppercase'
-                        }}
-                    >
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M19 12H5M12 19l-7-7 7-7" />
-                        </svg>
-                        <span>Torna alla Dashboard</span>
-                    </button>
-                </div>
-            )}
+            <Suspense fallback={null}>
+                <BackButton />
+            </Suspense>
         </div>
     );
 }
 
-// Wrap in Suspense because of useSearchParams
-export default function MenuClient(props: { restaurant: MenuPageRestaurant }) {
+function BackButton() {
+    const searchParams = useSearchParams();
+    const router = useRouter();
+    const isPreview = searchParams.get('preview') === 'true';
+
+    if (!isPreview) return null;
+
     return (
-        <Suspense fallback={<div style={{ padding: '2rem', textAlign: 'center' }}>Caricamento...</div>}>
-            <MenuClientContent {...props} />
-        </Suspense>
+        <div style={{
+            position: 'fixed',
+            bottom: '24px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 9999,
+            width: 'auto'
+        }}>
+            <button
+                onClick={() => router.push('/dashboard/restaurant')}
+                style={{
+                    background: '#1a237e',
+                    color: 'white',
+                    padding: '12px 24px',
+                    borderRadius: '12px',
+                    border: 'none',
+                    fontSize: '0.85rem',
+                    fontWeight: 700,
+                    letterSpacing: '1px',
+                    boxShadow: '0 10px 25px rgba(26, 35, 126, 0.3)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    cursor: 'pointer',
+                    textTransform: 'uppercase'
+                }}
+            >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+                <span>Torna alla Dashboard</span>
+            </button>
+        </div>
     );
 }
+
+export default MenuClientContent;
