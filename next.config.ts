@@ -2,12 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   serverExternalPackages: ['pdf-parse', 'pdfjs-dist'],
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
+  transpilePackages: ['@ducanh2912/next-pwa'],
 };
 
 export default nextConfig;

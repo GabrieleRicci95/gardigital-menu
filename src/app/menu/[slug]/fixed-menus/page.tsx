@@ -22,6 +22,30 @@ async function getRestaurantAndMenus(slug: string) {
             }
         }
     });
+
+    if (restaurant && restaurant.fixedMenus) {
+        restaurant.fixedMenus.sort((a, b) => {
+            const nameA = a.name.toLowerCase();
+            const nameB = b.name.toLowerCase();
+            const priceA = Number(a.price);
+            const priceB = Number(b.price);
+
+            // Priority 1: Aperigusto with price 22
+            const isA22_A = nameA.includes('aperigusto') && Math.abs(priceA - 22) < 0.1;
+            const isA22_B = nameB.includes('aperigusto') && Math.abs(priceB - 22) < 0.1;
+            if (isA22_A && !isA22_B) return -1;
+            if (!isA22_A && isA22_B) return 1;
+
+            // Priority 2: Aperigusto with price 29
+            const isA29_A = nameA.includes('aperigusto') && Math.abs(priceA - 29) < 0.1;
+            const isA29_B = nameB.includes('aperigusto') && Math.abs(priceB - 29) < 0.1;
+            if (isA29_A && !isA29_B) return -1;
+            if (!isA29_A && isA29_B) return 1;
+
+            return 0;
+        });
+    }
+
     return restaurant;
 }
 

@@ -51,7 +51,6 @@ export default function DrinkListPublicClient({ restaurant, drinkList }: { resta
     return (
         <div style={containerStyle}>
             <style jsx global>{`
-                html { scroll-behavior: smooth; }
                 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
                 .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
             `}</style>
@@ -223,7 +222,7 @@ export default function DrinkListPublicClient({ restaurant, drinkList }: { resta
 
             <footer style={{
                 textAlign: 'center',
-                padding: '3rem 1rem 6rem 1rem',
+                padding: '3rem 1rem 8rem 1rem',
                 borderTop: '1px solid rgba(0,0,0,0.05)',
                 marginTop: '2rem'
             }}>
@@ -235,7 +234,7 @@ export default function DrinkListPublicClient({ restaurant, drinkList }: { resta
                     fontSize: '0.75rem',
                     opacity: 0.4
                 }}>
-                    Powered by <strong>Gardigital Menu</strong>
+                    Powered by <strong>Gardigital.it</strong>
                 </div>
             </footer>
         </div>

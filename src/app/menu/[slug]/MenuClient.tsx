@@ -543,7 +543,7 @@ export default function MenuClient({ restaurant: initialRestaurant }: { restaura
                     rel="noopener noreferrer"
                     style={{ color: 'inherit', textDecoration: 'none' }}
                 >
-                    Powered by <strong>Gardigital Menu</strong>
+                    Powered by <strong>Gardigital.it</strong>
                 </a>
 
             </footer>

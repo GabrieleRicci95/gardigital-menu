@@ -248,21 +248,21 @@ export default function RestaurantPage() {
                         {customModules.length > 0 && (
                             <div style={{ marginTop: '1.5rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
                                 {customModules.map(m => (
-                                    <div key={m.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '15px', borderRadius: '12px', background: 'white', border: '1px solid #e2e8f0' }}>
+                                    <div key={m.id} style={{ display: 'flex', flexDirection: 'column', gap: '10px', padding: '15px', borderRadius: '12px', background: 'white', border: '1px solid #e2e8f0' }}>
                                         <div>
                                             <span style={{ fontWeight: 600, display: 'block', color: '#1a237e' }}>{m.name}</span>
                                             <span style={{ fontSize: '0.8rem', color: '#64748b' }}>Modulo Personalizzato</span>
                                         </div>
-                                        <div>
+                                        <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
                                             <button
                                                 onClick={() => router.push(`/dashboard/custom-list/${m.slug}`)}
-                                                style={{ padding: '6px 12px', borderRadius: '6px', background: '#f1f5f9', border: '1px solid #e2e8f0', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 600 }}
+                                                style={{ flex: 1, padding: '8px 12px', borderRadius: '6px', background: '#f1f5f9', border: '1px solid #e2e8f0', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 600, textAlign: 'center' }}
                                             >
                                                 Gestisci
                                             </button>
                                             <button
                                                 onClick={() => handleDeleteModule(m.slug)}
-                                                style={{ padding: '6px 12px', borderRadius: '6px', background: '#fee2e2', border: '1px solid #ef4444', color: '#b91c1c', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 600, marginLeft: '10px' }}
+                                                style={{ flex: 1, padding: '8px 12px', borderRadius: '6px', background: '#fee2e2', border: '1px solid #ef4444', color: '#b91c1c', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 600, textAlign: 'center' }}
                                             >
                                                 Elimina
                                             </button>

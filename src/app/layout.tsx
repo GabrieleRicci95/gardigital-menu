@@ -65,6 +65,9 @@ export const metadata: Metadata = {
     shortcut: "/logo_v2.png",
     apple: "/logo_v2.png",
   },
+  formatDetection: {
+    telephone: false,
+  },
 };
 
 export default function RootLayout({

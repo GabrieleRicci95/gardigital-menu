@@ -69,10 +69,6 @@
 }
 
 body {
-  overscroll-behavior-y: none;
-}
-
-body {
   font-family: var(--font-family-sans);
   background-color: var(--color-background);
   color: var(--color-text-main);
@@ -81,6 +77,13 @@ body {
   /* Prevent horizontal scroll and rubber-band effect */
   overflow-x: hidden;
   min-height: 100vh;
+  position: relative;
+  /* Ensure it's a positioning context */
+}
+
+html {
+  /* Allow native scroll behavior */
+  scroll-behavior: auto;
 }
 
 h1,

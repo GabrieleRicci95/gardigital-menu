@@ -23,10 +23,18 @@ export async function GET(req: Request) {
             const endOfDay = new Date(date);
             endOfDay.setHours(23, 59, 59, 999);
 
-            whereClause.date = {
-                gte: startOfDay,
-                lte: endOfDay
-            };
+            // Fetch reservations that matches the date OR are pending (regardless of date)
+            whereClause.OR = [
+                {
+                    date: {
+                        gte: startOfDay,
+                        lte: endOfDay
+                    }
+                },
+                {
+                    status: 'PENDING'
+                }
+            ];
         }
 
         const reservations = await prisma.reservation.findMany({

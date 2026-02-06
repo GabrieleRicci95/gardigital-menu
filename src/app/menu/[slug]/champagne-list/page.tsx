@@ -47,6 +47,7 @@ export default async function ChampagneListPage({ params }: { params: Promise<{ 
     return (
         <ChampagneListPublicClient
             restaurant={restaurant}
+            // @ts-ignore - Prisma Decimal serialization issue
             champagneList={fullChampagneList}
         />
     );

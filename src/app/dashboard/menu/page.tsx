@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import styles from '../premium-dashboard.module.css';
+import menuStyles from './menu.module.css';
 
 interface MenuItem {
     id: string;
@@ -238,6 +239,7 @@ export default function MenuBuilderPage() {
         try {
             const res = await fetch('/api/menu/items', {
                 method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     ...newItem,
                     categoryId: addingItemTo,
@@ -731,111 +733,139 @@ export default function MenuBuilderPage() {
                                                 </form>
                                             </div>
                                         ) : (
-                                            <div key={item.id} style={{ display: 'flex', gap: '1.5rem', padding: '1rem', borderBottom: '1px solid #f3f4f6', alignItems: 'flex-start' }}>
-                                                <div style={{ marginRight: '0', position: 'relative', width: '80px', height: '80px', flexShrink: 0 }}>
-                                                    {item.imageUrl ? (
-                                                        <div style={{ width: '100%', height: '100%', borderRadius: '12px', overflow: 'hidden', position: 'relative' }}>
-                                                            <img
-                                                                src={item.imageUrl}
-                                                                alt={item.name}
-                                                                style={{ width: '100%', height: '100%', objectFit: 'cover', cursor: 'pointer' }}
-                                                                onClick={() => setExpandedImage(item.imageUrl!)}
-                                                            />
-                                                            {isPremium && !isDemo && (
+                                            <div key={item.id} className={menuStyles.itemRow}>
+                                                <div className={menuStyles.itemContent}>
+                                                    <div className={menuStyles.itemPhotoContainer}>
+                                                        {item.imageUrl ? (
+                                                            <div style={{ width: '100%', height: '100%', borderRadius: '12px', overflow: 'hidden', position: 'relative' }}>
+                                                                <img
+                                                                    src={item.imageUrl}
+                                                                    alt={item.name}
+                                                                    style={{ width: '100%', height: '100%', objectFit: 'cover', cursor: 'pointer' }}
+                                                                    onClick={() => setExpandedImage(item.imageUrl!)}
+                                                                />
+                                                                {isPremium && !isDemo && (
+                                                                    <button
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation();
+                                                                            handleQuickUpdate(item, { imageUrl: null });
+                                                                        }}
+                                                                        style={{
+                                                                            position: 'absolute', top: 0, right: 0, background: 'rgba(0,0,0,0.5)', color: 'white', border: 'none', width: '24px', height: '24px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center'
+                                                                        }}
+                                                                        title="Rimuovi Foto"
+                                                                    >
+                                                                        ×
+                                                                    </button>
+                                                                )}
+                                                            </div>
+                                                        ) : (
+                                                            <div style={{ width: '100%', height: '100%', background: '#f3f4f6', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem' }}>
+                                                                🍽️
+                                                            </div>
+                                                        )}
+
+                                                        {isPremium && !isDemo && !item.imageUrl && (
+                                                            <>
+                                                                <input
+                                                                    type="file"
+                                                                    id={`file-input-${item.id}`}
+                                                                    style={{ display: 'none' }}
+                                                                    accept="image/*"
+                                                                    onChange={(e) => handleFileChange(e, item.id)}
+                                                                />
                                                                 <button
-                                                                    onClick={(e) => {
-                                                                        e.stopPropagation();
-                                                                        handleQuickUpdate(item, { imageUrl: null });
-                                                                    }}
+                                                                    onClick={() => handleUploadClick(item.id)}
                                                                     style={{
-                                                                        position: 'absolute', top: 0, right: 0, background: 'rgba(0,0,0,0.5)', color: 'white', border: 'none', width: '24px', height: '24px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center'
+                                                                        position: 'absolute', bottom: '-5px', right: '-5px',
+                                                                        background: 'white', border: '1px solid #ccc', borderRadius: '50%',
+                                                                        width: '28px', height: '28px', fontSize: '1rem', padding: 0,
+                                                                        boxShadow: '0 2px 5px rgba(0,0,0,0.1)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center'
                                                                     }}
-                                                                    title="Rimuovi Foto"
+                                                                    title="Carica Foto"
                                                                 >
-                                                                    ×
+                                                                    +
                                                                 </button>
+                                                                {uploadingId === item.id && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(255,255,255,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem' }}>...</div>}
+                                                            </>
+                                                        )}
+                                                    </div>
+
+                                                    <div className={menuStyles.itemInfo}>
+                                                        <div style={{ fontWeight: '700', fontSize: '1.1rem', marginBottom: '0.2rem', color: '#1f2937' }}>{item.name}</div>
+                                                        <div style={{ color: '#6b7280', fontSize: '0.95rem', marginBottom: '0.5rem', lineHeight: '1.4', whiteSpace: 'pre-wrap' }}>{item.description}</div>
+                                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                                                            {item.isVegan && <span className={`${styles.badge} ${styles.badgeSuccess}`} style={{ fontSize: '0.7rem' }}>VEGAN</span>}
+                                                            {item.allergens && (
+                                                                (() => {
+                                                                    try {
+                                                                        const nums = JSON.parse(item.allergens as string);
+                                                                        if (Array.isArray(nums) && nums.length > 0) {
+                                                                            return (
+                                                                                <span className={styles.badge} style={{ background: '#f0f9ff', color: '#0369a1', border: '1px solid #bae6fd', fontSize: '0.7rem' }}>
+                                                                                    Allergeni: {nums.join(', ')}
+                                                                                </span>
+                                                                            );
+                                                                        }
+                                                                    } catch (e) { }
+                                                                    return null;
+                                                                })()
+                                                            )}
+                                                            {item.isVegetarian && (
+                                                                <span className={`${styles.badge} ${styles.badgeSuccess}`} style={{ background: '#f0fdf4', color: '#15803d', fontSize: '0.7rem' }}>
+                                                                    VEG
+                                                                </span>
+                                                            )}
+                                                            {item.spiciness > 0 && (
+                                                                <span style={{ fontSize: '0.8rem' }}>
+                                                                    {'🌶️'.repeat(item.spiciness)}
+                                                                </span>
                                                             )}
                                                         </div>
-                                                    ) : (
-                                                        <div style={{ width: '100%', height: '100%', background: '#f3f4f6', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem' }}>
-                                                            🍽️
-                                                        </div>
-                                                    )}
-
-                                                    {isPremium && !isDemo && !item.imageUrl && (
-                                                        <>
-                                                            <input
-                                                                type="file"
-                                                                id={`file-input-${item.id}`}
-                                                                style={{ display: 'none' }}
-                                                                accept="image/*"
-                                                                onChange={(e) => handleFileChange(e, item.id)}
-                                                            />
-                                                            <button
-                                                                onClick={() => handleUploadClick(item.id)}
-                                                                style={{
-                                                                    position: 'absolute', bottom: '-5px', right: '-5px',
-                                                                    background: 'white', border: '1px solid #ccc', borderRadius: '50%',
-                                                                    width: '28px', height: '28px', fontSize: '1rem', padding: 0,
-                                                                    boxShadow: '0 2px 5px rgba(0,0,0,0.1)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center'
-                                                                }}
-                                                                title="Carica Foto"
-                                                            >
-                                                                +
-                                                            </button>
-                                                            {uploadingId === item.id && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(255,255,255,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem' }}>...</div>}
-                                                        </>
-                                                    )}
+                                                    </div>
                                                 </div>
 
-                                                <div style={{ flex: 1 }}>
-                                                    <div style={{ fontWeight: '700', fontSize: '1.1rem', marginBottom: '0.2rem', color: '#1f2937' }}>{item.name}</div>
-                                                    <div style={{ color: '#6b7280', fontSize: '0.95rem', marginBottom: '0.5rem', lineHeight: '1.4', whiteSpace: 'pre-wrap' }}>{item.description}</div>
-                                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                                                        {item.isVegan && <span className={`${styles.badge} ${styles.badgeSuccess}`} style={{ fontSize: '0.7rem' }}>VEGAN</span>}
-                                                        {item.allergens && (
-                                                            (() => {
+                                                <div className={menuStyles.itemPriceActions}>
+                                                    <div style={{ fontWeight: 'bold', fontSize: '1.2rem', color: '#1a237e' }}>
+                                                        {item.price !== null ? `€ ${Number(item.price).toFixed(2)}` : ''}
+                                                    </div>
+
+                                                    <div className={menuStyles.itemActions}>
+                                                        <button
+                                                            className={menuStyles.editBtn}
+                                                            onClick={() => {
+                                                                if (isDemo) return;
+                                                                setEditingId(item.id);
+                                                                let parsedAllergens: number[] = [];
                                                                 try {
-                                                                    const nums = JSON.parse(item.allergens);
-                                                                    if (Array.isArray(nums) && nums.length > 0) {
-                                                                        return <span className={styles.badge} style={{ background: '#f0f9ff', color: '#0369a1', border: '1px solid #bae6fd', fontSize: '0.7rem' }}>All: {nums.join(', ')}</span>;
-                                                                    }
-                                                                } catch (e) { }
-                                                                return null;
-                                                            })()
-                                                        )}
-                                                        {item.isVegetarian && <span className={`${styles.badge} ${styles.badgeSuccess}`} style={{ background: '#f0fdf4', color: '#15803d', fontSize: '0.7rem' }}>VEG</span>}
-                                                        {item.spiciness > 0 && <span style={{ fontSize: '0.8rem' }}>{'🌶️'.repeat(item.spiciness)}</span>}
-                                                    </div>
-                                                </div>
-                                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.5rem' }}>
-                                                    <div style={{ fontWeight: '600', fontSize: '1.1rem', color: '#1a1a1a' }}>
-                                                        {item.price !== null && Number(item.price) > 0 ? `€ ${Number(item.price).toFixed(2)}` : ''}
-                                                    </div>
-                                                    <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                                        <button className={styles.btnSecondary} style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }} disabled={isDemo} onClick={() => {
-                                                            if (isDemo) return;
-                                                            setEditingId(item.id);
-                                                            let parsedAllergens: number[] = [];
-                                                            try {
-                                                                parsedAllergens = item.allergens ? JSON.parse(item.allergens) : [];
-                                                            } catch (e) { console.error('Error parsing allergens', e); }
+                                                                    const parsed = item.allergens ? JSON.parse(item.allergens as string) : [];
+                                                                    parsedAllergens = Array.isArray(parsed) ? parsed : [];
+                                                                } catch (e) { console.error('Error parsing allergens', e); }
 
-                                                            setEditItemData({
-                                                                name: item.name,
-                                                                description: item.description,
-                                                                price: item.price !== null ? item.price.toString() : '',
-                                                                isVegan: item.isVegan,
-                                                                isGlutenFree: item.isGlutenFree,
-                                                                isVegetarian: item.isVegetarian,
-                                                                spiciness: item.spiciness,
-                                                                allergens: parsedAllergens,
-                                                            });
-                                                        }}>Modifica</button>
-                                                        <button onClick={() => {
-                                                            if (isDemo) return alert('Modalità Demo: modifiche non consentite');
-                                                            requestDelete(item.id, cat.id);
-                                                        }} className={styles.btnDanger} style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }} disabled={isDemo}>Cancella</button>
+                                                                setEditItemData({
+                                                                    name: item.name,
+                                                                    description: item.description,
+                                                                    price: item.price?.toString() || '',
+                                                                    isVegan: item.isVegan,
+                                                                    isGlutenFree: item.isGlutenFree,
+                                                                    isVegetarian: item.isVegetarian,
+                                                                    spiciness: item.spiciness,
+                                                                    allergens: parsedAllergens,
+                                                                });
+                                                            }}
+                                                            title="Modifica"
+                                                            disabled={isDemo}
+                                                        >
+                                                            ✎
+                                                        </button>
+                                                        <button
+                                                            className={menuStyles.deleteBtn}
+                                                            onClick={() => requestDelete(item.id, cat.id)}
+                                                            title="Elimina"
+                                                            disabled={isDemo}
+                                                        >
+                                                            ×
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>

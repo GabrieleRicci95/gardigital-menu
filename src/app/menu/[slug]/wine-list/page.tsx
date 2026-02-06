@@ -40,6 +40,7 @@ export default async function PublicWineListPage({ params }: PageProps) {
     return (
         <WineListPublicClient
             restaurant={data.restaurant}
+            // @ts-ignore - Prisma Decimal serialization issue
             wineList={data.wineList}
         />
     );

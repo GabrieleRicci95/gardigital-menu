@@ -150,6 +150,44 @@ export default function ReservationsPage() {
         notes: ''
     });
 
+    const handleCreateReservation = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (isDemo) return alert('Modalità Demo: modifiche non consentite');
+        setLoading(true);
+
+        try {
+            const res = await fetch('/api/reservations', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    restaurantId: restaurant.id,
+                    ...newRes
+                })
+            });
+
+            if (res.ok) {
+                alert('Prenotazione aggiunta con successo! ✅');
+                setIsModalOpen(false);
+                setNewRes({
+                    name: '',
+                    guests: 2,
+                    date: new Date().toISOString().split('T')[0],
+                    time: '19:30',
+                    phone: '',
+                    notes: ''
+                });
+                fetchReservations();
+            } else {
+                alert('Errore durante la creazione della prenotazione');
+            }
+        } catch (error) {
+            console.error(error);
+            alert('Errore di connessione');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const handleUpdateSettings = async (e: React.FormEvent) => {
         e.preventDefault();
         if (isDemo) return alert('Modalità Demo: modifiche non consentite');
@@ -206,27 +244,8 @@ export default function ReservationsPage() {
                 </div>
 
                 {restaurant && (
-                    <div className={styles.linkBanner} style={{
-                        background: 'white',
-                        padding: '1rem 1.5rem',
-                        borderRadius: '16px',
-                        border: '1px solid #e5e7eb',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '12px',
-                        fontSize: '0.9rem',
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.03)'
-                    }}>
-                        <div style={{
-                            width: '40px',
-                            height: '40px',
-                            background: '#f0fdf4',
-                            borderRadius: '12px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            color: '#16a34a'
-                        }}>
+                    <div className={styles.linkBanner}>
+                        <div className={styles.linkIcon}>
                             🔗
                         </div>
                         <div>
@@ -236,14 +255,7 @@ export default function ReservationsPage() {
                         <input
                             readOnly
                             value={`https://www.gardigital.it/book/${restaurant.slug}`}
-                            style={{
-                                border: '1px solid #ddd',
-                                padding: '4px 10px',
-                                borderRadius: '6px',
-                                fontSize: '0.8rem',
-                                background: '#f9f9f9',
-                                width: '250px'
-                            }}
+                            className={styles.linkInput}
                         />
                         <button
                             onClick={() => {
@@ -251,7 +263,6 @@ export default function ReservationsPage() {
                                 alert('Link copiato!');
                             }}
                             className={styles.btnPrimary}
-                            style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }}
                         >
                             Copia
                         </button>
@@ -267,7 +278,7 @@ export default function ReservationsPage() {
                     </button>
                     <button
                         className={styles.btnPrimary}
-                        style={{ backgroundColor: isDemo ? '#ccc' : '#10b981', cursor: isDemo ? 'not-allowed' : 'pointer' }}
+                        style={{ backgroundColor: isDemo ? '#ccc' : '#10b981' }}
                         onClick={() => !isDemo && setIsModalOpen(true)}
                         disabled={isDemo}
                     >
@@ -325,7 +336,12 @@ export default function ReservationsPage() {
                             <div className={styles.cardHeader}>
                                 <div className={styles.timeInfo}>
                                     <span className={styles.time}>
-                                        {/* Force 24h format explicitly */}
+                                        {/* Show Date if it's not the filtered date (e.g. Pending from another day) */}
+                                        {new Date(res.date).toISOString().split('T')[0] !== filterDate && (
+                                            <span style={{ marginRight: '8px', color: '#eab308', fontWeight: 'bold' }}>
+                                                {new Date(res.date).toLocaleDateString('it-IT', { day: 'numeric', month: 'short' })}
+                                            </span>
+                                        )}
                                         {new Date(res.date).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit', hour12: false })}
                                     </span>
                                     {getStatusBadge(res.status)}
@@ -395,25 +411,18 @@ export default function ReservationsPage() {
 
             {/* SETTINGS MODAL */}
             {isSettingsOpen && (
-                <div style={{
-                    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-                    backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000
-                }}>
-                    <div style={{
-                        backgroundColor: 'white', padding: '2rem', borderRadius: '12px', width: '90%', maxWidth: '500px',
-                        boxShadow: '0 4px 20px rgba(0,0,0,0.2)'
-                    }}>
-                        <h2 style={{ marginBottom: '1.5rem', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>Impostazioni Booking</h2>
+                <div className={styles.modalOverlay}>
+                    <div className={styles.modalContent}>
+                        <h2 className={styles.modalTitle}>Impostazioni Booking</h2>
 
                         <form onSubmit={handleUpdateSettings}>
-                            <div style={{ marginBottom: '1.5rem' }}>
-                                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>Persone Massime per Slot</label>
+                            <div className={styles.formGroup}>
+                                <label className={styles.formLabel}>Persone Massime per Slot</label>
                                 <input
                                     type="number"
                                     min="1"
                                     required
-                                    className={styles.dateInput}
-                                    style={{ width: '100%' }}
+                                    className={styles.modalInput}
                                     value={bookingSettings.bookingMaxGuestsPerSlot}
                                     onChange={e => setBookingSettings({ ...bookingSettings, bookingMaxGuestsPerSlot: parseInt(e.target.value) })}
                                 />
@@ -436,14 +445,11 @@ export default function ReservationsPage() {
                                 Se attivo, le prenotazioni caricate dal form saranno segnate subito come "Confermate".
                             </p>
 
-                            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
+                            <div className={styles.modalActions}>
                                 <button
                                     type="button"
                                     onClick={() => setIsSettingsOpen(false)}
-                                    style={{
-                                        padding: '0.75rem 1.5rem', borderRadius: '8px', border: '1px solid #ddd',
-                                        background: '#f5f5f5', cursor: 'pointer', fontWeight: 500
-                                    }}
+                                    className={styles.btnCancel}
                                 >
                                     Annulla
                                 </button>
@@ -453,6 +459,101 @@ export default function ReservationsPage() {
                                     style={{ backgroundColor: '#1e3a8a', border: 'none' }}
                                 >
                                     Salva Impostazioni
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* NEW RESERVATION MODAL */}
+            {isModalOpen && (
+                <div className={styles.modalOverlay}>
+                    <div className={styles.modalContent}>
+                        <h2 className={styles.modalTitle}>Nuova Prenotazione</h2>
+
+                        <form onSubmit={handleCreateReservation}>
+                            <div className={styles.formGroup}>
+                                <label className={styles.formLabel}>Nome Cliente</label>
+                                <input
+                                    type="text"
+                                    required
+                                    className={styles.modalInput}
+                                    value={newRes.name}
+                                    onChange={e => setNewRes({ ...newRes, name: e.target.value })}
+                                />
+                            </div>
+
+                            <div className={styles.formGrid}>
+                                <div className={styles.formGroup}>
+                                    <label className={styles.formLabel}>Data</label>
+                                    <input
+                                        type="date"
+                                        required
+                                        className={styles.modalInput}
+                                        value={newRes.date}
+                                        onChange={e => setNewRes({ ...newRes, date: e.target.value })}
+                                    />
+                                </div>
+                                <div className={styles.formGroup}>
+                                    <label className={styles.formLabel}>Ora</label>
+                                    <input
+                                        type="time"
+                                        required
+                                        className={styles.modalInput}
+                                        value={newRes.time}
+                                        onChange={e => setNewRes({ ...newRes, time: e.target.value })}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className={styles.formGrid}>
+                                <div className={styles.formGroup}>
+                                    <label className={styles.formLabel}>Persone</label>
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        required
+                                        className={styles.modalInput}
+                                        value={newRes.guests}
+                                        onChange={e => setNewRes({ ...newRes, guests: parseInt(e.target.value) })}
+                                    />
+                                </div>
+                                <div className={styles.formGroup}>
+                                    <label className={styles.formLabel}>Telefono</label>
+                                    <input
+                                        type="tel"
+                                        required
+                                        className={styles.modalInput}
+                                        value={newRes.phone}
+                                        onChange={e => setNewRes({ ...newRes, phone: e.target.value })}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className={styles.formGroup}>
+                                <label className={styles.formLabel}>Note</label>
+                                <textarea
+                                    className={`${styles.modalInput} ${styles.modalTextarea}`}
+                                    value={newRes.notes}
+                                    onChange={e => setNewRes({ ...newRes, notes: e.target.value })}
+                                />
+                            </div>
+
+                            <div className={styles.modalActions}>
+                                <button
+                                    type="button"
+                                    onClick={() => setIsModalOpen(false)}
+                                    className={styles.btnCancel}
+                                >
+                                    Annulla
+                                </button>
+                                <button
+                                    type="submit"
+                                    className={styles.btnPrimary}
+                                    style={{ backgroundColor: '#10b981', border: 'none' }}
+                                >
+                                    Crea Prenotazione
                                 </button>
                             </div>
                         </form>
