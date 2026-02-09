@@ -1,0 +1,13 @@
+{
+	"appId": "com.gardigital.menu",
+	"appName": "Gardigital Menu",
+	"webDir": "public",
+	"server": {
+		"url": "https://www.gardigital.it/login",
+		"cleartext": true,
+		"allowNavigation": [
+			"www.gardigital.it",
+			"gardigital.it"
+		]
+	}
+}

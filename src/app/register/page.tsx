@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Footer from '@/components/layout/Footer';
 import styles from '../login/login.module.css'; // Reuse login styles

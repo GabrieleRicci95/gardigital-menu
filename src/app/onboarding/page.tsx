@@ -8,6 +8,15 @@ export default function OnboardingPage() {
     const router = useRouter();
 
     useEffect(() => {
+        // Track Google Ads Conversion for Registration
+        if (typeof window !== 'undefined' && (window as any).gtag) {
+            (window as any).gtag('event', 'conversion', {
+                'send_to': 'AW-17928402861/Z5sFCKSDx_QBEO3v9uQC',
+                'value': 1.0,
+                'currency': 'EUR'
+            });
+        }
+
         // Check if already active
         const checkStatus = async () => {
             try {

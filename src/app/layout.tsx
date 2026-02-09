@@ -15,8 +15,8 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Gardigital Menu | Il Menu Digitale QR Premium per il tuo Ristorante",
-  description: "L'unica piattaforma professionale che unisce Menu Digitale QR, Agenda Elettronica e Sito Web per Ristoranti. Gestisci piatti, allergeni e prenotazioni in un unico sistema elegante e veloce.",
+  title: "Gardigital Menu | Il Menu Digitale Premium per Ristoranti",
+  description: "Crea Menu Personalizzati e QR Code per il tuo locale. Include Agenda Digitale con sistema di prenotazioni dirette. La soluzione completa per la gestione ristoranti.",
   keywords: [
     "menu digitale",
     "qr code menu",
@@ -77,16 +77,15 @@ export default function RootLayout({
 }>) {
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
+    "@type": "Service",
     "name": "Gardigital Menu",
-    "description": "Piattaforma premium per la creazione di Menu Digitali QR, Agenda Elettronica e Siti Web per il settore HoReCa.",
-    "applicationCategory": "BusinessApplication",
-    "operatingSystem": "Web",
-    "offers": {
-      "@type": "Offer",
-      "price": "15.00",
-      "priceCurrency": "EUR"
+    "serviceType": "Soluzioni Digitali Per Ristoranti",
+    "description": "Crea Menu Personalizzati e QR Code per il tuo locale. Include Agenda Digitale con sistema di prenotazioni dirette. La soluzione completa per la gestione ristoranti.",
+    "provider": {
+      "@type": "Organization",
+      "name": "Gardigital"
     },
+    "featureList": "Menu Personalizzati, QR Code, Agenda Digitale, Prenotazioni Dirette su Agenda",
     "aggregateRating": {
       "@type": "AggregateRating",
       "ratingValue": "4.8",

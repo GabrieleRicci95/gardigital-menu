@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 async function getStats() {
-    const excludedEmails = ['gabrielericci234@gmail.com', 'demo@gardigital.it', 'gabriele123@gmail.com'];
+    const excludedEmails = ['gardigital16@gmail.com', 'demo@gardigital.it', 'gabriele123@gmail.com'];
 
     const totalRestaurants = await prisma.restaurant.count({
         where: { owner: { email: { notIn: excludedEmails } } }
