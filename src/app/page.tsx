@@ -127,7 +127,10 @@ export default function Home() {
             <div className={`${styles.pricingCard} ${styles.premiumCard}`}>
               <div className={styles.badge}>CONSIGLIATO</div>
               <h3 className={styles.planName}>Premium</h3>
-              <div className={styles.price}>€29,<small style={{ fontSize: '0.6em' }}>99</small><span className={styles.period}>/mese</span></div>
+              <div className={styles.price}>
+                <span style={{ textDecoration: 'line-through', fontSize: '0.6em', color: '#999', marginRight: '8px' }}>€29,99</span>
+                €14,<small style={{ fontSize: '0.6em' }}>99</small><span className={styles.period}>/mese</span>
+              </div>
               <ul className={styles.planFeatures}>
                 <li>Tutto incluso nel Base</li>
                 <li>Piatti Illimitati</li>
@@ -143,7 +146,10 @@ export default function Home() {
             <div className={`${styles.pricingCard} ${styles.agencyCard}`}>
               <div className={styles.badge} style={{ backgroundColor: '#e2b13c', color: '#000' }}>BEST VALUE</div>
               <h3 className={styles.planName}>Full</h3>
-              <div className={styles.price}>€69,<small style={{ fontSize: '0.6em' }}>99</small><span className={styles.period}>/mese</span></div>
+              <div className={styles.price}>
+                <span style={{ textDecoration: 'line-through', fontSize: '0.6em', color: '#999', marginRight: '8px' }}>€69,99</span>
+                €49,<small style={{ fontSize: '0.6em' }}>99</small><span className={styles.period}>/mese</span>
+              </div>
               <ul className={styles.planFeatures}>
                 <li>Menu Digitale Premium Incluso</li>
                 <li>Personalizzazione del tuo Menu</li>

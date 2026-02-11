@@ -114,7 +114,10 @@ export default function SubscriptionPage() {
                     }}>CONSIGLIATO</div>
 
                     <h3 style={{ color: '#1a237e', fontSize: '1.2rem' }}>Premium</h3>
-                    <div style={{ fontSize: '2.5rem', fontWeight: 'bold', margin: '1rem 0', color: '#1a237e' }}>€29<span style={{ fontSize: '1rem', fontWeight: 'normal', color: '#666' }}>/mese</span></div>
+                    <div style={{ fontSize: '2.5rem', fontWeight: 'bold', margin: '1rem 0', color: '#1a237e' }}>
+                        <span style={{ textDecoration: 'line-through', fontSize: '0.5em', color: '#999', marginRight: '10px' }}>€29,99</span>
+                        €14,99<span style={{ fontSize: '1rem', fontWeight: 'normal', color: '#666' }}>/mese</span>
+                    </div>
                     <ul style={{ listStyle: 'none', padding: 0, margin: '2rem 0', lineHeight: '2' }}>
                         <li>✅ <strong>Tutto incluso nel Base</strong></li>
                         <li>✅ <strong>Piatti Illimitati</strong></li>
