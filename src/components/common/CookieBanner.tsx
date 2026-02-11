@@ -23,18 +23,21 @@ export default function CookieBanner() {
     if (!isVisible) return null;
 
     return (
-        <div className={styles.banner}>
-            <div className={styles.content}>
-                <p>
-                    Utilizziamo i cookie per migliorare la tua esperienza. Continuando a navigare accetti la nostra{' '}
-                    <Link href="/cookies" className={styles.link}>Cookie Policy</Link>.
-                </p>
-                <div className={styles.actions}>
-                    <button onClick={handleAccept} className={styles.button}>
-                        Accetto
-                    </button>
+        <>
+            <div className={styles.overlay} />
+            <div className={styles.banner}>
+                <div className={styles.content}>
+                    <p>
+                        Utilizziamo i cookie per migliorare la tua esperienza. Continuando a navigare accetti la nostra{' '}
+                        <Link href="/cookies" className={styles.link}>Cookie Policy</Link>.
+                    </p>
+                    <div className={styles.actions}>
+                        <button onClick={handleAccept} className={styles.button}>
+                            Accetto
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
