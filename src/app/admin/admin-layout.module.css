@@ -2,6 +2,8 @@
     display: flex;
     min-height: 100vh;
     background-color: var(--color-background);
+    overflow-x: hidden;
+    overscroll-behavior-x: none;
 }
 
 .sidebar {
@@ -76,6 +78,8 @@
 
 .main {
     flex: 1;
+    min-width: 0;
+    overflow-x: hidden;
     margin-left: 250px;
     display: flex;
     flex-direction: column;
