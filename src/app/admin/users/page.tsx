@@ -111,62 +111,59 @@ export default function AdminUsersPage() {
                 </button>
             </header>
 
-            <div className={styles.card} style={{ marginTop: '20px', padding: 0, overflow: 'hidden' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-                    <thead>
-                        <tr style={{ background: '#f8f9fa', borderBottom: '1px solid #eee' }}>
-                            <th style={{ padding: '15px' }}>Nome</th>
-                            <th style={{ padding: '15px' }}>Email</th>
-                            <th style={{ padding: '15px' }}>Ruolo</th>
-                            <th style={{ padding: '15px' }}>Ristoranti</th>
-                            <th style={{ padding: '15px' }}>Data Creazione</th>
-                            <th style={{ padding: '15px' }}>Azioni</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {users.map(user => (
-                            <tr key={user.id} style={{ borderBottom: '1px solid #eee' }}>
-                                <td style={{ padding: '15px' }}>{user.name}</td>
-                                <td style={{ padding: '15px' }}>{user.email}</td>
-                                <td style={{ padding: '15px' }}>
-                                    <span style={{
-                                        padding: '4px 8px',
-                                        borderRadius: '4px',
-                                        fontSize: '0.8rem',
-                                        background: user.role === 'ADMIN' ? '#e8f5e9' : '#e3f2fd',
-                                        color: user.role === 'ADMIN' ? '#2e7d32' : '#1565c0'
-                                    }}>
-                                        {user.role}
-                                    </span>
-                                </td>
-                                <td style={{ padding: '15px' }}>
-                                    {user.restaurants.map(r => r.name).join(', ') || '-'}
-                                </td>
-                                <td style={{ padding: '15px' }}>
-                                    {new Date(user.createdAt).toLocaleDateString('it-IT')}
-                                </td>
-                                <td style={{ padding: '15px' }}>
-                                    {user.role !== 'ADMIN' && (
-                                        <button
-                                            onClick={() => handleDeleteUser(user.id)}
-                                            style={{
-                                                background: '#ef4444',
-                                                color: 'white',
-                                                border: 'none',
-                                                padding: '6px 12px',
-                                                borderRadius: '6px',
-                                                cursor: 'pointer',
-                                                fontSize: '0.8rem'
-                                            }}
-                                        >
-                                            Elimina
-                                        </button>
-                                    )}
-                                </td>
+            <div className={styles.tableCard}>
+                <div className={styles.tableContainer}>
+                    <table className={styles.table}>
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Ruolo</th>
+                                <th>Ristoranti</th>
+                                <th>Data Creazione</th>
+                                <th>Azioni</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {users.map(user => (
+                                <tr key={user.id}>
+                                    <td style={{ fontWeight: '600' }}>{user.name}</td>
+                                    <td>{user.email}</td>
+                                    <td>
+                                        <span style={{
+                                            padding: '4px 8px',
+                                            borderRadius: '4px',
+                                            fontSize: '0.8rem',
+                                            fontWeight: 'bold',
+                                            background: user.role === 'ADMIN' ? '#e8f5e9' : '#e3f2fd',
+                                            color: user.role === 'ADMIN' ? '#2e7d32' : '#1565c0',
+                                            border: user.role === 'ADMIN' ? '1px solid #c8e6c9' : '1px solid #bbdefb'
+                                        }}>
+                                            {user.role}
+                                        </span>
+                                    </td>
+                                    <td style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem' }}>
+                                        {user.restaurants.map(r => r.name).join(', ') || '-'}
+                                    </td>
+                                    <td style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem' }}>
+                                        {new Date(user.createdAt).toLocaleDateString('it-IT')}
+                                    </td>
+                                    <td>
+                                        {user.role !== 'ADMIN' && (
+                                            <button
+                                                onClick={() => handleDeleteUser(user.id)}
+                                                className={`${styles.btnAction} ${styles.btnRed}`}
+                                                style={{ backgroundColor: '#ef4444', color: 'white', border: 'none', fontSize: '0.75rem', padding: '4px 8px' }}
+                                            >
+                                                Elimina
+                                            </button>
+                                        )}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             {showCreateModal && (

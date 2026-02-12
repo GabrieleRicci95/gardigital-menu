@@ -140,4 +140,12 @@
     .mobileToggle {
         display: block;
     }
+
+    .content {
+        padding: 1rem;
+    }
+
+    .header {
+        padding: 0 var(--spacing-md);
+    }
 }
