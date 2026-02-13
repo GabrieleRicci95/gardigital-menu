@@ -40,7 +40,7 @@ function ContactForm() {
                 <h2>Grazie per averci contattato! 📩</h2>
                 <p>Abbiamo ricevuto la tua richiesta per il piano <strong>{plan}</strong>.</p>
                 <p>Ti risponderemo il prima possibile.</p>
-                <a href="/" className="btn btn-primary" style={{ marginTop: '20px', display: 'inline-block' }}>Torna alla Home</a>
+                <a href="/" className={styles.premiumBtn} style={{ marginTop: '20px', display: 'inline-block', textDecoration: 'none' }}>Torna alla Home</a>
             </div>
         );
     }
@@ -69,8 +69,8 @@ function ContactForm() {
                 <textarea name="message" rows={4} defaultValue={`Sono interessato al Piano ${plan}. Vorrei maggiori informazioni.`}></textarea>
             </div>
 
-            <button type="submit" disabled={status === 'loading'} className="btn btn-primary" style={{ width: '100%' }}>
-                {status === 'loading' ? 'Invio in corso...' : 'Invia Richiesta 🚀'}
+            <button type="submit" disabled={status === 'loading'} className={styles.premiumBtn}>
+                {status === 'loading' ? 'Invio in corso...' : 'Invia Richiesta'}
             </button>
 
             {status === 'error' && <p className={styles.error}>Errore nell'invio. Riprova più tardi.</p>}
@@ -82,9 +82,23 @@ export default function ContactPage() {
     return (
         <div className={styles.container}>
             <div className={styles.card}>
-                <h1 className="h2" style={{ textAlign: 'center', marginBottom: '1rem' }}>Contattaci</h1>
-                <p style={{ textAlign: 'center', color: '#666', marginBottom: '2rem' }}>
-                    Compila il modulo per richiedere l'attivazione o informazioni.
+                <h1 className="h2" style={{
+                    textAlign: 'center',
+                    marginBottom: '1rem',
+                    fontFamily: 'var(--font-family-serif)',
+                    fontSize: '2.5rem',
+                    color: '#0d1b2a'
+                }}>
+                    Contattaci
+                </h1>
+                <p style={{
+                    textAlign: 'center',
+                    color: '#666',
+                    marginBottom: '2.5rem',
+                    lineHeight: '1.6'
+                }}>
+                    Compila il modulo per richiedere informazioni o attivare il piano.
+                    <br />Ti risponderemo in giornata.
                 </p>
                 <Suspense fallback={<div>Caricamento...</div>}>
                     <ContactForm />
