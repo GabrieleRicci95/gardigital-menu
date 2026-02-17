@@ -374,7 +374,12 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
             />
 
             {/* Hero Section */}
-            <header className={styles.hero}>
+            <header
+                className={styles.hero}
+                style={restaurant.coverImageUrl ? {
+                    backgroundImage: `linear-gradient(rgba(0, 0, 50, 0.6), rgba(0, 0, 30, 0.8)), url('${restaurant.coverImageUrl}')`
+                } : undefined}
+            >
                 {/* Removed dynamic background overlay */}
 
                 <div className={styles.heroContent} style={{ position: 'relative', zIndex: 1 }}>
