@@ -21,6 +21,7 @@ export default function DashboardClientLayout({
     const [isWineActive, setIsWineActive] = useState(false);
     const [isChampagneActive, setIsChampagneActive] = useState(false);
     const [isDrinkActive, setIsDrinkActive] = useState(false);
+    const [hasReservations, setHasReservations] = useState(false);
     const [restaurantLogo, setRestaurantLogo] = useState<string | null>(null);
     const [customModules, setCustomModules] = useState<{ name: string, slug: string }[]>([]);
 
@@ -41,6 +42,7 @@ export default function DashboardClientLayout({
                         setCustomModules(data.restaurant.customLists || []);
                         if (data.restaurant.subscription) {
                             setSubscriptionPlan(data.restaurant.subscription.plan);
+                            setHasReservations(!!data.restaurant.subscription.hasReservations);
                         } else {
                             router.push('/onboarding');
                         }
@@ -65,7 +67,7 @@ export default function DashboardClientLayout({
 
     const navItems = [
         { label: 'Panoramica', href: '/dashboard', icon: 'Items' },
-        { label: 'Agenda', href: '/dashboard/reservations', icon: 'Calendar', requiresFull: true },
+        { label: 'Agenda', href: '/dashboard/reservations', icon: 'Calendar', isReservation: true },
         { label: 'Il mio Ristorante', href: '/dashboard/restaurant', icon: 'Store' },
         { label: 'Menu', href: '/dashboard/menu', icon: 'Menu' },
         { label: 'Menu Fissi', href: '/dashboard/fixed-menus', icon: 'Star' },
@@ -92,7 +94,7 @@ export default function DashboardClientLayout({
             }))
     ]
         .filter((item: any) => {
-            if (item.requiresFull && subscriptionPlan !== 'FULL') return false;
+            if (item.isReservation && !hasReservations) return false;
 
             const isDemo = restaurantSlug?.toLowerCase() === 'demo' ||
                 ownerEmail?.toLowerCase() === 'demo@gardigital.it' ||

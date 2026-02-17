@@ -57,38 +57,40 @@ export default function DashboardPage() {
             </header>
 
             {/* Stats Row */}
-            <div className={styles.statsRow}>
-                <div className={styles.statCard}>
-                    <div className={`${styles.statIcon} ${styles.statToday}`}>📅</div>
-                    <div className={styles.statInfo}>
-                        <div className={styles.statValue}>{stats?.todayCount || 0}</div>
-                        <div className={styles.statLabel}>Prenotazioni Oggi</div>
-                    </div>
-                </div>
-                <div className={styles.statCard}>
-                    <div className={`${styles.statIcon} ${styles.statToday}`}>👥</div>
-                    <div className={styles.statInfo}>
-                        <div className={styles.statValue}>{stats?.todayGuests || 0}</div>
-                        <div className={styles.statLabel}>Coperti Oggi</div>
-                    </div>
-                </div>
-                <Link href="/dashboard/reservations" style={{ textDecoration: 'none' }}>
-                    <div className={`${styles.statCard} ${stats?.pendingCount > 0 ? styles.statAlert : ''}`}>
-                        <div className={`${styles.statIcon} ${styles.statPending}`}>⏳</div>
+            {subscription?.hasReservations && (
+                <div className={styles.statsRow}>
+                    <div className={styles.statCard}>
+                        <div className={`${styles.statIcon} ${styles.statToday}`}>📅</div>
                         <div className={styles.statInfo}>
-                            <div className={styles.statValue}>{stats?.pendingCount || 0}</div>
-                            <div className={styles.statLabel}>Da Confermare</div>
+                            <div className={styles.statValue}>{stats?.todayCount || 0}</div>
+                            <div className={styles.statLabel}>Prenotazioni Oggi</div>
                         </div>
                     </div>
-                </Link>
-                <div className={styles.statCard}>
-                    <div className={`${styles.statIcon} ${styles.statMonth}`}>📈</div>
-                    <div className={styles.statInfo}>
-                        <div className={styles.statValue}>{stats?.monthCount || 0}</div>
-                        <div className={styles.statLabel}>Prenotazioni Mese</div>
+                    <div className={styles.statCard}>
+                        <div className={`${styles.statIcon} ${styles.statToday}`}>👥</div>
+                        <div className={styles.statInfo}>
+                            <div className={styles.statValue}>{stats?.todayGuests || 0}</div>
+                            <div className={styles.statLabel}>Coperti Oggi</div>
+                        </div>
+                    </div>
+                    <Link href="/dashboard/reservations" style={{ textDecoration: 'none' }}>
+                        <div className={`${styles.statCard} ${stats?.pendingCount > 0 ? styles.statAlert : ''}`}>
+                            <div className={`${styles.statIcon} ${styles.statPending}`}>⏳</div>
+                            <div className={styles.statInfo}>
+                                <div className={styles.statValue}>{stats?.pendingCount || 0}</div>
+                                <div className={styles.statLabel}>Da Confermare</div>
+                            </div>
+                        </div>
+                    </Link>
+                    <div className={styles.statCard}>
+                        <div className={`${styles.statIcon} ${styles.statMonth}`}>📈</div>
+                        <div className={styles.statInfo}>
+                            <div className={styles.statValue}>{stats?.monthCount || 0}</div>
+                            <div className={styles.statLabel}>Prenotazioni Mese</div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            )}
 
             <div className={styles.grid}>
                 {/* Status Card */}
