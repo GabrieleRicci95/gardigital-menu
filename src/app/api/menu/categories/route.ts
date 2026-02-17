@@ -44,14 +44,14 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Nome e Menu ID richiesti' }, { status: 400 });
         }
 
-        // Find the current minimum sortOrder
-        const minSortOrderCategory = await prisma.category.findFirst({
+        // Find the current maximum sortOrder
+        const maxSortOrderCategory = await prisma.category.findFirst({
             where: { menuId },
-            orderBy: { sortOrder: 'asc' },
+            orderBy: { sortOrder: 'desc' },
             select: { sortOrder: true }
         });
 
-        const newSortOrder = (minSortOrderCategory?.sortOrder ?? 0) - 1;
+        const newSortOrder = (maxSortOrderCategory?.sortOrder ?? 0) + 1;
 
         const category = await prisma.category.create({
             data: {
