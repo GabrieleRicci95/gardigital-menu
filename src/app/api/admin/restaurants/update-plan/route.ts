@@ -12,7 +12,7 @@ export async function POST(req: Request) {
     if (isDemoSession(session)) return NextResponse.json({ error: 'Modalità Demo: modifiche non consentite' }, { status: 403 });
 
     try {
-        const { restaurantId, newPlan, durationMonths } = await req.json();
+        const { restaurantId, newPlan, durationMonths, hasTranslations, hasReservations } = await req.json();
 
         if (newPlan === 'BLOCKED') {
             try {
@@ -41,6 +41,20 @@ export async function POST(req: Request) {
                 console.error("Delete error:", error);
                 return NextResponse.json({ error: 'Delete failed' }, { status: 500 });
             }
+        }
+
+        // If only toggling features without changing the plan
+        if (restaurantId && newPlan === undefined && (hasTranslations !== undefined || hasReservations !== undefined)) {
+            const updateData: any = {};
+            if (hasTranslations !== undefined) updateData.hasTranslations = hasTranslations;
+            if (hasReservations !== undefined) updateData.hasReservations = hasReservations;
+
+            const subscription = await prisma.subscription.update({
+                where: { restaurantId },
+                data: updateData
+            });
+
+            return NextResponse.json({ success: true, subscription });
         }
 
         if (!restaurantId || !['FREE', 'PREMIUM', 'WEBSITE', 'FULL'].includes(newPlan)) {

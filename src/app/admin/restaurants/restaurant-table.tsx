@@ -54,6 +54,42 @@ export default function RestaurantTable({ initialRestaurants }: { initialRestaur
         }
     };
 
+    const handleToggleFeature = async (restaurantId: string, feature: 'hasTranslations' | 'hasReservations', currentValue: boolean) => {
+        setUpdating(restaurantId + feature);
+
+        try {
+            const res = await fetch('/api/admin/restaurants/update-plan', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    restaurantId,
+                    [feature]: !currentValue
+                }),
+            });
+
+            if (res.ok) {
+                setRestaurants(prev => prev.map(r => {
+                    if (r.id === restaurantId && r.subscription) {
+                        return {
+                            ...r,
+                            subscription: {
+                                ...r.subscription,
+                                [feature]: !currentValue
+                            }
+                        };
+                    }
+                    return r;
+                }));
+            } else {
+                alert('Errore aggiornamento funzione');
+            }
+        } catch (e) {
+            alert('Errore di connessione');
+        } finally {
+            setUpdating(null);
+        }
+    };
+
     return (
         <div className="card" style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '600px' }}>
@@ -98,23 +134,26 @@ export default function RestaurantTable({ initialRestaurants }: { initialRestaur
                                             In attesa / Scaduto
                                         </span>
                                     ) : (
-                                        <span style={{
-                                            padding: '4px 8px',
-                                            borderRadius: '4px',
-                                            fontSize: '0.8rem',
-                                            fontWeight: 'bold',
-                                            backgroundColor: '#e8f5e9',
-                                            color: '#2e7d32',
-                                            border: '1px solid #c8e6c9'
-                                        }}>
-                                            Standard (€15)
-                                        </span>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                                            <span style={{
+                                                padding: '4px 8px',
+                                                borderRadius: '4px',
+                                                fontSize: '0.8rem',
+                                                fontWeight: 'bold',
+                                                backgroundColor: '#e8f5e9',
+                                                color: '#2e7d32',
+                                                border: '1px solid #c8e6c9'
+                                            }}>
+                                                Standard (€15)
+                                            </span>
+                                            {rest.subscription?.hasTranslations && <span title="Traduzioni Attive">🌍</span>}
+                                            {rest.subscription?.hasReservations && <span title="Prenotazioni Attive">📅</span>}
+                                        </div>
                                     )}
-                                    {rest.subscription?.hasTranslations && <span style={{ marginLeft: '5px', fontSize: '0.8rem' }}>🌍</span>}
-                                    {rest.subscription?.hasReservations && <span style={{ marginLeft: '5px', fontSize: '0.8rem' }}>📅</span>}
                                 </td>
                                 <td style={{ padding: '1rem' }}>
                                     <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
+                                        {/* Plan Buttons */}
                                         <button
                                             onClick={() => handleUpdatePlan(rest.id, 'PREMIUM')}
                                             disabled={updating === rest.id}
@@ -126,14 +165,14 @@ export default function RestaurantTable({ initialRestaurants }: { initialRestaur
                                                 fontSize: '0.75rem',
                                                 padding: '4px 8px',
                                                 cursor: 'pointer',
-                                                opacity: rest.subscription?.status === 'ACTIVE' ? 0.5 : 1
+                                                opacity: rest.subscription?.status === 'ACTIVE' && !rest.subscription.hasTranslations && !rest.subscription.hasReservations ? 0.5 : 1
                                             }}
                                             title="Attiva solo Piano Base (€15)"
                                         >
                                             Base
                                         </button>
                                         <button
-                                            onClick={() => handleUpdatePlan(rest.id, 'FULL')} // Need to handle features in backend
+                                            onClick={() => handleUpdatePlan(rest.id, 'FULL')}
                                             disabled={updating === rest.id}
                                             className="btn btn-sm"
                                             style={{
@@ -142,12 +181,53 @@ export default function RestaurantTable({ initialRestaurants }: { initialRestaur
                                                 border: 'none',
                                                 fontSize: '0.75rem',
                                                 padding: '4px 8px',
+                                                cursor: 'pointer',
+                                                opacity: rest.subscription?.hasTranslations && rest.subscription?.hasReservations ? 0.5 : 1
+                                            }}
+                                            title="Attiva Tutto (€25)"
+                                        >
+                                            Full
+                                        </button>
+
+                                        {/* Feature Toggles - Fixed separator */}
+                                        <div style={{ width: '1px', height: '20px', backgroundColor: '#ddd', margin: '0 5px' }} />
+
+                                        <button
+                                            onClick={() => handleToggleFeature(rest.id, 'hasTranslations', !!rest.subscription?.hasTranslations)}
+                                            disabled={updating === (rest.id + 'hasTranslations') || !rest.subscription}
+                                            className="btn btn-sm"
+                                            style={{
+                                                backgroundColor: rest.subscription?.hasTranslations ? '#1976d2' : '#f5f5f5',
+                                                color: rest.subscription?.hasTranslations ? 'white' : '#666',
+                                                border: '1px solid #ddd',
+                                                fontSize: '0.75rem',
+                                                padding: '4px 8px',
                                                 cursor: 'pointer'
                                             }}
-                                            title="Attiva Tutto (Base + Trad + Prenotazioni) - €25"
+                                            title="Toggles Traduzioni (+€10)"
                                         >
-                                            Full (€25)
+                                            🌍 Trad
                                         </button>
+
+                                        <button
+                                            onClick={() => handleToggleFeature(rest.id, 'hasReservations', !!rest.subscription?.hasReservations)}
+                                            disabled={updating === (rest.id + 'hasReservations') || !rest.subscription}
+                                            className="btn btn-sm"
+                                            style={{
+                                                backgroundColor: rest.subscription?.hasReservations ? '#7b1fa2' : '#f5f5f5',
+                                                color: rest.subscription?.hasReservations ? 'white' : '#666',
+                                                border: '1px solid #ddd',
+                                                fontSize: '0.75rem',
+                                                padding: '4px 8px',
+                                                cursor: 'pointer'
+                                            }}
+                                            title="Toggles Prenotazioni (+€10)"
+                                        >
+                                            📅 Pren
+                                        </button>
+
+                                        <div style={{ width: '1px', height: '20px', backgroundColor: '#ddd', margin: '0 5px' }} />
+
                                         <button
                                             onClick={() => handleUpdatePlan(rest.id, 'BLOCKED')}
                                             disabled={updating === rest.id}
