@@ -388,7 +388,9 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
                     ) : restaurant.logoUrl ? (
                         <img src={restaurant.logoUrl} alt={restaurant.name} className={styles.logo} />
                     ) : null}
-                    <h1 className={styles.restaurantName}>{restaurant.name}</h1>
+                    {restaurant.slug !== 'mastro-arrosticino-884' && (
+                        <h1 className={styles.restaurantName}>{restaurant.name}</h1>
+                    )}
                     {restaurant.description && (
                         <p className={styles.restaurantDesc}>
                             {getRestaurantDesc()}
