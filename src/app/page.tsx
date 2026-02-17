@@ -107,9 +107,9 @@ export default function Home() {
         <section className={styles.marketingSection}>
           <div className={styles.marketingContent}>
             <div className={styles.marketingTextContent}>
-              <h2 className={styles.marketingTitle}>Non solo Software: <br /><span className={styles.highlight}>Strategia e Crescita</span></h2>
+              <h2 className={styles.marketingTitle}>Oltre il Software: <br /><span className={styles.highlight}>Siti Web & Crescita</span></h2>
               <p className={styles.marketingDesc}>
-                Il menu digitale è solo l'inizio. Sappiamo che per un ristorante il successo passa anche da come ci si presenta al mondo.
+                Il menu digitale è solo l'inizio. Realizziamo **Siti Web su misura** per il tuo brand e sappiamo che per un ristorante il successo passa anche da come ci si presenta al mondo.
                 <br /><br />
                 Per questo, <strong>collaboriamo con professionisti del marketing</strong> per offrirti non solo strumenti tecnologici, ma una vera strategia di crescita. Social Media, Google Ads, e Brand Identity: ti aiutiamo a riempire i tavoli, non solo a gestirli.
               </p>
@@ -184,7 +184,7 @@ export default function Home() {
               <ul className={styles.planFeatures}>
                 <li>Menu Digitale Incluso</li>
                 <li>Modulo Traduzioni Incluso</li>
-                <li>Modulo Prenotazioni Incluso</li>
+                <li>Modulo Agenda Digitale Incluso</li>
                 <li>Tutte le Liste Speciali</li>
                 <li>Supporto Prioritario WhatsApp</li>
                 <li>Risparmio Imbattibile</li>
