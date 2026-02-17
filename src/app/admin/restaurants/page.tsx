@@ -44,6 +44,40 @@ export default function AdminRestaurantsPage() {
         }
     };
 
+    const handleToggleFeature = async (restaurantId: string, feature: 'hasTranslations' | 'hasReservations', currentValue: boolean) => {
+        // Optimistic update
+        setRestaurants(prev => prev.map(r => {
+            if (r.id === restaurantId && r.subscription) {
+                return {
+                    ...r,
+                    subscription: {
+                        ...r.subscription,
+                        [feature]: !currentValue
+                    }
+                };
+            }
+            return r;
+        }));
+
+        try {
+            const res = await fetch('/api/admin/restaurants/update-plan', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    restaurantId,
+                    [feature]: !currentValue
+                }),
+            });
+
+            if (!res.ok) {
+                alert('Errore aggiornamento funzione');
+                fetchRestaurants();
+            }
+        } catch (e) {
+            alert('Errore di connessione');
+        }
+    };
+
     const handlePlanChange = async (restaurantId: string, newPlan: string, durationMonths: number = 0) => {
         // Optimistic update
         setRestaurants(prev => {
@@ -52,14 +86,17 @@ export default function AdminRestaurantsPage() {
             }
             return prev.map(r => {
                 if (r.id === restaurantId) {
+                    const isFull = newPlan === 'FULL';
                     return {
                         ...r,
                         subscription: newPlan === 'BLOCKED' ? null : {
                             ...r.subscription,
                             plan: newPlan,
                             status: 'ACTIVE',
+                            hasTranslations: isFull,
+                            hasReservations: isFull,
                             endDate: durationMonths > 0 ? new Date(Date.now() + durationMonths * 30 * 24 * 60 * 60 * 1000).toISOString() : null
-                        }
+                        } as any
                     };
                 }
                 return r;
@@ -117,7 +154,6 @@ export default function AdminRestaurantsPage() {
                         </thead>
                         <tbody>
                             {filteredRestaurants.map(r => {
-                                const isPremium = r.subscription?.plan === 'PREMIUM';
                                 return (
                                     <tr key={r.id}>
                                         <td style={{ fontWeight: '600' }}>{r.name}</td>
@@ -139,36 +175,104 @@ export default function AdminRestaurantsPage() {
                                                     In attesa / Scaduto
                                                 </span>
                                             ) : (
-                                                <span style={{
-                                                    padding: '4px 8px',
-                                                    borderRadius: '4px',
-                                                    fontSize: '0.8rem',
-                                                    fontWeight: 'bold',
-                                                    backgroundColor: '#e8f5e9',
-                                                    color: '#2e7d32',
-                                                    border: '1px solid #c8e6c9'
-                                                }}>
-                                                    Standard (€15)
-                                                </span>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                                                    <span style={{
+                                                        padding: '4px 8px',
+                                                        borderRadius: '4px',
+                                                        fontSize: '0.8rem',
+                                                        fontWeight: 'bold',
+                                                        backgroundColor: '#e8f5e9',
+                                                        color: '#2e7d32',
+                                                        border: '1px solid #c8e6c9'
+                                                    }}>
+                                                        Standard (€15)
+                                                    </span>
+                                                    {r.subscription?.hasTranslations && <span title="Traduzioni Attive">🌍</span>}
+                                                    {r.subscription?.hasReservations && <span title="Prenotazioni Attive">📅</span>}
+                                                </div>
                                             )}
                                         </td>
                                         <td style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem' }}>
                                             {new Date(r.createdAt).toLocaleDateString('it-IT')}
                                         </td>
                                         <td>
-                                            <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
+                                            <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap', alignItems: 'center' }}>
+                                                {/* Plan Toggles */}
                                                 <button
                                                     onClick={() => handlePlanChange(r.id, 'PREMIUM', 0)}
-                                                    className={`${styles.btnAction} ${styles.btnGreen}`}
-                                                    style={{ backgroundColor: '#2e7d32', color: 'white', border: 'none', fontSize: '0.75rem', padding: '4px 8px' }}
+                                                    className={`${styles.btnAction}`}
+                                                    style={{
+                                                        backgroundColor: '#2e7d32',
+                                                        color: 'white',
+                                                        border: 'none',
+                                                        fontSize: '0.75rem',
+                                                        padding: '4px 8px',
+                                                        opacity: (r.subscription?.status === 'ACTIVE' && !r.subscription.hasTranslations && !r.subscription.hasReservations) ? 0.5 : 1
+                                                    }}
+                                                    title="Attiva solo Piano Base (€15)"
                                                 >
-                                                    Attiva
+                                                    Base
                                                 </button>
+                                                <button
+                                                    onClick={() => handlePlanChange(r.id, 'FULL', 0)}
+                                                    className={`${styles.btnAction}`}
+                                                    style={{
+                                                        backgroundColor: '#fbc02d',
+                                                        color: 'black',
+                                                        border: 'none',
+                                                        fontSize: '0.75rem',
+                                                        padding: '4px 8px',
+                                                        opacity: (r.subscription?.hasTranslations && r.subscription?.hasReservations) ? 0.5 : 1
+                                                    }}
+                                                    title="Attiva Tutto (€25)"
+                                                >
+                                                    Full
+                                                </button>
+
+                                                <div style={{ width: '1px', height: '20px', backgroundColor: '#ddd', margin: '0 5px' }} />
+
+                                                {/* Micro-service Toggles */}
+                                                <button
+                                                    onClick={() => handleToggleFeature(r.id, 'hasTranslations', !!r.subscription?.hasTranslations)}
+                                                    disabled={!r.subscription}
+                                                    className={styles.btnAction}
+                                                    style={{
+                                                        backgroundColor: r.subscription?.hasTranslations ? '#1976d2' : '#f5f5f5',
+                                                        color: r.subscription?.hasTranslations ? 'white' : '#666',
+                                                        border: '1px solid #ddd',
+                                                        fontSize: '0.75rem',
+                                                        padding: '4px 8px',
+                                                        cursor: 'pointer'
+                                                    }}
+                                                    title="Toggle Traduzioni (+€10)"
+                                                >
+                                                    🌍 Trad
+                                                </button>
+
+                                                <button
+                                                    onClick={() => handleToggleFeature(r.id, 'hasReservations', !!r.subscription?.hasReservations)}
+                                                    disabled={!r.subscription}
+                                                    className={styles.btnAction}
+                                                    style={{
+                                                        backgroundColor: r.subscription?.hasReservations ? '#7b1fa2' : '#f5f5f5',
+                                                        color: r.subscription?.hasReservations ? 'white' : '#666',
+                                                        border: '1px solid #ddd',
+                                                        fontSize: '0.75rem',
+                                                        padding: '4px 8px',
+                                                        cursor: 'pointer'
+                                                    }}
+                                                    title="Toggle Prenotazioni (+€10)"
+                                                >
+                                                    📅 Pren
+                                                </button>
+
+                                                <div style={{ width: '1px', height: '20px', backgroundColor: '#ddd', margin: '0 5px' }} />
+
                                                 <button
                                                     onClick={() => handlePlanChange(r.id, 'BLOCKED')}
                                                     className={`${styles.btnAction} ${styles.btnRed}`}
                                                     style={{ backgroundColor: '#e53935', color: 'white', border: 'none', fontSize: '0.75rem', padding: '4px 8px' }}
-                                                    title="Rimuovi abbonamento (torna in attesa)"
+                                                    title="Rimuovi abbonamento"
                                                 >
                                                     Blocca
                                                 </button>
@@ -180,7 +284,7 @@ export default function AdminRestaurantsPage() {
                                                     }}
                                                     className={`${styles.btnAction}`}
                                                     style={{ backgroundColor: '#000', color: 'white', border: 'none', fontSize: '0.75rem', padding: '4px 8px' }}
-                                                    title="Elimina account definitivamente"
+                                                    title="Elimina definitivamente"
                                                 >
                                                     Elimina
                                                 </button>
