@@ -17,6 +17,7 @@ interface MenuPageItem {
     isGlutenFree: boolean;
     isVegetarian: boolean;
     spiciness: number;
+    priceUnit?: string | null;
     allergens: string | null;
     translations?: { language: string; name: string; description: string | null }[];
 }
@@ -516,7 +517,7 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
                                                         <h3 className={styles.itemName} style={{ color: restaurant.textColor }}>{getItemName(item)}</h3>
                                                         {item.price !== null && Number(item.price) > 0 && (
                                                             <span className={styles.itemPrice} style={{ color: restaurant.themeColor }}>
-                                                                € {Number(item.price).toFixed(2)}
+                                                                € {Number(item.price).toFixed(2)} {item.priceUnit ? item.priceUnit : ''}
                                                             </span>
                                                         )}
                                                     </div>

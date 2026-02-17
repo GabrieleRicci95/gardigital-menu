@@ -118,6 +118,7 @@ model MenuItem {
   isGlutenFree Boolean @default(false)
   isVegetarian Boolean @default(false)
   spiciness    Int     @default(0)
+  priceUnit    String? // e.g. "cad", "/hg", etc.
 
   translations MenuItemTranslation[]
 

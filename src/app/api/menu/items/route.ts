@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     if (isDemoSession(session)) return NextResponse.json({ error: 'Modalità Demo: modifiche non consentite' }, { status: 403 });
 
     try {
-        const { name, description, price, categoryId, isVegan, isGlutenFree, isVegetarian, spiciness, translations, allergens } = await request.json();
+        const { name, description, price, categoryId, isVegan, isGlutenFree, isVegetarian, spiciness, priceUnit, allergens } = await request.json();
 
         if (!name || !categoryId) {
             return NextResponse.json({ error: 'Dati incompleti' }, { status: 400 });
@@ -56,6 +56,7 @@ export async function POST(request: Request) {
                 isGlutenFree: isGlutenFree || false,
                 isVegetarian: isVegetarian || false,
                 spiciness: spiciness || 0,
+                priceUnit: priceUnit || null,
                 allergens: allergens || null, // JSON string expected from frontend
             },
         });
@@ -73,7 +74,7 @@ export async function PATCH(request: Request) {
     if (isDemoSession(session)) return NextResponse.json({ error: 'Modalità Demo: modifiche non consentite' }, { status: 403 });
 
     try {
-        const { id, name, description, price, isVegan, isGlutenFree, isVegetarian, spiciness, imageUrl, translations, allergens } = await request.json();
+        const { id, name, description, price, isVegan, isGlutenFree, isVegetarian, spiciness, priceUnit, imageUrl, allergens } = await request.json();
 
         if (!id || !name) {
             return NextResponse.json({ error: 'Dati incompleti' }, { status: 400 });
@@ -87,6 +88,7 @@ export async function PATCH(request: Request) {
             isGlutenFree: isGlutenFree || false,
             isVegetarian: isVegetarian || false,
             spiciness: spiciness || 0,
+            priceUnit: priceUnit || null,
             allergens: allergens || null,
         };
 
