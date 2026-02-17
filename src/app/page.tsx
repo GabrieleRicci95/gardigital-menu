@@ -13,6 +13,7 @@ export default function Home() {
         </div>
         <nav className={styles.nav}>
           <Link href="/chi-siamo" className={styles.navLink}>Chi Siamo</Link>
+          <Link href="#pricing" className={styles.navLink}>I nostri prodotti</Link>
           <Link href="/login" className={styles.navLink}>Accedi</Link>
           <Link href="/contact?plan=Informazioni" className={styles.primaryBtn} style={{ padding: '0.5rem 1.5rem', fontSize: '0.9rem' }}>Richiedi Info</Link>
         </nav>
