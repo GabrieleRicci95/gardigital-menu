@@ -19,32 +19,10 @@ async function getStats() {
         }
     });
 
-    const premiumSubscriptions = await prisma.subscription.count({
-        where: {
-            status: 'ACTIVE',
-            plan: 'PREMIUM',
-            restaurant: { owner: { email: { notIn: excludedEmails } } }
-        }
-    });
+    // Removed breakdown queries as requested (Single Plan)
 
-    const fullSubscriptions = await prisma.subscription.count({
-        where: {
-            status: 'ACTIVE',
-            plan: 'FULL',
-            restaurant: { owner: { email: { notIn: excludedEmails } } }
-        }
-    });
-
-    const baseSubscriptions = await prisma.subscription.count({
-        where: {
-            status: 'ACTIVE',
-            plan: { in: ['BASE', 'FREE'] },
-            restaurant: { owner: { email: { notIn: excludedEmails } } }
-        }
-    });
-
-    // Revenue: Base (€9.99) + Premium (€14.99) + Full (€49.99)
-    const estimatedRevenue = (baseSubscriptions * 9.99) + (premiumSubscriptions * 14.99) + (fullSubscriptions * 49.99);
+    // Revenue: €15.00/month flat rate
+    const estimatedRevenue = (activeSubscriptions * 15.00);
 
     return {
         totalRestaurants,
@@ -88,7 +66,7 @@ export default async function AdminDashboardPage() {
                         </div>
                         <div>
                             <p className={styles.stat}>{stats.activeSubscriptions}</p>
-                            <span className={styles.subtext}>Utenti Premium</span>
+                            <span className={styles.subtext}>Piano Unico (€15/mese)</span>
                         </div>
                     </div>
 
@@ -102,7 +80,7 @@ export default async function AdminDashboardPage() {
                         </div>
                         <div>
                             <p className={styles.stat}>€ {stats.estimatedRevenue}</p>
-                            <span className={styles.subtext}>Base €9.99 + Premium €14.99 + Full €49.99</span>
+                            <span className={styles.subtext}>Tariffa unica € 15,00 / mese</span>
                         </div>
                     </div>
 

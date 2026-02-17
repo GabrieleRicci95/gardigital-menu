@@ -134,7 +134,7 @@ export default function AdminRestaurantsPage() {
                                                     color: '#e65100',
                                                     border: '1px solid #ffe0b2'
                                                 }}>
-                                                    In attesa di convalidazione
+                                                    In attesa / Scaduto
                                                 </span>
                                             ) : (
                                                 <span style={{
@@ -142,11 +142,11 @@ export default function AdminRestaurantsPage() {
                                                     borderRadius: '4px',
                                                     fontSize: '0.8rem',
                                                     fontWeight: 'bold',
-                                                    backgroundColor: r.subscription?.plan === 'PREMIUM' ? '#e8f5e9' : r.subscription?.plan === 'FULL' ? '#fff8e1' : r.subscription?.plan === 'WEBSITE' ? '#f3e5f5' : '#f5f5f5',
-                                                    color: r.subscription?.plan === 'PREMIUM' ? '#2e7d32' : r.subscription?.plan === 'FULL' ? '#f57f17' : r.subscription?.plan === 'WEBSITE' ? '#7b1fa2' : '#757575',
-                                                    border: r.subscription?.plan === 'PREMIUM' ? '1px solid #c8e6c9' : r.subscription?.plan === 'FULL' ? '1px solid #ffecb3' : r.subscription?.plan === 'WEBSITE' ? '1px solid #e1bee7' : '1px solid #e0e0e0'
+                                                    backgroundColor: '#e8f5e9',
+                                                    color: '#2e7d32',
+                                                    border: '1px solid #c8e6c9'
                                                 }}>
-                                                    {r.subscription?.plan === 'FREE' ? 'BASE' : r.subscription?.plan}
+                                                    Standard (€15)
                                                 </span>
                                             )}
                                         </td>
@@ -156,25 +156,11 @@ export default function AdminRestaurantsPage() {
                                         <td>
                                             <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
                                                 <button
-                                                    onClick={() => handlePlanChange(r.id, 'FREE')}
-                                                    className={`${styles.btnAction} ${styles.btnOutline}`}
-                                                    style={{ backgroundColor: '#757575', color: 'white', border: 'none', fontSize: '0.75rem', padding: '4px 8px' }}
-                                                >
-                                                    Base
-                                                </button>
-                                                <button
                                                     onClick={() => handlePlanChange(r.id, 'PREMIUM', 0)}
                                                     className={`${styles.btnAction} ${styles.btnGreen}`}
                                                     style={{ backgroundColor: '#2e7d32', color: 'white', border: 'none', fontSize: '0.75rem', padding: '4px 8px' }}
                                                 >
-                                                    Premium
-                                                </button>
-                                                <button
-                                                    onClick={() => handlePlanChange(r.id, 'FULL', 0)}
-                                                    className={`${styles.btnAction}`}
-                                                    style={{ backgroundColor: '#fbc02d', color: 'black', border: 'none', fontSize: '0.75rem', padding: '4px 8px' }}
-                                                >
-                                                    Full
+                                                    Attiva
                                                 </button>
                                                 <button
                                                     onClick={() => handlePlanChange(r.id, 'BLOCKED')}

@@ -95,7 +95,7 @@ export default function RestaurantTable({ initialRestaurants }: { initialRestaur
                                             color: '#e65100',
                                             border: '1px solid #ffe0b2'
                                         }}>
-                                            In attesa di convalidazione
+                                            In attesa / Scaduto
                                         </span>
                                     ) : (
                                         <span style={{
@@ -103,32 +103,16 @@ export default function RestaurantTable({ initialRestaurants }: { initialRestaur
                                             borderRadius: '4px',
                                             fontSize: '0.8rem',
                                             fontWeight: 'bold',
-                                            backgroundColor: rest.subscription?.plan === 'PREMIUM' ? '#e8f5e9' : rest.subscription?.plan === 'WEBSITE' ? '#f3e5f5' : '#f5f5f5',
-                                            color: rest.subscription?.plan === 'PREMIUM' ? '#2e7d32' : rest.subscription?.plan === 'WEBSITE' ? '#7b1fa2' : '#757575',
-                                            border: rest.subscription?.plan === 'PREMIUM' ? '1px solid #c8e6c9' : rest.subscription?.plan === 'WEBSITE' ? '1px solid #e1bee7' : '1px solid #e0e0e0'
+                                            backgroundColor: '#e8f5e9',
+                                            color: '#2e7d32',
+                                            border: '1px solid #c8e6c9'
                                         }}>
-                                            {rest.subscription?.plan === 'FREE' ? 'BASE' : rest.subscription?.plan}
+                                            Standard (€15)
                                         </span>
                                     )}
                                 </td>
                                 <td style={{ padding: '1rem' }}>
                                     <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
-                                        <button
-                                            onClick={() => handleUpdatePlan(rest.id, 'FREE')}
-                                            disabled={updating === rest.id}
-                                            className="btn btn-sm"
-                                            style={{
-                                                backgroundColor: '#757575',
-                                                color: 'white',
-                                                border: 'none',
-                                                fontSize: '0.75rem',
-                                                padding: '4px 8px',
-                                                cursor: 'pointer',
-                                                opacity: rest.subscription?.plan === 'FREE' && rest.subscription?.status === 'ACTIVE' ? 0.5 : 1
-                                            }}
-                                        >
-                                            Base
-                                        </button>
                                         <button
                                             onClick={() => handleUpdatePlan(rest.id, 'PREMIUM')}
                                             disabled={updating === rest.id}
@@ -140,10 +124,10 @@ export default function RestaurantTable({ initialRestaurants }: { initialRestaur
                                                 fontSize: '0.75rem',
                                                 padding: '4px 8px',
                                                 cursor: 'pointer',
-                                                opacity: rest.subscription?.plan === 'PREMIUM' && rest.subscription?.status === 'ACTIVE' ? 0.5 : 1
+                                                opacity: rest.subscription?.status === 'ACTIVE' ? 0.5 : 1
                                             }}
                                         >
-                                            Premium
+                                            Attiva
                                         </button>
                                         <button
                                             onClick={() => handleUpdatePlan(rest.id, 'BLOCKED')}

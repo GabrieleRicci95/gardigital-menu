@@ -79,12 +79,12 @@ export default function AdminSubscriptionsPage() {
                                             {sub.restaurant?.name}
                                         </td>
                                         <td style={{ textAlign: 'center' }}>
-                                            <span className={`${styles.badge} ${sub.plan === 'PREMIUM' ? styles.badgePremium : sub.plan === 'FULL' ? styles.badgeFull : styles.badgeBase}`} style={{
-                                                backgroundColor: sub.plan === 'FULL' ? '#fff8e1' : undefined,
-                                                color: sub.plan === 'FULL' ? '#f57f17' : undefined,
-                                                border: sub.plan === 'FULL' ? '1px solid #ffecb3' : undefined
+                                            <span className={styles.badge} style={{
+                                                backgroundColor: '#e3f2fd',
+                                                color: '#1565c0',
+                                                border: '1px solid #bbdefb'
                                             }}>
-                                                {sub.plan === 'PREMIUM' ? '✨ PREMIUM' : sub.plan === 'FULL' ? 'FULL' : sub.plan}
+                                                Standard (€15)
                                             </span>
                                         </td>
                                         <td>
