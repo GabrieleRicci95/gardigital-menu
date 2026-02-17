@@ -211,7 +211,7 @@ export default function AdminRestaurantsPage() {
                                                     }}
                                                     title="Attiva solo Piano Base (€15)"
                                                 >
-                                                    Base
+                                                    Menu
                                                 </button>
                                                 <button
                                                     onClick={() => handlePlanChange(r.id, 'FULL', 0)}

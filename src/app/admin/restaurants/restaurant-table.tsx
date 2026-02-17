@@ -169,7 +169,7 @@ export default function RestaurantTable({ initialRestaurants }: { initialRestaur
                                             }}
                                             title="Attiva solo Piano Base (€15)"
                                         >
-                                            Base
+                                            Menu
                                         </button>
                                         <button
                                             onClick={() => handleUpdatePlan(rest.id, 'FULL')}
