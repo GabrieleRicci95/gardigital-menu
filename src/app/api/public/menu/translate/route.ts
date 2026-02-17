@@ -136,11 +136,9 @@ export async function POST(request: Request) {
 
         for (const chunk of chunks) {
             const results = await translator.translateText(chunk, 'it' as any, targetLangCode);
-            if (Array.isArray(results)) {
-                translatedTexts.push(...results.map(r => r.text));
-            } else {
-                translatedTexts.push(results.text);
-            }
+            // Since chunk is string[], results is guaranteed to be TextResult[]
+            const resultArray = results as deepl.TextResult[];
+            translatedTexts.push(...resultArray.map(r => r.text));
         }
 
         // --- PROCESS RESULTS ---
