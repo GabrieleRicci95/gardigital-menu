@@ -132,46 +132,49 @@ export default function Home() {
             {/* Basic Plan */}
             <div className={styles.pricingCard}>
               <h3 className={styles.planName}>Start</h3>
+              <div style={{ fontSize: '2.5rem', fontWeight: 800, margin: '1rem 0', color: '#1a237e' }}>€15<span style={{ fontSize: '1rem', fontWeight: 400 }}>/mese</span></div>
               <p className={styles.solutionDesc}>L'essenziale per digitalizzare il tuo menu.</p>
               <ul className={styles.planFeatures}>
-                <li>Menu Digitale Semplice</li>
+                <li>Menu Digitale Premium</li>
                 <li>QR Code Personalizzato</li>
-                <li>Fino a 20 Piatti</li>
-                <li>Traduzione AI Multilingua</li>
+                <li>Piatti e Categorie Illimitati</li>
+                <li>Gestione Foto & Prezzi</li>
                 <li>Supporto Email</li>
               </ul>
-              <Link href="/contact?plan=Start" className={styles.secondaryBtn} style={{ background: '#f3f4f6', color: '#333', border: 'none', textAlign: 'center' }}>Richiedi Preventivo</Link>
+              <Link href="/contact?plan=Start" className={styles.secondaryBtn} style={{ background: '#f3f4f6', color: '#333', border: 'none', textAlign: 'center' }}>Richiedi Start</Link>
             </div>
 
-            {/* Premium Plan */}
+            {/* Add-ons Plan */}
             <div className={`${styles.pricingCard} ${styles.premiumCard}`}>
-              <div className={styles.badge}>POPOLARE</div>
-              <h3 className={styles.planName}>Professional</h3>
-              <p className={styles.solutionDesc}>Per chi vuole offrire un'esperienza impeccabile.</p>
+              <div className={styles.badge} style={{ background: '#1a237e', color: 'white' }}>MODULARE</div>
+              <h3 className={styles.planName}>Plus</h3>
+              <div style={{ fontSize: '2rem', fontWeight: 800, margin: '1rem 0', color: '#1a237e' }}>+€10<span style={{ fontSize: '1rem', fontWeight: 400 }}>/modulo</span></div>
+              <p className={styles.solutionDesc}>Potenzia il tuo menu con i microservizi.</p>
               <ul className={styles.planFeatures}>
-                <li><strong>Tutto incluso nel Start</strong></li>
-                <li>Piatti e Categorie Illimitati</li>
-                <li>Foto Piatti in Alta Definizione</li>
-                <li>Allergeni e Filtri Avanzati</li>
-                <li>Supporto Prioritario WhatsApp</li>
+                <li><strong>Modulo Traduzioni AI</strong></li>
+                <li><strong>Modulo Prenotazioni</strong></li>
+                <li>Liste Vini/Drink Avanzate</li>
+                <li>Supporto WhatsApp</li>
+                <li>Statistiche Base</li>
               </ul>
-              <Link href="/contact?plan=Professional" className={styles.primaryBtn} style={{ textAlign: 'center', boxShadow: 'none' }}>Parla con un Esperto</Link>
+              <Link href="/contact?plan=Plus" className={styles.primaryBtn} style={{ textAlign: 'center', boxShadow: 'none' }}>Personalizza Piano</Link>
             </div>
 
-            {/* Website / Agency Plan */}
+            {/* Full Plan */}
             <div className={`${styles.pricingCard} ${styles.agencyCard}`}>
-              <div className={styles.badge} style={{ backgroundColor: '#e2b13c', color: '#000' }}>COMPLETO</div>
-              <h3 className={styles.planName}>Enterprise</h3>
-              <p className={styles.solutionDesc} style={{ color: '#ccc' }}>L'ecosistema digitale per il tuo brand.</p>
+              <div className={styles.badge} style={{ backgroundColor: '#e2b13c', color: '#000' }}>BEST VALUE</div>
+              <h3 className={styles.planName}>Full</h3>
+              <div style={{ fontSize: '2.5rem', fontWeight: 800, margin: '1rem 0', color: '#e2b13c' }}>€25<span style={{ fontSize: '1rem', fontWeight: 400, color: '#ccc' }}>/mese</span></div>
+              <p className={styles.solutionDesc} style={{ color: '#ccc' }}>Tutto incluso, senza compromessi.</p>
               <ul className={styles.planFeatures}>
-                <li><strong>Menu Professional Incluso</strong></li>
-                <li>Sito Web Design Personalizzato</li>
-                <li>Sistema di Prenotazione Tavoli</li>
-                <li>Dominio (es. .it) e Hosting</li>
-                <li>Indicizzazione Google (SEO)</li>
-                <li>Consulenza Marketing Dedicata</li>
+                <li><strong>Menu Start Incluso</strong></li>
+                <li><strong>Tutti i Moduli Add-on</strong></li>
+                <li>Traduzioni Illimitate</li>
+                <li>Prenotazioni Illimitate</li>
+                <li>Tutte le Liste Speciali</li>
+                <li>Supporto Prioritario</li>
               </ul>
-              <Link href="/contact?plan=Enterprise" className={styles.primaryBtn} style={{ backgroundColor: '#e2b13c', color: '#000', border: 'none', textAlign: 'center' }}>Richiedi Consulenza</Link>
+              <Link href="/contact?plan=Full" className={styles.primaryBtn} style={{ backgroundColor: '#e2b13c', color: '#000', border: 'none', textAlign: 'center' }}>Attiva Tutto</Link>
             </div>
 
           </div>
