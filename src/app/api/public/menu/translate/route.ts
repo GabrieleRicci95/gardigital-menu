@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma';
 import { getSession, isDemoSession } from '@/lib/auth';
 import * as deepl from 'deepl-node';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: Request) {
     const session = await getSession();
     if (session && isDemoSession(session)) return NextResponse.json({ error: 'Modalità Demo: modifiche non consentite' }, { status: 403 });
@@ -58,17 +60,21 @@ export async function POST(request: Request) {
 
         const restaurant = (menu as any).restaurant;
 
-        // Check if restaurant description needs translation
+        // --- BATCH COLLECTION START ---
+        const textsToTranslate: string[] = [];
+        const translationMap: { type: 'restaurant_desc' | 'cat_name' | 'item_name' | 'item_desc', id: string }[] = [];
+
+        // Restaurant Description
         let restaurantDescriptionTranslation = null;
         if (restaurant.description) {
             const existingTrans = restaurant.translations?.[0];
             if (!existingTrans || existingTrans.description === restaurant.description) {
-                const res = await translator.translateText(restaurant.description, 'it' as any, targetLangCode);
-                restaurantDescriptionTranslation = (res as any).text;
+                textsToTranslate.push(restaurant.description);
+                translationMap.push({ type: 'restaurant_desc', id: restaurant.id });
             }
         }
 
-        // Filtering logic for categories: include placeholders or missing translations
+        // Filtering logic for categories
         const categories = (menu as any).categories || [];
         const categoriesToTranslate = categories.filter((cat: any) =>
             !cat.translations || cat.translations.length === 0 ||
@@ -76,6 +82,12 @@ export async function POST(request: Request) {
             cat.translations[0].name === cat.name
         );
 
+        for (const cat of categoriesToTranslate) {
+            textsToTranslate.push(cat.name);
+            translationMap.push({ type: 'cat_name', id: cat.id });
+        }
+
+        // Filtering logic for items
         const allItems: any[] = categories.flatMap((cat: any) => cat.items || []);
         const itemIds = allItems.map(i => i.id);
 
@@ -92,33 +104,72 @@ export async function POST(request: Request) {
         );
         const itemsToTranslate = allItems.filter(item => !translatedItemIds.has(item.id));
 
-        if (categoriesToTranslate.length === 0 && itemsToTranslate.length === 0 && !restaurantDescriptionTranslation) {
+        for (const item of itemsToTranslate) {
+            textsToTranslate.push(item.name);
+            translationMap.push({ type: 'item_name', id: item.id });
+
+            if (item.description) {
+                textsToTranslate.push(item.description);
+                translationMap.push({ type: 'item_desc', id: item.id });
+            }
+        }
+
+        if (textsToTranslate.length === 0) {
             return NextResponse.json({ message: 'Already translated' });
         }
 
-        // 2. Translate Categories
-        const catTranslations = [];
-        for (const cat of categoriesToTranslate) {
-            const result = await translator.translateText(cat.name, 'it' as any, targetLangCode);
-            catTranslations.push({ id: cat.id, name: (result as any).text });
-        }
+        // --- BATCH TRANSLATION EXECUTION (Chunked) ---
+        const translatedTexts: string[] = [];
+        const chunkSize = 50; // DeepL limit is 50 texts per request
 
-        // 3. Translate Items
-        const itemTranslations = [];
-        for (const item of itemsToTranslate) {
-            const nameResult = await translator.translateText(item.name, 'it' as any, targetLangCode);
-            let descResult = null;
-            if (item.description) {
-                const res = await translator.translateText(item.description, 'it' as any, targetLangCode);
-                descResult = (res as any).text;
+        const chunkArray = (array: string[], size: number) => {
+            const chunked = [];
+            let index = 0;
+            while (index < array.length) {
+                chunked.push(array.slice(index, size + index));
+                index += size;
             }
-            itemTranslations.push({ id: item.id, name: (nameResult as any).text, description: descResult });
+            return chunked;
+        };
+
+        const chunks = chunkArray(textsToTranslate, chunkSize);
+
+        for (const chunk of chunks) {
+            const results = await translator.translateText(chunk, 'it' as any, targetLangCode);
+            if (Array.isArray(results)) {
+                translatedTexts.push(...results.map(r => r.text));
+            } else {
+                translatedTexts.push(results.text);
+            }
         }
 
-        // 4. Save translations to DB
-        await prisma.$transaction([
-            // Restaurant Description
-            ...(restaurantDescriptionTranslation ? [
+        // --- PROCESS RESULTS ---
+        const catResults = new Map<string, string>();
+        const itemResults = new Map<string, { name: string, description: string | null }>();
+
+        translationMap.forEach((meta, index) => {
+            const text = translatedTexts[index];
+            if (meta.type === 'restaurant_desc') {
+                restaurantDescriptionTranslation = text;
+            } else if (meta.type === 'cat_name') {
+                catResults.set(meta.id, text);
+            } else if (meta.type === 'item_name') {
+                const existing = itemResults.get(meta.id) || { name: '', description: null };
+                existing.name = text;
+                itemResults.set(meta.id, existing);
+            } else if (meta.type === 'item_desc') {
+                const existing = itemResults.get(meta.id) || { name: '', description: null };
+                existing.description = text;
+                itemResults.set(meta.id, existing);
+            }
+        });
+
+        // --- DB UPDATE ---
+        const transactionOperations = [];
+
+        // 1. Restaurant
+        if (restaurantDescriptionTranslation) {
+            transactionOperations.push(
                 (prisma as any).restaurantTranslation.upsert({
                     where: {
                         restaurantId_language: {
@@ -133,43 +184,55 @@ export async function POST(request: Request) {
                         description: restaurantDescriptionTranslation
                     }
                 })
-            ] : []),
-            // Categories
-            ...catTranslations.map((t) =>
+            );
+        }
+
+        // 2. Categories
+        for (const [id, name] of catResults.entries()) {
+            transactionOperations.push(
                 prisma.categoryTranslation.upsert({
                     where: {
                         categoryId_language: {
-                            categoryId: t.id,
+                            categoryId: id,
                             language: targetLanguage
                         }
                     },
-                    update: { name: t.name },
+                    update: { name: name },
                     create: {
-                        categoryId: t.id,
+                        categoryId: id,
                         language: targetLanguage,
-                        name: t.name
+                        name: name
                     }
                 })
-            ),
-            // Items
-            ...itemTranslations.map((t) =>
-                prisma.menuItemTranslation.upsert({
-                    where: {
-                        menuItemId_language: {
-                            menuItemId: t.id,
-                            language: targetLanguage
+            );
+        }
+
+        // 3. Items
+        for (const [id, data] of itemResults.entries()) {
+            if (data.name) {
+                transactionOperations.push(
+                    prisma.menuItemTranslation.upsert({
+                        where: {
+                            menuItemId_language: {
+                                menuItemId: id,
+                                language: targetLanguage
+                            }
+                        },
+                        update: { name: data.name, description: data.description },
+                        create: {
+                            menuItemId: id,
+                            language: targetLanguage,
+                            name: data.name,
+                            description: data.description
                         }
-                    },
-                    update: { name: t.name, description: t.description },
-                    create: {
-                        menuItemId: t.id,
-                        language: targetLanguage,
-                        name: t.name,
-                        description: t.description
-                    }
-                })
-            )
-        ]);
+                    })
+                );
+            }
+        }
+
+        if (transactionOperations.length > 0) {
+            await prisma.$transaction(transactionOperations);
+        }
 
         return NextResponse.json({ success: true });
 
