@@ -7,7 +7,7 @@ export async function middleware(request: NextRequest) {
     const path = request.nextUrl.pathname;
 
     // Define public paths
-    const isPublicPath = path === '/login' || path === '/register' || path === '/forgot-password' || path === '/reset-password' || path === '/' || path === '/contact' || path === '/vantaggi' || path === '/chi-siamo' || path === '/privacy' || path === '/terms' || path === '/cookies' || path.startsWith('/api/auth') || path.startsWith('/api/contact');
+    const isPublicPath = path === '/login' || path === '/register' || path === '/forgot-password' || path === '/reset-password' || path === '/' || path === '/contact' || path === '/vantaggi' || path === '/chi-siamo' || path === '/privacy' || path === '/terms' || path === '/cookies' || path.startsWith('/api/auth') || path.startsWith('/api/contact') || path.startsWith('/api/public');
 
     if (!session && !isPublicPath && !path.startsWith('/menu') && !path.startsWith('/book')) {
         // Redirect to login if not authenticated and trying to access protected route
