@@ -156,7 +156,7 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
         if (needsTranslation) {
             setIsTranslating(true);
             try {
-                const res = await fetch('/api/menu/translate-public', {
+                const res = await fetch('/api/public/menu/translate', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ menuId: activeMenuId, targetLanguage: newLang })
