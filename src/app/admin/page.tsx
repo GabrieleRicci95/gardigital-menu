@@ -12,22 +12,43 @@ async function getStats() {
     });
     // Removed totalVisits query
 
-    const activeSubscriptions = await prisma.subscription.count({
+    // Revenue Calculation (Micro-services)
+    // Base: €15.00
+    // Translations: +€10.00
+    // Reservations: +€10.00
+    // Full Package Cap: €25.00
+
+    const subscriptions = await prisma.subscription.findMany({
         where: {
             status: 'ACTIVE',
             restaurant: { owner: { email: { notIn: excludedEmails } } }
+        },
+        select: {
+            plan: true,
+            hasTranslations: true,
+            hasReservations: true
         }
     });
 
-    // Removed breakdown queries as requested (Single Plan)
+    let totalRevenue = 0;
 
-    // Revenue: €15.00/month flat rate
-    const estimatedRevenue = (activeSubscriptions * 15.00);
+    subscriptions.forEach(sub => {
+        let subRevenue = 15.00; // Base Plan
+        if (sub.hasTranslations) subRevenue += 10.00;
+        if (sub.hasReservations) subRevenue += 10.00;
+
+        // Cap at €25.00 (Full Package Discount)
+        if (subRevenue > 25.00) subRevenue = 25.00;
+
+        totalRevenue += subRevenue;
+    });
+
+    const activeSubscriptions = subscriptions.length;
 
     return {
         totalRestaurants,
         activeSubscriptions,
-        estimatedRevenue: estimatedRevenue.toFixed(2)
+        estimatedRevenue: totalRevenue.toFixed(2)
     };
 }
 
@@ -66,7 +87,7 @@ export default async function AdminDashboardPage() {
                         </div>
                         <div>
                             <p className={styles.stat}>{stats.activeSubscriptions}</p>
-                            <span className={styles.subtext}>Piano Unico (€15/mese)</span>
+                            <span className={styles.subtext}>Piano Base + Moduli</span>
                         </div>
                     </div>
 
@@ -80,7 +101,7 @@ export default async function AdminDashboardPage() {
                         </div>
                         <div>
                             <p className={styles.stat}>€ {stats.estimatedRevenue}</p>
-                            <span className={styles.subtext}>Tariffa unica € 15,00 / mese</span>
+                            <span className={styles.subtext}>Base 15€ + Extra (Cap 25€)</span>
                         </div>
                     </div>
 

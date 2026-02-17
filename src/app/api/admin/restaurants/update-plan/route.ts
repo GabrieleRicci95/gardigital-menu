@@ -48,25 +48,31 @@ export async function POST(req: Request) {
         }
 
         let endDate = null;
-        if (newPlan === 'PREMIUM' && durationMonths && typeof durationMonths === 'number') {
+        if ((newPlan === 'PREMIUM' || newPlan === 'FULL') && durationMonths && typeof durationMonths === 'number') {
             const date = new Date();
             date.setMonth(date.getMonth() + durationMonths);
             endDate = date;
         }
+
+        const isFull = newPlan === 'FULL';
 
         const subscription = await prisma.subscription.upsert({
             where: { restaurantId: restaurantId },
             update: {
                 plan: newPlan,
                 status: 'ACTIVE',
-                endDate: endDate
+                endDate: endDate,
+                hasTranslations: isFull,
+                hasReservations: isFull
             },
             create: {
                 restaurantId: restaurantId,
                 plan: newPlan,
                 status: 'ACTIVE',
                 startDate: new Date(),
-                endDate: endDate
+                endDate: endDate,
+                hasTranslations: isFull,
+                hasReservations: isFull
             }
         });
 

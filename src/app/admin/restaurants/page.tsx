@@ -13,6 +13,8 @@ interface Restaurant {
         plan: string;
         status: string;
         endDate?: string | null;
+        hasTranslations?: boolean;
+        hasReservations?: boolean;
     } | null;
     createdAt: string;
 }

@@ -9,7 +9,7 @@ interface Restaurant {
     slug: string;
     createdAt: Date;
     owner: { email: string };
-    subscription: { plan: string; status: string } | null;
+    subscription: { plan: string; status: string; hasTranslations?: boolean; hasReservations?: boolean } | null;
 }
 
 export default function RestaurantTable({ initialRestaurants }: { initialRestaurants: Restaurant[] }) {
@@ -110,6 +110,8 @@ export default function RestaurantTable({ initialRestaurants }: { initialRestaur
                                             Standard (€15)
                                         </span>
                                     )}
+                                    {rest.subscription?.hasTranslations && <span style={{ marginLeft: '5px', fontSize: '0.8rem' }}>🌍</span>}
+                                    {rest.subscription?.hasReservations && <span style={{ marginLeft: '5px', fontSize: '0.8rem' }}>📅</span>}
                                 </td>
                                 <td style={{ padding: '1rem' }}>
                                     <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
@@ -126,8 +128,25 @@ export default function RestaurantTable({ initialRestaurants }: { initialRestaur
                                                 cursor: 'pointer',
                                                 opacity: rest.subscription?.status === 'ACTIVE' ? 0.5 : 1
                                             }}
+                                            title="Attiva solo Piano Base (€15)"
                                         >
-                                            Attiva
+                                            Base
+                                        </button>
+                                        <button
+                                            onClick={() => handleUpdatePlan(rest.id, 'FULL')} // Need to handle features in backend
+                                            disabled={updating === rest.id}
+                                            className="btn btn-sm"
+                                            style={{
+                                                backgroundColor: '#fbc02d',
+                                                color: 'black',
+                                                border: 'none',
+                                                fontSize: '0.75rem',
+                                                padding: '4px 8px',
+                                                cursor: 'pointer'
+                                            }}
+                                            title="Attiva Tutto (Base + Trad + Prenotazioni) - €25"
+                                        >
+                                            Full (€25)
                                         </button>
                                         <button
                                             onClick={() => handleUpdatePlan(rest.id, 'BLOCKED')}

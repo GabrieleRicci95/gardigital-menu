@@ -60,6 +60,15 @@ export async function POST(request: Request) {
 
         const restaurant = (menu as any).restaurant;
 
+        // CHECK SUBSCRIPTION
+        const subscription = await prisma.subscription.findUnique({
+            where: { restaurantId: restaurant.id }
+        });
+
+        if (!subscription || (subscription.status !== 'ACTIVE' && subscription.status !== 'TRIAL') || !subscription.hasTranslations) {
+            return NextResponse.json({ error: 'Feature "Translations" not active for this restaurant.' }, { status: 403 });
+        }
+
         // --- BATCH COLLECTION START ---
         const textsToTranslate: string[] = [];
         const translationMap: { type: 'restaurant_desc' | 'cat_name' | 'item_name' | 'item_desc', id: string }[] = [];

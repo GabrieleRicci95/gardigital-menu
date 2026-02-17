@@ -128,8 +128,14 @@ model MenuItem {
 
 model Subscription {
   id             String     @id @default(cuid())
-  plan           String     @default("BASE") // "BASE", "PREMIUM"
+  plan           String     @default("BASE") // "BASE", "PREMIUM", "FULL"
   status         String     @default("ACTIVE") // "ACTIVE", "EXPIRED"
+  
+  // Feature Flags (Micro-services)
+  hasTranslations Boolean    @default(false)
+  hasReservations Boolean    @default(false)
+  hasOrders       Boolean    @default(false)
+
   startDate      DateTime   @default(now())
   endDate        DateTime?
   restaurantId   String     @unique
