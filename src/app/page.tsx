@@ -104,12 +104,32 @@ export default function Home() {
           </div>
         </section>
 
+        <section className={styles.marketingSection} style={{ background: 'white', color: '#0d1b2a', paddingTop: '4rem', paddingBottom: '2rem' }}>
+          <div className={styles.marketingContent} style={{ flexDirection: 'row-reverse' }}>
+            <div className={styles.marketingTextContent}>
+              <h2 className={styles.marketingTitle} style={{ color: '#0d1b2a' }}>Il Tuo Ristorante Online: <br /><span className={styles.highlight}>Siti Web su Misura</span></h2>
+              <p className={styles.marketingDesc} style={{ color: '#555' }}>
+                Oltre al menu digitale, realizziamo siti web professionali ed eleganti, ottimizzati per convertire i visitatori in clienti.
+                Un design esclusivo che riflette l'anima del tuo locale e ti posiziona sopra la concorrenza.
+                <br /><br />
+                Dominio personalizzato, velocità estrema e un'esperienza utente impeccabile su ogni dispositivo.
+              </p>
+              <Link href="/contact?plan=SitoWeb" className={styles.primaryBtn}>Richiedi il tuo Sito</Link>
+            </div>
+            <div className={styles.marketingVisual}>
+              <div className={styles.marketingImageContainer} style={{ transform: 'perspective(1000px) rotateY(5deg)' }}>
+                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2426&q=80" alt="Sito Web Ristorante" className={styles.marketingImage} />
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section className={styles.marketingSection}>
           <div className={styles.marketingContent}>
             <div className={styles.marketingTextContent}>
-              <h2 className={styles.marketingTitle}>Oltre il Software: <br /><span className={styles.highlight}>Siti Web & Crescita</span></h2>
+              <h2 className={styles.marketingTitle}>Non solo Software: <br /><span className={styles.highlight}>Strategia e Crescita</span></h2>
               <p className={styles.marketingDesc}>
-                Il menu digitale è solo l'inizio. Realizziamo **Siti Web su misura** per il tuo brand e sappiamo che per un ristorante il successo passa anche da come ci si presenta al mondo.
+                Il menu digitale è solo l'inizio. Sappiamo che per un ristorante il successo passa anche da come ci si presenta al mondo.
                 <br /><br />
                 Per questo, <strong>collaboriamo con professionisti del marketing</strong> per offrirti non solo strumenti tecnologici, ma una vera strategia di crescita. Social Media, Google Ads, e Brand Identity: ti aiutiamo a riempire i tavoli, non solo a gestirli.
               </p>
