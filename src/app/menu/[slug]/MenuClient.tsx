@@ -377,7 +377,7 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
             <header
                 className={styles.hero}
                 style={restaurant.coverImageUrl ? {
-                    backgroundImage: `linear-gradient(rgba(0, 0, 50, 0.6), rgba(0, 0, 30, 0.8)), url('${restaurant.coverImageUrl}')`
+                    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)), url('${restaurant.coverImageUrl}')`
                 } : undefined}
             >
                 {/* Removed dynamic background overlay */}
