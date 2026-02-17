@@ -53,8 +53,8 @@ export default function Home() {
           </div>
         </section>
 
-        <section className={styles.marketingSection} style={{ background: 'white', color: '#0d1b2a', paddingTop: '4rem', paddingBottom: '2rem' }}>
-          <div className={styles.marketingContent} style={{ flexDirection: 'row-reverse' }}>
+        <section className={styles.marketingSection} style={{ background: 'white', color: '#0d1b2a' }}>
+          <div className={styles.marketingContentRowReverse}>
             <div className={styles.marketingTextContent}>
               <h2 className={styles.marketingTitle} style={{ color: '#0d1b2a' }}>Il Tuo Ristorante Online: <br /><span className={styles.highlight}>Siti Web su Misura</span></h2>
               <p className={styles.marketingDesc} style={{ color: '#555' }}>
@@ -66,7 +66,7 @@ export default function Home() {
               <Link href="/contact?plan=SitoWeb" className={styles.primaryBtn}>Richiedi il tuo Sito</Link>
             </div>
             <div className={styles.marketingVisual}>
-              <div className={styles.marketingImageContainer} style={{ transform: 'perspective(1000px) rotateY(5deg)' }}>
+              <div className={styles.marketingImageContainerReverse}>
                 <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2426&q=80" alt="Sito Web Ristorante" className={styles.marketingImage} />
               </div>
             </div>

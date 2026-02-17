@@ -40,6 +40,16 @@
   gap: 1.5rem;
 }
 
+@media (max-width: 600px) {
+  .nav {
+    gap: 0.5rem;
+  }
+
+  .navLink {
+    font-size: 0.8rem;
+  }
+}
+
 .navLink {
   color: var(--color-text-main);
   font-weight: 600;
@@ -303,6 +313,11 @@
   justify-content: space-between;
 }
 
+.marketingContentRowReverse {
+  composes: marketingContent;
+  flex-direction: row-reverse;
+}
+
 .marketingTextContent {
   flex: 1;
 }
@@ -340,6 +355,11 @@
   border: 4px solid rgba(255, 255, 255, 0.1);
 }
 
+.marketingImageContainerReverse {
+  composes: marketingImageContainer;
+  transform: perspective(1000px) rotateY(5deg);
+}
+
 .marketingImageContainer:hover {
   transform: perspective(1000px) rotateY(0deg) scale(1.02);
 }
@@ -351,10 +371,21 @@
 }
 
 @media (max-width: 768px) {
-  .marketingContent {
+
+  .marketingContent,
+  .marketingContentRowReverse {
     flex-direction: column-reverse;
     text-align: center;
     gap: 2rem;
+  }
+
+  .marketingImageContainer,
+  .marketingImageContainerReverse {
+    transform: none !important;
+  }
+
+  .marketingTitle {
+    font-size: 2rem;
   }
 }
 
@@ -396,7 +427,7 @@
   background-color: white;
   border: 1px solid var(--color-border);
   border-radius: 24px;
-  padding: 2.5rem;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   position: relative;
