@@ -99,16 +99,32 @@ export default function DashboardPage() {
                         Stato Abbonamento
                     </div>
                     <div>
-                        {isPremium ? (
-                            <div className={styles.statusText} style={{ color: subscription?.plan === 'FULL' ? '#fbc02d' : undefined }}>{subscription?.plan}</div>
-                        ) : (
-                            <div className={styles.statusBase}>BASE</div>
-                        )}
-                        <p className={styles.cardDesc}>
-                            {isPremium
-                                ? 'Hai accesso illimitato a tutte le funzionalità esclusive.'
-                                : 'Hai accesso limitato (1 Menu).'}
-                        </p>
+                        {(() => {
+                            let parts = ['Menu'];
+                            if (subscription?.hasTranslations) parts.push('Traduzioni');
+                            if (subscription?.hasReservations) parts.push('Prenotazioni');
+                            const statusText = parts.join(' + ');
+                            const modulesCount = parts.length;
+
+                            return (
+                                <>
+                                    <div className={styles.statusText} style={{
+                                        fontSize: '1.4rem',
+                                        color: subscription?.plan === 'FULL' ? '#fbc02d' : '#2e7d32',
+                                        textTransform: 'uppercase'
+                                    }}>
+                                        {statusText}
+                                    </div>
+                                    <p className={styles.cardDesc}>
+                                        {subscription?.plan === 'FULL'
+                                            ? 'Hai il pacchetto completo con tutti i moduli attivi.'
+                                            : modulesCount > 1
+                                                ? 'Hai un piano personalizzato con moduli aggiuntivi.'
+                                                : 'Hai il piano base (Solo Menu).'}
+                                    </p>
+                                </>
+                            );
+                        })()}
                     </div>
                 </div>
 
