@@ -141,7 +141,7 @@ export default function Home() {
                 <li>Gestione Foto & Prezzi</li>
                 <li>Supporto Email</li>
               </ul>
-              <Link href="/contact?plan=Start" className={styles.secondaryBtn} style={{ background: '#f3f4f6', color: '#333', border: 'none', textAlign: 'center' }}>Richiedi Menu</Link>
+              <Link href="/contact?plan=Menu" className={styles.secondaryBtn} style={{ background: '#f3f4f6', color: '#333', border: 'none', textAlign: 'center' }}>Richiedi Menu</Link>
             </div>
 
             {/* Traduzioni Card */}
@@ -150,40 +150,41 @@ export default function Home() {
               <div style={{ fontSize: '2rem', fontWeight: 800, margin: '1rem 0', color: '#1a237e' }}>€10<span style={{ fontSize: '1rem', fontWeight: 400 }}>/mese</span></div>
               <p className={styles.solutionDesc}>Rendi il tuo menu internazionale.</p>
               <ul className={styles.planFeatures}>
-                <li><strong>Traduzioni AI Istantanee</strong></li>
-                <li>Oltre 50 lingue supportate</li>
+                <li>Traduzioni AI Istantanee</li>
                 <li>Aggiornamento automatico</li>
-                <li>Icona Mappamondo nel Menu</li>
                 <li>Indispensabile per Turisti</li>
               </ul>
               <Link href="/contact?plan=Traduzioni" className={styles.secondaryBtn} style={{ background: '#f3f4f6', color: '#333', border: 'none', textAlign: 'center' }}>Attiva Traduzioni</Link>
             </div>
 
-            {/* Prenotazioni Card */}
+            {/* Agenda Card */}
             <div className={styles.pricingCard}>
-              <h3 className={styles.planName}>Prenotazioni</h3>
+              <h3 className={styles.planName}>Agenda Digitale</h3>
               <div style={{ fontSize: '2rem', fontWeight: 800, margin: '1rem 0', color: '#1a237e' }}>€10<span style={{ fontSize: '1rem', fontWeight: 400 }}>/mese</span></div>
               <p className={styles.solutionDesc}>Ricevi prenotazioni direttamente.</p>
               <ul className={styles.planFeatures}>
-                <li><strong>Prenotazioni via WhatsApp</strong></li>
+                <li>Prenotazioni via WhatsApp</li>
                 <li>Tasto "Prenota Tavolo" Live</li>
                 <li>Gestione Agenda Dashboard</li>
                 <li>Conferma rapida al cliente</li>
                 <li>Aumenta i tuoi Coperti</li>
               </ul>
-              <Link href="/contact?plan=Prenotazioni" className={styles.secondaryBtn} style={{ background: '#f3f4f6', color: '#333', border: 'none', textAlign: 'center' }}>Attiva Prenotazioni</Link>
+              <Link href="/contact?plan=Agenda" className={styles.secondaryBtn} style={{ background: '#f3f4f6', color: '#333', border: 'none', textAlign: 'center' }}>Attiva Agenda</Link>
             </div>
 
             {/* Offerta Card */}
             <div className={`${styles.pricingCard} ${styles.agencyCard}`}>
               <div className={styles.badge} style={{ backgroundColor: '#e2b13c', color: '#000' }}>OFFERTA LIMITATA</div>
               <h3 className={styles.planName}>Full Pack</h3>
-              <div style={{ fontSize: '2.5rem', fontWeight: 800, margin: '1rem 0', color: '#e2b13c' }}>€25<span style={{ fontSize: '1rem', fontWeight: 400, color: '#ccc' }}>/mese</span></div>
+              <div style={{ margin: '1rem 0' }}>
+                <span style={{ fontSize: '1.2rem', textDecoration: 'line-through', color: '#ccc', marginRight: '8px' }}>€35</span>
+                <span style={{ fontSize: '2.5rem', fontWeight: 800, color: '#e2b13c' }}>€25<span style={{ fontSize: '1rem', fontWeight: 400, color: '#ccc' }}>/mese</span></span>
+              </div>
               <p className={styles.solutionDesc} style={{ color: '#ccc' }}>Il pacchetto completo ad un prezzo speciale.</p>
               <ul className={styles.planFeatures}>
-                <li><strong>Menu Digitale Incluso</strong></li>
-                <li><strong>Modulo Traduzioni Incluso</strong></li>
-                <li><strong>Modulo Prenotazioni Incluso</strong></li>
+                <li>Menu Digitale Incluso</li>
+                <li>Modulo Traduzioni Incluso</li>
+                <li>Modulo Prenotazioni Incluso</li>
                 <li>Tutte le Liste Speciali</li>
                 <li>Supporto Prioritario WhatsApp</li>
                 <li>Risparmio Imbattibile</li>
