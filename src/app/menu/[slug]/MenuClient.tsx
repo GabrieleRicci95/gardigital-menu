@@ -45,7 +45,7 @@ export interface MenuPageRestaurant {
     wineList?: { isActive: boolean } | null;
     champagneList?: { isActive: boolean } | null;
     drinkList?: { isActive: boolean } | null;
-    subscription?: { plan: string } | null;
+    subscription?: { plan: string; hasTranslations: boolean; hasReservations: boolean } | null;
     categories: MenuPageCategory[];
     translations?: { language: string; description: string | null }[];
     customLists?: { id: string; name: string; slug: string; isActive: boolean }[] | null;
@@ -260,87 +260,89 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
                 alignItems: 'flex-start'
             }}>
                 {/* 1. Language Selector (on the left) */}
-                <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '10px'
-                }}>
-                    {/* Main Globe Button */}
-                    <button
-                        onClick={() => setIsLangOpen(!isLangOpen)}
-                        style={{
-                            width: '56px',
-                            height: '56px',
-                            borderRadius: '50%',
-                            border: 'none',
-                            backgroundColor: isLangOpen ? 'white' : restaurant.themeColor,
-                            color: isLangOpen ? restaurant.themeColor : 'white',
-                            fontSize: '1.5rem',
-                            cursor: 'pointer',
-                            boxShadow: '0 4px 15px rgba(0,0,0,0.25)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-                            transform: isLangOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                        }}
-                        title="Translate"
-                    >
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <line x1="2" y1="12" x2="22" y2="12"></line>
-                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                        </svg>
-                    </button>
-
-                    {/* Expandable Flags Container */}
+                {restaurant.subscription?.hasTranslations && (
                     <div style={{
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: '10px',
-                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                        opacity: isLangOpen ? 1 : 0,
-                        transform: isLangOpen ? 'translateY(0) scale(1)' : 'translateY(-20px) scale(0.8)',
-                        pointerEvents: isLangOpen ? 'auto' : 'none',
-                        height: isLangOpen ? 'auto' : 0,
-                        overflow: 'hidden'
+                        alignItems: 'center',
+                        gap: '10px'
                     }}>
-                        {LANGUAGES.map(lang => (
-                            <button
-                                key={lang.code}
-                                onClick={() => {
-                                    handleLanguageChange(lang.code);
-                                    setIsLangOpen(false);
-                                }}
-                                style={{
-                                    width: '44px',
-                                    height: '44px',
-                                    borderRadius: '50%',
-                                    border: 'none',
-                                    backgroundColor: language === lang.code ? restaurant.themeColor : 'white',
-                                    color: language === lang.code ? 'white' : 'black',
-                                    fontSize: '1.3rem',
-                                    cursor: 'pointer',
-                                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    transition: 'all 0.2s',
-                                    opacity: isTranslating ? 0.5 : 1,
-                                    pointerEvents: isTranslating ? 'none' : 'auto',
-                                    flexShrink: 0
-                                }}
-                                title={lang.code.toUpperCase()}
-                            >
-                                {lang.label}
-                            </button>
-                        ))}
+                        {/* Main Globe Button */}
+                        <button
+                            onClick={() => setIsLangOpen(!isLangOpen)}
+                            style={{
+                                width: '56px',
+                                height: '56px',
+                                borderRadius: '50%',
+                                border: 'none',
+                                backgroundColor: isLangOpen ? 'white' : restaurant.themeColor,
+                                color: isLangOpen ? restaurant.themeColor : 'white',
+                                fontSize: '1.5rem',
+                                cursor: 'pointer',
+                                boxShadow: '0 4px 15px rgba(0,0,0,0.25)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                                transform: isLangOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                            }}
+                            title="Translate"
+                        >
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="2" y1="12" x2="22" y2="12"></line>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                            </svg>
+                        </button>
+
+                        {/* Expandable Flags Container */}
+                        <div style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '10px',
+                            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                            opacity: isLangOpen ? 1 : 0,
+                            transform: isLangOpen ? 'translateY(0) scale(1)' : 'translateY(-20px) scale(0.8)',
+                            pointerEvents: isLangOpen ? 'auto' : 'none',
+                            height: isLangOpen ? 'auto' : 0,
+                            overflow: 'hidden'
+                        }}>
+                            {LANGUAGES.map(lang => (
+                                <button
+                                    key={lang.code}
+                                    onClick={() => {
+                                        handleLanguageChange(lang.code);
+                                        setIsLangOpen(false);
+                                    }}
+                                    style={{
+                                        width: '44px',
+                                        height: '44px',
+                                        borderRadius: '50%',
+                                        border: 'none',
+                                        backgroundColor: language === lang.code ? restaurant.themeColor : 'white',
+                                        color: language === lang.code ? 'white' : 'black',
+                                        fontSize: '1.3rem',
+                                        cursor: 'pointer',
+                                        boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        transition: 'all 0.2s',
+                                        opacity: isTranslating ? 0.5 : 1,
+                                        pointerEvents: isTranslating ? 'none' : 'auto',
+                                        flexShrink: 0
+                                    }}
+                                    title={lang.code.toUpperCase()}
+                                >
+                                    {lang.label}
+                                </button>
+                            ))}
+                        </div>
                     </div>
-                </div>
+                )}
 
                 {/* 2. WhatsApp Reservation Button (on the right) */}
-                {restaurant.whatsappNumber && restaurant.subscription?.plan === 'FULL' && (
+                {restaurant.whatsappNumber && restaurant.subscription?.hasReservations && (
                     <button
                         onClick={() => setIsReservationOpen(true)}
                         style={{

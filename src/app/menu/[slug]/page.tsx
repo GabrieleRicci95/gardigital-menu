@@ -50,7 +50,7 @@ async function getRestaurant(slug: string): Promise<MenuPageRestaurant | null> {
                     }
                 }
             },
-            subscription: { select: { plan: true } }
+            subscription: { select: { plan: true, hasTranslations: true, hasReservations: true } }
         }
     });
 
