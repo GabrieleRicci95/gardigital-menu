@@ -165,7 +165,7 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
                 if (res.ok) {
                     // Re-fetch data or update local state? For simplicity, we re-fetch briefly or just hope the next refresh catches it.
                     // Better: re-fetch the restaurant data
-                    const slugRes = await fetch(`/api/menu/public?slug=${restaurant.slug}`);
+                    const slugRes = await fetch(`/api/public/menu?slug=${restaurant.slug}`);
                     if (slugRes.ok) {
                         const newData = await slugRes.json();
                         setRestaurant(newData.restaurant);
