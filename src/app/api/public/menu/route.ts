@@ -25,7 +25,7 @@ export async function GET(request: Request) {
                                 translations: true,
                                 items: {
                                     where: { isVisible: true },
-                                    orderBy: { createdAt: 'desc' },
+                                    orderBy: { createdAt: 'asc' },
                                     include: { translations: true }
                                 }
                             }

@@ -27,7 +27,7 @@ async function getRestaurant(slug: string): Promise<MenuPageRestaurant | null> {
                             translations: true,
                             items: {
                                 where: { isVisible: true },
-                                orderBy: { createdAt: 'desc' },
+                                orderBy: { createdAt: 'asc' },
                                 include: { translations: true }
                             }
                         }
