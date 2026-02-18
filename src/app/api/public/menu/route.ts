@@ -35,7 +35,20 @@ export async function GET(request: Request) {
                 wineList: { select: { isActive: true } },
                 champagneList: { select: { isActive: true } },
                 drinkList: { select: { isActive: true } },
-                subscription: { select: { plan: true } },
+                subscription: { select: { plan: true, hasTranslations: true, hasReservations: true } },
+                customLists: {
+                    where: { isActive: true },
+                    include: {
+                        sections: {
+                            orderBy: { sortOrder: 'asc' },
+                            include: {
+                                items: {
+                                    orderBy: { createdAt: 'asc' }
+                                }
+                            }
+                        }
+                    }
+                },
                 translations: true
             }
         });
