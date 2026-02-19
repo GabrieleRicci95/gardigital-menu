@@ -162,6 +162,7 @@ export default function ReservationsPage() {
         try {
             const res = await fetch('/api/reservations', {
                 method: 'POST',
+                credentials: 'include', // Ensure cookies are sent
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     restaurantId: restaurant.id,

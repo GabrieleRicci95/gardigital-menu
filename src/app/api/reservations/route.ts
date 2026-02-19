@@ -75,6 +75,7 @@ export async function PATCH(req: Request) {
 // POST: Create a new reservation (Public)
 export async function POST(req: Request) {
     try {
+        const session = await getSession();
         const body = await req.json();
         const { restaurantId, name, phone, email, guests, date, time, notes } = body;
 
@@ -88,8 +89,6 @@ export async function POST(req: Request) {
             where: { id: restaurantId },
             select: { bookingAutoConfirm: true }
         });
-
-        const session = await getSession();
 
         let initialStatus = 'PENDING';
 
