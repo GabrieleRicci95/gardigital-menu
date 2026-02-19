@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { getSession, isDemoSession } from '@/lib/auth';
+import { getSession, isDemoSession, decrypt } from '@/lib/auth';
 
 // GET: Fetch reservations (Protected - Admin Only)
 export async function GET(req: Request) {
@@ -73,9 +73,17 @@ export async function PATCH(req: Request) {
 }
 
 // POST: Create a new reservation (Public)
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
     try {
-        const session = await getSession();
+        // Explicitly get session from request cookies for robustness
+        const sessionCookie = req.cookies.get('session')?.value;
+        let session = null;
+        if (sessionCookie) {
+            try {
+                session = await decrypt(sessionCookie);
+            } catch (e) { console.error('Token decrypt error', e); }
+        }
+
         const body = await req.json();
         const { restaurantId, name, phone, email, guests, date, time, notes } = body;
 
@@ -95,7 +103,7 @@ export async function POST(req: Request) {
         if (session) {
             const { status } = body;
             if (status === 'CONFIRMED') initialStatus = 'CONFIRMED';
-            else initialStatus = 'CONFIRMED'; // Force confirmed for admins anyway
+            else initialStatus = 'CONFIRMED';
         } else if (restaurant?.bookingAutoConfirm) {
             initialStatus = 'CONFIRMED';
         }

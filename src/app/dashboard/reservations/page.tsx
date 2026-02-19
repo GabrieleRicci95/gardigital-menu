@@ -59,7 +59,9 @@ export default function ReservationsPage() {
         if (!restaurant) return;
         setLoading(true);
         try {
-            const res = await fetch(`/api/reservations?restaurantId=${restaurant.id}&date=${filterDate}`);
+            const res = await fetch(`/api/reservations?restaurantId=${restaurant.id}&date=${filterDate}`, {
+                cache: 'no-store'
+            });
             if (res.ok) {
                 const data = await res.json();
                 setReservations(data);
@@ -162,7 +164,6 @@ export default function ReservationsPage() {
         try {
             const res = await fetch('/api/reservations', {
                 method: 'POST',
-                credentials: 'include', // Ensure cookies are sent
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     restaurantId: restaurant.id,
