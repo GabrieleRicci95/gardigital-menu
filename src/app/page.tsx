@@ -153,7 +153,7 @@ export default function Home() {
             {/* Menu Card */}
             <div className={styles.pricingCard}>
               <h3 className={styles.planName}>Menu</h3>
-              <div style={{ fontSize: '2.5rem', fontWeight: 800, margin: '1rem 0', color: '#1a237e' }}>€14,99<span style={{ fontSize: '1rem', fontWeight: 400 }}>/mese</span></div>
+              <div style={{ fontSize: '2.5rem', fontWeight: 800, margin: '1rem 0', color: '#1a237e' }}>€15<span style={{ fontSize: '1rem', fontWeight: 400 }}>/mese</span></div>
               <p className={styles.solutionDesc}>Il tuo menu digitale professionale.</p>
               <ul className={styles.planFeatures}>
                 <li>Menu Digitale Premium</li>
@@ -168,7 +168,7 @@ export default function Home() {
             {/* Traduzioni Card */}
             <div className={styles.pricingCard}>
               <h3 className={styles.planName}>Traduzioni</h3>
-              <div style={{ fontSize: '2rem', fontWeight: 800, margin: '1rem 0', color: '#1a237e' }}>€9,99<span style={{ fontSize: '1rem', fontWeight: 400 }}>/mese</span></div>
+              <div style={{ fontSize: '2rem', fontWeight: 800, margin: '1rem 0', color: '#1a237e' }}>€10<span style={{ fontSize: '1rem', fontWeight: 400 }}>/mese</span></div>
               <p className={styles.solutionDesc}>Rendi il tuo menu internazionale.</p>
               <ul className={styles.planFeatures}>
                 <li>Traduzioni AI Istantanee</li>
@@ -181,7 +181,7 @@ export default function Home() {
             {/* Agenda Card */}
             <div className={styles.pricingCard}>
               <h3 className={styles.planName}>Agenda Digitale</h3>
-              <div style={{ fontSize: '2rem', fontWeight: 800, margin: '1rem 0', color: '#1a237e' }}>€9,99<span style={{ fontSize: '1rem', fontWeight: 400 }}>/mese</span></div>
+              <div style={{ fontSize: '2rem', fontWeight: 800, margin: '1rem 0', color: '#1a237e' }}>€10<span style={{ fontSize: '1rem', fontWeight: 400 }}>/mese</span></div>
               <p className={styles.solutionDesc}>Ricevi prenotazioni direttamente.</p>
               <ul className={styles.planFeatures}>
                 <li>Prenotazioni via WhatsApp</li>
@@ -198,7 +198,7 @@ export default function Home() {
               <div className={styles.badge} style={{ backgroundColor: '#e2b13c', color: '#000' }}>OFFERTA LIMITATA</div>
               <h3 className={styles.planName}>Full Pack</h3>
               <div style={{ margin: '1rem 0' }}>
-                <span style={{ fontSize: '1.2rem', textDecoration: 'line-through', color: '#ccc', marginRight: '8px' }}>€34,97</span>
+                <span style={{ fontSize: '1.2rem', textDecoration: 'line-through', color: '#ccc', marginRight: '8px' }}>€35</span>
                 <span style={{ fontSize: '2.5rem', fontWeight: 800, color: '#e2b13c' }}>€29,99<span style={{ fontSize: '1rem', fontWeight: 400, color: '#ccc' }}>/mese</span></span>
               </div>
               <p className={styles.solutionDesc} style={{ color: '#ccc' }}>Il pacchetto completo ad un prezzo speciale.</p>

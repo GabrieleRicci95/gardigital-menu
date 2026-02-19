@@ -13,9 +13,9 @@ async function getStats() {
     // Removed totalVisits query
 
     // Revenue Calculation (Micro-services)
-    // Base: €14.99
-    // Translations: +€9.99
-    // Reservations: +€9.99
+    // Base: €15.00
+    // Translations: +€10.00
+    // Reservations: +€10.00
     // Full Package Cap: €29.99
 
     const subscriptions = await prisma.subscription.findMany({
@@ -33,9 +33,9 @@ async function getStats() {
     let totalRevenue = 0;
 
     subscriptions.forEach(sub => {
-        let subRevenue = 14.99; // Base Plan
-        if (sub.hasTranslations) subRevenue += 9.99;
-        if (sub.hasReservations) subRevenue += 9.99;
+        let subRevenue = 15.00; // Base Plan
+        if (sub.hasTranslations) subRevenue += 10.00;
+        if (sub.hasReservations) subRevenue += 10.00;
 
         // Cap at €29.99 (Full Package Discount)
         if (subRevenue > 29.99) subRevenue = 29.99;
@@ -101,7 +101,7 @@ export default async function AdminDashboardPage() {
                         </div>
                         <div>
                             <p className={styles.stat}>€ {stats.estimatedRevenue}</p>
-                            <span className={styles.subtext}>Base 14,99€ + Extra (Cap 29,99€)</span>
+                            <span className={styles.subtext}>Base 15€ + Extra (Cap 29,99€)</span>
                         </div>
                     </div>
 
