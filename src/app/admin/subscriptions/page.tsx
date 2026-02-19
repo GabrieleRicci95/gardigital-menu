@@ -84,7 +84,7 @@ export default function AdminSubscriptionsPage() {
                                                 color: '#1565c0',
                                                 border: '1px solid #bbdefb'
                                             }}>
-                                                Standard (€15)
+                                                Standard (€14,99)
                                             </span>
                                         </td>
                                         <td>

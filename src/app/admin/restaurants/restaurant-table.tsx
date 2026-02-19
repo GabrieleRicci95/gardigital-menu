@@ -144,7 +144,7 @@ export default function RestaurantTable({ initialRestaurants }: { initialRestaur
                                                 color: '#2e7d32',
                                                 border: '1px solid #c8e6c9'
                                             }}>
-                                                Standard (€15)
+                                                Standard (€14,99)
                                             </span>
                                             {rest.subscription?.hasTranslations && <span title="Traduzioni Attive">🌍</span>}
                                             {rest.subscription?.hasReservations && <span title="Prenotazioni Attive">📅</span>}
@@ -167,7 +167,7 @@ export default function RestaurantTable({ initialRestaurants }: { initialRestaur
                                                 cursor: 'pointer',
                                                 opacity: rest.subscription?.status === 'ACTIVE' && !rest.subscription.hasTranslations && !rest.subscription.hasReservations ? 0.5 : 1
                                             }}
-                                            title="Attiva solo Piano Base (€15)"
+                                            title="Attiva solo Piano Base (€14,99)"
                                         >
                                             Menu
                                         </button>
@@ -184,7 +184,7 @@ export default function RestaurantTable({ initialRestaurants }: { initialRestaur
                                                 cursor: 'pointer',
                                                 opacity: rest.subscription?.hasTranslations && rest.subscription?.hasReservations ? 0.5 : 1
                                             }}
-                                            title="Attiva Tutto (€25)"
+                                            title="Attiva Tutto (€29,99)"
                                         >
                                             Full
                                         </button>
@@ -204,7 +204,7 @@ export default function RestaurantTable({ initialRestaurants }: { initialRestaur
                                                 padding: '4px 8px',
                                                 cursor: 'pointer'
                                             }}
-                                            title="Toggles Traduzioni (+€10)"
+                                            title="Toggles Traduzioni (+€9,99)"
                                         >
                                             🌍 Trad
                                         </button>
@@ -221,7 +221,7 @@ export default function RestaurantTable({ initialRestaurants }: { initialRestaur
                                                 padding: '4px 8px',
                                                 cursor: 'pointer'
                                             }}
-                                            title="Toggles Prenotazioni (+€10)"
+                                            title="Toggles Prenotazioni (+€9,99)"
                                         >
                                             📅 Pren
                                         </button>
