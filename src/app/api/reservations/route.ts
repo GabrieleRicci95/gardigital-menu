@@ -94,7 +94,9 @@ export async function POST(req: Request) {
         let initialStatus = 'PENDING';
 
         if (session) {
-            initialStatus = 'CONFIRMED';
+            const { status } = body;
+            if (status === 'CONFIRMED') initialStatus = 'CONFIRMED';
+            else initialStatus = 'CONFIRMED'; // Force confirmed for admins anyway
         } else if (restaurant?.bookingAutoConfirm) {
             initialStatus = 'CONFIRMED';
         }

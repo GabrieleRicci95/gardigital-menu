@@ -165,7 +165,8 @@ export default function ReservationsPage() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     restaurantId: restaurant.id,
-                    ...newRes
+                    ...newRes,
+                    status: 'CONFIRMED'
                 })
             });
 
