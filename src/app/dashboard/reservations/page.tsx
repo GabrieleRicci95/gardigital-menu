@@ -246,7 +246,7 @@ export default function ReservationsPage() {
         <div className={styles.container}>
             <header className={styles.header}>
                 <div>
-                    <h1 className={styles.title}>Agenda Prenotazioni</h1>
+                    <h1 className={styles.title}>Agenda Prenotazioni (ADMIN)</h1>
                     <p className={styles.subtitle}>Gestisci le richieste dei tuoi clienti in modo professionale.</p>
                 </div>
 
