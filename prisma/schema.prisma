@@ -324,7 +324,7 @@ model Reservation {
   
   name          String    // Customer Name
   email         String?
-  phone         String
+  phone         String?
   
   guests        Int
   date          DateTime  // Date and Time of reservation

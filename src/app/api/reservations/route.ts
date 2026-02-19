@@ -78,7 +78,7 @@ export async function POST(req: Request) {
         const body = await req.json();
         const { restaurantId, name, phone, email, guests, date, time, notes } = body;
 
-        if (!restaurantId || !name || !phone || !guests || !date || !time) {
+        if (!restaurantId || !name || !guests || !date || !time) {
             return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
         }
 

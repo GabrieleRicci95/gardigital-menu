@@ -127,7 +127,6 @@ export default function BookingClient({ restaurant }: BookingClientProps) {
                                 onChange={e => setFormData({ ...formData, name: e.target.value })}
                             />
                             <input
-                                required
                                 type="tel"
                                 placeholder="Telefono"
                                 className={styles.input}
