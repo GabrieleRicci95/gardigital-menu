@@ -8,7 +8,7 @@ interface Reservation {
     name: string;
     date: string;
     guests: number;
-    phone: string;
+    phone: string | null;
     email?: string;
     status: string;
     notes?: string;
@@ -91,8 +91,12 @@ export default function ReservationsPage() {
         }
 
         if (message) {
-            const cleanPhone = reservation.phone.replace(/\s/g, '').replace(/[^0-9+]/g, '');
-            window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`, '_blank');
+            if (reservation.phone) {
+                const cleanPhone = reservation.phone.replace(/\s/g, '').replace(/[^0-9+]/g, '');
+                window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`, '_blank');
+            } else {
+                alert('Attenzione: Nessun telefono salvato per questo cliente. Impossibile inviare il messaggio WhatsApp.');
+            }
         }
 
         // 2. Background DB Update
@@ -372,14 +376,16 @@ export default function ReservationsPage() {
                                         </button>
                                     </>
                                 )}
-                                <a
-                                    href={`https://wa.me/${res.phone.replace(/\s/g, '')}?text=Ciao ${res.name}, confermiamo la tua prenotazione da noi per ${res.guests} persone alle ${new Date(res.date).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit', hour12: false })}!`}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className={styles.btnWhatsapp}
-                                >
-                                    WhatsApp
-                                </a>
+                                {res.phone && (
+                                    <a
+                                        href={`https://wa.me/${res.phone.replace(/\s/g, '')}?text=Ciao ${res.name}, confermiamo la tua prenotazione da noi per ${res.guests} persone alle ${new Date(res.date).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit', hour12: false })}!`}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className={styles.btnWhatsapp}
+                                    >
+                                        WhatsApp
+                                    </a>
+                                )}
                                 <button
                                     className={styles.btnActionDanger}
                                     style={{
@@ -523,7 +529,6 @@ export default function ReservationsPage() {
                                     <label className={styles.formLabel}>Telefono</label>
                                     <input
                                         type="tel"
-                                        required
                                         className={styles.modalInput}
                                         value={newRes.phone}
                                         onChange={e => setNewRes({ ...newRes, phone: e.target.value })}
