@@ -561,7 +561,7 @@ export default function ReservationsPage() {
                                     className={styles.btnPrimary}
                                     style={{ backgroundColor: '#10b981', border: 'none' }}
                                 >
-                                    Crea Prenotazione
+                                    Crea Prenotazione (Admin)
                                 </button>
                             </div>
                         </form>
