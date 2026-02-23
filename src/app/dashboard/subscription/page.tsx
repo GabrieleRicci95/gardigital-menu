@@ -109,7 +109,8 @@ export default function SubscriptionPage() {
     const currentPlan = restaurant?.subscription?.plan || 'BASE';
     const isRecurring = !!restaurant?.subscription?.isRecurring;
     const endDate = restaurant?.subscription?.endDate;
-    const isExpired = endDate ? new Date(endDate) < new Date() : true;
+    const isExpired = currentPlan === 'PILOT' ? false : (endDate ? new Date(endDate) < new Date() : true);
+    const isPilot = currentPlan === 'PILOT';
 
     // Get URL Params for feedback
     const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
@@ -245,10 +246,10 @@ export default function SubscriptionPage() {
                                 backdropFilter: 'blur(12px)',
                                 boxShadow: '0 8px 32px rgba(0,0,0,0.2)'
                             }}>
-                                <Calendar size={20} color={isExpired ? "#ef4444" : "#fbbf24"} />
+                                <Calendar size={20} color={isPilot ? "#fbbf24" : (isExpired ? "#ef4444" : "#fbbf24")} />
                                 <span style={{ fontWeight: '600', fontSize: '0.95rem', letterSpacing: '0.3px' }}>
-                                    {isExpired ? 'Scaduto il: ' : 'Fino al: '}
-                                    <strong>{new Date(endDate).toLocaleDateString('it-IT')}</strong>
+                                    {isPilot ? 'Status: ' : (isExpired ? 'Scaduto il: ' : 'Fino al: ')}
+                                    <strong>{isPilot ? 'Accesso Vitalizio' : new Date(endDate).toLocaleDateString('it-IT')}</strong>
                                 </span>
                             </div>
                         )}
@@ -381,14 +382,15 @@ export default function SubscriptionPage() {
                             padding: '6px 20px',
                             borderRadius: '20px',
                             fontWeight: 'bold',
-                            backgroundColor: isExpired ? '#fee2e2' : '#dcfce7',
-                            color: isExpired ? '#991b1b' : '#166534',
-                            marginBottom: '10px'
+                            backgroundColor: isPilot ? '#fdf4ff' : (isExpired ? '#fee2e2' : '#dcfce7'),
+                            color: isPilot ? '#a21caf' : (isExpired ? '#991b1b' : '#166534'),
+                            marginBottom: '10px',
+                            border: isPilot ? '1px solid #f0abfc' : 'none'
                         }}>
-                            {isExpired ? 'SCADUTO' : 'ATTIVO'}
+                            {isPilot ? 'PARTNER GARDIGITAL' : (isExpired ? 'SCADUTO' : 'ATTIVO')}
                         </div>
                         <p style={{ fontSize: '1.1rem', fontWeight: '600' }}>
-                            {endDate ? `Scadenza: ${new Date(endDate).toLocaleDateString()}` : 'Data non disponibile'}
+                            {isPilot ? 'Accesso Vitalizio' : (endDate ? `Scadenza: ${new Date(endDate).toLocaleDateString()}` : 'Data non disponibile')}
                         </p>
                     </div>
                 </div>
