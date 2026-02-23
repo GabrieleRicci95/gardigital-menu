@@ -104,6 +104,7 @@ export default function DashboardClientLayout({
 
     const navItems = [
         { label: 'Panoramica', href: '/dashboard', icon: 'Items' },
+        { label: 'Abbonamenti', href: '/dashboard/subscription', icon: 'CreditCard' },
         {
             label: 'Agenda',
             href: '/dashboard/reservations',
@@ -127,7 +128,6 @@ export default function DashboardClientLayout({
             })),
         { label: 'Aspetto & Design', href: '/dashboard/design', icon: 'Palette' },
         { label: 'QR Code', href: '/dashboard/qrcode', icon: 'QR' },
-        { label: 'Abbonamento', href: '/dashboard/subscription', icon: 'CreditCard' },
         // Add other custom modules that are not Gin Selection
         ...customModules
             .filter(m => !m.name.toLowerCase().includes('gin'))
@@ -219,7 +219,7 @@ export default function DashboardClientLayout({
                         </Link>
                     ))}
                     <button onClick={handleLogout} className={`${styles.navItem} ${styles.logout}`}>
-                        Esci
+                        <span>Esci</span>
                     </button>
                 </nav>
             </aside>
