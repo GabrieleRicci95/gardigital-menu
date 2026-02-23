@@ -256,7 +256,7 @@ export default function SubscriptionPage() {
                                     }}
                                     disabled={isCurrentPlan && isRecurring}
                                 >
-                                    {isCurrentPlan && isRecurring ? 'ABBONAMENTO ATTIVO' : (isMastro ? 'RINNOVA' : 'Attiva Abbonamento')}
+                                    {isCurrentPlan ? (isRecurring ? 'ABBONAMENTO ATTIVO' : 'Rinnova Abbonamento') : (isMastro ? 'RINNOVA' : 'Attiva Abbonamento')}
                                     <ArrowRight size={18} />
                                 </button>
                             )}
