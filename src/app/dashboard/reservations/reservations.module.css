@@ -640,3 +640,158 @@
         gap: 1rem;
     }
 }
+
+/* Calendar & Pending Alert Styles */
+.calendarContainer {
+    background: white;
+    border-radius: 24px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    margin-bottom: 3rem;
+    border: 1px solid #eef2f6;
+    font-family: var(--font-inter, sans-serif);
+}
+
+.calendarHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.calendarTitle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111;
+}
+
+.calendarGrid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+}
+
+.weekday {
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #6b7280;
+    padding-bottom: 12px;
+    text-transform: uppercase;
+}
+
+.dayCell {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    border: 1px solid transparent;
+    font-weight: 500;
+}
+
+.dayCell:hover {
+    background-color: #f8fafc;
+    border-color: #e2e8f0;
+}
+
+.today {
+    background-color: #f1f5f9;
+    font-weight: 700;
+    color: #1e3a8a;
+}
+
+.activeDay {
+    background-color: #1e3a8a !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);
+}
+
+.hasReservation {
+    position: relative;
+}
+
+.reservationDot {
+    width: 6px;
+    height: 6px;
+    background-color: #10b981;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 6px;
+}
+
+.otherMonth {
+    opacity: 0.3;
+}
+
+.pendingAlert {
+    background: #fff7ed;
+    border: 1px solid #ffedd5;
+    padding: 1.5rem 2rem;
+    border-radius: 20px;
+    margin-bottom: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    box-shadow: 0 10px 30px rgba(245, 158, 11, 0.1);
+    font-family: var(--font-inter, sans-serif);
+}
+
+.pendingAlertText {
+    flex: 1;
+    text-align: left;
+}
+
+.pendingAlertTitle {
+    color: #9a3412;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 0.25rem;
+}
+
+.pendingAlertDesc {
+    color: #c2410c;
+    font-size: 0.95rem;
+}
+
+.btnViewPending {
+    background: #f97316;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.btnViewPending:hover {
+    background: #ea580c;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .calendarContainer {
+        padding: 1rem;
+    }
+
+    .dayCell {
+        font-size: 0.9rem;
+    }
+
+    .pendingAlert {
+        flex-direction: column;
+        text-align: center;
+        padding: 1.5rem;
+    }
+
+    .btnViewPending {
+        width: 100%;
+    }
+}
