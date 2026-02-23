@@ -641,14 +641,16 @@
     }
 }
 
-/* Calendar & Pending Alert Styles */
+/* Calendar & Pending Alert Styles - COMPACT VERSION */
 .calendarContainer {
     background: white;
-    border-radius: 24px;
-    padding: 2rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-    margin-bottom: 3rem;
+    border-radius: 20px;
+    padding: 1.2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    margin: 0 auto 2.5rem;
     border: 1px solid #eef2f6;
+    max-width: 450px;
+    /* Much smaller width */
     font-family: var(--font-inter, sans-serif);
 }
 
@@ -656,27 +658,28 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1.2rem;
 }
 
 .calendarTitle {
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: #111;
+    text-transform: capitalize;
 }
 
 .calendarGrid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 8px;
+    gap: 4px;
 }
 
 .weekday {
     text-align: center;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: #6b7280;
-    padding-bottom: 12px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #9ca3af;
+    padding-bottom: 8px;
     text-transform: uppercase;
 }
 
@@ -686,12 +689,13 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border-radius: 12px;
+    border-radius: 10px;
     cursor: pointer;
     transition: all 0.2s;
     position: relative;
     border: 1px solid transparent;
     font-weight: 500;
+    font-size: 0.9rem;
 }
 
 .dayCell:hover {
@@ -708,7 +712,7 @@
 .activeDay {
     background-color: #1e3a8a !important;
     color: white !important;
-    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);
+    box-shadow: 0 4px 8px rgba(30, 58, 138, 0.2);
 }
 
 .hasReservation {
@@ -716,28 +720,28 @@
 }
 
 .reservationDot {
-    width: 6px;
-    height: 6px;
+    width: 4px;
+    height: 4px;
     background-color: #10b981;
     border-radius: 50%;
     position: absolute;
-    bottom: 6px;
+    bottom: 4px;
 }
 
 .otherMonth {
-    opacity: 0.3;
+    opacity: 0.15;
 }
 
 .pendingAlert {
     background: #fff7ed;
     border: 1px solid #ffedd5;
-    padding: 1.5rem 2rem;
-    border-radius: 20px;
-    margin-bottom: 3rem;
+    padding: 1.2rem 1.5rem;
+    border-radius: 16px;
+    margin-bottom: 2rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 2rem;
+    gap: 1.5rem;
     box-shadow: 0 10px 30px rgba(245, 158, 11, 0.1);
     font-family: var(--font-inter, sans-serif);
 }
@@ -750,22 +754,23 @@
 .pendingAlertTitle {
     color: #9a3412;
     font-weight: 700;
-    font-size: 1.1rem;
-    margin-bottom: 0.25rem;
+    font-size: 1rem;
+    margin-bottom: 0.15rem;
 }
 
 .pendingAlertDesc {
     color: #c2410c;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
 }
 
 .btnViewPending {
     background: #f97316;
     color: white;
     border: none;
-    padding: 0.8rem 1.5rem;
-    border-radius: 12px;
+    padding: 0.6rem 1.2rem;
+    border-radius: 10px;
     font-weight: 700;
+    font-size: 0.85rem;
     cursor: pointer;
     transition: all 0.2s;
     white-space: nowrap;
@@ -779,16 +784,19 @@
 @media (max-width: 768px) {
     .calendarContainer {
         padding: 1rem;
+        max-width: 100%;
+        margin-bottom: 2rem;
     }
 
     .dayCell {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
     }
 
     .pendingAlert {
         flex-direction: column;
         text-align: center;
-        padding: 1.5rem;
+        padding: 1rem;
+        gap: 1rem;
     }
 
     .btnViewPending {
