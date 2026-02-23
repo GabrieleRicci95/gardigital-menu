@@ -218,28 +218,48 @@ export default function SubscriptionPage() {
                                     </li>
                                 ))}
                             </ul>
-                            <button
-                                onClick={() => handlePayment(p.id)}
-                                style={{
-                                    backgroundColor: p.highlight ? 'white' : '#1a237e',
-                                    color: p.highlight ? '#1a237e' : 'white',
-                                    border: 'none',
+                            {isCurrentPlan && !isExpired ? (
+                                <div style={{
+                                    backgroundColor: p.highlight ? 'rgba(255,255,255,0.1)' : 'rgba(26, 35, 126, 0.05)',
+                                    color: p.highlight ? 'white' : '#1a237e',
                                     padding: '1rem',
                                     borderRadius: '12px',
-                                    fontWeight: 'bold',
-                                    cursor: 'pointer',
-                                    width: '100%',
-                                    transition: '0.2s',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    gap: '8px'
-                                }}
-                                disabled={isCurrentPlan && isRecurring}
-                            >
-                                {isCurrentPlan && isRecurring ? 'ABBONAMENTO ATTIVO' : (isMastro ? 'RINNOVA' : 'Attiva Abbonamento')}
-                                <ArrowRight size={18} />
-                            </button>
+                                    fontWeight: '800',
+                                    textAlign: 'center',
+                                    border: p.highlight ? '1px solid rgba(255,255,255,0.3)' : '1px solid #1a237e',
+                                    fontSize: '1rem',
+                                    marginTop: 'auto',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '1px'
+                                }}>
+                                    <CheckCircle size={18} style={{ verticalAlign: 'middle', marginRight: '8px' }} />
+                                    PIANO ATTIVO
+                                </div>
+                            ) : (
+                                <button
+                                    onClick={() => handlePayment(p.id)}
+                                    style={{
+                                        backgroundColor: p.highlight ? 'white' : '#1a237e',
+                                        color: p.highlight ? '#1a237e' : 'white',
+                                        border: 'none',
+                                        padding: '1rem',
+                                        borderRadius: '12px',
+                                        fontWeight: 'bold',
+                                        cursor: 'pointer',
+                                        width: '100%',
+                                        transition: '0.2s',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        gap: '8px',
+                                        marginTop: 'auto'
+                                    }}
+                                    disabled={isCurrentPlan && isRecurring}
+                                >
+                                    {isCurrentPlan && isRecurring ? 'ABBONAMENTO ATTIVO' : (isMastro ? 'RINNOVA' : 'Attiva Abbonamento')}
+                                    <ArrowRight size={18} />
+                                </button>
+                            )}
                         </div>
                     );
                 })}
