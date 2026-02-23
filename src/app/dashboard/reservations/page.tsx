@@ -29,6 +29,8 @@ export default function ReservationsPage() {
     });
 
     const [filterStatus, setFilterStatus] = useState<string>('ALL'); // ALL, PENDING, CONFIRMED, HISTORY
+    const [monthData, setMonthData] = useState<string[]>([]);
+    const [currentMonth, setCurrentMonth] = useState(new Date());
 
     useEffect(() => {
         fetchRestaurant();
@@ -37,8 +39,9 @@ export default function ReservationsPage() {
     useEffect(() => {
         if (restaurant) {
             fetchReservations();
+            fetchMonthData();
         }
-    }, [filterDate, restaurant]);
+    }, [filterDate, restaurant, currentMonth]);
 
     const fetchRestaurant = async () => {
         try {
@@ -75,6 +78,21 @@ export default function ReservationsPage() {
         }
     };
 
+
+    const fetchMonthData = async () => {
+        if (!restaurant) return;
+        try {
+            const month = currentMonth.getMonth() + 1;
+            const year = currentMonth.getFullYear();
+            const res = await fetch(`/api/reservations?restaurantId=${restaurant.id}&month=${month}&year=${year}`);
+            if (res.ok) {
+                const data = await res.json();
+                setMonthData(data.days || []);
+            }
+        } catch (error) {
+            console.error('Error fetching month data:', error);
+        }
+    };
 
     const handleStatusUpdate = async (id: string, newStatus: string) => {
         if (isDemo) return alert('Modalità Demo: modifiche non consentite');
@@ -189,6 +207,7 @@ export default function ReservationsPage() {
                     notes: ''
                 });
                 fetchReservations();
+                fetchMonthData();
             } else {
                 alert('Errore durante la creazione della prenotazione');
             }
@@ -238,6 +257,7 @@ export default function ReservationsPage() {
             const res = await fetch(`/api/reservations?id=${id}`, { method: 'DELETE' });
             if (res.ok) {
                 fetchReservations();
+                fetchMonthData();
             } else {
                 alert('Errore durante l\'eliminazione');
             }
@@ -247,6 +267,41 @@ export default function ReservationsPage() {
         }
     };
 
+
+    // Calendar Helper Functions
+    const daysInMonth = (year: number, month: number) => new Date(year, month + 1, 0).getDate();
+    const firstDayOfMonth = (year: number, month: number) => new Date(year, month, 1).getDay();
+
+    const generateCalendarDays = () => {
+        const year = currentMonth.getFullYear();
+        const month = currentMonth.getMonth();
+        const daysCount = daysInMonth(year, month);
+        const startingDay = firstDayOfMonth(year, month);
+
+        // Correct for Monday start (0 is Sunday in JS, but 1 is Monday)
+        const offset = startingDay === 0 ? 6 : startingDay - 1;
+
+        const days = [];
+        for (let i = 0; i < offset; i++) {
+            days.push(null);
+        }
+        for (let i = 1; i <= daysCount; i++) {
+            days.push(i);
+        }
+        return days;
+    };
+
+    const isToday = (day: number) => {
+        const today = new Date();
+        return day === today.getDate() &&
+            currentMonth.getMonth() === today.getMonth() &&
+            currentMonth.getFullYear() === today.getFullYear();
+    };
+
+    const hasResOnDay = (day: number) => {
+        const dateStr = `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        return monthData.includes(dateStr);
+    };
 
     return (
         <div className={styles.container}>
@@ -270,14 +325,8 @@ export default function ReservationsPage() {
                         onClick={() => !isDemo && setIsModalOpen(true)}
                         disabled={isDemo}
                     >
-                        + Nuova
+                        + Nuova Prenotazione
                     </button>
-                    <input
-                        type="date"
-                        value={filterDate}
-                        onChange={(e) => setFilterDate(e.target.value)}
-                        className={styles.dateInput}
-                    />
                 </div>
             </header>
 
@@ -298,6 +347,54 @@ export default function ReservationsPage() {
                     </button>
                 </div>
             )}
+
+            {/* CALENDAR VIEW */}
+            <div className={styles.calendarContainer}>
+                <div className={styles.calendarHeader}>
+                    <h2 className={styles.calendarTitle}>
+                        {currentMonth.toLocaleDateString('it-IT', { month: 'long', year: 'numeric' })}
+                    </h2>
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                        <button
+                            className={styles.btnSettings}
+                            style={{ padding: '0.4rem 1rem' }}
+                            onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(currentMonth.getMonth() - 1)))}
+                        >
+                            ← Precedente
+                        </button>
+                        <button
+                            className={styles.btnSettings}
+                            style={{ padding: '0.4rem 1rem' }}
+                            onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(currentMonth.getMonth() + 1)))}
+                        >
+                            Successivo →
+                        </button>
+                    </div>
+                </div>
+
+                <div className={styles.calendarGrid}>
+                    {['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'].map(d => (
+                        <div key={d} className={styles.weekday}>{d}</div>
+                    ))}
+                    {generateCalendarDays().map((day, idx) => {
+                        const dateString = day ? `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}` : '';
+                        const isActive = dateString === filterDate;
+
+                        return (
+                            <div
+                                key={idx}
+                                className={`${styles.dayCell} ${day ? '' : styles.otherMonth} ${day && isToday(day) ? styles.today : ''} ${day && isActive ? styles.activeDay : ''}`}
+                                onClick={() => day && setFilterDate(dateString)}
+                            >
+                                {day}
+                                {day && hasResOnDay(day) && (
+                                    <div className={styles.reservationDot}></div>
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
 
 
             {/* TABS */}
