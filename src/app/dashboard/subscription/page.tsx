@@ -115,29 +115,36 @@ export default function SubscriptionPage() {
                             </span>
                         </div>
                     )}
-                    {isRecurring && !isExpired && (
+                    {(isRecurring || restaurant?.subscription?.stripeSubscriptionId) && !isExpired && (
                         <button
                             onClick={handlePortal}
                             disabled={loading}
                             style={{
                                 background: '#fbbf24',
                                 color: '#1a237e',
-                                padding: '10px 20px',
+                                padding: '12px 24px',
                                 borderRadius: '50px',
                                 display: 'flex',
                                 alignItems: 'center',
                                 gap: '8px',
                                 border: 'none',
-                                fontWeight: 'bold',
+                                fontWeight: '800',
                                 cursor: 'pointer',
-                                transition: '0.2s',
-                                boxShadow: '0 4px 12px rgba(251, 191, 36, 0.3)'
+                                transition: '0.3s',
+                                boxShadow: '0 8px 20px rgba(251, 191, 36, 0.4)',
+                                fontSize: '1rem'
                             }}
-                            onMouseEnter={(e) => (e.currentTarget.style.transform = 'translateY(-2px)')}
-                            onMouseLeave={(e) => (e.currentTarget.style.transform = 'translateY(0)')}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.transform = 'translateY(-3px)';
+                                e.currentTarget.style.boxShadow = '0 12px 25px rgba(251, 191, 36, 0.5)';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.transform = 'translateY(0)';
+                                e.currentTarget.style.boxShadow = '0 8px 20px rgba(251, 191, 36, 0.4)';
+                            }}
                         >
-                            <CreditCard size={18} />
-                            Gestisci Abbonamento (Fatture/Disdetta)
+                            <CreditCard size={20} />
+                            Gestisci / Disdici Abbonamento
                         </button>
                     )}
                 </div>
