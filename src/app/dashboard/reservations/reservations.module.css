@@ -720,12 +720,15 @@
 }
 
 .reservationDot {
-    width: 4px;
-    height: 4px;
+    width: 8px;
+    /* Bigger dot */
+    height: 8px;
     background-color: #10b981;
     border-radius: 50%;
     position: absolute;
-    bottom: 4px;
+    bottom: 3px;
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+    /* Glow effect */
 }
 
 .otherMonth {
