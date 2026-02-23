@@ -33,25 +33,53 @@ export default function SubscriptionPage() {
                 body: JSON.stringify({ planType })
             });
             const data = await res.json();
-
             if (data.url) {
                 window.location.href = data.url;
             } else {
-                alert(data.error || "Errore durante l'inizializzazione del pagamento.");
+                alert("Errore nel caricamento del pagamento: " + (data.error || 'Errore sconosciuto'));
             }
         } catch (err) {
-            console.error("Payment redirect failed", err);
-            alert("Si è verificato un errore di rete. Riprova più tardi.");
+            console.error("Payment error", err);
+            alert("Errore tecnico durante il collegamento a Stripe.");
         } finally {
             setLoading(false);
         }
     };
 
-    if (loading && !restaurant) return <div style={{ padding: '2rem', textAlign: 'center' }}>Caricamento...</div>;
+    const handlePortal = async () => {
+        try {
+            setLoading(true);
+            const res = await fetch('/api/checkout/portal', {
+                method: 'POST',
+            });
+            const data = await res.json();
+            if (data.url) {
+                window.location.href = data.url;
+            } else {
+                alert("Errore nel caricamento del portale: " + (data.error || 'Errore sconosciuto'));
+            }
+        } catch (err) {
+            console.error("Portal error", err);
+            alert("Errore tecnico durante il collegamento al portale Stripe.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
-    const expiryDate = restaurant?.subscription?.endDate ? new Date(restaurant.subscription.endDate) : null;
-    const isExpired = expiryDate ? expiryDate < new Date() : false;
-    const plan = restaurant?.subscription?.plan || 'BASE';
+    if (loading && !restaurant) {
+        return (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column', gap: '20px' }}>
+                <div className="spinner" style={{ width: '50px', height: '50px', border: '5px solid #f3f3f3', borderTop: '5px solid #1a237e', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+                <p style={{ fontWeight: '600', color: '#1a237e' }}>Caricamento dati ristorante...</p>
+                <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
+            </div>
+        );
+    }
+
+    const currentPlan = restaurant?.subscription?.plan || 'BASE';
+    const isRecurring = !!restaurant?.subscription?.isRecurring;
+    const endDate = restaurant?.subscription?.endDate;
+    const isExpired = endDate ? new Date(endDate) < new Date() : true;
 
     // Get URL Params for feedback
     const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
@@ -59,7 +87,62 @@ export default function SubscriptionPage() {
     const isCanceled = searchParams?.get('canceled') === 'true';
 
     return (
-        <div style={{ padding: '2rem', maxWidth: '1000px', margin: '0 auto', fontFamily: 'sans-serif' }}>
+        <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto', fontFamily: 'Inter, sans-serif' }}>
+            {/* Header Section */}
+            <div style={{ textAlign: 'center', marginBottom: '40px', background: 'linear-gradient(135deg, #1a237e 0%, #0d47a1 100%)', padding: '60px 20px', borderRadius: '24px', color: 'white', position: 'relative', overflow: 'hidden', boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }}>
+                {/* Decorative Elements */}
+                <div style={{ position: 'absolute', top: '-10%', right: '-5%', width: '300px', height: '300px', background: 'rgba(255,255,255,0.05)', borderRadius: '50%' }} />
+                <div style={{ position: 'absolute', bottom: '-10%', left: '-5%', width: '200px', height: '200px', background: 'rgba(255,255,255,0.05)', borderRadius: '50%' }} />
+
+                <Crown size={48} style={{ marginBottom: '20px', color: '#fbbf24' }} />
+                <h1 style={{ fontSize: '3rem', fontWeight: '800', marginBottom: '16px', letterSpacing: '-1px' }}>Scegli il tuo Successo</h1>
+                <p style={{ fontSize: '1.2rem', opacity: 0.9, maxWidth: '600px', margin: '0 auto', lineHeight: '1.6' }}>
+                    Sblocca tutto il potenziale del tuo ristorante con i nostri strumenti premium progettati per crescere.
+                </p>
+
+                {/* Status Bar */}
+                <div style={{ marginTop: '30px', display: 'flex', justifyContent: 'center', gap: '15px', flexWrap: 'wrap' }}>
+                    <div style={{ background: 'rgba(255,255,255,0.1)', padding: '10px 20px', borderRadius: '50px', display: 'flex', alignItems: 'center', gap: '8px', border: '1px solid rgba(255,255,255,0.2)', backdropFilter: 'blur(10px)' }}>
+                        <ShieldCheck size={18} color="#4ade80" />
+                        <span style={{ fontWeight: '600', fontSize: '0.9rem' }}>Piano: <strong>{currentPlan}</strong></span>
+                    </div>
+                    {endDate && (
+                        <div style={{ background: 'rgba(255,255,255,0.1)', padding: '10px 20px', borderRadius: '50px', display: 'flex', alignItems: 'center', gap: '8px', border: '1px solid rgba(255,255,255,0.2)', backdropFilter: 'blur(10px)' }}>
+                            <Calendar size={18} color={isExpired ? "#ef4444" : "#fbbf24"} />
+                            <span style={{ fontWeight: '600', fontSize: '0.9rem' }}>
+                                {isExpired ? 'Scaduto il: ' : 'Scade il: '}
+                                <strong>{new Date(endDate).toLocaleDateString('it-IT')}</strong>
+                            </span>
+                        </div>
+                    )}
+                    {isRecurring && !isExpired && (
+                        <button
+                            onClick={handlePortal}
+                            disabled={loading}
+                            style={{
+                                background: '#fbbf24',
+                                color: '#1a237e',
+                                padding: '10px 20px',
+                                borderRadius: '50px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                                border: 'none',
+                                fontWeight: 'bold',
+                                cursor: 'pointer',
+                                transition: '0.2s',
+                                boxShadow: '0 4px 12px rgba(251, 191, 36, 0.3)'
+                            }}
+                            onMouseEnter={(e) => (e.currentTarget.style.transform = 'translateY(-2px)')}
+                            onMouseLeave={(e) => (e.currentTarget.style.transform = 'translateY(0)')}
+                        >
+                            <CreditCard size={18} />
+                            Gestisci Abbonamento (Fatture/Disdetta)
+                        </button>
+                    )}
+                </div>
+            </div>
+
             {isSuccess && (
                 <div style={{ backgroundColor: '#dcfce7', color: '#166534', padding: '1rem', borderRadius: '12px', marginBottom: '2rem', textAlign: 'center', border: '1px solid #bbf7d0' }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
@@ -77,10 +160,7 @@ export default function SubscriptionPage() {
                     </div>
                 </div>
             )}
-            <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-                <h1 style={{ fontSize: '2.5rem', color: '#1a237e', marginBottom: '0.5rem' }}>Abbonamento Menu Digitale</h1>
-                <p style={{ color: '#666', fontSize: '1.1rem' }}>Scegli la sicurezza e la professionalità per il tuo locale</p>
-            </div>
+            {/* The original h1 and p tags are now part of the new Header Section */}
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', marginBottom: '3rem' }}>
                 {/* Current Status */}
@@ -102,7 +182,7 @@ export default function SubscriptionPage() {
                             {isExpired ? 'SCADUTO' : 'ATTIVO'}
                         </div>
                         <p style={{ fontSize: '1.1rem', fontWeight: '600' }}>
-                            {expiryDate ? `Scadenza: ${expiryDate.toLocaleDateString()}` : 'Data non disponibile'}
+                            {endDate ? `Scadenza: ${new Date(endDate).toLocaleDateString()}` : 'Data non disponibile'}
                         </p>
                     </div>
                 </div>
@@ -111,7 +191,7 @@ export default function SubscriptionPage() {
                 <div style={{ background: 'white', padding: '2rem', borderRadius: '20px', boxShadow: '0 4px 20px rgba(0,0,0,0.05)', border: '1px solid #eee' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1.5rem' }}>
                         <Zap color="#1a237e" />
-                        <h2 style={{ fontSize: '1.25rem', margin: 0 }}>Piano {plan}</h2>
+                        <h2 style={{ fontSize: '1.25rem', margin: 0 }}>Piano {currentPlan}</h2>
                     </div>
                     <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                         <li style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
