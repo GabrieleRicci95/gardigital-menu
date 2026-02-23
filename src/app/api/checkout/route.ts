@@ -25,24 +25,24 @@ export async function POST(req: Request) {
 
         const { planType } = await req.json().catch(() => ({ planType: 'MENU' }));
 
-        let priceAmount = 1499; // Default Menu
+        let priceAmount = 1500; // Default Menu (€15.00)
         let productName = `Rinnovo Menu Digitale - ${restaurant.name}`;
         let productDescription = 'Accesso al menu digitale interattivo e traduzioni base.';
 
         if (planType === 'FULL') {
-            priceAmount = 2999;
+            priceAmount = 3500; // Full (€35.00)
             // SPECIAL PRICE FOR PILOT PARTNER: Mastroarrosticino (Gaspare)
             if (restaurant.id === 'cmlmuyjwe0002hgn2a547whlk' || restaurant.slug.includes('mastro-arrosticino')) {
-                priceAmount = 1499;
+                priceAmount = 1500;
             }
             productName = `Rinnovo Pacchetto FULL - ${restaurant.name}`;
             productDescription = 'Menu Digitale + Traduzioni AI illimitate + Agenda Prenotazioni.';
         } else if (planType === 'MENU_AI') {
-            priceAmount = 1499 + 999;
+            priceAmount = 2500; // Menu + AI (€25.00)
             productName = `Rinnovo Menu + Traduzioni AI - ${restaurant.name}`;
             productDescription = 'Menu Digitale e sistema di traduzione automatica AI.';
         } else if (planType === 'MENU_AGENDA') {
-            priceAmount = 1499 + 999;
+            priceAmount = 2500; // Menu + Agenda (€25.00)
             productName = `Rinnovo Menu + Agenda - ${restaurant.name}`;
             productDescription = 'Menu Digitale e sistema di gestione prenotazioni interattivo.';
         }

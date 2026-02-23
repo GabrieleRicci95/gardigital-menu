@@ -130,10 +130,10 @@ export default function SubscriptionPage() {
             {/* Plan Selection */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', marginBottom: '4rem', justifyContent: 'start' }}>
                 {[
-                    { id: 'MENU', name: 'Menu Base', price: '14,99', features: ['Menu Interattivo', 'QR Code Illimitati', 'Supporto 24/7'] },
-                    { id: 'MENU_AI', name: 'Menu + AI', price: '24,98', features: ['Menu Interattivo', 'Traduzioni AI', 'Supporto 24/7'] },
-                    { id: 'MENU_AGENDA', name: 'Menu + Agenda', price: '24,98', features: ['Menu Interattivo', 'Gestione prenotazioni', 'Supporto 24/7'] },
-                    { id: 'FULL', name: 'PACCHETTO FULL', price: '29,99', features: ['Menu', 'Traduzioni AI', 'Agenda', 'Supporto 24/7'], highlight: true },
+                    { id: 'MENU', name: 'Menu Base', price: '15,00', features: ['Menu Interattivo', 'QR Code Illimitati', 'Supporto 24/7'] },
+                    { id: 'MENU_AI', name: 'Menu + AI', price: '25,00', features: ['Menu Interattivo', 'Traduzioni AI', 'Supporto 24/7'] },
+                    { id: 'MENU_AGENDA', name: 'Menu + Agenda', price: '25,00', features: ['Menu Interattivo', 'Gestione prenotazioni', 'Supporto 24/7'] },
+                    { id: 'FULL', name: 'PACCHETTO FULL', price: '35,00', features: ['Menu', 'Traduzioni AI', 'Agenda', 'Supporto 24/7'], highlight: true },
                 ].filter(p => {
                     // SE IL RISTORANTE È MASTRO ARROSTICINO, MOSTRA SOLO IL PACCHETTO FULL
                     const isMastro = restaurant?.id === 'cmlmuyjwe0002hgn2a547whlk' || restaurant?.slug?.includes('mastro-arrosticino');
@@ -147,7 +147,7 @@ export default function SubscriptionPage() {
                     // SPECIAL PRICE FOR PILOT PARTNER: Mastroarrosticino (Gaspare)
                     let displayPrice = p.price;
                     if (p.id === 'FULL' && isMastro) {
-                        displayPrice = '14,99';
+                        displayPrice = '15,00';
                     }
 
                     const isCurrentPlan = restaurant?.subscription?.plan === p.id;
