@@ -56,11 +56,41 @@ export default function SubscriptionPage() {
             if (data.url) {
                 window.location.href = data.url;
             } else {
-                alert("Errore nel caricamento del portale: " + (data.error || 'Errore sconosciuto'));
+                // Friendly message if Stripe account is not found
+                if (res.status === 404) {
+                    alert("Account Stripe non trovato per questo indirizzo email. Se hai attivato l'abbonamento manualmente o tramite un altro indirizzo, contatta l'assistenza Gardigital.");
+                } else {
+                    alert("Errore nel caricamento del portale: " + (data.error || 'Errore sconosciuto'));
+                }
             }
         } catch (err) {
             console.error("Portal error", err);
             alert("Errore tecnico durante il collegamento al portale Stripe.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleCancel = async () => {
+        if (!confirm("Sei sicuro di voler disdire il rinnovo automatico? L'abbonamento rimarrà attivo fino alla scadenza attuale, ma non verrà effettuato alcun addebito futuro.")) {
+            return;
+        }
+
+        try {
+            setLoading(true);
+            const res = await fetch('/api/checkout/cancel', {
+                method: 'POST',
+            });
+            const data = await res.json();
+            if (res.ok) {
+                alert("Rinnovo automatico disattivato con successo.");
+                window.location.reload();
+            } else {
+                alert("Errore durante la disdetta: " + (data.error || 'Errore sconosciuto'));
+            }
+        } catch (err) {
+            console.error("Cancel error", err);
+            alert("Errore tecnico durante la disdetta.");
         } finally {
             setLoading(false);
         }
@@ -110,42 +140,78 @@ export default function SubscriptionPage() {
                         <div style={{ background: 'rgba(255,255,255,0.1)', padding: '10px 20px', borderRadius: '50px', display: 'flex', alignItems: 'center', gap: '8px', border: '1px solid rgba(255,255,255,0.2)', backdropFilter: 'blur(10px)' }}>
                             <Calendar size={18} color={isExpired ? "#ef4444" : "#fbbf24"} />
                             <span style={{ fontWeight: '600', fontSize: '0.9rem' }}>
-                                {isExpired ? 'Scaduto il: ' : 'Scade il: '}
+                                {isExpired ? 'Scaduto il: ' : 'Fino al: '}
                                 <strong>{new Date(endDate).toLocaleDateString('it-IT')}</strong>
                             </span>
                         </div>
                     )}
-                    {((isRecurring || restaurant?.subscription?.stripeSubscriptionId) || (currentPlan !== 'BASE' && currentPlan !== 'Standard')) && !isExpired && (
-                        <button
-                            onClick={handlePortal}
-                            disabled={loading}
-                            style={{
-                                background: '#fbbf24',
-                                color: '#1a237e',
-                                padding: '12px 24px',
-                                borderRadius: '50px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '8px',
-                                border: 'none',
-                                fontWeight: '800',
-                                cursor: 'pointer',
-                                transition: '0.3s',
-                                boxShadow: '0 8px 20px rgba(251, 191, 36, 0.4)',
-                                fontSize: '1rem'
-                            }}
-                            onMouseEnter={(e) => {
-                                e.currentTarget.style.transform = 'translateY(-3px)';
-                                e.currentTarget.style.boxShadow = '0 12px 25px rgba(251, 191, 36, 0.5)';
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.style.transform = 'translateY(0)';
-                                e.currentTarget.style.boxShadow = '0 8px 20px rgba(251, 191, 36, 0.4)';
-                            }}
-                        >
-                            <CreditCard size={20} />
-                            Gestisci / Disdici Abbonamento
-                        </button>
+                    <div style={{
+                        background: isRecurring ? 'rgba(74, 222, 128, 0.2)' : 'rgba(239, 68, 68, 0.2)',
+                        padding: '10px 20px',
+                        borderRadius: '50px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        border: `1px solid ${isRecurring ? '#4ade80' : '#ef4444'}`,
+                        backdropFilter: 'blur(10px)'
+                    }}>
+                        <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: isRecurring ? '#4ade80' : '#ef4444' }} />
+                        <span style={{ fontWeight: '600', fontSize: '0.9rem' }}>
+                            Rinnovo Automatico: <strong>{isRecurring ? 'ATTIVO' : 'DISATTIVATO'}</strong>
+                        </span>
+                    </div>
+
+                    {!isExpired && (isRecurring || restaurant?.subscription?.stripeSubscriptionId) && (
+                        <div style={{ display: 'flex', gap: '10px' }}>
+                            <button
+                                onClick={handlePortal}
+                                disabled={loading}
+                                title="Gestisci fatture e metodi di pagamento"
+                                style={{
+                                    background: 'white',
+                                    color: '#1a237e',
+                                    padding: '12px 20px',
+                                    borderRadius: '50px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '8px',
+                                    border: 'none',
+                                    fontWeight: '700',
+                                    cursor: 'pointer',
+                                    transition: '0.3s',
+                                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                                    fontSize: '0.9rem'
+                                }}
+                            >
+                                <CreditCard size={18} />
+                                Info Pagamenti
+                            </button>
+
+                            {isRecurring && (
+                                <button
+                                    onClick={handleCancel}
+                                    disabled={loading}
+                                    style={{
+                                        background: '#ef4444',
+                                        color: 'white',
+                                        padding: '12px 24px',
+                                        borderRadius: '50px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '8px',
+                                        border: 'none',
+                                        fontWeight: '800',
+                                        cursor: 'pointer',
+                                        transition: '0.3s',
+                                        boxShadow: '0 4px 12px rgba(239, 68, 68, 0.3)',
+                                        fontSize: '0.9rem'
+                                    }}
+                                >
+                                    <AlertCircle size={18} />
+                                    Disdici Rinnovo
+                                </button>
+                            )}
+                        </div>
                     )}
                 </div>
             </div>
