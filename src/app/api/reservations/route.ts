@@ -3,20 +3,23 @@ import { prisma } from '@/lib/prisma';
 import { getSession, isDemoSession, decrypt } from '@/lib/auth';
 
 // GET: Fetch reservations (Protected - Admin Only)
-export async function GET(req: Request) {
-    const session = await getSession();
-    if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
-    const { searchParams } = new URL(req.url);
-    const restaurantId = searchParams.get('restaurantId');
-    const date = searchParams.get('date'); // Filter by date (YYYY-MM-DD)
-    const countPending = searchParams.get('countPending') === 'true';
-    const month = searchParams.get('month');
-    const year = searchParams.get('year');
-
-    if (!restaurantId) return NextResponse.json({ error: 'Restaurant ID required' }, { status: 400 });
-
+export async function GET(req: NextRequest) {
     try {
+        const session = await getSession();
+        if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+        const { searchParams } = req.nextUrl;
+        const restaurantId = searchParams.get('restaurantId');
+
+        if (!restaurantId) {
+            return NextResponse.json({ error: 'Restaurant ID required' }, { status: 400 });
+        }
+
+        const date = searchParams.get('date');
+        const countPending = searchParams.get('countPending') === 'true';
+        const month = searchParams.get('month');
+        const year = searchParams.get('year');
+
         // Option 1: Just count pending reservations
         if (countPending) {
             const count = await prisma.reservation.count({
@@ -30,8 +33,14 @@ export async function GET(req: Request) {
 
         // Option 2: Get days with reservations for a specific month
         if (month && year) {
-            const startOfMonth = new Date(parseInt(year), parseInt(month) - 1, 1);
-            const endOfMonth = new Date(parseInt(year), parseInt(month), 0, 23, 59, 59, 999);
+            const m = parseInt(month);
+            const y = parseInt(year);
+            if (isNaN(m) || isNaN(y)) {
+                return NextResponse.json({ error: 'Invalid month or year' }, { status: 400 });
+            }
+
+            const startOfMonth = new Date(y, m - 1, 1);
+            const endOfMonth = new Date(y, m, 0, 23, 59, 59, 999);
 
             const reservations = await prisma.reservation.findMany({
                 where: {
@@ -48,7 +57,13 @@ export async function GET(req: Request) {
 
             // Extract unique dates (YYYY-MM-DD)
             const daysWithReservations = Array.from(new Set(
-                reservations.map(r => r.date.toISOString().split('T')[0])
+                reservations.map(r => {
+                    try {
+                        return r.date.toISOString().split('T')[0];
+                    } catch (e) {
+                        return null;
+                    }
+                }).filter(Boolean)
             ));
 
             return NextResponse.json({ days: daysWithReservations });
@@ -57,36 +72,39 @@ export async function GET(req: Request) {
         // Default: Fetch full reservation details
         const whereClause: any = { restaurantId };
 
-        if (date) {
-            const startOfDay = new Date(date);
-            startOfDay.setHours(0, 0, 0, 0);
+        if (date && date !== 'undefined') {
+            const day = new Date(date);
+            if (!isNaN(day.getTime())) {
+                const startOfDay = new Date(day);
+                startOfDay.setHours(0, 0, 0, 0);
 
-            const endOfDay = new Date(date);
-            endOfDay.setHours(23, 59, 59, 999);
+                const endOfDay = new Date(day);
+                endOfDay.setHours(23, 59, 59, 999);
 
-            // Fetch reservations that matches the date OR are pending (regardless of date)
-            whereClause.OR = [
-                {
-                    date: {
-                        gte: startOfDay,
-                        lte: endOfDay
+                // Fetch reservations that matches the date OR are pending (regardless of date)
+                whereClause.OR = [
+                    {
+                        date: {
+                            gte: startOfDay,
+                            lte: endOfDay
+                        }
+                    },
+                    {
+                        status: 'PENDING'
                     }
-                },
-                {
-                    status: 'PENDING'
-                }
-            ];
+                ];
+            }
         }
 
         const reservations = await prisma.reservation.findMany({
             where: whereClause,
-            orderBy: { date: 'asc' } // Changed from createdAt to date for better sorting in agenda
+            orderBy: { date: 'asc' }
         });
 
         return NextResponse.json(reservations);
     } catch (error) {
         console.error('GET Reservation Error:', error);
-        return NextResponse.json({ error: 'Database error' }, { status: 500 });
+        return NextResponse.json({ error: 'Internal server error', details: error instanceof Error ? error.message : String(error) }, { status: 500 });
     }
 }
 
