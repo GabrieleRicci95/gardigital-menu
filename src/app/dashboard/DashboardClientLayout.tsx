@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { Menu as MenuIcon } from 'lucide-react';
 import styles from './dashboard.module.css';
 import SubscriptionAlert from '@/components/common/SubscriptionAlert';
 
@@ -234,7 +235,8 @@ export default function DashboardClientLayout({
                 <SubscriptionAlert />
                 <header className={styles.header}>
                     <button className={styles.mobileToggle} onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-                        Menu
+                        <MenuIcon size={20} />
+                        <span>Menu</span>
                     </button>
                     <div className={styles.userMenu}>
                         {restaurantLogo ? (
