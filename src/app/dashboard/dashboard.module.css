@@ -20,11 +20,40 @@
 }
 
 .logo {
-    margin-bottom: var(--spacing-2xl);
+    margin-bottom: var(--spacing-sm);
     display: flex;
     justify-content: center;
     flex-shrink: 0;
-    /* Prevent logo from shrinking */
+}
+
+.statusContainer {
+    display: flex;
+    justify-content: center;
+    margin-bottom: var(--spacing-xl);
+}
+
+.statusBadge {
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 4px 12px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.statusActive {
+    background-color: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+.statusExpired {
+    background-color: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
 }
 
 .logoImage {

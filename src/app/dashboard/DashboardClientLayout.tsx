@@ -26,6 +26,7 @@ export default function DashboardClientLayout({
     const [restaurantLogo, setRestaurantLogo] = useState<string | null>(null);
     const [customModules, setCustomModules] = useState<{ name: string, slug: string }[]>([]);
     const [pendingReservationsCount, setPendingReservationsCount] = useState(0);
+    const [isSubscriptionActive, setIsSubscriptionActive] = useState(true);
 
     const fetchRestaurantData = async () => {
         try {
@@ -44,6 +45,13 @@ export default function DashboardClientLayout({
                     if (data.restaurant.subscription) {
                         setSubscriptionPlan(data.restaurant.subscription.plan);
                         setHasReservations(!!data.restaurant.subscription.hasReservations);
+
+                        // Check subscription status
+                        const endDate = data.restaurant.subscription.endDate;
+                        if (endDate) {
+                            const isExpired = new Date(endDate) < new Date();
+                            setIsSubscriptionActive(!isExpired);
+                        }
 
                         // Fetch pending reservations count if user has the module
                         if (data.restaurant.subscription.hasReservations) {
@@ -186,6 +194,14 @@ export default function DashboardClientLayout({
                     ) : (
                         <img src="/logo_dashboard.png" alt="Logo" className={styles.logoImage} />
                     )}
+                </div>
+
+                {/* Subscription Status Badge */}
+                <div className={styles.statusContainer}>
+                    <div className={`${styles.statusBadge} ${isSubscriptionActive ? styles.statusActive : styles.statusExpired}`}>
+                        <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: isSubscriptionActive ? '#10b981' : '#ef4444' }} />
+                        {isSubscriptionActive ? 'Abbonamento Attivo' : 'Abbonamento Scaduto'}
+                    </div>
                 </div>
                 <nav className={styles.nav}>
                     {navItems.map((item: any) => (
