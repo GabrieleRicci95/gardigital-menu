@@ -644,14 +644,19 @@
 /* Calendar & Pending Alert Styles - COMPACT VERSION */
 .calendarContainer {
     background: white;
-    border-radius: 20px;
-    padding: 1.2rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-    margin: 0 auto 2.5rem;
-    border: 1px solid #eef2f6;
-    max-width: 450px;
-    /* Much smaller width */
+    border-radius: 24px;
+    padding: 1.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    margin: 0 auto 3rem;
+    border: 1px solid #f1f5f9;
+    max-width: 480px;
     font-family: var(--font-inter, sans-serif);
+    transition: all 0.3s ease;
+}
+
+.calendarContainer:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+    transform: translateY(-2px);
 }
 
 .calendarHeader {
@@ -662,10 +667,11 @@
 }
 
 .calendarTitle {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #111;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #1a1a1a;
     text-transform: capitalize;
+    letter-spacing: -0.01em;
 }
 
 .calendarGrid {
@@ -689,46 +695,44 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border-radius: 10px;
+    border-radius: 12px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     border: 1px solid transparent;
-    font-weight: 500;
-    font-size: 0.9rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #4b5563;
 }
 
 .dayCell:hover {
-    background-color: #f8fafc;
-    border-color: #e2e8f0;
+    background-color: #f1f5f9;
+    color: #1a1a1a;
+    transform: scale(1.05);
 }
 
 .today {
-    background-color: #f1f5f9;
-    font-weight: 700;
-    color: #1e3a8a;
+    background-color: #eff6ff;
+    color: #2563eb;
+    font-weight: 800;
+    border: 1px solid #dbeafe;
 }
 
 .activeDay {
-    background-color: #1e3a8a !important;
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%) !important;
     color: white !important;
-    box-shadow: 0 4px 8px rgba(30, 58, 138, 0.2);
-}
-
-.hasReservation {
-    position: relative;
+    box-shadow: 0 8px 16px rgba(30, 58, 138, 0.3);
+    transform: translateY(-2px) scale(1.05);
 }
 
 .reservationDot {
-    width: 8px;
-    /* Bigger dot */
-    height: 8px;
+    width: 6px;
+    height: 6px;
     background-color: #10b981;
     border-radius: 50%;
     position: absolute;
-    bottom: 3px;
-    box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
-    /* Glow effect */
+    bottom: 6px;
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
 }
 
 .otherMonth {
@@ -736,17 +740,30 @@
 }
 
 .pendingAlert {
-    background: #fff7ed;
-    border: 1px solid #ffedd5;
-    padding: 1.2rem 1.5rem;
-    border-radius: 16px;
-    margin-bottom: 2rem;
+    background: linear-gradient(90deg, #fff7ed 0%, #fffbeb 100%);
+    border: 1px solid #fed7aa;
+    padding: 1.5rem 2rem;
+    border-radius: 20px;
+    margin-bottom: 2.5rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1.5rem;
-    box-shadow: 0 10px 30px rgba(245, 158, 11, 0.1);
+    gap: 2rem;
+    box-shadow: 0 4px 20px rgba(251, 146, 60, 0.08);
     font-family: var(--font-inter, sans-serif);
+    animation: slideDown 0.5s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .pendingAlertText {
@@ -767,21 +784,23 @@
 }
 
 .btnViewPending {
-    background: #f97316;
+    background: #ea580c;
     color: white;
     border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 10px;
+    padding: 0.8rem 1.5rem;
+    border-radius: 12px;
     font-weight: 700;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(234, 88, 12, 0.2);
 }
 
 .btnViewPending:hover {
-    background: #ea580c;
+    background: #c2410c;
     transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(234, 88, 12, 0.3);
 }
 
 @media (max-width: 768px) {

@@ -334,14 +334,17 @@ export default function ReservationsPage() {
             {pendingOtherDays.length > 0 && (
                 <div className={styles.pendingAlert}>
                     <div className={styles.pendingAlertText}>
-                        <div className={styles.pendingAlertTitle}>🚀 {pendingOtherDays.length} Prenotazioni in attesa per altre date</div>
+                        <div className={styles.pendingAlertTitle}>{pendingOtherDays.length} Prenotazioni in attesa per altre date</div>
                         <div className={styles.pendingAlertDesc}>
                             Ci sono richieste vecchie o future che non hai ancora gestito.
                         </div>
                     </div>
                     <button
                         className={styles.btnViewPending}
-                        onClick={() => setFilterStatus('PENDING')}
+                        onClick={() => {
+                            setFilterStatus('PENDING');
+                            document.getElementById('reservations-tabs')?.scrollIntoView({ behavior: 'smooth' });
+                        }}
                     >
                         Gestisci Ora
                     </button>
