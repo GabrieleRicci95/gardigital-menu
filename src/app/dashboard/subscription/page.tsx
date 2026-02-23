@@ -133,7 +133,7 @@ export default function SubscriptionPage() {
                     { id: 'MENU', name: 'Menu Base', price: '15,00', features: ['Menu Interattivo', 'QR Code Illimitati', 'Supporto 24/7'] },
                     { id: 'MENU_AI', name: 'Menu + AI', price: '25,00', features: ['Menu Interattivo', 'Traduzioni AI', 'Supporto 24/7'] },
                     { id: 'MENU_AGENDA', name: 'Menu + Agenda', price: '25,00', features: ['Menu Interattivo', 'Gestione prenotazioni', 'Supporto 24/7'] },
-                    { id: 'FULL', name: 'PACCHETTO FULL', price: '35,00', features: ['Menu', 'Traduzioni AI', 'Agenda', 'Supporto 24/7'], highlight: true },
+                    { id: 'FULL', name: 'PACCHETTO FULL', price: '29,99', features: ['Menu', 'Traduzioni AI', 'Agenda', 'Supporto 24/7'], highlight: true },
                 ].filter(p => {
                     // SE IL RISTORANTE È MASTRO ARROSTICINO, MOSTRA SOLO IL PACCHETTO FULL
                     const isMastro = restaurant?.id === 'cmlmuyjwe0002hgn2a547whlk' || restaurant?.slug?.includes('mastro-arrosticino');
@@ -193,11 +193,11 @@ export default function SubscriptionPage() {
                                 </div>
                             )}
 
-                            <h3 style={{ fontSize: '1.2rem', marginBottom: '1rem', fontWeight: 'bold' }}>{p.name}</h3>
+                            <h3 style={{ fontSize: '1.2rem', marginBottom: '1rem', fontWeight: 'bold', color: p.highlight ? 'white' : 'inherit' }}>{p.name}</h3>
                             <div style={{ marginBottom: '2rem' }}>
                                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-                                    <span style={{ fontSize: '2.5rem', fontWeight: '800' }}>€{displayPrice}</span>
-                                    <small style={{ opacity: 0.7 }}>/mese</small>
+                                    <span style={{ fontSize: '2.5rem', fontWeight: '800', color: p.highlight ? 'white' : 'inherit' }}>€{displayPrice}</span>
+                                    <small style={{ opacity: 0.7, color: p.highlight ? 'white' : 'inherit' }}>/mese</small>
                                 </div>
                                 {isMastro && (
                                     <div style={{ color: '#fbbf24', fontSize: '0.8rem', fontWeight: '600', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>

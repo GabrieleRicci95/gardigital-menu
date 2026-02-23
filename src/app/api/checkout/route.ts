@@ -30,7 +30,7 @@ export async function POST(req: Request) {
         let productDescription = 'Accesso al menu digitale interattivo e traduzioni base.';
 
         if (planType === 'FULL') {
-            priceAmount = 3500; // Full (€35.00)
+            priceAmount = 2999; // Full Package Bundle Discount (€29.99)
             // SPECIAL PRICE FOR PILOT PARTNER: Mastroarrosticino (Gaspare)
             if (restaurant.id === 'cmlmuyjwe0002hgn2a547whlk' || restaurant.slug.includes('mastro-arrosticino')) {
                 priceAmount = 1500;
