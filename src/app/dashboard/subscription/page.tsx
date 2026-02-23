@@ -115,7 +115,7 @@ export default function SubscriptionPage() {
                             </span>
                         </div>
                     )}
-                    {(isRecurring || restaurant?.subscription?.stripeSubscriptionId) && !isExpired && (
+                    {((isRecurring || restaurant?.subscription?.stripeSubscriptionId) || (currentPlan !== 'BASE' && currentPlan !== 'Standard')) && !isExpired && (
                         <button
                             onClick={handlePortal}
                             disabled={loading}

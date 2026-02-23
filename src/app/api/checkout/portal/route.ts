@@ -17,24 +17,46 @@ export async function POST(req: Request) {
             include: { subscription: true }
         });
 
-        if (!restaurant || !restaurant.subscription?.stripeSubscriptionId) {
-            return NextResponse.json({ error: 'Subscription not found' }, { status: 404 });
+        if (!restaurant) {
+            return NextResponse.json({ error: 'Ristorante non trovato' }, { status: 404 });
         }
 
-        // Retrieve subscription to get customer ID
-        const stripeSubscription = await stripe.subscriptions.retrieve(
-            restaurant.subscription.stripeSubscriptionId
-        );
+        let stripeCustomerId: string | null = null;
 
-        if (!stripeSubscription.customer) {
-            return NextResponse.json({ error: 'Stripe customer not found' }, { status: 404 });
+        // Try to get customer ID from subscription first
+        if (restaurant.subscription?.stripeSubscriptionId) {
+            try {
+                const stripeSubscription = await stripe.subscriptions.retrieve(
+                    restaurant.subscription.stripeSubscriptionId
+                );
+                stripeCustomerId = stripeSubscription.customer as string;
+            } catch (err) {
+                console.warn('Could not retrieve subscription from Stripe:', err);
+            }
+        }
+
+        // Fallback: Search by email if subscription ID is missing or invalid
+        if (!stripeCustomerId) {
+            const customers = await stripe.customers.list({
+                email: session.user.email,
+                limit: 1
+            });
+            if (customers.data.length > 0) {
+                stripeCustomerId = customers.data[0].id;
+            }
+        }
+
+        if (!stripeCustomerId) {
+            return NextResponse.json({
+                error: 'Account Stripe non trovato. Se hai pagato di recente, attendi qualche minuto o contatta l\'assistenza.'
+            }, { status: 404 });
         }
 
         const origin = req.headers.get('origin') || process.env.NEXT_PUBLIC_APP_URL || 'https://www.gardigital.it';
 
         // Create Portal Session
         const portalSession = await stripe.billingPortal.sessions.create({
-            customer: stripeSubscription.customer as string,
+            customer: stripeCustomerId,
             return_url: `${origin}/dashboard/subscription`,
         });
 
