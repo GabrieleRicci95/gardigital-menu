@@ -45,7 +45,7 @@ export interface MenuPageRestaurant {
     wineList?: { isActive: boolean } | null;
     champagneList?: { isActive: boolean } | null;
     drinkList?: { isActive: boolean } | null;
-    subscription?: { plan: string; hasTranslations: boolean; hasReservations: boolean } | null;
+    subscription?: { plan: string; hasTranslations: boolean; hasReservations: boolean; endDate?: string | null; status?: string | null } | null;
     categories: MenuPageCategory[];
     translations?: { language: string; description: string | null }[];
     customLists?: { id: string; name: string; slug: string; isActive: boolean }[] | null;

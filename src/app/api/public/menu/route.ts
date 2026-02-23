@@ -35,7 +35,7 @@ export async function GET(request: Request) {
                 wineList: { select: { isActive: true } },
                 champagneList: { select: { isActive: true } },
                 drinkList: { select: { isActive: true } },
-                subscription: { select: { plan: true, hasTranslations: true, hasReservations: true } },
+                subscription: { select: { plan: true, hasTranslations: true, hasReservations: true, endDate: true, status: true } },
                 customLists: {
                     where: { isActive: true },
                     include: {

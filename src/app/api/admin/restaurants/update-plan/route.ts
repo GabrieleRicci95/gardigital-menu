@@ -57,18 +57,20 @@ export async function POST(req: Request) {
             return NextResponse.json({ success: true, subscription });
         }
 
-        if (!restaurantId || !['FREE', 'PREMIUM', 'WEBSITE', 'FULL'].includes(newPlan)) {
+        if (!restaurantId || !['FREE', 'PREMIUM', 'WEBSITE', 'FULL', 'PILOT'].includes(newPlan)) {
             return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
         }
 
         let endDate = null;
-        if ((newPlan === 'PREMIUM' || newPlan === 'FULL') && durationMonths && typeof durationMonths === 'number') {
+        if (newPlan === 'PILOT') {
+            endDate = null;
+        } else if ((newPlan === 'PREMIUM' || newPlan === 'FULL') && durationMonths && typeof durationMonths === 'number') {
             const date = new Date();
             date.setMonth(date.getMonth() + durationMonths);
             endDate = date;
         }
 
-        const isFull = newPlan === 'FULL';
+        const isFull = newPlan === 'FULL' || newPlan === 'PILOT';
 
         const subscription = await prisma.subscription.upsert({
             where: { restaurantId: restaurantId },

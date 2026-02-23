@@ -136,6 +136,10 @@ model Subscription {
   hasReservations Boolean    @default(false)
   hasOrders       Boolean    @default(false)
 
+  // Stripe Integration
+  stripeSubscriptionId String?  @unique
+  isRecurring         Boolean   @default(false)
+
   startDate      DateTime   @default(now())
   endDate        DateTime?
   restaurantId   String     @unique

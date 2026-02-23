@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import styles from './dashboard.module.css';
+import SubscriptionAlert from '@/components/common/SubscriptionAlert';
 
 export default function DashboardClientLayout({
     children,
@@ -24,35 +25,63 @@ export default function DashboardClientLayout({
     const [hasReservations, setHasReservations] = useState(false);
     const [restaurantLogo, setRestaurantLogo] = useState<string | null>(null);
     const [customModules, setCustomModules] = useState<{ name: string, slug: string }[]>([]);
+    const [pendingReservationsCount, setPendingReservationsCount] = useState(0);
 
-    useEffect(() => {
-        const fetchRestaurantData = async () => {
-            try {
-                const res = await fetch('/api/restaurant');
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data.restaurant) {
-                        setRestaurantName(data.restaurant.name);
-                        setRestaurantSlug(data.restaurant.slug);
-                        setOwnerEmail(data.restaurant.owner?.email || '');
-                        setIsWineActive(!!data.restaurant.wineList?.isActive);
-                        setIsChampagneActive(!!data.restaurant.champagneList?.isActive);
-                        setIsDrinkActive(!!data.restaurant.drinkList?.isActive);
-                        setRestaurantLogo(data.restaurant.logoUrl || null);
-                        setCustomModules(data.restaurant.customLists || []);
-                        if (data.restaurant.subscription) {
-                            setSubscriptionPlan(data.restaurant.subscription.plan);
-                            setHasReservations(!!data.restaurant.subscription.hasReservations);
-                        } else {
-                            router.push('/onboarding');
+    const fetchRestaurantData = async () => {
+        try {
+            const res = await fetch('/api/restaurant');
+            if (res.ok) {
+                const data = await res.json();
+                if (data.restaurant) {
+                    setRestaurantName(data.restaurant.name);
+                    setRestaurantSlug(data.restaurant.slug);
+                    setOwnerEmail(data.restaurant.owner?.email || '');
+                    setIsWineActive(!!data.restaurant.wineList?.isActive);
+                    setIsChampagneActive(!!data.restaurant.champagneList?.isActive);
+                    setIsDrinkActive(!!data.restaurant.drinkList?.isActive);
+                    setRestaurantLogo(data.restaurant.logoUrl || null);
+                    setCustomModules(data.restaurant.customLists || []);
+                    if (data.restaurant.subscription) {
+                        setSubscriptionPlan(data.restaurant.subscription.plan);
+                        setHasReservations(!!data.restaurant.subscription.hasReservations);
+
+                        // Fetch pending reservations count if user has the module
+                        if (data.restaurant.subscription.hasReservations) {
+                            fetchPendingCount(data.restaurant.id);
                         }
+                    } else {
+                        router.push('/onboarding');
                     }
                 }
-            } catch (error) {
-                console.error("Restaurant data fetch failed", error);
             }
-        };
+        } catch (error) {
+            console.error("Restaurant data fetch failed", error);
+        }
+    };
+
+    const fetchPendingCount = async (restaurantId: string) => {
+        try {
+            const res = await fetch(`/api/reservations?restaurantId=${restaurantId}&countPending=true`);
+            if (res.ok) {
+                const data = await res.json();
+                setPendingReservationsCount(data.pendingCount || 0);
+            }
+        } catch (error) {
+            console.error("Pending count fetch failed", error);
+        }
+    };
+
+    useEffect(() => {
         fetchRestaurantData();
+
+        // Refresh count every 2 minutes
+        const interval = setInterval(() => {
+            if (restaurantSlug) { // Simple check to avoid early fetches
+                fetchRestaurantData();
+            }
+        }, 120000);
+
+        return () => clearInterval(interval);
     }, [router]);
 
     // Lock body scroll when mobile menu is open
@@ -67,7 +96,13 @@ export default function DashboardClientLayout({
 
     const navItems = [
         { label: 'Panoramica', href: '/dashboard', icon: 'Items' },
-        { label: 'Agenda', href: '/dashboard/reservations', icon: 'Calendar', isReservation: true },
+        {
+            label: 'Agenda',
+            href: '/dashboard/reservations',
+            icon: 'Calendar',
+            isReservation: true,
+            badge: pendingReservationsCount > 0 ? pendingReservationsCount : null
+        },
         { label: 'Il mio Ristorante', href: '/dashboard/restaurant', icon: 'Store' },
         { label: 'Menu', href: '/dashboard/menu', icon: 'Menu' },
         { label: 'Menu Fissi', href: '/dashboard/fixed-menus', icon: 'Star' },
@@ -153,14 +188,17 @@ export default function DashboardClientLayout({
                     )}
                 </div>
                 <nav className={styles.nav}>
-                    {navItems.map((item) => (
+                    {navItems.map((item: any) => (
                         <Link
                             key={item.href}
                             href={item.href}
                             className={`${styles.navItem} ${pathname === item.href ? styles.active : ''}`}
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
-                            {item.label}
+                            <span>{item.label}</span>
+                            {item.badge && (
+                                <span className={styles.badge}>{item.badge}</span>
+                            )}
                         </Link>
                     ))}
                     <button onClick={handleLogout} className={`${styles.navItem} ${styles.logout}`}>
@@ -176,6 +214,7 @@ export default function DashboardClientLayout({
             />
 
             <main className={styles.main}>
+                <SubscriptionAlert />
                 <header className={styles.header}>
                     <button className={styles.mobileToggle} onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                         Menu

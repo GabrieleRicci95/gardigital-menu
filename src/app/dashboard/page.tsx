@@ -98,7 +98,7 @@ export default function DashboardPage() {
                     <div className={styles.cardTitle}>
                         Stato Abbonamento
                     </div>
-                    <div>
+                    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
                         {(() => {
                             let parts = ['Menu'];
                             if (subscription?.hasTranslations) parts.push('Traduzioni');
@@ -106,22 +106,51 @@ export default function DashboardPage() {
                             const statusText = parts.join(' + ');
                             const modulesCount = parts.length;
 
+                            const expiryDate = subscription?.endDate ? new Date(subscription.endDate) : null;
+                            const isExpired = expiryDate ? expiryDate < new Date() : false;
+
                             return (
                                 <>
                                     <div className={styles.statusText} style={{
                                         fontSize: '1.4rem',
                                         color: subscription?.plan === 'FULL' ? '#fbc02d' : '#2e7d32',
-                                        textTransform: 'uppercase'
+                                        textTransform: 'uppercase',
+                                        marginBottom: '0.5rem'
                                     }}>
                                         {statusText}
                                     </div>
-                                    <p className={styles.cardDesc}>
+                                    <p className={styles.cardDesc} style={{ marginBottom: '1rem' }}>
                                         {subscription?.plan === 'FULL'
                                             ? 'Hai il pacchetto completo con tutti i moduli attivi.'
                                             : modulesCount > 1
                                                 ? 'Hai un piano personalizzato con moduli aggiuntivi.'
                                                 : 'Hai il piano base (Solo Menu).'}
                                     </p>
+
+                                    <div style={{
+                                        marginTop: 'auto',
+                                        padding: '12px',
+                                        backgroundColor: isExpired ? '#fee2e2' : '#f8fafc',
+                                        borderRadius: '12px',
+                                        border: `1px solid ${isExpired ? '#fecaca' : '#e2e8f0'}`,
+                                        marginBottom: '1rem'
+                                    }}>
+                                        <div style={{ fontSize: '0.8rem', color: '#64748b', marginBottom: '4px' }}>Scadenza Servizio</div>
+                                        <div style={{
+                                            fontWeight: 'bold',
+                                            color: isExpired ? '#991b1b' : '#334155',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '6px'
+                                        }}>
+                                            📅 {expiryDate ? expiryDate.toLocaleDateString() : 'Non impostata'}
+                                            {isExpired && <span style={{ fontSize: '0.7rem', backgroundColor: '#ef4444', color: 'white', padding: '2px 6px', borderRadius: '4px' }}>SCADUTO</span>}
+                                        </div>
+                                    </div>
+
+                                    <Link href="/dashboard/subscription" className={`${styles.button} ${styles.btnPrimary}`} style={{ width: '100%', textAlign: 'center' }}>
+                                        Gestisci / Rinnova
+                                    </Link>
                                 </>
                             );
                         })()}

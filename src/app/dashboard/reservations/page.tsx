@@ -28,6 +28,10 @@ export default function ReservationsPage() {
         bookingAutoConfirm: false
     });
 
+    const [filterStatus, setFilterStatus] = useState<string>('ALL'); // ALL, PENDING, CONFIRMED, HISTORY
+    const [monthData, setMonthData] = useState<string[]>([]);
+    const [currentMonth, setCurrentMonth] = useState(new Date());
+
     useEffect(() => {
         fetchRestaurant();
     }, []);
@@ -35,8 +39,9 @@ export default function ReservationsPage() {
     useEffect(() => {
         if (restaurant) {
             fetchReservations();
+            fetchMonthData();
         }
-    }, [filterDate, restaurant]);
+    }, [filterDate, restaurant, currentMonth]);
 
     const fetchRestaurant = async () => {
         try {
@@ -73,6 +78,21 @@ export default function ReservationsPage() {
         }
     };
 
+    const fetchMonthData = async () => {
+        if (!restaurant) return;
+        try {
+            const month = currentMonth.getMonth() + 1;
+            const year = currentMonth.getFullYear();
+            const res = await fetch(`/api/reservations?restaurantId=${restaurant.id}&month=${month}&year=${year}`);
+            if (res.ok) {
+                const data = await res.json();
+                setMonthData(data.days || []);
+            }
+        } catch (error) {
+            console.error('Error fetching month data:', error);
+        }
+    };
+
     const handleStatusUpdate = async (id: string, newStatus: string) => {
         if (isDemo) return alert('Modalità Demo: modifiche non consentite');
         if (!confirm('Sei sicuro?')) return;
@@ -81,7 +101,6 @@ export default function ReservationsPage() {
         if (!reservation) return;
 
         // 1. Optimistic WhatsApp Open
-        // We open the window immediately to avoid popup blockers that trigger after async delays
         let message = '';
         const dateStr = new Date(reservation.date).toLocaleDateString('it-IT', { day: 'numeric', month: 'long' });
         const timeStr = new Date(reservation.date).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit', hour12: false });
@@ -94,7 +113,7 @@ export default function ReservationsPage() {
 
         if (message) {
             if (reservation.phone) {
-                const cleanPhone = reservation.phone.replace(/\s/g, '').replace(/[^0-9+]/g, '');
+                const cleanPhone = reservation.phone.replace(/\s/g, '').replace(/[^0-9]/g, '');
                 window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`, '_blank');
             } else {
                 alert('Attenzione: Nessun telefono salvato per questo cliente. Impossibile inviare il messaggio WhatsApp.');
@@ -129,13 +148,16 @@ export default function ReservationsPage() {
         }
     };
 
-    const [filterStatus, setFilterStatus] = useState<string>('ALL'); // ALL, PENDING, CONFIRMED, HISTORY
-
     const filteredReservations = reservations.filter(res => {
         if (filterStatus === 'ALL') return true;
         if (filterStatus === 'HISTORY') return res.status === 'REJECTED' || res.status === 'CANCELLED';
         return res.status === filterStatus;
     });
+
+    const pendingOtherDays = reservations.filter(r =>
+        r.status === 'PENDING' &&
+        new Date(r.date).toISOString().split('T')[0] !== filterDate
+    );
 
     const counts = {
         ALL: reservations.length,
@@ -162,7 +184,7 @@ export default function ReservationsPage() {
         setLoading(true);
 
         try {
-            const res = await fetch('/api/reservations/manual', {
+            const res = await fetch('/api/reservations', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -184,6 +206,7 @@ export default function ReservationsPage() {
                     notes: ''
                 });
                 fetchReservations();
+                fetchMonthData();
             } else {
                 alert('Errore durante la creazione della prenotazione');
             }
@@ -233,6 +256,7 @@ export default function ReservationsPage() {
             const res = await fetch(`/api/reservations?id=${id}`, { method: 'DELETE' });
             if (res.ok) {
                 fetchReservations();
+                fetchMonthData();
             } else {
                 alert('Errore durante l\'eliminazione');
             }
@@ -240,6 +264,41 @@ export default function ReservationsPage() {
             console.error(error);
             alert('Errore di connessione');
         }
+    };
+
+    // Calendar Helper Functions
+    const daysInMonth = (year: number, month: number) => new Date(year, month + 1, 0).getDate();
+    const firstDayOfMonth = (year: number, month: number) => new Date(year, month, 1).getDay();
+
+    const generateCalendarDays = () => {
+        const year = currentMonth.getFullYear();
+        const month = currentMonth.getMonth();
+        const daysCount = daysInMonth(year, month);
+        const startingDay = firstDayOfMonth(year, month);
+
+        // Correct for Monday start (0 is Sunday in JS, but 1 is Monday)
+        const offset = startingDay === 0 ? 6 : startingDay - 1;
+
+        const days = [];
+        for (let i = 0; i < offset; i++) {
+            days.push(null);
+        }
+        for (let i = 1; i <= daysCount; i++) {
+            days.push(i);
+        }
+        return days;
+    };
+
+    const isToday = (day: number) => {
+        const today = new Date();
+        return day === today.getDate() &&
+            currentMonth.getMonth() === today.getMonth() &&
+            currentMonth.getFullYear() === today.getFullYear();
+    };
+
+    const hasResOnDay = (day: number) => {
+        const dateStr = `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        return monthData.includes(dateStr);
     };
 
     return (
@@ -299,6 +358,72 @@ export default function ReservationsPage() {
                     />
                 </div>
             </header>
+
+            {/* PENDING ALERT FOR OTHER DAYS */}
+            {pendingOtherDays.length > 0 && (
+                <div className={styles.pendingAlert}>
+                    <div className={styles.pendingAlertText}>
+                        <div className={styles.pendingAlertTitle}>🚀 {pendingOtherDays.length} Prenotazioni in attesa per altre date</div>
+                        <div className={styles.pendingAlertDesc}>
+                            Ci sono richieste vecchie o future che non hai ancora gestito.
+                        </div>
+                    </div>
+                    <button
+                        className={styles.btnViewPending}
+                        onClick={() => setFilterStatus('PENDING')}
+                    >
+                        Gestisci Ora
+                    </button>
+                </div>
+            )}
+
+            {/* CALENDAR VIEW */}
+            <div className={styles.calendarContainer}>
+                <div className={styles.calendarHeader}>
+                    <h2 className={styles.calendarTitle}>
+                        {currentMonth.toLocaleDateString('it-IT', { month: 'long', year: 'numeric' })}
+                    </h2>
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                        <button
+                            className={styles.btnSettings}
+                            style={{ padding: '0.4rem 1rem' }}
+                            onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(currentMonth.getMonth() - 1)))}
+                        >
+                            ← Precedente
+                        </button>
+                        <button
+                            className={styles.btnSettings}
+                            style={{ padding: '0.4rem 1rem' }}
+                            onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(currentMonth.getMonth() + 1)))}
+                        >
+                            Successivo →
+                        </button>
+                    </div>
+                </div>
+
+                <div className={styles.calendarGrid}>
+                    {['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'].map(d => (
+                        <div key={d} className={styles.weekday}>{d}</div>
+                    ))}
+                    {generateCalendarDays().map((day, idx) => {
+                        const dateString = day ? `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}` : '';
+                        const isActive = dateString === filterDate;
+
+                        return (
+                            <div
+                                key={idx}
+                                className={`${styles.dayCell} ${day ? '' : styles.otherMonth} ${day && isToday(day) ? styles.today : ''} ${day && isActive ? styles.activeDay : ''}`}
+                                onClick={() => day && setFilterDate(dateString)}
+                            >
+                                {day}
+                                {day && hasResOnDay(day) && (
+                                    <div className={styles.reservationDot}></div>
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
 
             {/* TABS */}
             <div className={styles.tabs}>
@@ -381,7 +506,7 @@ export default function ReservationsPage() {
                                 )}
                                 {res.phone && (
                                     <a
-                                        href={`https://wa.me/${res.phone.replace(/\s/g, '')}?text=Ciao ${res.name}, confermiamo la tua prenotazione da noi per ${res.guests} persone alle ${new Date(res.date).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit', hour12: false })}!`}
+                                        href={`https://wa.me/${res.phone.replace(/\s/g, '').replace(/[^0-9]/g, '')}?text=Ciao ${res.name}, confermiamo la tua prenotazione da noi per ${res.guests} persone alle ${new Date(res.date).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit', hour12: false })}!`}
                                         target="_blank"
                                         rel="noreferrer"
                                         className={styles.btnWhatsapp}

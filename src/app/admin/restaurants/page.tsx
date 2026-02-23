@@ -1,6 +1,27 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import {
+    Search,
+    Calendar,
+    Globe,
+    ShieldCheck,
+    Trash2,
+    Lock,
+    PlusCircle,
+    BarChart3,
+    Users,
+    Clock,
+    CheckCircle2,
+    XCircle,
+    MoreVertical,
+    ChevronDown,
+    Zap,
+    Crown,
+    Repeat,
+    CreditCard
+} from 'lucide-react';
+import styles from '../admin.module.css';
 
 interface Restaurant {
     id: string;
@@ -15,16 +36,17 @@ interface Restaurant {
         endDate?: string | null;
         hasTranslations?: boolean;
         hasReservations?: boolean;
+        isRecurring?: boolean;
+        stripeSubscriptionId?: string | null;
     } | null;
     createdAt: string;
 }
-
-import styles from '../admin.module.css';
 
 export default function AdminRestaurantsPage() {
     const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
+    const [selectedDuration, setSelectedDuration] = useState(1);
 
     useEffect(() => {
         fetchRestaurants();
@@ -44,16 +66,19 @@ export default function AdminRestaurantsPage() {
         }
     };
 
+    const stats = useMemo(() => {
+        const total = restaurants.length;
+        const active = restaurants.filter(r => r.subscription?.status === 'ACTIVE').length;
+        const expired = total - active;
+        return { total, active, expired };
+    }, [restaurants]);
+
     const handleToggleFeature = async (restaurantId: string, feature: 'hasTranslations' | 'hasReservations', currentValue: boolean) => {
-        // Optimistic update
         setRestaurants(prev => prev.map(r => {
             if (r.id === restaurantId && r.subscription) {
                 return {
                     ...r,
-                    subscription: {
-                        ...r.subscription,
-                        [feature]: !currentValue
-                    }
+                    subscription: { ...r.subscription, [feature]: !currentValue }
                 };
             }
             return r;
@@ -63,27 +88,18 @@ export default function AdminRestaurantsPage() {
             const res = await fetch('/api/admin/restaurants/update-plan', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    restaurantId,
-                    [feature]: !currentValue
-                }),
+                body: JSON.stringify({ restaurantId, [feature]: !currentValue }),
             });
-
-            if (!res.ok) {
-                alert('Errore aggiornamento funzione');
-                fetchRestaurants();
-            }
+            if (!res.ok) fetchRestaurants();
         } catch (e) {
             alert('Errore di connessione');
+            fetchRestaurants();
         }
     };
 
     const handlePlanChange = async (restaurantId: string, newPlan: string, durationMonths: number = 0) => {
-        // Optimistic update
         setRestaurants(prev => {
-            if (newPlan === 'DELETED') {
-                return prev.filter(r => r.id !== restaurantId);
-            }
+            if (newPlan === 'DELETED') return prev.filter(r => r.id !== restaurantId);
             return prev.map(r => {
                 if (r.id === restaurantId) {
                     const isFull = newPlan === 'FULL';
@@ -93,9 +109,9 @@ export default function AdminRestaurantsPage() {
                             ...r.subscription,
                             plan: newPlan,
                             status: 'ACTIVE',
-                            hasTranslations: isFull,
-                            hasReservations: isFull,
-                            endDate: durationMonths > 0 ? new Date(Date.now() + durationMonths * 30 * 24 * 60 * 60 * 1000).toISOString() : null
+                            hasTranslations: isFull || newPlan === 'PILOT',
+                            hasReservations: isFull || newPlan === 'PILOT',
+                            endDate: newPlan === 'PILOT' ? null : (durationMonths > 0 ? new Date(Date.now() + durationMonths * 30 * 24 * 60 * 60 * 1000).toISOString() : null)
                         } as any
                     };
                 }
@@ -108,11 +124,7 @@ export default function AdminRestaurantsPage() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ restaurantId, newPlan, durationMonths })
         });
-
-        if (!res.ok) {
-            alert("Errore aggiornamento piano");
-            fetchRestaurants(); // Revert
-        }
+        if (!res.ok) fetchRestaurants();
     };
 
     const filteredRestaurants = restaurants.filter(r =>
@@ -121,23 +133,71 @@ export default function AdminRestaurantsPage() {
         r.owner.email.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    if (loading) return <div className={styles.container} style={{ padding: '2rem' }}>Caricamento ristoranti...</div>;
+    if (loading) return (
+        <div className={styles.container}>
+            <div style={{ display: 'flex', justifyContent: 'center', padding: '10rem' }}>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-900"></div>
+            </div>
+        </div>
+    );
 
     return (
         <div className={styles.container}>
             <header className={styles.header}>
                 <h1 className={styles.title}>Gestione Ristoranti</h1>
+                <p className={styles.subtitle}>Gestisci i tuoi partner e monitora gli abbonamenti</p>
             </header>
 
-            <div className={styles.searchContainer}>
-                <span className={styles.searchIcon}>In</span>
-                <input
-                    type="text"
-                    placeholder="Cerca ristorante o proprietario..."
-                    value={searchTerm}
-                    onChange={e => setSearchTerm(e.target.value)}
-                    className={styles.searchInput}
-                />
+            <div className={styles.statsGrid}>
+                <div className={styles.statCard}>
+                    <div className={styles.statIcon} style={{ background: '#eef2ff', color: '#4338ca' }}><Users size={24} /></div>
+                    <div className={styles.statInfo}>
+                        <span className={styles.statValue}>{stats.total}</span>
+                        <span className={styles.statLabel}>Partner Totali</span>
+                    </div>
+                </div>
+                <div className={styles.statCard}>
+                    <div className={styles.statIcon} style={{ background: '#ecfdf5', color: '#059669' }}><CheckCircle2 size={24} /></div>
+                    <div className={styles.statInfo}>
+                        <span className={styles.statValue}>{stats.active}</span>
+                        <span className={styles.statLabel}>Abbonamenti Attivi</span>
+                    </div>
+                </div>
+                <div className={styles.statCard}>
+                    <div className={styles.statIcon} style={{ background: '#fef2f2', color: '#dc2626' }}><Clock size={24} /></div>
+                    <div className={styles.statInfo}>
+                        <span className={styles.statValue}>{stats.expired}</span>
+                        <span className={styles.statLabel}>Scaduti / In attesa</span>
+                    </div>
+                </div>
+            </div>
+
+            <div className={styles.filtersWrapper}>
+                <div className={styles.searchContainer}>
+                    <div className={styles.searchIcon}><Search size={20} /></div>
+                    <input
+                        type="text"
+                        placeholder="Cerca ristorante, email o proprietario..."
+                        value={searchTerm}
+                        onChange={e => setSearchTerm(e.target.value)}
+                        className={styles.searchInput}
+                    />
+                </div>
+
+                <div className={styles.durationControl}>
+                    <span className={styles.durationLabel}>Durata Rinnovo:</span>
+                    <select
+                        value={selectedDuration}
+                        onChange={(e) => setSelectedDuration(parseInt(e.target.value))}
+                        className={styles.durationSelect}
+                    >
+                        <option value={1}>1 Mese</option>
+                        <option value={3}>3 Mesi</option>
+                        <option value={6}>6 Mesi</option>
+                        <option value={12}>12 Mesi</option>
+                    </select>
+                    <ChevronDown size={16} color="#64748b" />
+                </div>
             </div>
 
             <div className={styles.tableCard}>
@@ -147,146 +207,150 @@ export default function AdminRestaurantsPage() {
                             <tr>
                                 <th>Ristorante</th>
                                 <th>Proprietario</th>
-                                <th>Stato Abbonamento</th>
+                                <th>Stato</th>
                                 <th>Iscrizione</th>
-                                <th>Azioni</th>
+                                <th>Scadenza</th>
+                                <th style={{ textAlign: 'right' }}>Azioni</th>
                             </tr>
                         </thead>
                         <tbody>
                             {filteredRestaurants.map(r => {
+                                const isActive = r.subscription?.status === 'ACTIVE';
+                                const isExpired = r.subscription?.endDate && new Date(r.subscription.endDate) < new Date();
+
                                 return (
                                     <tr key={r.id}>
-                                        <td style={{ fontWeight: '600' }}>{r.name}</td>
-                                        <td>
-                                            <div className={styles.ownerName}>{r.owner.name || 'N/D'}</div>
-                                            <div className={styles.ownerEmail}>{r.owner.email}</div>
+                                        <td className={styles.restaurantCell}>
+                                            <span className={styles.restaurantName}>{r.name}</span>
+                                            <span className={styles.restaurantId}>{r.id.substring(0, 8)}...</span>
+                                        </td>
+                                        <td className={styles.ownerCell}>
+                                            <span className={styles.ownerName}>{r.owner.name || 'N/D'}</span>
+                                            <span className={styles.ownerEmail}>{r.owner.email}</span>
                                         </td>
                                         <td>
-                                            {(!r.subscription || r.subscription.status !== 'ACTIVE') ? (
-                                                <span style={{
-                                                    padding: '4px 8px',
-                                                    borderRadius: '4px',
-                                                    fontSize: '0.8rem',
-                                                    fontWeight: 'bold',
-                                                    backgroundColor: '#fff3e0',
-                                                    color: '#e65100',
-                                                    border: '1px solid #ffe0b2'
-                                                }}>
-                                                    In attesa / Scaduto
+                                            {!isActive || isExpired ? (
+                                                <span className={`${styles.badge} ${styles.badgeExpired}`}>
+                                                    <XCircle size={14} /> Scaduto
                                                 </span>
                                             ) : (
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                                                    <span style={{
-                                                        padding: '4px 8px',
-                                                        borderRadius: '4px',
-                                                        fontSize: '0.8rem',
-                                                        fontWeight: 'bold',
-                                                        backgroundColor: '#e8f5e9',
-                                                        color: '#2e7d32',
-                                                        border: '1px solid #c8e6c9'
-                                                    }}>
-                                                        Standard (€15)
-                                                    </span>
-                                                    {r.subscription?.hasTranslations && <span title="Traduzioni Attive">🌍</span>}
-                                                    {r.subscription?.hasReservations && <span title="Prenotazioni Attive">📅</span>}
+                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                                    {r.subscription?.plan === 'PILOT' ? (
+                                                        <span className={`${styles.badge} ${styles.badgeActive}`} style={{ background: '#fdf4ff', color: '#a21caf', border: '1px solid #f0abfc' }}>
+                                                            <Crown size={14} /> Socio Pilota
+                                                        </span>
+                                                    ) : (
+                                                        <span className={`${styles.badge} ${styles.badgeActive}`}>
+                                                            <CheckCircle2 size={14} /> Attivo
+                                                        </span>
+                                                    )}
+                                                    <div style={{ display: 'flex', gap: '8px', fontSize: '1rem', marginTop: '4px' }}>
+                                                        {r.subscription?.hasTranslations && <span title="Traduzioni Attive"><Globe size={16} color="#3b82f6" /></span>}
+                                                        {r.subscription?.hasReservations && <span title="Prenotazioni Attive"><Calendar size={16} color="#a855f7" /></span>}
+                                                        {r.subscription?.isRecurring && (
+                                                            <span title={`Rinnovo Automatico Attivo: ${r.subscription.stripeSubscriptionId}`}>
+                                                                <Repeat size={16} color="#10b981" />
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                    {r.subscription?.isRecurring && (
+                                                        <span style={{
+                                                            fontSize: '0.65rem',
+                                                            color: '#10b981',
+                                                            fontWeight: 'bold',
+                                                            marginTop: '2px',
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            gap: '2px'
+                                                        }}>
+                                                            <CreditCard size={10} /> RICORRENTE
+                                                        </span>
+                                                    )}
                                                 </div>
                                             )}
                                         </td>
-                                        <td style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem' }}>
+                                        <td style={{ color: '#64748b' }}>
                                             {new Date(r.createdAt).toLocaleDateString('it-IT')}
                                         </td>
                                         <td>
-                                            <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap', alignItems: 'center' }}>
-                                                {/* Plan Toggles */}
-                                                <button
-                                                    onClick={() => handlePlanChange(r.id, 'PREMIUM', 0)}
-                                                    className={`${styles.btnAction}`}
-                                                    style={{
-                                                        backgroundColor: '#2e7d32',
-                                                        color: 'white',
-                                                        border: 'none',
-                                                        fontSize: '0.75rem',
-                                                        padding: '4px 8px',
-                                                        opacity: (r.subscription?.status === 'ACTIVE' && !r.subscription.hasTranslations && !r.subscription.hasReservations) ? 0.5 : 1
-                                                    }}
-                                                    title="Attiva solo Piano Base (€15)"
-                                                >
-                                                    Menu
-                                                </button>
-                                                <button
-                                                    onClick={() => handlePlanChange(r.id, 'FULL', 0)}
-                                                    className={`${styles.btnAction}`}
-                                                    style={{
-                                                        backgroundColor: '#fbc02d',
-                                                        color: 'black',
-                                                        border: 'none',
-                                                        fontSize: '0.75rem',
-                                                        padding: '4px 8px',
-                                                        opacity: (r.subscription?.hasTranslations && r.subscription?.hasReservations) ? 0.5 : 1
-                                                    }}
-                                                    title="Attiva Tutto (€25)"
-                                                >
-                                                    Full
-                                                </button>
+                                            {r.subscription?.endDate ? (
+                                                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                                    <span style={{
+                                                        fontWeight: 700,
+                                                        color: isExpired ? '#ef4444' : '#334155'
+                                                    }}>
+                                                        {new Date(r.subscription.endDate).toLocaleDateString('it-IT')}
+                                                    </span>
+                                                    {!isExpired && <span style={{ fontSize: '0.7rem', color: '#94a3b8' }}>Scade presto</span>}
+                                                </div>
+                                            ) : r.subscription?.plan === 'PILOT' ? (
+                                                <span style={{ color: '#a21caf', fontWeight: 600 }}>Illimitato</span>
+                                            ) : (
+                                                <span style={{ color: '#cbd5e1' }}>Mancante</span>
+                                            )}
+                                        </td>
+                                        <td>
+                                            <div className={styles.actionGroup} style={{ justifyContent: 'flex-end' }}>
+                                                <div className={styles.btnGroup}>
+                                                    <button
+                                                        onClick={() => handlePlanChange(r.id, 'PREMIUM', selectedDuration)}
+                                                        className={`${styles.btnAction} ${styles.btnGreen}`}
+                                                        title="Attiva Piano Base"
+                                                    >
+                                                        <PlusCircle size={14} /> Base (+{selectedDuration}m)
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handlePlanChange(r.id, 'FULL', selectedDuration)}
+                                                        className={`${styles.btnAction} ${styles.btnGold}`}
+                                                        title="Attiva Tutto"
+                                                    >
+                                                        <Zap size={14} /> Full (+{selectedDuration}m)
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handlePlanChange(r.id, 'PILOT')}
+                                                        className={`${styles.btnAction}`}
+                                                        style={{ background: '#fdf4ff', color: '#a21caf', border: '1px solid #f5d0fe' }}
+                                                        title="Socio Pilota (Free Forever)"
+                                                    >
+                                                        <Crown size={14} /> Pilot
+                                                    </button>
+                                                </div>
 
-                                                <div style={{ width: '1px', height: '20px', backgroundColor: '#ddd', margin: '0 5px' }} />
-
-                                                {/* Micro-service Toggles */}
                                                 <button
                                                     onClick={() => handleToggleFeature(r.id, 'hasTranslations', !!r.subscription?.hasTranslations)}
                                                     disabled={!r.subscription}
-                                                    className={styles.btnAction}
-                                                    style={{
-                                                        backgroundColor: r.subscription?.hasTranslations ? '#1976d2' : '#f5f5f5',
-                                                        color: r.subscription?.hasTranslations ? 'white' : '#666',
-                                                        border: '1px solid #ddd',
-                                                        fontSize: '0.75rem',
-                                                        padding: '4px 8px',
-                                                        cursor: 'pointer'
-                                                    }}
-                                                    title="Toggle Traduzioni (+€10)"
+                                                    className={`${styles.btnAction} ${styles.btnIcon} ${r.subscription?.hasTranslations ? styles.btnIconActive : ''}`}
+                                                    title="Toggle Traduzioni"
                                                 >
-                                                    🌍 Trad
+                                                    <Globe size={18} />
                                                 </button>
 
                                                 <button
                                                     onClick={() => handleToggleFeature(r.id, 'hasReservations', !!r.subscription?.hasReservations)}
                                                     disabled={!r.subscription}
-                                                    className={styles.btnAction}
-                                                    style={{
-                                                        backgroundColor: r.subscription?.hasReservations ? '#7b1fa2' : '#f5f5f5',
-                                                        color: r.subscription?.hasReservations ? 'white' : '#666',
-                                                        border: '1px solid #ddd',
-                                                        fontSize: '0.75rem',
-                                                        padding: '4px 8px',
-                                                        cursor: 'pointer'
-                                                    }}
-                                                    title="Toggle Prenotazioni (+€10)"
+                                                    className={`${styles.btnAction} ${styles.btnIcon} ${r.subscription?.hasReservations ? styles.btnIconPurple : ''}`}
+                                                    title="Toggle Prenotazioni"
                                                 >
-                                                    📅 Pren
+                                                    <Calendar size={18} />
                                                 </button>
 
-                                                <div style={{ width: '1px', height: '20px', backgroundColor: '#ddd', margin: '0 5px' }} />
+                                                <div style={{ width: '1px', height: '24px', background: '#e2e8f0', margin: '0 4px' }} />
 
                                                 <button
                                                     onClick={() => handlePlanChange(r.id, 'BLOCKED')}
-                                                    className={`${styles.btnAction} ${styles.btnRed}`}
-                                                    style={{ backgroundColor: '#e53935', color: 'white', border: 'none', fontSize: '0.75rem', padding: '4px 8px' }}
-                                                    title="Rimuovi abbonamento"
+                                                    className={`${styles.btnAction} ${styles.btnDanger} ${styles.btnIcon}`}
+                                                    title="Blocca Abbonamento"
                                                 >
-                                                    Blocca
+                                                    <Lock size={18} />
                                                 </button>
                                                 <button
                                                     onClick={() => {
-                                                        if (confirm('Sei sicuro di voler ELIMINARE definitivamente questo ristorante e utente?')) {
-                                                            handlePlanChange(r.id, 'DELETED');
-                                                        }
+                                                        if (confirm('Eliminare definitivamente questo ristorante?')) handlePlanChange(r.id, 'DELETED');
                                                     }}
-                                                    className={`${styles.btnAction}`}
-                                                    style={{ backgroundColor: '#000', color: 'white', border: 'none', fontSize: '0.75rem', padding: '4px 8px' }}
-                                                    title="Elimina definitivamente"
+                                                    className={`${styles.btnAction} ${styles.btnBlack} ${styles.btnIcon}`}
+                                                    title="Elimina Ristorante"
                                                 >
-                                                    Elimina
+                                                    <Trash2 size={18} />
                                                 </button>
                                             </div>
                                         </td>

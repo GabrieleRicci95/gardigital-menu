@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma';
 import styles from './menu-public.module.css';
 import { notFound } from 'next/navigation';
 import MenuClient, { MenuPageRestaurant } from './MenuClient';
+import SuspendedService from '@/components/menu/SuspendedService';
 
 // Prevent caching to ensure menu is always fresh
 export const dynamic = 'force-dynamic';
@@ -50,7 +51,7 @@ async function getRestaurant(slug: string): Promise<MenuPageRestaurant | null> {
                     }
                 }
             },
-            subscription: { select: { plan: true, hasTranslations: true, hasReservations: true } }
+            subscription: { select: { plan: true, hasTranslations: true, hasReservations: true, endDate: true, status: true } }
         }
     });
 
@@ -88,6 +89,20 @@ export default async function PublicMenuPage({ params }: PageProps) {
     // Fix for "Only plain objects can be passed to Client Components"
     // This handles Prisma Decimals, Dates, etc.
     const serializedRestaurant = JSON.parse(JSON.stringify(restaurant));
+
+    // Expiration Check
+    const subscription = restaurant.subscription;
+    const expiryDate = subscription?.endDate ? new Date(subscription.endDate) : null;
+    const isExpired = expiryDate ? expiryDate < new Date() : false;
+
+    if (isExpired) {
+        return (
+            <SuspendedService
+                restaurantName={restaurant.name}
+                themeColor={restaurant.themeColor}
+            />
+        );
+    }
 
     return (
         <MenuClient restaurant={serializedRestaurant} />

@@ -10,10 +10,51 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const restaurantId = searchParams.get('restaurantId');
     const date = searchParams.get('date'); // Filter by date (YYYY-MM-DD)
+    const countPending = searchParams.get('countPending') === 'true';
+    const month = searchParams.get('month');
+    const year = searchParams.get('year');
 
     if (!restaurantId) return NextResponse.json({ error: 'Restaurant ID required' }, { status: 400 });
 
     try {
+        // Option 1: Just count pending reservations
+        if (countPending) {
+            const count = await prisma.reservation.count({
+                where: {
+                    restaurantId,
+                    status: 'PENDING'
+                }
+            });
+            return NextResponse.json({ pendingCount: count });
+        }
+
+        // Option 2: Get days with reservations for a specific month
+        if (month && year) {
+            const startOfMonth = new Date(parseInt(year), parseInt(month) - 1, 1);
+            const endOfMonth = new Date(parseInt(year), parseInt(month), 0, 23, 59, 59, 999);
+
+            const reservations = await prisma.reservation.findMany({
+                where: {
+                    restaurantId,
+                    date: {
+                        gte: startOfMonth,
+                        lte: endOfMonth
+                    }
+                },
+                select: {
+                    date: true
+                }
+            });
+
+            // Extract unique dates (YYYY-MM-DD)
+            const daysWithReservations = Array.from(new Set(
+                reservations.map(r => r.date.toISOString().split('T')[0])
+            ));
+
+            return NextResponse.json({ days: daysWithReservations });
+        }
+
+        // Default: Fetch full reservation details
         const whereClause: any = { restaurantId };
 
         if (date) {
@@ -39,11 +80,12 @@ export async function GET(req: Request) {
 
         const reservations = await prisma.reservation.findMany({
             where: whereClause,
-            orderBy: { createdAt: 'desc' }
+            orderBy: { date: 'asc' } // Changed from createdAt to date for better sorting in agenda
         });
 
         return NextResponse.json(reservations);
     } catch (error) {
+        console.error('GET Reservation Error:', error);
         return NextResponse.json({ error: 'Database error' }, { status: 500 });
     }
 }
