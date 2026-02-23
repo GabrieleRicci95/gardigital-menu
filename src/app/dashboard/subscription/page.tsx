@@ -118,101 +118,234 @@ export default function SubscriptionPage() {
 
     return (
         <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto', fontFamily: 'Inter, sans-serif' }}>
-            {/* Header Section */}
-            <div style={{ textAlign: 'center', marginBottom: '40px', background: 'linear-gradient(135deg, #1a237e 0%, #0d47a1 100%)', padding: '60px 20px', borderRadius: '24px', color: 'white', position: 'relative', overflow: 'hidden', boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }}>
-                {/* Decorative Elements */}
-                <div style={{ position: 'absolute', top: '-10%', right: '-5%', width: '300px', height: '300px', background: 'rgba(255,255,255,0.05)', borderRadius: '50%' }} />
-                <div style={{ position: 'absolute', bottom: '-10%', left: '-5%', width: '200px', height: '200px', background: 'rgba(255,255,255,0.05)', borderRadius: '50%' }} />
+            <style>{`
+                @keyframes float {
+                    0% { transform: translateY(0px) rotate(0deg); }
+                    50% { transform: translateY(-10px) rotate(2deg); }
+                    100% { transform: translateY(0px) rotate(0deg); }
+                }
+                @keyframes pulse-gold {
+                    0% { filter: drop-shadow(0 0 5px rgba(251, 191, 36, 0.4)); }
+                    50% { filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.8)); }
+                    100% { filter: drop-shadow(0 0 5px rgba(251, 191, 36, 0.4)); }
+                }
+                @keyframes mesh-bg {
+                    0% { background-position: 0% 50%; }
+                    50% { background-position: 100% 50%; }
+                    100% { background-position: 0% 50%; }
+                }
+            `}</style>
 
-                <Crown size={48} style={{ marginBottom: '20px', color: '#fbbf24' }} />
-                <h1 style={{ fontSize: '3rem', fontWeight: '800', marginBottom: '16px', letterSpacing: '-1px' }}>Scegli il tuo Successo</h1>
-                <p style={{ fontSize: '1.2rem', opacity: 0.9, maxWidth: '600px', margin: '0 auto', lineHeight: '1.6' }}>
-                    Sblocca tutto il potenziale del tuo ristorante con i nostri strumenti premium progettati per crescere.
-                </p>
+            {/* Header Section - Premium Redesign */}
+            <div style={{
+                textAlign: 'center',
+                marginBottom: '40px',
+                background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 25%, #1e3a8a 50%, #1e1b4b 75%, #0f172a 100%)',
+                backgroundSize: '400% 400%',
+                animation: 'mesh-bg 15s ease infinite',
+                padding: '80px 20px',
+                borderRadius: '32px',
+                color: 'white',
+                position: 'relative',
+                overflow: 'hidden',
+                boxShadow: '0 30px 60px rgba(0,0,0,0.2), inset 0 0 0 1px rgba(255,255,255,0.1)'
+            }}>
+                {/* Decorative Glass Elements */}
+                <div style={{ position: 'absolute', top: '10%', right: '5%', width: '150px', height: '150px', background: 'radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%)', borderRadius: '50%', filter: 'blur(30px)' }} />
+                <div style={{ position: 'absolute', bottom: '15%', left: '8%', width: '120px', height: '120px', background: 'radial-gradient(circle, rgba(251, 191, 36, 0.1) 0%, transparent 70%)', borderRadius: '50%', filter: 'blur(20px)' }} />
 
-                {/* Status Bar */}
-                <div style={{ marginTop: '30px', display: 'flex', justifyContent: 'center', gap: '15px', flexWrap: 'wrap' }}>
-                    <div style={{ background: 'rgba(255,255,255,0.1)', padding: '10px 20px', borderRadius: '50px', display: 'flex', alignItems: 'center', gap: '8px', border: '1px solid rgba(255,255,255,0.2)', backdropFilter: 'blur(10px)' }}>
-                        <ShieldCheck size={18} color="#4ade80" />
-                        <span style={{ fontWeight: '600', fontSize: '0.9rem' }}>Piano: <strong>{currentPlan}</strong></span>
+                {/* Floating Rings */}
+                <div style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: '600px',
+                    height: '600px',
+                    border: '1px solid rgba(255,255,255,0.03)',
+                    borderRadius: '50%',
+                    pointerEvents: 'none'
+                }} />
+                <div style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%) rotate(45deg)',
+                    width: '800px',
+                    height: '800px',
+                    border: '1px solid rgba(255,255,255,0.02)',
+                    borderRadius: '50%',
+                    pointerEvents: 'none'
+                }} />
+
+                <div style={{ position: 'relative', zIndex: 2 }}>
+                    <div style={{ animation: 'float 4s ease-in-out infinite' }}>
+                        <Crown size={56} style={{ marginBottom: '24px', color: '#fbbf24', animation: 'pulse-gold 3s ease-in-out infinite' }} />
                     </div>
-                    {endDate && (
-                        <div style={{ background: 'rgba(255,255,255,0.1)', padding: '10px 20px', borderRadius: '50px', display: 'flex', alignItems: 'center', gap: '8px', border: '1px solid rgba(255,255,255,0.2)', backdropFilter: 'blur(10px)' }}>
-                            <Calendar size={18} color={isExpired ? "#ef4444" : "#fbbf24"} />
-                            <span style={{ fontWeight: '600', fontSize: '0.9rem' }}>
-                                {isExpired ? 'Scaduto il: ' : 'Fino al: '}
-                                <strong>{new Date(endDate).toLocaleDateString('it-IT')}</strong>
+
+                    <h1 style={{
+                        fontSize: '3.5rem',
+                        fontWeight: '900',
+                        marginBottom: '20px',
+                        letterSpacing: '-2px',
+                        background: 'linear-gradient(to bottom, #ffffff 30%, #cbd5e1 100%)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        textShadow: '0 10px 30px rgba(0,0,0,0.3)'
+                    }}>
+                        Scegli il tuo Successo
+                    </h1>
+
+                    <p style={{
+                        fontSize: '1.25rem',
+                        color: '#94a3b8',
+                        maxWidth: '650px',
+                        margin: '0 auto',
+                        lineHeight: '1.7',
+                        fontWeight: '500'
+                    }}>
+                        Sblocca tutto il potenziale del tuo ristorante con strumenti progettati <br /> per rivoluzionare la tua esperienza digitale.
+                    </p>
+
+                    {/* Status Bar - Glassmorphism Refresh */}
+                    <div style={{
+                        marginTop: '40px',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        gap: '20px',
+                        flexWrap: 'wrap',
+                        alignItems: 'center'
+                    }}>
+                        <div style={{
+                            background: 'rgba(255,255,255,0.03)',
+                            padding: '12px 24px',
+                            borderRadius: '50px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '10px',
+                            border: '1px solid rgba(255,255,255,0.08)',
+                            backdropFilter: 'blur(12px)',
+                            boxShadow: '0 8px 32px rgba(0,0,0,0.2)'
+                        }}>
+                            <ShieldCheck size={20} color="#4ade80" />
+                            <span style={{ fontWeight: '600', fontSize: '0.95rem', letterSpacing: '0.3px' }}>
+                                Piano: <span style={{ color: '#fbbf24' }}>{currentPlan}</span>
                             </span>
                         </div>
-                    )}
-                    <div style={{
-                        background: isRecurring ? 'rgba(74, 222, 128, 0.2)' : 'rgba(239, 68, 68, 0.2)',
-                        padding: '10px 20px',
-                        borderRadius: '50px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '8px',
-                        border: `1px solid ${isRecurring ? '#4ade80' : '#ef4444'}`,
-                        backdropFilter: 'blur(10px)'
-                    }}>
-                        <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: isRecurring ? '#4ade80' : '#ef4444' }} />
-                        <span style={{ fontWeight: '600', fontSize: '0.9rem' }}>
-                            Rinnovo Automatico: <strong>{isRecurring ? 'ATTIVO' : 'DISATTIVATO'}</strong>
-                        </span>
-                    </div>
 
-                    {!isExpired && (isRecurring || restaurant?.subscription?.stripeSubscriptionId) && (
-                        <div style={{ display: 'flex', gap: '10px' }}>
-                            <button
-                                onClick={handlePortal}
-                                disabled={loading}
-                                title="Gestisci fatture e metodi di pagamento"
-                                style={{
-                                    background: 'white',
-                                    color: '#1a237e',
-                                    padding: '12px 20px',
-                                    borderRadius: '50px',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '8px',
-                                    border: 'none',
-                                    fontWeight: '700',
-                                    cursor: 'pointer',
-                                    transition: '0.3s',
-                                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                                    fontSize: '0.9rem'
-                                }}
-                            >
-                                <CreditCard size={18} />
-                                Info Pagamenti
-                            </button>
+                        {endDate && (
+                            <div style={{
+                                background: 'rgba(255,255,255,0.03)',
+                                padding: '12px 24px',
+                                borderRadius: '50px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '10px',
+                                border: '1px solid rgba(255,255,255,0.08)',
+                                backdropFilter: 'blur(12px)',
+                                boxShadow: '0 8px 32px rgba(0,0,0,0.2)'
+                            }}>
+                                <Calendar size={20} color={isExpired ? "#ef4444" : "#fbbf24"} />
+                                <span style={{ fontWeight: '600', fontSize: '0.95rem', letterSpacing: '0.3px' }}>
+                                    {isExpired ? 'Scaduto il: ' : 'Fino al: '}
+                                    <strong>{new Date(endDate).toLocaleDateString('it-IT')}</strong>
+                                </span>
+                            </div>
+                        )}
 
-                            {isRecurring && (
+                        <div style={{
+                            background: isRecurring ? 'rgba(74, 222, 128, 0.05)' : 'rgba(239, 68, 68, 0.05)',
+                            padding: '12px 24px',
+                            borderRadius: '50px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '10px',
+                            border: `1px solid ${isRecurring ? 'rgba(74, 222, 128, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`,
+                            backdropFilter: 'blur(12px)',
+                            boxShadow: '0 8px 32px rgba(0,0,0,0.2)'
+                        }}>
+                            <div style={{
+                                width: '10px',
+                                height: '10px',
+                                borderRadius: '50%',
+                                backgroundColor: isRecurring ? '#4ade80' : '#ef4444',
+                                boxShadow: `0 0 10px ${isRecurring ? '#4ade80' : '#ef4444'}`
+                            }} />
+                            <span style={{ fontWeight: '600', fontSize: '0.95rem', letterSpacing: '0.3px' }}>
+                                Rinnovo Automatico: <strong style={{ color: isRecurring ? '#4ade80' : '#ef4444' }}>{isRecurring ? 'ATTIVO' : 'DISATTIVATO'}</strong>
+                            </span>
+                        </div>
+
+                        {/* Actions in Header Bar */}
+                        {!isExpired && (isRecurring || restaurant?.subscription?.stripeSubscriptionId) && (
+                            <div style={{ display: 'flex', gap: '12px', marginLeft: '10px' }}>
                                 <button
-                                    onClick={handleCancel}
+                                    onClick={handlePortal}
                                     disabled={loading}
+                                    title="Gestisci fatture e metodi di pagamento"
                                     style={{
-                                        background: '#ef4444',
-                                        color: 'white',
+                                        background: 'rgba(255,255,255,0.95)',
+                                        color: '#0f172a',
                                         padding: '12px 24px',
                                         borderRadius: '50px',
                                         display: 'flex',
                                         alignItems: 'center',
-                                        gap: '8px',
+                                        gap: '10px',
                                         border: 'none',
                                         fontWeight: '800',
                                         cursor: 'pointer',
-                                        transition: '0.3s',
-                                        boxShadow: '0 4px 12px rgba(239, 68, 68, 0.3)',
-                                        fontSize: '0.9rem'
+                                        transition: '0.3s all',
+                                        boxShadow: '0 10px 25px rgba(0,0,0,0.2)',
+                                        fontSize: '0.95rem'
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.transform = 'translateY(-2px)';
+                                        e.currentTarget.style.boxShadow = '0 15px 30px rgba(0,0,0,0.3)';
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.transform = 'translateY(0)';
+                                        e.currentTarget.style.boxShadow = '0 10px 25px rgba(0,0,0,0.2)';
                                     }}
                                 >
-                                    <AlertCircle size={18} />
-                                    Disdici Rinnovo
+                                    <CreditCard size={18} />
+                                    Info Pagamenti
                                 </button>
-                            )}
-                        </div>
-                    )}
+
+                                {isRecurring && (
+                                    <button
+                                        onClick={handleCancel}
+                                        disabled={loading}
+                                        style={{
+                                            background: '#ef4444',
+                                            color: 'white',
+                                            padding: '12px 24px',
+                                            borderRadius: '50px',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '10px',
+                                            border: 'none',
+                                            fontWeight: '800',
+                                            cursor: 'pointer',
+                                            transition: '0.3s all',
+                                            boxShadow: '0 10px 25px rgba(239, 68, 68, 0.4)',
+                                            fontSize: '0.95rem'
+                                        }}
+                                        onMouseEnter={(e) => {
+                                            e.currentTarget.style.transform = 'translateY(-2px)';
+                                            e.currentTarget.style.boxShadow = '0 15px 30px rgba(239, 68, 68, 0.5)';
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.currentTarget.style.transform = 'translateY(0)';
+                                            e.currentTarget.style.boxShadow = '0 10px 25px rgba(239, 68, 68, 0.4)';
+                                        }}
+                                    >
+                                        <AlertCircle size={18} />
+                                        Disdici Rinnovo
+                                    </button>
+                                )}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
 
