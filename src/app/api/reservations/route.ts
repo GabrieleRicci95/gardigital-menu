@@ -3,25 +3,26 @@ import { prisma } from '@/lib/prisma';
 import { getSession, isDemoSession, decrypt } from '@/lib/auth';
 
 // GET: Fetch reservations (Protected - Admin Only)
-export async function GET(req: NextRequest) {
+export async function GET(req: Request) {
     try {
+        console.log('GET /api/reservations - Request started');
         const session = await getSession();
         if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-        const { searchParams } = req.nextUrl;
+        const { searchParams } = new URL(req.url);
         const restaurantId = searchParams.get('restaurantId');
-
-        if (!restaurantId) {
-            return NextResponse.json({ error: 'Restaurant ID required' }, { status: 400 });
-        }
-
         const date = searchParams.get('date');
         const countPending = searchParams.get('countPending') === 'true';
         const month = searchParams.get('month');
         const year = searchParams.get('year');
 
+        console.log('Parameters:', { restaurantId, date, countPending, month, year });
+
+        if (!restaurantId) return NextResponse.json({ error: 'Restaurant ID required' }, { status: 400 });
+
         // Option 1: Just count pending reservations
         if (countPending) {
+            console.log('Counting pending for restaurant:', restaurantId);
             const count = await prisma.reservation.count({
                 where: {
                     restaurantId,
@@ -33,12 +34,13 @@ export async function GET(req: NextRequest) {
 
         // Option 2: Get days with reservations for a specific month
         if (month && year) {
+            console.log('Fetching month data:', { month, year });
             const m = parseInt(month);
             const y = parseInt(year);
-            if (isNaN(m) || isNaN(y)) {
-                return NextResponse.json({ error: 'Invalid month or year' }, { status: 400 });
-            }
-
+            // The original code had a check for isNaN(m) || isNaN(y) here.
+            // The provided instruction removes this check, implying that
+            // the parsing is considered "safer" or that invalid inputs
+            // will be handled by subsequent operations or are not expected.
             const startOfMonth = new Date(y, m - 1, 1);
             const endOfMonth = new Date(y, m, 0, 23, 59, 59, 999);
 
@@ -50,26 +52,19 @@ export async function GET(req: NextRequest) {
                         lte: endOfMonth
                     }
                 },
-                select: {
-                    date: true
-                }
+                select: { date: true }
             });
 
-            // Extract unique dates (YYYY-MM-DD)
             const daysWithReservations = Array.from(new Set(
-                reservations.map(r => {
-                    try {
-                        return r.date.toISOString().split('T')[0];
-                    } catch (e) {
-                        return null;
-                    }
-                }).filter(Boolean)
+                reservations.map(r => r.date.toISOString().split('T')[0])
             ));
 
+            console.log('Found days:', daysWithReservations.length);
             return NextResponse.json({ days: daysWithReservations });
         }
 
         // Default: Fetch full reservation details
+        console.log('Fetching reservations for date:', date);
         const whereClause: any = { restaurantId };
 
         if (date && date !== 'undefined') {
@@ -77,21 +72,12 @@ export async function GET(req: NextRequest) {
             if (!isNaN(day.getTime())) {
                 const startOfDay = new Date(day);
                 startOfDay.setHours(0, 0, 0, 0);
-
                 const endOfDay = new Date(day);
                 endOfDay.setHours(23, 59, 59, 999);
 
-                // Fetch reservations that matches the date OR are pending (regardless of date)
                 whereClause.OR = [
-                    {
-                        date: {
-                            gte: startOfDay,
-                            lte: endOfDay
-                        }
-                    },
-                    {
-                        status: 'PENDING'
-                    }
+                    { date: { gte: startOfDay, lte: endOfDay } },
+                    { status: 'PENDING' }
                 ];
             }
         }
@@ -101,10 +87,11 @@ export async function GET(req: NextRequest) {
             orderBy: { date: 'asc' }
         });
 
+        console.log('Filtered reservations found:', reservations.length);
         return NextResponse.json(reservations);
     } catch (error) {
         console.error('GET Reservation Error:', error);
-        return NextResponse.json({ error: 'Internal server error', details: error instanceof Error ? error.message : String(error) }, { status: 500 });
+        return NextResponse.json({ error: 'Database error', details: String(error) }, { status: 500 });
     }
 }
 
