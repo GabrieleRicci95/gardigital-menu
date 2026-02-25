@@ -8,6 +8,21 @@ export default function DashboardPage() {
     const [subscription, setSubscription] = useState<any>(null);
     const [stats, setStats] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [isAppMode, setIsAppMode] = useState(false);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const ua = navigator.userAgent || '';
+            const params = new URLSearchParams(window.location.search);
+            const isWebView = /Android/i.test(ua) && /Version\/[0-9.]+/i.test(ua);
+            const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone;
+            const hasParam = params.get('platform') === 'app' || sessionStorage.getItem('isAppMode') === 'true';
+
+            if (isWebView || isStandalone || hasParam) {
+                setIsAppMode(true);
+            }
+        }
+    }, []);
 
     useEffect(() => {
         fetchData();
@@ -148,9 +163,11 @@ export default function DashboardPage() {
                                         </div>
                                     </div>
 
-                                    <Link href="/dashboard/subscription" className={`${styles.button} ${styles.btnPrimary}`} style={{ width: '100%', textAlign: 'center' }}>
-                                        Gestisci / Rinnova
-                                    </Link>
+                                    {!isAppMode && (
+                                        <Link href="/dashboard/subscription" className={`${styles.button} ${styles.btnPrimary}`} style={{ width: '100%', textAlign: 'center' }}>
+                                            Gestisci / Rinnova
+                                        </Link>
+                                    )}
                                 </>
                             );
                         })()}
