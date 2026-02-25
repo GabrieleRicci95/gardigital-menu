@@ -307,7 +307,7 @@ export default function ReservationsPage() {
         <div className={styles.container}>
             <header className={styles.header}>
                 <div>
-                    <h1 className={styles.title}>Agenda Prenotazioni <span style={{ fontSize: '0.8rem', color: '#3b82f6', verticalAlign: 'middle' }}>(v2)</span></h1>
+                    <h1 className={styles.title}>Agenda Prenotazioni <span style={{ fontSize: '0.8rem', color: '#3b82f6', verticalAlign: 'middle' }}>(v3)</span></h1>
                     <p className={styles.subtitle}>Gestisci le richieste dei tuoi clienti in modo professionale.</p>
                 </div>
 
