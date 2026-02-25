@@ -107,8 +107,21 @@ export default function DashboardClientLayout({
 
     useEffect(() => {
         const checkAppMode = () => {
+            if (typeof window === 'undefined') return;
+
             const params = new URLSearchParams(window.location.search);
-            if (params.get('platform') === 'app' || sessionStorage.getItem('isAppMode') === 'true') {
+            const ua = navigator.userAgent || '';
+
+            // 1. Check via URL Param
+            const hasParam = params.get('platform') === 'app';
+            // 2. Check via SessionStorage (persistenza della sessione)
+            const hasSession = sessionStorage.getItem('isAppMode') === 'true';
+            // 3. Check via UserAgent (Rileva se è una WebView Android / l'App reale)
+            const isWebView = /Android/i.test(ua) && /Version\/[0-9.]+/i.test(ua);
+            // 4. Check via Standalone Mode (PWA/TWA)
+            const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone;
+
+            if (hasParam || hasSession || isWebView || isStandalone) {
                 setIsAppMode(true);
                 sessionStorage.setItem('isAppMode', 'true');
             }

@@ -12,7 +12,14 @@ export default function SubscriptionPage() {
         if (typeof window !== 'undefined') {
             try {
                 const params = new URLSearchParams(window.location.search);
-                if (params.get('platform') === 'app' || sessionStorage.getItem('isAppMode') === 'true') {
+                const ua = navigator.userAgent || '';
+
+                const hasParam = params.get('platform') === 'app';
+                const hasSession = sessionStorage.getItem('isAppMode') === 'true';
+                const isWebView = /Android/i.test(ua) && /Version\/[0-9.]+/i.test(ua);
+                const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone;
+
+                if (hasParam || hasSession || isWebView || isStandalone) {
                     setIsAppMode(true);
                 }
             } catch (e) {
