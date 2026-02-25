@@ -431,7 +431,7 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
                         ))}
 
                     {/* 4. Vini/Bollicine */}
-                    {((restaurant.wineList?.isActive || restaurant.wineListUrl) && isXL) && (
+                    {(restaurant.wineList?.isActive || restaurant.wineListUrl) && (
                         <Link
                             href={restaurant.wineList?.isActive ? `/menu/${restaurant.slug}/wine-list` : (restaurant.wineListUrl || '#')}
                             target={restaurant.wineList?.isActive ? "_self" : "_blank"}
@@ -441,8 +441,15 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
                         </Link>
                     )}
 
+                    {/* 4.5 Champagne List */}
+                    {restaurant.champagneList?.isActive && (
+                        <Link href={`/menu/${restaurant.slug}/champagne-list`} className={styles.navPill}>
+                            {t.champagne}
+                        </Link>
+                    )}
+
                     {/* 5. Drink List */}
-                    {(restaurant.drinkList?.isActive && restaurant.slug?.toLowerCase() !== 'demo' && !restaurant.name?.toLowerCase().includes('demo')) && (
+                    {restaurant.drinkList?.isActive && (
                         <Link href={`/menu/${restaurant.slug}/drink-list`} className={styles.navPill}>
                             {language === 'it' ? 'Drink' : t.drinks}
                         </Link>
