@@ -68,6 +68,14 @@
   padding: 0;
 }
 
+html {
+  overflow-x: hidden;
+  width: 100%;
+  position: relative;
+  /* Allow native scroll behavior */
+  scroll-behavior: auto;
+}
+
 body {
   font-family: var(--font-family-sans);
   background-color: var(--color-background);
@@ -75,15 +83,10 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   /* Prevent horizontal scroll and rubber-band effect */
-  overflow-x: hidden;
+  overflow-x: hidden !important;
+  width: 100%;
   min-height: 100vh;
   position: relative;
-  /* Ensure it's a positioning context */
-}
-
-html {
-  /* Allow native scroll behavior */
-  scroll-behavior: auto;
 }
 
 h1,
