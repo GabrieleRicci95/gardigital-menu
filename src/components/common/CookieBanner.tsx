@@ -6,30 +6,14 @@ import styles from './CookieBanner.module.css';
 
 export default function CookieBanner() {
     const [isVisible, setIsVisible] = useState(false);
-    const [isAppMode, setIsAppMode] = useState(false);
 
     useEffect(() => {
-        // Detect App Mode
-        const params = new URLSearchParams(window.location.search);
-        const ua = navigator.userAgent || '';
-        const hasParam = params.get('platform') === 'app';
-        const hasSession = sessionStorage.getItem('isAppMode') === 'true';
-        const isWebView = /Android/i.test(ua) && /Version\/[0-9.]+/i.test(ua);
-        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone;
-
-        if (hasParam || hasSession || isWebView || isStandalone) {
-            setIsAppMode(true);
-            return; // Don't show banner in App Mode
-        }
-
         // Check if user has already accepted cookies
         const consent = localStorage.getItem('cookieConsent');
         if (!consent) {
             setIsVisible(true);
         }
     }, []);
-
-    if (isAppMode) return null;
 
     const handleAccept = () => {
         localStorage.setItem('cookieConsent', 'true');
