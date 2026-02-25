@@ -182,7 +182,11 @@ export default function DashboardClientLayout({
 
     const handleLogout = async () => {
         await fetch('/api/auth/logout', { method: 'POST' });
-        window.location.href = '/';
+        if (isAppMode) {
+            window.location.href = '/login';
+        } else {
+            window.location.href = '/';
+        }
     };
 
     // Swipe to close logic
