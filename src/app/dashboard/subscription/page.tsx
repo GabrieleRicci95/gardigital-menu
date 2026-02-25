@@ -112,10 +112,56 @@ export default function SubscriptionPage() {
     const isExpired = currentPlan === 'PILOT' ? false : (endDate ? new Date(endDate) < new Date() : true);
     const isPilot = currentPlan === 'PILOT';
 
+    const [isAppMode, setIsAppMode] = useState(false);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('platform') === 'app' || sessionStorage.getItem('isAppMode') === 'true') {
+                setIsAppMode(true);
+            }
+        }
+    }, []);
+
     // Get URL Params for feedback
     const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
     const isSuccess = searchParams?.get('success') === 'true';
     const isCanceled = searchParams?.get('canceled') === 'true';
+
+    // UI per modalità App (Protezione Store)
+    if (isAppMode) {
+        return (
+            <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto', fontFamily: 'Inter, sans-serif', textAlign: 'center' }}>
+                <div style={{
+                    background: 'white',
+                    padding: '60px 40px',
+                    borderRadius: '32px',
+                    boxShadow: '0 20px 40px rgba(0,0,0,0.05)',
+                    border: '1px solid #eee',
+                    marginTop: '40px'
+                }}>
+                    <ShieldCheck size={64} color="#1e3a8a" style={{ marginBottom: '24px' }} />
+                    <h1 style={{ fontSize: '2rem', fontWeight: '900', color: '#0f172a', marginBottom: '16px' }}>Gestione Abbonamento</h1>
+                    <p style={{ fontSize: '1.1rem', color: '#64748b', lineHeight: '1.6', marginBottom: '32px' }}>
+                        Per garantire la massima sicurezza e trasparenza, la gestione dei pagamenti e delle fatture è disponibile esclusivamente tramite il nostro portale web ufficiale.
+                    </p>
+                    <div style={{
+                        background: '#f8fafc',
+                        padding: '24px',
+                        borderRadius: '20px',
+                        border: '1px dashed #cbd5e1',
+                        marginBottom: '32px'
+                    }}>
+                        <p style={{ fontWeight: '700', color: '#1e3a8a', marginBottom: '8px' }}>Accedi da Computer o Browser su:</p>
+                        <code style={{ fontSize: '1.2rem', color: '#0f172a', fontWeight: '900' }}>master.gardigital.it</code>
+                    </div>
+                    <p style={{ fontSize: '0.9rem', color: '#94a3b8' }}>
+                        Le tue funzionalità attive rimarranno operative nell'app dopo il rinnovo via web.
+                    </p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto', fontFamily: 'Inter, sans-serif' }}>

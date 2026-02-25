@@ -103,9 +103,22 @@ export default function DashboardClientLayout({
         return () => { document.body.style.overflow = 'unset'; };
     }, [isMobileMenuOpen]);
 
+    const [isAppMode, setIsAppMode] = useState(false);
+
+    useEffect(() => {
+        const checkAppMode = () => {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('platform') === 'app' || sessionStorage.getItem('isAppMode') === 'true') {
+                setIsAppMode(true);
+                sessionStorage.setItem('isAppMode', 'true');
+            }
+        };
+        checkAppMode();
+    }, []);
+
     const navItems = [
         { label: 'Panoramica', href: '/dashboard', icon: 'Items' },
-        { label: 'Abbonamenti', href: '/dashboard/subscription', icon: 'CreditCard' },
+        { label: 'Abbonamenti', href: '/dashboard/subscription', icon: 'CreditCard', isSubscription: true },
         {
             label: 'Agenda',
             href: '/dashboard/reservations',
@@ -139,6 +152,7 @@ export default function DashboardClientLayout({
             }))
     ]
         .filter((item: any) => {
+            if (item.isSubscription && isAppMode) return false;
             if (item.isReservation && !hasReservations) return false;
 
             const isDemo = restaurantSlug?.toLowerCase() === 'demo' ||
@@ -199,12 +213,14 @@ export default function DashboardClientLayout({
                 </div>
 
                 {/* Subscription Status Badge */}
-                <div className={styles.statusContainer}>
-                    <div className={`${styles.statusBadge} ${isSubscriptionActive ? styles.statusActive : styles.statusExpired}`}>
-                        <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: isSubscriptionActive ? '#10b981' : '#ef4444' }} />
-                        {isSubscriptionActive ? 'Abbonamento Attivo' : 'Abbonamento Scaduto'}
+                {!isAppMode && (
+                    <div className={styles.statusContainer}>
+                        <div className={`${styles.statusBadge} ${isSubscriptionActive ? styles.statusActive : styles.statusExpired}`}>
+                            <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: isSubscriptionActive ? '#10b981' : '#ef4444' }} />
+                            {isSubscriptionActive ? 'Abbonamento Attivo' : 'Abbonamento Scaduto'}
+                        </div>
                     </div>
-                </div>
+                )}
                 <nav className={styles.nav}>
                     {navItems.map((item: any) => (
                         <Link
