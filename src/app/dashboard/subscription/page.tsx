@@ -6,6 +6,20 @@ import { CreditCard, CheckCircle, Zap, ShieldCheck, ArrowRight, Calendar, AlertC
 export default function SubscriptionPage() {
     const [restaurant, setRestaurant] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [isAppMode, setIsAppMode] = useState(false);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                if (params.get('platform') === 'app' || sessionStorage.getItem('isAppMode') === 'true') {
+                    setIsAppMode(true);
+                }
+            } catch (e) {
+                console.warn("Storage access restricted", e);
+            }
+        }
+    }, []);
 
     useEffect(() => {
         const fetchRestaurantData = async () => {
@@ -112,16 +126,6 @@ export default function SubscriptionPage() {
     const isExpired = currentPlan === 'PILOT' ? false : (endDate ? new Date(endDate) < new Date() : true);
     const isPilot = currentPlan === 'PILOT';
 
-    const [isAppMode, setIsAppMode] = useState(false);
-
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const params = new URLSearchParams(window.location.search);
-            if (params.get('platform') === 'app' || sessionStorage.getItem('isAppMode') === 'true') {
-                setIsAppMode(true);
-            }
-        }
-    }, []);
 
     // Get URL Params for feedback
     const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
