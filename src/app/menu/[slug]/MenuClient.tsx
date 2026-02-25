@@ -378,9 +378,17 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
             {/* Hero Section */}
             <header
                 className={styles.hero}
-                style={restaurant.coverImageUrl ? {
-                    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)), url('${restaurant.coverImageUrl}')`
-                } : undefined}
+                style={restaurant.coverImageUrl ? (
+                    restaurant.slug === 'mastro-arrosticino-884' ? {
+                        backgroundImage: `url('${restaurant.coverImageUrl}')`,
+                        backgroundSize: '55% auto',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'center center',
+                        backgroundColor: '#ffffff',
+                    } : {
+                        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)), url('${restaurant.coverImageUrl}')`,
+                    }
+                ) : undefined}
             >
                 {/* Removed dynamic background overlay */}
 
