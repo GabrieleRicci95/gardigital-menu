@@ -272,7 +272,11 @@ export default function DashboardClientLayout({
                         <span>Menu</span>
                     </button>
                     <div className={styles.userMenu}>
-                        {restaurantLogo ? (
+                        {isAppMode ? (
+                            <span style={{ fontWeight: 'bold', fontSize: '1.1rem', marginRight: '10px' }}>
+                                Benvenuto
+                            </span>
+                        ) : restaurantLogo ? (
                             <img
                                 src={restaurantLogo}
                                 alt="Logo Ristorante"
