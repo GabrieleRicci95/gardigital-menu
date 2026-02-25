@@ -46,17 +46,19 @@
     justify-content: center;
     width: 100%;
     max-width: 800px;
+    flex-wrap: wrap;
 }
 
 .controls>* {
-    width: 280px !important;
-    height: 55px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    box-sizing: border-box !important;
-    flex: none !important;
-    padding: 0 1rem !important;
+    min-width: 200px;
+    flex: 1;
+    max-width: 300px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 0 1.5rem;
 }
 
 .dateInput {
@@ -199,7 +201,13 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.75rem;
-    margin-top: 0.5rem;
+    margin-top: 1rem;
+}
+
+@media (max-width: 600px) {
+    .cardActions {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* Badge Styles */
@@ -388,12 +396,13 @@
 /* Responsive */
 @media (max-width: 1024px) {
     .container {
-        padding: 1rem;
+        padding: 1.5rem 1rem;
     }
 
     .header {
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
+        text-align: left;
         gap: 1.5rem;
     }
 
@@ -407,20 +416,17 @@
 
     .controls {
         flex-direction: column;
-        align-items: center;
-        gap: 1.5rem;
-        /* Increased gap */
+        align-items: stretch;
+        gap: 1rem;
         width: 100%;
+        max-width: none;
     }
 
     .controls>* {
         width: 100% !important;
-        max-width: 320px !important;
-        height: 55px !important;
-        flex: none !important;
-        box-sizing: border-box !important;
+        max-width: none !important;
+        height: 52px !important;
     }
-
 
     .list {
         grid-template-columns: 1fr;
@@ -429,22 +435,37 @@
 
 @media (max-width: 480px) {
     .container {
-        padding: 1rem;
-    }
-
-    .list {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-    }
-
-    .card {
-        width: 100%;
-        max-width: 100%;
+        padding: 1rem 0.75rem;
     }
 
     .title {
-        font-size: 1.8rem;
+        font-size: 2rem;
+        letter-spacing: -0.01em;
+    }
+
+    .card {
+        padding: 1.5rem;
+        border-radius: 16px;
+    }
+
+    .time {
+        font-size: 1.75rem;
+    }
+
+    .customerName {
+        font-size: 1.35rem;
+    }
+
+    .tabs {
+        gap: 0.5rem;
+    }
+
+    .tab {
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+        flex: 1;
+        text-align: center;
+        min-width: 120px;
     }
 }
 
@@ -559,15 +580,8 @@
 .formGrid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 3.5rem;
-    /* Even more gap for clarity */
+    gap: 1.5rem;
     margin-bottom: 1.5rem;
-}
-
-.formGrid .modalInput {
-    width: 170px !important;
-    /* Force all to be identical and compact */
-    max-width: 100% !important;
 }
 
 .formLabel {
