@@ -4,11 +4,17 @@
     margin: 0 auto;
     overflow-x: hidden !important;
     width: 100%;
+    position: relative;
     box-sizing: border-box;
     font-family: var(--font-playfair, serif);
-    /* Elegant font base */
     background: linear-gradient(180deg, #f9fafb 0%, #f3f4f6 100%);
     min-height: 100vh;
+}
+
+.container *,
+.container *::before,
+.container *::after {
+    box-sizing: border-box;
 }
 
 .header {
@@ -153,6 +159,8 @@
     font-family: var(--font-inter, sans-serif);
     font-weight: 600;
     border: 1px solid #edf2f7;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .cardBody {
