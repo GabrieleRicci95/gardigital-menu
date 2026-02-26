@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { Pencil, X } from 'lucide-react';
 import styles from '../premium-dashboard.module.css';
 import menuStyles from './menu.module.css';
 
@@ -601,13 +602,8 @@ export default function MenuBuilderPage() {
                                             <h3 style={{ margin: 0, fontSize: '1.3rem', fontFamily: 'var(--font-playfair, serif)' }}>{cat.name}</h3>
                                             <div style={{ display: 'flex', gap: '8px' }}>
                                                 <button
-                                                    className={styles.btnSecondary}
-                                                    style={{
-                                                        width: '100px',
-                                                        justifyContent: 'center',
-                                                        cursor: isDemo ? 'not-allowed' : 'pointer',
-                                                        opacity: isDemo ? 0.6 : 1
-                                                    }}
+                                                    className={`${menuStyles.roundBtn} ${menuStyles.roundBtnEdit}`}
+                                                    title="Modifica Categoria"
                                                     disabled={isDemo}
                                                     onClick={() => {
                                                         if (isDemo) return;
@@ -617,12 +613,19 @@ export default function MenuBuilderPage() {
                                                         });
                                                     }}
                                                 >
-                                                    {isDemo ? 'Inibito' : 'Modifica'}
+                                                    <Pencil size={14} />
                                                 </button>
-                                                <button className={styles.btnDanger} style={{ width: '100px', justifyContent: 'center' }} disabled={isDemo} onClick={() => {
-                                                    if (isDemo) return;
-                                                    requestDelete(cat.id, cat.id, true, false);
-                                                }}>Cancella</button>
+                                                <button
+                                                    className={`${menuStyles.roundBtn} ${menuStyles.roundBtnDelete}`}
+                                                    disabled={isDemo}
+                                                    onClick={() => {
+                                                        if (isDemo) return;
+                                                        requestDelete(cat.id, cat.id, true, false);
+                                                    }}
+                                                    title="Elimina Categoria"
+                                                >
+                                                    <X size={18} />
+                                                </button>
                                             </div>
                                         </div>
                                     )}
@@ -852,7 +855,7 @@ export default function MenuBuilderPage() {
 
                                                     <div className={menuStyles.itemActions}>
                                                         <button
-                                                            className={menuStyles.editBtn}
+                                                            className={`${menuStyles.roundBtn} ${menuStyles.roundBtnEdit}`}
                                                             onClick={() => {
                                                                 if (isDemo) return;
                                                                 setEditingId(item.id);
@@ -874,18 +877,18 @@ export default function MenuBuilderPage() {
                                                                     allergens: parsedAllergens,
                                                                 });
                                                             }}
-                                                            title="Modifica"
+                                                            title="Modifica Piatto"
                                                             disabled={isDemo}
                                                         >
-                                                            ✎
+                                                            <Pencil size={14} />
                                                         </button>
                                                         <button
-                                                            className={menuStyles.deleteBtn}
+                                                            className={`${menuStyles.roundBtn} ${menuStyles.roundBtnDelete}`}
                                                             onClick={() => requestDelete(item.id, cat.id)}
-                                                            title="Elimina"
+                                                            title="Elimina Piatto"
                                                             disabled={isDemo}
                                                         >
-                                                            ×
+                                                            <X size={18} />
                                                         </button>
                                                     </div>
                                                 </div>
