@@ -30,21 +30,6 @@ export async function POST(request: Request) {
 
         if (!restaurant) return NextResponse.json({ error: 'Ristorante non trovato' }, { status: 404 });
 
-        const isPremium = restaurant.subscription?.status === 'ACTIVE' && (restaurant.subscription?.plan === 'PREMIUM' || restaurant.subscription?.plan === 'FULL');
-
-        if (!isPremium) {
-            // Count total items across all menus
-            let totalItems = 0;
-            restaurant.menus.forEach(menu => {
-                menu.categories.forEach(cat => {
-                    totalItems += cat.items.length;
-                });
-            });
-
-            if (totalItems >= 20) {
-                return NextResponse.json({ error: 'Limite di 20 piatti raggiunto. Passa a Premium per piatti illimitati!' }, { status: 403 });
-            }
-        }
 
         const item = await prisma.menuItem.create({
             data: {
