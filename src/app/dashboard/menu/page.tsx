@@ -722,15 +722,13 @@ export default function MenuBuilderPage() {
                                             <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
                                                 <input placeholder="Nome Piatto" value={newItem.name} onChange={e => setNewItem({ ...newItem, name: e.target.value })} required autoFocus className={styles.input} style={{ flex: 2 }} />
                                                 <input placeholder="Prezzo €" type="number" step="0.5" value={newItem.price} onChange={e => setNewItem({ ...newItem, price: e.target.value })} onWheel={(e) => (e.target as HTMLInputElement).blur()} className={styles.input} style={{ flex: 1 }} />
-                                                {(restaurantSlug.includes('gaspare') || restaurantSlug.includes('bernardi') || restaurantSlug.includes('mastro')) && (
-                                                    <input
-                                                        placeholder="Unità (es. cad, hg)"
-                                                        value={newItem.priceUnit}
-                                                        onChange={e => setNewItem({ ...newItem, priceUnit: e.target.value })}
-                                                        className={styles.input}
-                                                        style={{ flex: 1 }}
-                                                    />
-                                                )}
+                                                <input
+                                                    placeholder="Unità (es. cad, hg)"
+                                                    value={newItem.priceUnit}
+                                                    onChange={e => setNewItem({ ...newItem, priceUnit: e.target.value })}
+                                                    className={styles.input}
+                                                    style={{ flex: 1 }}
+                                                />
                                             </div>
                                             <textarea placeholder="Descrizione ingredienti..." value={newItem.description} onChange={e => setNewItem({ ...newItem, description: e.target.value })} className={styles.input} style={{ minHeight: '80px', marginBottom: '1rem', resize: 'vertical' }} />
 
@@ -770,15 +768,13 @@ export default function MenuBuilderPage() {
                                                     <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem', marginTop: '1rem' }}>
                                                         <input value={editItemData.name} onChange={e => setEditItemData({ ...editItemData, name: e.target.value })} required className={styles.input} style={{ flex: 2 }} />
                                                         <input type="number" step="0.5" value={editItemData.price} onChange={e => setEditItemData({ ...editItemData, price: e.target.value })} onWheel={(e) => (e.target as HTMLInputElement).blur()} className={styles.input} style={{ flex: 1 }} />
-                                                        {(restaurantSlug.includes('gaspare') || restaurantSlug.includes('bernardi') || restaurantSlug.includes('mastro')) && (
-                                                            <input
-                                                                placeholder="Unità (es. cad, hg)"
-                                                                value={editItemData.priceUnit}
-                                                                onChange={e => setEditItemData({ ...editItemData, priceUnit: e.target.value })}
-                                                                className={styles.input}
-                                                                style={{ flex: 1 }}
-                                                            />
-                                                        )}
+                                                        <input
+                                                            placeholder="Unità (es. cad, hg)"
+                                                            value={editItemData.priceUnit}
+                                                            onChange={e => setEditItemData({ ...editItemData, priceUnit: e.target.value })}
+                                                            className={styles.input}
+                                                            style={{ flex: 1 }}
+                                                        />
                                                     </div>
                                                     <textarea value={editItemData.description} onChange={e => setEditItemData({ ...editItemData, description: e.target.value })} className={styles.input} style={{ minHeight: '80px', marginBottom: '1rem', resize: 'vertical' }} />
 
