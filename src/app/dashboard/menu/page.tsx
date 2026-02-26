@@ -289,9 +289,14 @@ export default function MenuBuilderPage() {
                 if (selectedMenuId) fetchCategories(selectedMenuId);
             } else {
                 const data = await res.json();
-                setError(data.error || 'Errore aggiunta piatto');
+                const msg = data.error || 'Errore aggiunta piatto';
+                setError(msg);
+                alert(msg);
             }
-        } catch (e) { setError('Errore connessione'); }
+        } catch (e) {
+            setError('Errore connessione');
+            alert('Errore di connessione al server');
+        }
     };
 
     const handleUpdateItem = async (e: React.FormEvent | null, id: string, overrideData: any = null) => {
@@ -717,6 +722,7 @@ export default function MenuBuilderPage() {
                                         <form onSubmit={handleAddItem}>
                                             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
                                                 <strong style={{ fontFamily: 'var(--font-playfair, serif)', fontSize: '1.1rem' }}>Nuovo Piatto</strong>
+                                                {error && <span style={{ color: '#d32f2f', fontSize: '0.9rem', fontWeight: 'bold' }}>⚠️ {error}</span>}
                                             </div>
 
                                             <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
