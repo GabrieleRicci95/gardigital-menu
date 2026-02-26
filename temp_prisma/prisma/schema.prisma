@@ -1,0 +1,335 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id               String       @id @default(cuid())
+  email            String       @unique
+  name             String?
+  password         String
+  role             String       @default("OWNER")
+  resetToken       String?
+  resetTokenExpiry DateTime?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  restaurants      Restaurant[]
+}
+
+model Restaurant {
+  id                      String                  @id @default(cuid())
+  name                    String
+  slug                    String                  @unique
+  description             String?
+  logoUrl                 String?
+  themeColor              String                  @default("#1a237e")
+  coverImageUrl           String?
+  backgroundColor         String                  @default("#ffffff")
+  textColor               String                  @default("#000000")
+  fontFamily              String                  @default("inter")
+  whatsappNumber          String?
+  wineListUrl             String?
+  googleReviewsUrl        String?
+  cardStyle               String                  @default("minimal")
+  ownerId                 String
+  bookingMaxGuestsPerSlot Int                     @default(10)
+  bookingAutoConfirm      Boolean                 @default(false)
+  createdAt               DateTime                @default(now())
+  updatedAt               DateTime                @updatedAt
+  champagneList           ChampagneList?
+  customLists             CustomList[]
+  drinkList               DrinkList?
+  fixedMenus              FixedMenu[]
+  menus                   Menu[]
+  reservations            Reservation[]
+  owner                   User                    @relation(fields: [ownerId], references: [id])
+  translations            RestaurantTranslation[]
+  subscription            Subscription?
+  visits                  Visit[]
+  wineList                WineList?
+}
+
+model RestaurantTranslation {
+  id           String     @id @default(cuid())
+  language     String
+  description  String?
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+
+  @@unique([restaurantId, language])
+}
+
+model Menu {
+  id           String     @id @default(cuid())
+  name         String
+  isActive     Boolean    @default(false)
+  restaurantId String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  categories   Category[]
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+}
+
+model Category {
+  id           String                @id @default(cuid())
+  name         String
+  sortOrder    Int                   @default(0)
+  menuId       String
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
+  menu         Menu                  @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  translations CategoryTranslation[]
+  items        MenuItem[]
+}
+
+model MenuItem {
+  id           String                @id @default(cuid())
+  name         String
+  description  String?
+  price        Decimal?
+  imageUrl     String?
+  isVisible    Boolean               @default(true)
+  categoryId   String
+  allergens    String?
+  isVegan      Boolean               @default(false)
+  isGlutenFree Boolean               @default(false)
+  isVegetarian Boolean               @default(false)
+  spiciness    Int                   @default(0)
+  priceUnit    String?
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
+  category     Category              @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  translations MenuItemTranslation[]
+}
+
+model Subscription {
+  id                   String     @id @default(cuid())
+  plan                 String     @default("BASE")
+  status               String     @default("ACTIVE")
+  hasTranslations      Boolean    @default(false)
+  hasReservations      Boolean    @default(false)
+  hasOrders            Boolean    @default(false)
+  stripeSubscriptionId String?    @unique
+  isRecurring          Boolean    @default(false)
+  startDate            DateTime   @default(now())
+  endDate              DateTime?
+  restaurantId         String     @unique
+  createdAt            DateTime   @default(now())
+  updatedAt            DateTime   @updatedAt
+  restaurant           Restaurant @relation(fields: [restaurantId], references: [id])
+}
+
+model MenuItemTranslation {
+  id          String   @id @default(cuid())
+  language    String
+  name        String
+  description String?
+  menuItemId  String
+  menuItem    MenuItem @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
+
+  @@unique([menuItemId, language])
+}
+
+model CategoryTranslation {
+  id         String   @id @default(cuid())
+  language   String
+  name       String
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([categoryId, language])
+}
+
+model Visit {
+  id           String     @id @default(cuid())
+  restaurantId String
+  createdAt    DateTime   @default(now())
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+}
+
+model FixedMenu {
+  id           String             @id @default(cuid())
+  name         String
+  subtitle     String?
+  price        Decimal
+  description  String?
+  isActive     Boolean            @default(true)
+  restaurantId String
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  restaurant   Restaurant         @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  sections     FixedMenuSection[]
+}
+
+model FixedMenuSection {
+  id          String          @id @default(cuid())
+  name        String
+  description String?
+  fixedMenuId String
+  sortOrder   Int             @default(0)
+  items       FixedMenuItem[]
+  fixedMenu   FixedMenu       @relation(fields: [fixedMenuId], references: [id], onDelete: Cascade)
+}
+
+model FixedMenuItem {
+  id                 String           @id @default(cuid())
+  name               String
+  description        String?
+  allergens          String?
+  fixedMenuSectionId String
+  fixedMenuSection   FixedMenuSection @relation(fields: [fixedMenuSectionId], references: [id], onDelete: Cascade)
+}
+
+model WineList {
+  id           String            @id @default(cuid())
+  isActive     Boolean           @default(true)
+  restaurantId String            @unique
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  restaurant   Restaurant        @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  sections     WineListSection[]
+}
+
+model WineListSection {
+  id         String     @id @default(cuid())
+  name       String
+  sortOrder  Int        @default(0)
+  wineListId String
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  items      WineItem[]
+  wineList   WineList   @relation(fields: [wineListId], references: [id], onDelete: Cascade)
+}
+
+model WineItem {
+  id                String          @id @default(cuid())
+  name              String
+  description       String?
+  price             Decimal
+  wineListSectionId String
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  wineListSection   WineListSection @relation(fields: [wineListSectionId], references: [id], onDelete: Cascade)
+}
+
+model ChampagneList {
+  id           String             @id @default(cuid())
+  isActive     Boolean            @default(true)
+  restaurantId String             @unique
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  restaurant   Restaurant         @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  sections     ChampagneSection[]
+}
+
+model ChampagneSection {
+  id              String          @id @default(cuid())
+  name            String
+  sortOrder       Int             @default(0)
+  champagneListId String
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  items           ChampagneItem[]
+  champagneList   ChampagneList   @relation(fields: [champagneListId], references: [id], onDelete: Cascade)
+}
+
+model ChampagneItem {
+  id                 String           @id @default(cuid())
+  name               String
+  description        String?
+  price              Decimal
+  champagneSectionId String
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  champagneSection   ChampagneSection @relation(fields: [champagneSectionId], references: [id], onDelete: Cascade)
+}
+
+model DrinkList {
+  id           String         @id @default(cuid())
+  isActive     Boolean        @default(true)
+  restaurantId String         @unique
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  restaurant   Restaurant     @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  sections     DrinkSection[]
+}
+
+model DrinkSection {
+  id          String      @id @default(cuid())
+  name        String
+  sortOrder   Int         @default(0)
+  drinkListId String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  items       DrinkItem[]
+  drinkList   DrinkList   @relation(fields: [drinkListId], references: [id], onDelete: Cascade)
+}
+
+model DrinkItem {
+  id             String       @id @default(cuid())
+  name           String
+  description    String?
+  price          Decimal
+  logoUrl        String?
+  drinkSectionId String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  drinkSection   DrinkSection @relation(fields: [drinkSectionId], references: [id], onDelete: Cascade)
+}
+
+model Reservation {
+  id           String     @id @default(cuid())
+  restaurantId String
+  name         String
+  email        String?
+  phone        String?
+  guests       Int
+  date         DateTime
+  status       String     @default("PENDING")
+  notes        String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+}
+
+model CustomList {
+  id           String              @id @default(cuid())
+  name         String
+  slug         String
+  isActive     Boolean             @default(true)
+  restaurantId String
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+  restaurant   Restaurant          @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  sections     CustomListSection[]
+
+  @@unique([restaurantId, slug])
+}
+
+model CustomListSection {
+  id           String           @id @default(cuid())
+  name         String
+  sortOrder    Int              @default(0)
+  customListId String
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  items        CustomListItem[]
+  customList   CustomList       @relation(fields: [customListId], references: [id], onDelete: Cascade)
+}
+
+model CustomListItem {
+  id                  String            @id @default(cuid())
+  name                String
+  description         String?
+  price               Decimal
+  imageUrl            String?
+  customListSectionId String
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+  customListSection   CustomListSection @relation(fields: [customListSectionId], references: [id], onDelete: Cascade)
+}

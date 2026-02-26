@@ -389,7 +389,9 @@ export default function MenuBuilderPage() {
     };
 
     if (loading) return <div className={styles.container}>Caricamento Menu...</div>;
-    const isPremium = subscription?.plan === 'PREMIUM' && subscription?.status === 'ACTIVE';
+    // canUploadPhotos is true for everyone as requested
+    const canUploadPhotos = true;
+    const isPremium = subscription?.status === 'ACTIVE' && (subscription?.plan === 'PREMIUM' || subscription?.plan === 'FULL');
 
     return (
         <div className={styles.container}>
@@ -767,7 +769,7 @@ export default function MenuBuilderPage() {
                                                                     style={{ width: '100%', height: '100%', objectFit: 'cover', cursor: 'pointer' }}
                                                                     onClick={() => setExpandedImage(item.imageUrl!)}
                                                                 />
-                                                                {isPremium && !isDemo && (
+                                                                {!isDemo && (
                                                                     <button
                                                                         onClick={(e) => {
                                                                             e.stopPropagation();
@@ -788,7 +790,7 @@ export default function MenuBuilderPage() {
                                                             </div>
                                                         )}
 
-                                                        {isPremium && !isDemo && !item.imageUrl && (
+                                                        {!isDemo && !item.imageUrl && (
                                                             <>
                                                                 <input
                                                                     type="file"

@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     if (isDemoSession(session)) return NextResponse.json({ error: 'Modalità Demo: modifiche non consentite' }, { status: 403 });
 
     try {
-        const { name, description, price, categoryId, isVegan, isGlutenFree, isVegetarian, spiciness, priceUnit, allergens } = await request.json();
+        const { name, description, price, categoryId, isVegan, isGlutenFree, isVegetarian, spiciness, priceUnit, allergens, imageUrl } = await request.json();
 
         if (!name || !categoryId) {
             return NextResponse.json({ error: 'Dati incompleti' }, { status: 400 });
@@ -57,6 +57,7 @@ export async function POST(request: Request) {
                 isVegetarian: isVegetarian || false,
                 spiciness: spiciness || 0,
                 priceUnit: priceUnit || null,
+                imageUrl: imageUrl || null,
                 allergens: allergens || null, // JSON string expected from frontend
             },
         });

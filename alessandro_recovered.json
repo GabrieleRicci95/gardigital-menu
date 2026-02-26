@@ -1,0 +1,38 @@
+[
+  {
+    "source": "restaurants.json",
+    "data": {
+      "id": "cmkr7204r00023abok44svdus",
+      "name": "Aperifish & XL Drink e Wine",
+      "slug": "aperifish-xl-drink-e-wine-733",
+      "owner": {
+        "email": "ale-c-95@hotmail.it"
+      }
+    }
+  },
+  {
+    "source": "all_restaurants.json",
+    "data": {
+      "name": "Aperifish & XL Drink e Wine",
+      "slug": "aperifish-xl-drink-e-wine-733"
+    }
+  },
+  {
+    "source": "mega_recovery.json",
+    "data": {
+      "name": "Aperifish & XL Drink e Wine",
+      "slug": "aperifish-xl-drink-e-wine-733"
+    }
+  },
+  {
+    "source": "mega_recovery.json",
+    "data": {
+      "id": "cmkr7204r00023abok44svdus",
+      "name": "Aperifish & XL Drink e Wine",
+      "slug": "aperifish-xl-drink-e-wine-733",
+      "owner": {
+        "email": "ale-c-95@hotmail.it"
+      }
+    }
+  }
+]

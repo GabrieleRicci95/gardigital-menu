@@ -1,20 +1,20 @@
-ID: cmkppvueb0002gp84tz62em7w
-Slug: gabriele-ricci-4361
-Name: Ristorante di Gabriele
-Status: ACTIVE
-
 ID: cml5dm7co0002xktb4r4p6ua3
 Slug: demo
 Name: Ristorante La Gorgonia
 Status: ACTIVE
 
-ID: cmkr7204r00023abok44svdus
-Slug: aperifish-xl-drink-e-wine-733
-Name: Aperifish & XL Drink e Wine
-Status: ACTIVE
-
 ID: cmlqf9ez300023gn2a547whlk
 Slug: mastro-arrosticino-884
 Name: Mastro arrosticino
+Status: ACTIVE
+
+ID: cmkppvueb0002gp84tz62em7w
+Slug: gabriele-ricci-4361
+Name: Ristorante di Gabriele
+Status: ACTIVE
+
+ID: cmkr7204r00023abok44svdus
+Slug: aperifish-xl-drink-e-wine-733
+Name: Aperifish & XL Drink e Wine
 Status: ACTIVE
 
