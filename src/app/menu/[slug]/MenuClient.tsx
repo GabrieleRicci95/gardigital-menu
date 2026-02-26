@@ -381,7 +381,7 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
                 style={restaurant.coverImageUrl ? (
                     restaurant.slug === 'mastro-arrosticino-884' ? {
                         backgroundImage: `url('${restaurant.coverImageUrl}')`,
-                        backgroundSize: '55% auto',
+                        backgroundSize: '85% auto',
                         backgroundRepeat: 'no-repeat',
                         backgroundPosition: 'center center',
                         backgroundColor: '#ffffff',
