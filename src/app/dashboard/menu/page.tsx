@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Pencil, X } from 'lucide-react';
+import { Pencil, X, ChevronUp, ChevronDown } from 'lucide-react';
 import styles from '../premium-dashboard.module.css';
 import menuStyles from './menu.module.css';
 
@@ -231,6 +231,37 @@ export default function MenuBuilderPage() {
             fetchCategories(selectedMenuId!);
         }
     }
+
+    const handleMoveCategory = async (id: string, direction: 'up' | 'down') => {
+        if (isDemo) return alert('Modalità Demo: modifiche non consentite');
+        const currentIndex = categories.findIndex(c => c.id === id);
+        if (currentIndex === -1) return;
+
+        const targetIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
+        if (targetIndex < 0 || targetIndex >= categories.length) return;
+
+        const currentCat = categories[currentIndex];
+        const targetCat = categories[targetIndex];
+
+        try {
+            await Promise.all([
+                fetch('/api/menu/categories', {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: currentCat.id, sortOrder: targetIndex })
+                }),
+                fetch('/api/menu/categories', {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: targetCat.id, sortOrder: currentIndex })
+                })
+            ]);
+
+            if (selectedMenuId) fetchCategories(selectedMenuId);
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
     const handleAddItem = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -601,7 +632,25 @@ export default function MenuBuilderPage() {
                                         </form>
                                     ) : (
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flex: 1, justifyContent: 'space-between' }}>
-                                            <h3 style={{ margin: 0, fontSize: '1.3rem', fontFamily: 'var(--font-playfair, serif)' }}>{cat.name}</h3>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                                                    <button
+                                                        onClick={() => handleMoveCategory(cat.id, 'up')}
+                                                        className={menuStyles.miniActionBtn}
+                                                        title="Sposta Su"
+                                                    >
+                                                        <ChevronUp size={12} />
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleMoveCategory(cat.id, 'down')}
+                                                        className={menuStyles.miniActionBtn}
+                                                        title="Sposta Giù"
+                                                    >
+                                                        <ChevronDown size={12} />
+                                                    </button>
+                                                </div>
+                                                <h3 style={{ margin: 0, fontSize: '1.3rem', fontFamily: 'var(--font-playfair, serif)' }}>{cat.name}</h3>
+                                            </div>
                                             <div style={{ display: 'flex', gap: '8px' }}>
                                                 <button
                                                     className={`${menuStyles.roundBtn} ${menuStyles.roundBtnEdit}`}

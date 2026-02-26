@@ -74,15 +74,19 @@ export async function PATCH(request: Request) {
     if (isDemoSession(session)) return NextResponse.json({ error: 'Modalità Demo: modifiche non consentite' }, { status: 403 });
 
     try {
-        const { id, name, translations } = await request.json();
+        const { id, name, sortOrder, translations } = await request.json();
 
         if (!id) {
             return NextResponse.json({ error: 'Category ID richiesto' }, { status: 400 });
         }
 
+        const data: any = {};
+        if (name !== undefined) data.name = name;
+        if (sortOrder !== undefined) data.sortOrder = sortOrder;
+
         const category = await prisma.category.update({
             where: { id },
-            data: { name }
+            data
         });
 
         return NextResponse.json({ category });
