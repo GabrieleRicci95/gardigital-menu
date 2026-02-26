@@ -705,6 +705,34 @@
     letter-spacing: -0.01em;
 }
 
+.calendarNavBtn {
+    background: white;
+    color: #374151;
+    border: 1px solid #e5e7eb;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.calendarNavBtn:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    color: #1a1a1a;
+}
+
+.calendarNavBtn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
 .calendarGrid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);

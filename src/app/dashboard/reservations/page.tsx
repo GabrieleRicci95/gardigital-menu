@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import styles from './reservations.module.css';
 
 interface Reservation {
@@ -359,18 +360,18 @@ export default function ReservationsPage() {
                     </h2>
                     <div style={{ display: 'flex', gap: '10px' }}>
                         <button
-                            className={styles.btnSettings}
-                            style={{ padding: '0.4rem 1rem' }}
+                            className={styles.calendarNavBtn}
                             onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(currentMonth.getMonth() - 1)))}
+                            title="Mese precedente"
                         >
-                            ← Precedente
+                            <ChevronLeft size={20} />
                         </button>
                         <button
-                            className={styles.btnSettings}
-                            style={{ padding: '0.4rem 1rem' }}
+                            className={styles.calendarNavBtn}
                             onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(currentMonth.getMonth() + 1)))}
+                            title="Mese successivo"
                         >
-                            Successivo →
+                            <ChevronRight size={20} />
                         </button>
                     </div>
                 </div>
