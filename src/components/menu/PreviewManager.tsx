@@ -4,11 +4,7 @@ import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 
 export function PreviewManager() {
-    return (
-        <Suspense fallback={null}>
-            <PreviewContent />
-        </Suspense>
-    );
+    return null;
 }
 
 function PreviewContent() {
