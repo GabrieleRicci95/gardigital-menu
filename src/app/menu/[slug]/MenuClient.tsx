@@ -2,10 +2,12 @@
 
 import Link from 'next/link';
 import { useState, Suspense, memo } from 'react';
+import { useIsAndroid } from '@/lib/hooks/useIsAndroid';
 import styles from './menu-public.module.css';
 
 import ReservationModal from '@/components/menu/ReservationModal';
 import AllergenInfo from '@/components/menu/AllergenInfo';
+
 
 interface MenuPageItem {
     id: string;
@@ -116,6 +118,7 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
     const [isReservationOpen, setIsReservationOpen] = useState(false);
     const [isTranslating, setIsTranslating] = useState(false);
     const [isLangOpen, setIsLangOpen] = useState(false);
+    const isAndroid = useIsAndroid();
 
     // Get any active categories/items context if we need it for menu lookup
     const activeMenuId = (initialRestaurant as any).menus?.[0]?.id || (initialRestaurant as any).id;
@@ -594,18 +597,20 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
                 <AllergenInfo language={language} />
             )}
 
-            <footer className={styles.footer} style={{ backgroundColor: 'transparent', color: restaurant.textColor, opacity: 0.6 }}>
+            {!isAndroid && (
+                <footer className={styles.footer} style={{ backgroundColor: 'transparent', color: restaurant.textColor, opacity: 0.6 }}>
 
-                <a
-                    href={`https://www.gardigital.it?utm_source=menu_footer&utm_medium=referral&utm_campaign=${restaurant.slug}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ color: 'inherit', textDecoration: 'none' }}
-                >
-                    Powered by <strong>Gardigital.it</strong>
-                </a>
+                    <a
+                        href={`https://www.gardigital.it?utm_source=menu_footer&utm_medium=referral&utm_campaign=${restaurant.slug}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: 'inherit', textDecoration: 'none' }}
+                    >
+                        Powered by <strong>Gardigital.it</strong>
+                    </a>
 
-            </footer>
+                </footer>
+            )}
 
             {isReservationOpen && (
                 <ReservationModal

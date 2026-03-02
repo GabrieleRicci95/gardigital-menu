@@ -1,7 +1,14 @@
+'use client';
+
 import Link from 'next/link';
 import styles from './Footer.module.css';
+import { useIsAndroid } from '@/lib/hooks/useIsAndroid';
 
 export default function Footer() {
+    const isAndroid = useIsAndroid();
+
+    if (isAndroid) return null;
+
     return (
         <footer className={styles.footer}>
             <div className={styles.linksContainer}>
