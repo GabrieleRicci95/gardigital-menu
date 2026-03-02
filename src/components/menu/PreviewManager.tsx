@@ -28,6 +28,9 @@ function PreviewContent() {
         }
     }, [searchParams]);
 
+    // Disabled as requested
+    return null;
+
     if (!shouldShow) return null;
 
     return (
