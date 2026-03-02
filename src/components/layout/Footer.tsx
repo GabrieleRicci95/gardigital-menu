@@ -2,12 +2,12 @@
 
 import Link from 'next/link';
 import styles from './Footer.module.css';
-import { useIsAndroid } from '@/lib/hooks/useIsAndroid';
+import { useIsNativeApp } from '@/lib/hooks/useIsNativeApp';
 
 export default function Footer() {
-    const isAndroid = useIsAndroid();
+    const isNativeApp = useIsNativeApp();
 
-    if (isAndroid) return null;
+    if (isNativeApp) return null;
 
     return (
         <footer className={styles.footer}>

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState, Suspense, memo } from 'react';
-import { useIsAndroid } from '@/lib/hooks/useIsAndroid';
+import { useIsNativeApp } from '@/lib/hooks/useIsNativeApp';
 import styles from './menu-public.module.css';
 
 import ReservationModal from '@/components/menu/ReservationModal';
@@ -118,7 +118,7 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
     const [isReservationOpen, setIsReservationOpen] = useState(false);
     const [isTranslating, setIsTranslating] = useState(false);
     const [isLangOpen, setIsLangOpen] = useState(false);
-    const isAndroid = useIsAndroid();
+    const isNativeApp = useIsNativeApp();
 
     // Get any active categories/items context if we need it for menu lookup
     const activeMenuId = (initialRestaurant as any).menus?.[0]?.id || (initialRestaurant as any).id;
@@ -597,7 +597,7 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
                 <AllergenInfo language={language} />
             )}
 
-            {!isAndroid && (
+            {!isNativeApp && (
                 <footer className={styles.footer} style={{ backgroundColor: 'transparent', color: restaurant.textColor, opacity: 0.6 }}>
 
                     <a
