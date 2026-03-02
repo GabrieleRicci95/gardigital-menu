@@ -1,0 +1,29 @@
+{
+    "project_info": {
+        "project_number": "332781428745",
+        "project_id": "gardigital-menu",
+        "storage_bucket": "gardigital-menu.firebasestorage.app"
+    },
+    "client": [
+        {
+            "client_info": {
+                "mobilesdk_app_id": "1:332781428745:android:7edb1a78e25b6b93e118d8",
+                "android_client_info": {
+                    "package_name": "com.gardigital.menu"
+                }
+            },
+            "oauth_client": [],
+            "api_key": [
+                {
+                    "current_key": "AIzaSyBzyZMgl19IbM-UJsGjTiJ33LcLIL2bdsE"
+                }
+            ],
+            "services": {
+                "appinvite_service": {
+                    "other_platform_oauth_client": []
+                }
+            }
+        }
+    ],
+    "configuration_version": "1"
+}

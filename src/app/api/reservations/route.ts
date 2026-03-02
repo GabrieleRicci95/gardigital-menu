@@ -1,6 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getSession, isDemoSession, decrypt } from '@/lib/auth';
+import { sendPushNotification } from '@/lib/firebase-admin';
 
 // GET: Fetch reservations (Protected - Admin Only)
 export async function GET(req: Request) {
@@ -142,7 +143,7 @@ export async function POST(req: NextRequest) {
 
         const restaurant = await prisma.restaurant.findUnique({
             where: { id: restaurantId },
-            select: { bookingAutoConfirm: true }
+            select: { bookingAutoConfirm: true, pushTokens: true, name: true }
         });
 
         let initialStatus = 'PENDING';
@@ -167,6 +168,14 @@ export async function POST(req: NextRequest) {
                 status: initialStatus
             }
         });
+
+        // Trigger Push Notification if tokens exist
+        if (restaurant?.pushTokens && restaurant.pushTokens.length > 0) {
+            const title = `Nuova Prenotazione: ${restaurant.name}`;
+            const body = `${name} ha prenotato per ${guests} persone il ${date} alle ${time}.`;
+            // Non inviamo il messaggio push aspettando la fine (async) per non rallentare l'utente finale
+            sendPushNotification(restaurant.pushTokens, title, body, { reservationId: reservation.id }).catch(e => console.error(e));
+        }
 
         return NextResponse.json(reservation);
     } catch (error) {

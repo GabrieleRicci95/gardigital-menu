@@ -57,6 +57,7 @@ model Restaurant {
   customLists CustomList[]
   reservations Reservation[] // Added for Reservation System
   translations RestaurantTranslation[]
+  pushTokens   String[] @default([]) // Added for Push Notifications
 
   // Booking Configuration
   bookingMaxGuestsPerSlot Int     @default(10)
