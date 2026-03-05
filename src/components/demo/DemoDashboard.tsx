@@ -2,8 +2,8 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import dashStyles from '../app/dashboard/dashboard.module.css';
-import pageStyles from '../app/dashboard/restaurant-dashboard.module.css';
+import dashStyles from '@/app/dashboard/dashboard.module.css';
+import pageStyles from '@/app/dashboard/restaurant-dashboard.module.css';
 
 const DEMO_DATA = {
     todayReservations: 7,
