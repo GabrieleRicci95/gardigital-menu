@@ -20,16 +20,25 @@ const DEMO_RESTAURANT: MenuPageRestaurant = {
     googleReviewsUrl: null,
     subscription: {
         plan: 'full',
-        hasTranslations: false,
+        hasTranslations: true,
         hasReservations: true,
         status: 'active',
     },
     customLists: [],
+    translations: [
+        { language: 'en', description: 'A culinary journey through the authentic flavors of Italian cuisine. Fresh ingredients, traditional recipes and a touch of chef creativity.' },
+        { language: 'fr', description: 'Un voyage culinaire à travers les saveurs authentiques de la cuisine italienne. Ingrédients frais, recettes traditionnelles et une touche de créativité du chef.' },
+        { language: 'de', description: 'Eine kulinarische Reise durch die authentischen Aromen der italienischen Küche. Frische Zutaten, traditionelle Rezepte und ein Hauch Kreativität des Küchenchefs.' },
+    ],
     categories: [
         {
             id: 'antipasti',
             name: 'Antipasti',
-            translations: [],
+            translations: [
+                { language: 'en', name: 'Starters' },
+                { language: 'fr', name: 'Entrées' },
+                { language: 'de', name: 'Vorspeisen' },
+            ],
             items: [
                 {
                     id: 'item-1',
@@ -42,7 +51,11 @@ const DEMO_RESTAURANT: MenuPageRestaurant = {
                     isGlutenFree: true,
                     spiciness: 0,
                     allergens: '[7]',
-                    translations: [],
+                    translations: [
+                        { language: 'en', name: 'Burrata with Cherry Tomatoes & Pesto', description: 'Creamy Andria burrata on a bed of rocket, with glazed cherry tomatoes and Genoese basil pesto.' },
+                        { language: 'fr', name: 'Burrata aux Tomates Cerises & Pesto', description: 'Burrata crémeuse d\'Andria sur un lit de roquette, accompagnée de tomates cerises glacées et de pesto de basilic génois.' },
+                        { language: 'de', name: 'Burrata mit Kirschtomaten & Pesto', description: 'Cremige Burrata aus Andria auf Rucola-Bett, begleitet von glasierten Kirschtomaten und genueser Basilikumpesto.' },
+                    ],
                 },
                 {
                     id: 'item-2',
@@ -55,14 +68,22 @@ const DEMO_RESTAURANT: MenuPageRestaurant = {
                     isGlutenFree: true,
                     spiciness: 0,
                     allergens: '[7]',
-                    translations: [],
+                    translations: [
+                        { language: 'en', name: 'Beef Carpaccio with Grana Flakes', description: 'Thin slices of lemon-marinated raw beef, Grana Padano DOP flakes, wild rocket and extra virgin olive oil.' },
+                        { language: 'fr', name: 'Carpaccio de Bœuf et Copeaux de Grana', description: 'Fines tranches de bœuf cru mariné au citron, copeaux de Grana Padano AOP, roquette sauvage et huile d\'olive vierge extra.' },
+                        { language: 'de', name: 'Rindercarpaccio mit Grana-Flocken', description: 'Dünne Scheiben von zitronenmariniertem Rindfleisch, Grana Padano g.U.-Flocken, wilder Rucola und nativem Olivenöl extra.' },
+                    ],
                 },
             ],
         },
         {
             id: 'primi',
             name: 'Primi Piatti',
-            translations: [],
+            translations: [
+                { language: 'en', name: 'First Courses' },
+                { language: 'fr', name: 'Premiers Plats' },
+                { language: 'de', name: 'Erste Gänge' },
+            ],
             items: [
                 {
                     id: 'item-3',
@@ -75,7 +96,11 @@ const DEMO_RESTAURANT: MenuPageRestaurant = {
                     isGlutenFree: true,
                     spiciness: 0,
                     allergens: '[7, 12]',
-                    translations: [],
+                    translations: [
+                        { language: 'en', name: 'Saffron Risotto with Ossobuco', description: 'The Milanese classic: creamy risotto with saffron DOP and tender braised veal ossobuco. A warm hug on a plate.' },
+                        { language: 'fr', name: 'Risotto au Safran et Ossobuco', description: 'Le classique milanais : risotto crémeux au safran AOP et tendre ossobuco de veau braisé. Un câlin dans une assiette.' },
+                        { language: 'de', name: 'Safranrisotto mit Ossobuco', description: 'Der Mailänder Klassiker: cremiges Risotto mit Safran g.U. und zartem geschmortem Kalbsossobuco. Eine Umarmung auf dem Teller.' },
+                    ],
                 },
                 {
                     id: 'item-4',
@@ -88,14 +113,22 @@ const DEMO_RESTAURANT: MenuPageRestaurant = {
                     isGlutenFree: false,
                     spiciness: 0,
                     allergens: '[1, 3, 7]',
-                    translations: [],
+                    translations: [
+                        { language: 'en', name: 'Tagliolini with Black Truffle', description: 'Hand-rolled fresh egg pasta with black truffle cream from Le Marche and 36-month aged parmesan shavings.' },
+                        { language: 'fr', name: 'Tagliolini à la Truffe Noire', description: 'Pâtes fraîches aux œufs étalées à la main, avec crème de truffe noire des Marches et lamelles de parmesan affiné 36 mois.' },
+                        { language: 'de', name: 'Tagliolini mit schwarzem Trüffel', description: 'Handgezogene frische Eiernudeln mit Schwarztrüffelcreme aus den Marken und 36 Monate gereiftem Parmesan.' },
+                    ],
                 },
             ],
         },
         {
             id: 'secondi',
             name: 'Secondi Piatti',
-            translations: [],
+            translations: [
+                { language: 'en', name: 'Main Courses' },
+                { language: 'fr', name: 'Plats Principaux' },
+                { language: 'de', name: 'Hauptgänge' },
+            ],
             items: [
                 {
                     id: 'item-5',
@@ -108,14 +141,22 @@ const DEMO_RESTAURANT: MenuPageRestaurant = {
                     isGlutenFree: true,
                     spiciness: 0,
                     allergens: '[4]',
-                    translations: [],
+                    translations: [
+                        { language: 'en', name: 'Sea Bass Fillet in White Wine', description: 'Wild Mediterranean sea bass, baked in an aromatic herb crust with white wine sauce and Pantelleria capers.' },
+                        { language: 'fr', name: 'Filet de Bar au Vin Blanc', description: 'Bar sauvage de Méditerranée, cuit en croûte d\'herbes aromatiques avec sauce au vin blanc et câpres de Pantelleria.' },
+                        { language: 'de', name: 'Wolfsbarschfilet in Weißwein', description: 'Wilder Mittelmeer-Wolfsbarsch, in einer Kräuterkruste gebacken mit Weißweinsauce und Pantelleria-Kapern.' },
+                    ],
                 },
             ],
         },
         {
             id: 'dolci',
             name: 'Dolci',
-            translations: [],
+            translations: [
+                { language: 'en', name: 'Desserts' },
+                { language: 'fr', name: 'Desserts' },
+                { language: 'de', name: 'Desserts' },
+            ],
             items: [
                 {
                     id: 'item-6',
@@ -128,7 +169,11 @@ const DEMO_RESTAURANT: MenuPageRestaurant = {
                     isGlutenFree: false,
                     spiciness: 0,
                     allergens: '[1, 3, 7]',
-                    translations: [],
+                    translations: [
+                        { language: 'en', name: 'House Tiramisù', description: 'Our version of the classic: ladyfingers soaked in espresso, mascarpone cream and bitter Modica cocoa.' },
+                        { language: 'fr', name: 'Tiramisù Maison', description: 'Notre version du classique : biscuits imbibés d\'expresso, crème au mascarpone et cacao amer de Modica.' },
+                        { language: 'de', name: 'Haus-Tiramisù', description: 'Unsere Version des Klassikers: in Espresso getränkte Löffelbiskuits, Mascarponecreme und bitterer Kakao aus Modica.' },
+                    ],
                 },
             ],
         },
