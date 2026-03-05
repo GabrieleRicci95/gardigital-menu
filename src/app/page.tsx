@@ -34,7 +34,7 @@ export default function Home() {
             <div className={styles.ctaGroup}>
               <Link href="/contact?plan=Informazioni" className={styles.primaryBtn}>Contattaci per informazioni</Link>
               <Link href="/menu/demo" className={styles.secondaryBtn} target="_blank" style={{ backgroundColor: 'transparent', border: '1px solid currentColor' }}>Visualizza Menu</Link>
-              <Link href="/dashboard/demo" className={styles.secondaryBtn} style={{ backgroundColor: 'transparent', border: '1px solid currentColor' }}>Prova la Demo</Link>
+              <Link href="/demo" className={styles.secondaryBtn} style={{ backgroundColor: 'transparent', border: '1px solid currentColor' }}>Prova la Demo</Link>
             </div>
           </div>
         </section>
