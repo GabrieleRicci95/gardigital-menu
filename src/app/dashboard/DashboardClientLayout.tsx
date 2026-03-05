@@ -141,7 +141,6 @@ export default function DashboardClientLayout({
         },
         { label: 'Il mio Ristorante', href: '/dashboard/restaurant', icon: 'Store' },
         { label: 'Menu', href: '/dashboard/menu', icon: 'Menu' },
-        { label: 'Menu Fissi', href: '/dashboard/fixed-menus', icon: 'Star' },
         { label: 'Vini/Bollicine', href: '/dashboard/wine-list', icon: 'Wine' },
         { label: 'Champagne', href: '/dashboard/champagne-list', icon: 'Glass' },
         { label: 'Drink', href: '/dashboard/drink-list', icon: 'Cocktail' },
