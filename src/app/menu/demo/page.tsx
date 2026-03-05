@@ -36,7 +36,7 @@ const DEMO_RESTAURANT: MenuPageRestaurant = {
                     name: 'Burrata con Pomodorini e Pesto',
                     description: 'Burrata cremosa di Andria su letto di rucola, accompagnata da pomodorini datterini glassati e pesto di basilico genovese.',
                     price: 14,
-                    imageUrl: 'https://images.unsplash.com/photo-1633171580920-f5d2d4c3b5b1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                    imageUrl: 'https://images.unsplash.com/photo-1608897013039-887f21d8c804?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
                     isVegan: false,
                     isVegetarian: true,
                     isGlutenFree: true,
