@@ -33,22 +33,8 @@ export default function Home() {
             </p>
             <div className={styles.ctaGroup}>
               <Link href="/contact?plan=Informazioni" className={styles.primaryBtn}>Contattaci per informazioni</Link>
-              <button
-                onClick={() => {
-                  fetch('/api/auth/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: 'demo@gardigital.it', password: 'demo' }),
-                  }).then(res => res.json()).then(data => {
-                    if (data.redirect || data.success) window.location.href = data.redirect || '/dashboard';
-                  });
-                }}
-                className={styles.secondaryBtn}
-                style={{ cursor: 'pointer', backgroundColor: 'transparent', border: '1px solid currentColor' }}
-              >
-                Prova la demo
-              </button>
               <Link href="/menu/demo" className={styles.secondaryBtn} target="_blank" style={{ backgroundColor: 'transparent', border: '1px solid currentColor' }}>Visualizza Menu</Link>
+              <Link href="/dashboard/demo" className={styles.secondaryBtn} style={{ backgroundColor: 'transparent', border: '1px solid currentColor' }}>Prova la Demo</Link>
             </div>
           </div>
         </section>
