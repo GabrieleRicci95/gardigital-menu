@@ -69,7 +69,7 @@ export const metadata: Metadata = {
     telephone: false,
   },
   verification: {
-    google: "5fa9207be56f3812",
+    google: "_p6_Cq8R3ocSi1iD1gPlpUIUoYyRG9bj4H2teOBwsB0",
   },
 };
 
