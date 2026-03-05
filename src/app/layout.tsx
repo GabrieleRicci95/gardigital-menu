@@ -104,7 +104,8 @@ export default function RootLayout({
     "name": "Gardigital Menu",
     "contactPoint": {
       "@type": "ContactPoint",
-      "email": "gardigital234@gmail.com",
+      "email": "gardigital16@gmail.com",
+      "telephone": "+39 351 348 7580",
       "contactType": "customer service"
     }
   };

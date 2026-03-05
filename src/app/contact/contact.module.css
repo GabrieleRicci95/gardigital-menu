@@ -146,3 +146,86 @@
     cursor: not-allowed;
     transform: none;
 }
+
+.directContacts {
+    margin-bottom: 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.contactCard {
+    background: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 16px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    transition: all 0.3s ease;
+    border: 1px solid #e0e0e0;
+}
+
+.contactCard:hover {
+    transform: translateY(-5px);
+    background: #fff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.whatsappCard:hover {
+    border-color: #25D366;
+}
+
+.emailCard:hover {
+    border-color: #ffd700;
+}
+
+.contactIcon {
+    width: 32px;
+    height: 32px;
+}
+
+.contactLabel {
+    font-weight: 700;
+    color: #1b263b;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.contactValue {
+    color: #666;
+    font-size: 0.85rem;
+}
+
+.divider {
+    height: 1px;
+    background: #eee;
+    margin: 2.5rem 0;
+    position: relative;
+    text-align: center;
+}
+
+.divider::after {
+    content: "OPPURE COMPILA IL MODULO";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 0 1rem;
+    color: #999;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+@media (max-width: 480px) {
+    .directContacts {
+        grid-template-columns: 1fr;
+    }
+
+    .card {
+        padding: 2rem 1.5rem;
+    }
+}

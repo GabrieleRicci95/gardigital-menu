@@ -28,3 +28,50 @@
     color: white;
     text-decoration: underline;
 }
+
+.contactContainer {
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 2rem;
+}
+
+.contactItem {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: transform 0.2s ease;
+}
+
+.contactItem:hover {
+    transform: scale(1.05);
+}
+
+.contactLabel {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.contactText {
+    font-size: 0.95rem;
+}
+
+@media (max-width: 480px) {
+    .contactContainer {
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: center;
+    }
+
+    .contactContainer {
+        gap: 1rem;
+    }
+}
