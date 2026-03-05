@@ -13,6 +13,7 @@ export default function RestaurantPage() {
     const [newModuleTitle, setNewModuleTitle] = useState('');
     const [creatingModule, setCreatingModule] = useState(false);
     const [customModules, setCustomModules] = useState<{ id: string, name: string, slug: string }[]>([]);
+    const [showAdvancedModules, setShowAdvancedModules] = useState(false);
 
     const [formData, setFormData] = useState({
         name: '',
@@ -44,6 +45,10 @@ export default function RestaurantPage() {
                         isDrinkActive: !!data.restaurant.drinkList?.isActive,
                     });
                     setCustomModules(data.restaurant.customLists || []);
+                    // Auto-expand advanced modules only if at least one was already active
+                    if (data.restaurant.wineList?.isActive || data.restaurant.champagneList?.isActive || data.restaurant.drinkList?.isActive) {
+                        setShowAdvancedModules(true);
+                    }
                 }
                 setLoading(false);
             })
@@ -202,48 +207,68 @@ export default function RestaurantPage() {
                         <p style={{ fontSize: '0.9rem', color: '#666', marginBottom: '1.5rem' }}>Attiva le sezioni speciali per il tuo menu digitale.</p>
 
                         {formData.slug !== 'mastro-arrosticino-884' && (
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
-                                <label style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: isDemo ? 'not-allowed' : 'pointer', padding: '15px', borderRadius: '12px', background: '#f8fafc', border: '1px solid #e2e8f0', transition: 'all 0.2s', opacity: isDemo ? 0.7 : 1 }}>
-                                    <input
-                                        type="checkbox"
-                                        checked={formData.isWineActive}
-                                        onChange={e => !isDemo && setFormData({ ...formData, isWineActive: e.target.checked })}
-                                        disabled={isDemo}
-                                        style={{ width: '20px', height: '20px', cursor: isDemo ? 'not-allowed' : 'pointer' }}
-                                    />
-                                    <div>
-                                        <span style={{ fontWeight: 600, display: 'block', color: '#1e293b' }}>Carta dei Vini</span>
-                                        <p style={{ margin: 0, fontSize: '0.8rem', color: '#64748b' }}>Gestisci una lista vini professionale.</p>
-                                    </div>
-                                </label>
+                            <div>
+                                {/* Collapsible advanced modules: Vini, Champagne, Drink */}
+                                <button
+                                    type="button"
+                                    onClick={() => setShowAdvancedModules(v => !v)}
+                                    style={{
+                                        display: 'flex', alignItems: 'center', gap: '8px',
+                                        background: 'none', border: '1px solid #e2e8f0',
+                                        borderRadius: '10px', padding: '10px 16px',
+                                        cursor: 'pointer', fontWeight: 600, fontSize: '0.9rem',
+                                        color: '#1a237e', marginBottom: '1rem', transition: 'all 0.2s'
+                                    }}
+                                >
+                                    <span style={{ fontSize: '1rem' }}>{showAdvancedModules ? '▲' : '▼'}</span>
+                                    {showAdvancedModules ? 'Nascondi moduli avanzati' : 'Mostra moduli avanzati (Vini, Champagne, Drink)'}
+                                </button>
 
-                                <label style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: isDemo ? 'not-allowed' : 'pointer', padding: '15px', borderRadius: '12px', background: '#f8fafc', border: '1px solid #e2e8f0', transition: 'all 0.2s', opacity: isDemo ? 0.7 : 1 }}>
-                                    <input
-                                        type="checkbox"
-                                        checked={formData.isChampagneActive}
-                                        onChange={e => !isDemo && setFormData({ ...formData, isChampagneActive: e.target.checked })}
-                                        disabled={isDemo}
-                                        style={{ width: '20px', height: '20px', cursor: isDemo ? 'not-allowed' : 'pointer' }}
-                                    />
-                                    <div>
-                                        <span style={{ fontWeight: 600, display: 'block', color: '#1e293b' }}>Carta degli Champagne</span>
-                                        <p style={{ margin: 0, fontSize: '0.8rem', color: '#64748b' }}>Ideale per wine bar o ristoranti chic.</p>
-                                    </div>
-                                </label>
+                                {showAdvancedModules && (
+                                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem', marginBottom: '1rem' }}>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: isDemo ? 'not-allowed' : 'pointer', padding: '15px', borderRadius: '12px', background: '#f8fafc', border: '1px solid #e2e8f0', transition: 'all 0.2s', opacity: isDemo ? 0.7 : 1 }}>
+                                            <input
+                                                type="checkbox"
+                                                checked={formData.isWineActive}
+                                                onChange={e => !isDemo && setFormData({ ...formData, isWineActive: e.target.checked })}
+                                                disabled={isDemo}
+                                                style={{ width: '20px', height: '20px', cursor: isDemo ? 'not-allowed' : 'pointer' }}
+                                            />
+                                            <div>
+                                                <span style={{ fontWeight: 600, display: 'block', color: '#1e293b' }}>Carta dei Vini</span>
+                                                <p style={{ margin: 0, fontSize: '0.8rem', color: '#64748b' }}>Gestisci una lista vini professionale.</p>
+                                            </div>
+                                        </label>
 
-                                <label style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: isDemo ? 'not-allowed' : 'pointer', padding: '15px', borderRadius: '12px', background: '#f8fafc', border: '1px solid #e2e8f0', transition: 'all 0.2s', opacity: isDemo ? 0.7 : 1 }}>
-                                    <input
-                                        type="checkbox"
-                                        checked={formData.isDrinkActive}
-                                        onChange={e => !isDemo && setFormData({ ...formData, isDrinkActive: e.target.checked })}
-                                        disabled={isDemo}
-                                        style={{ width: '20px', height: '20px', cursor: isDemo ? 'not-allowed' : 'pointer' }}
-                                    />
-                                    <div>
-                                        <span style={{ fontWeight: 600, display: 'block', color: '#1e293b' }}>Carta dei Drink / Cocktail</span>
-                                        <p style={{ margin: 0, fontSize: '0.8rem', color: '#64748b' }}>Sezione dedicata ai Barman e mixology.</p>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: isDemo ? 'not-allowed' : 'pointer', padding: '15px', borderRadius: '12px', background: '#f8fafc', border: '1px solid #e2e8f0', transition: 'all 0.2s', opacity: isDemo ? 0.7 : 1 }}>
+                                            <input
+                                                type="checkbox"
+                                                checked={formData.isChampagneActive}
+                                                onChange={e => !isDemo && setFormData({ ...formData, isChampagneActive: e.target.checked })}
+                                                disabled={isDemo}
+                                                style={{ width: '20px', height: '20px', cursor: isDemo ? 'not-allowed' : 'pointer' }}
+                                            />
+                                            <div>
+                                                <span style={{ fontWeight: 600, display: 'block', color: '#1e293b' }}>Carta degli Champagne</span>
+                                                <p style={{ margin: 0, fontSize: '0.8rem', color: '#64748b' }}>Ideale per wine bar o ristoranti chic.</p>
+                                            </div>
+                                        </label>
+
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: isDemo ? 'not-allowed' : 'pointer', padding: '15px', borderRadius: '12px', background: '#f8fafc', border: '1px solid #e2e8f0', transition: 'all 0.2s', opacity: isDemo ? 0.7 : 1 }}>
+                                            <input
+                                                type="checkbox"
+                                                checked={formData.isDrinkActive}
+                                                onChange={e => !isDemo && setFormData({ ...formData, isDrinkActive: e.target.checked })}
+                                                disabled={isDemo}
+                                                style={{ width: '20px', height: '20px', cursor: isDemo ? 'not-allowed' : 'pointer' }}
+                                            />
+                                            <div>
+                                                <span style={{ fontWeight: 600, display: 'block', color: '#1e293b' }}>Carta dei Drink / Cocktail</span>
+                                                <p style={{ margin: 0, fontSize: '0.8rem', color: '#64748b' }}>Sezione dedicata ai Barman e mixology.</p>
+                                            </div>
+                                        </label>
                                     </div>
-                                </label>
+                                )}
                             </div>
                         )}
 
