@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import { Menu as MenuIcon } from 'lucide-react';
 import styles from './dashboard.module.css';
 import SubscriptionAlert from '@/components/common/SubscriptionAlert';
+import { usePushNotifications } from '@/lib/hooks/usePushNotifications';
 
 export default function DashboardClientLayout({
     children,
@@ -17,6 +18,7 @@ export default function DashboardClientLayout({
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const [restaurantName, setRestaurantName] = useState('');
+    const [restaurantId, setRestaurantId] = useState('');
     const [restaurantSlug, setRestaurantSlug] = useState('');
     const [ownerEmail, setOwnerEmail] = useState('');
     const [subscriptionPlan, setSubscriptionPlan] = useState<string>('BASE');
@@ -29,6 +31,9 @@ export default function DashboardClientLayout({
     const [pendingReservationsCount, setPendingReservationsCount] = useState(0);
     const [isSubscriptionActive, setIsSubscriptionActive] = useState(true);
 
+    // Dynamic Push Notification Setup (only for mobile app)
+    usePushNotifications(restaurantId);
+
     const fetchRestaurantData = async () => {
         try {
             const res = await fetch('/api/restaurant');
@@ -36,6 +41,7 @@ export default function DashboardClientLayout({
                 const data = await res.json();
                 if (data.restaurant) {
                     setRestaurantName(data.restaurant.name);
+                    setRestaurantId(data.restaurant.id);
                     setRestaurantSlug(data.restaurant.slug);
                     setOwnerEmail(data.restaurant.owner?.email || '');
                     setIsWineActive(!!data.restaurant.wineList?.isActive);
