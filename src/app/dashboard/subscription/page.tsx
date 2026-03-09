@@ -175,8 +175,21 @@ export default function SubscriptionPage() {
     }
 
     return (
-        <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto', fontFamily: 'Inter, sans-serif' }}>
+        <div style={{
+            padding: '20px',
+            maxWidth: '1200px',
+            margin: '0 auto',
+            fontFamily: 'Inter, sans-serif',
+            overflowX: 'hidden',
+            width: '100%',
+            boxSizing: 'border-box'
+        }} className="main-container">
             <style>{`
+                @media (max-width: 768px) {
+                    .main-container {
+                        padding: 10px !important;
+                    }
+                }
                 @keyframes float {
                     0% { transform: translateY(0px) rotate(0deg); }
                     50% { transform: translateY(-10px) rotate(2deg); }
@@ -197,33 +210,37 @@ export default function SubscriptionPage() {
                 }
                 .main-title {
                     font-size: 3.5rem;
+                    letter-spacing: -2px;
                 }
                 .status-container {
                     padding: 12px 24px;
                 }
                 @media (max-width: 768px) {
                     .header-section {
-                        padding: 30px 15px !important;
-                        border-radius: 20px !important;
+                        padding: 30px 10px !important;
+                        border-radius: 16px !important;
+                        width: 100% !important;
+                        max-width: 100% !important;
                     }
                     .main-title {
-                        font-size: 1.75rem !important;
+                        font-size: 1.6rem !important;
                         letter-spacing: -0.5px !important;
-                        line-height: 1.2 !important;
+                        line-height: 1.1 !important;
+                        word-wrap: break-word !important;
                     }
                     .header-p {
-                        font-size: 0.95rem !important;
-                        line-height: 1.5 !important;
-                        padding: 0 10px !important;
+                        font-size: 0.9rem !important;
+                        line-height: 1.4 !important;
+                        padding: 0 !important;
+                        width: 100% !important;
                     }
                     .header-p br {
                         display: none;
                     }
                     .status-item {
-                        padding: 8px 16px !important;
-                        font-size: 0.8rem !important;
+                        padding: 8px 12px !important;
+                        font-size: 0.75rem !important;
                         width: 100% !important;
-                        max-width: 280px !important;
                         justify-content: center !important;
                     }
                     .floating-ring {
@@ -231,7 +248,8 @@ export default function SubscriptionPage() {
                     }
                     .plans-grid {
                         grid-template-columns: 1fr !important;
-                        gap: 1.5rem !important;
+                        gap: 1rem !important;
+                        padding: 0 !important;
                     }
                 }
             `}</style>
@@ -285,7 +303,6 @@ export default function SubscriptionPage() {
                     <h1 className="main-title" style={{
                         fontWeight: '900',
                         marginBottom: '20px',
-                        letterSpacing: '-2px',
                         background: 'linear-gradient(to bottom, #ffffff 30%, #cbd5e1 100%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
@@ -513,7 +530,7 @@ export default function SubscriptionPage() {
             </div>
 
             {/* Plan Selection */}
-            <div className="plans-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem', marginBottom: '4rem', justifyContent: 'center' }}>
+            <div className="plans-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '2rem', marginBottom: '4rem', justifyContent: 'center', width: '100%' }}>
                 {[
                     { id: 'MENU', name: 'Menu Base', price: '15,00', features: ['Menu Interattivo', 'QR Code Illimitati', 'Supporto 24/7'] },
                     { id: 'MENU_AI', name: 'Menu + AI', price: '25,00', features: ['Menu Interattivo', 'Traduzioni AI', 'Supporto 24/7'] },
