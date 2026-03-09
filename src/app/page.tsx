@@ -130,6 +130,31 @@ export default function Home() {
           </div>
         </section>
 
+        <section className={styles.appSection}>
+          <div className={styles.appContent}>
+            <div className={styles.appMockup}>
+              <img src="/preview-dashboard.png" alt="Gardigital App Mockup" className={styles.mockupImage} />
+            </div>
+            <div className={styles.appText}>
+              <h2 className={styles.appTitle}>Gestisci il tuo locale <br /><span className={styles.highlight}>ovunque tu sia</span></h2>
+              <p className={styles.appDesc}>
+                Porta la potenza di Gardigital sempre con te. Con la nostra App ufficiale ricevi notifiche in tempo reale per ogni nuova prenotazione e gestisci il tuo menu con la massima velocità.
+                <br /><br />
+                Un'esperienza fluida, nativa e ottimizzata per chi non vuole perdere neanche un secondo dei propri affari.
+              </p>
+              <div className={styles.badgeGroup}>
+                <Link href="https://play.google.com/store/apps/details?id=com.gardigital.menu" target="_blank">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Scarica su Google Play" className={styles.storeBadge} />
+                </Link>
+                <div className={styles.disabledBadge}>
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="Prossimamente su App Store" className={styles.storeBadge} />
+                  <span className={styles.comingSoon}>Prossimamente</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section id="pricing" className={styles.pricing}>
           <h2 className={styles.sectionTitle}>Scegli il tuo Piano</h2>
           <p className={styles.sectionSubtitle}>Soluzioni flessibili per ogni tipo di attività, dal piccolo bar al grande ristorante.</p>
