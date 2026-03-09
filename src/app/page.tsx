@@ -133,7 +133,7 @@ export default function Home() {
         <section className={styles.appSection}>
           <div className={styles.appContent}>
             <div className={styles.appMockup}>
-              <img src="/preview-dashboard.png" alt="Gardigital App Mockup" className={styles.mockupImage} />
+              <img src="/dashboard-mockup.png" alt="Gardigital Menu Dashboard Mockup" className={styles.mockupImage} />
             </div>
             <div className={styles.appText}>
               <h2 className={styles.appTitle}>Gestisci il tuo locale <br /><span className={styles.highlight}>ovunque tu sia</span></h2>
