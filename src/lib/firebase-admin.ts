@@ -30,6 +30,7 @@ export async function sendPushNotification(tokens: string[], title: string, body
     }
 
     try {
+        console.log(`Attempting to send FCM message to tokens: ${JSON.stringify(tokens)}`);
         const message = {
             notification: {
                 title,
@@ -40,18 +41,16 @@ export async function sendPushNotification(tokens: string[], title: string, body
         };
 
         const response = await admin.messaging().sendEachForMulticast(message);
-        console.log(`Push notification sent: ${response.successCount} successful, ${response.failureCount} failed.`);
+        console.log(`FCM Response: ${response.successCount} successful, ${response.failureCount} failed.`);
 
-        // Optional: Handle token cleanup if failure is due to unregistered tokens
         if (response.failureCount > 0) {
             response.responses.forEach((resp, idx) => {
                 if (!resp.success) {
-                    console.error(`Failed to send to token ${tokens[idx]}:`, resp.error);
-                    // e.g. if (resp.error.code === 'messaging/registration-token-not-registered') remover token from DB
+                    console.error(`FCM Token Error [${tokens[idx]}]:`, resp.error);
                 }
             });
         }
     } catch (error) {
-        console.error("Error sending push notification:", error);
+        console.error("Critical FCM Error:", error);
     }
 }

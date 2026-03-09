@@ -16,22 +16,7 @@ export function usePushNotifications(restaurantId?: string) {
 
         const registerPush = async () => {
             try {
-                // Check current permissions
-                let permStatus = await PushNotifications.checkPermissions();
-
-                if (permStatus.receive === 'prompt') {
-                    permStatus = await PushNotifications.requestPermissions();
-                }
-
-                if (permStatus.receive !== 'granted') {
-                    console.log('User denied push permission');
-                    return;
-                }
-
-                // Register with Apple / Google to receive token
-                await PushNotifications.register();
-
-                // On success, we get the token
+                // 1. Add listeners FIRST
                 await PushNotifications.addListener('registration', async (response) => {
                     if (isRegistered) return;
                     isRegistered = true;
@@ -40,7 +25,7 @@ export function usePushNotifications(restaurantId?: string) {
 
                     // Send the token to your backend
                     try {
-                        await fetch('/api/admin/push-tokens', {
+                        const res = await fetch('/api/admin/push-tokens', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
@@ -48,25 +33,41 @@ export function usePushNotifications(restaurantId?: string) {
                                 token: response.value
                             })
                         });
+                        console.log('Token sync status:', res.status);
                     } catch (e) {
                         console.error('Error saving push token', e);
                     }
                 });
 
-                // Some issue with our setup and push will not work
                 await PushNotifications.addListener('registrationError', (error: any) => {
                     console.error('Error on registration: ' + JSON.stringify(error));
                 });
 
-                // Show us the notification payload if the app is open on our device
                 await PushNotifications.addListener('pushNotificationReceived', (notification) => {
                     console.log('Push received: ' + JSON.stringify(notification));
                 });
 
-                // Method called when tapping on a notification
                 await PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
                     console.log('Push action performed: ' + JSON.stringify(notification));
                 });
+
+                // 2. Check current permissions
+                let permStatus = await PushNotifications.checkPermissions();
+                console.log('Initial push permission status:', permStatus.receive);
+
+                if (permStatus.receive === 'prompt') {
+                    permStatus = await PushNotifications.requestPermissions();
+                    console.log('Requested push permission status:', permStatus.receive);
+                }
+
+                if (permStatus.receive !== 'granted') {
+                    console.log('User denied push permission or permission not granted');
+                    return;
+                }
+
+                // 3. Register with Apple / Google to receive token
+                console.log('Calling PushNotifications.register()...');
+                await PushNotifications.register();
 
             } catch (error) {
                 console.error("Error setting up push notifications:", error);

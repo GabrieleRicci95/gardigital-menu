@@ -171,10 +171,15 @@ export async function POST(req: NextRequest) {
 
         // Trigger Push Notification if tokens exist
         if (restaurant?.pushTokens && restaurant.pushTokens.length > 0) {
+            console.log(`Sending push to ${restaurant.pushTokens.length} tokens for restaurant ${restaurantId}`);
             const title = `Nuova Prenotazione: ${restaurant.name}`;
             const body = `${name} ha prenotato per ${guests} persone il ${date} alle ${time}.`;
             // Non inviamo il messaggio push aspettando la fine (async) per non rallentare l'utente finale
-            sendPushNotification(restaurant.pushTokens, title, body, { reservationId: reservation.id }).catch(e => console.error(e));
+            sendPushNotification(restaurant.pushTokens, title, body, { reservationId: reservation.id })
+                .then(() => console.log('Push function executed'))
+                .catch(e => console.error('Push notification error:', e));
+        } else {
+            console.log(`No push tokens found for restaurant ${restaurantId}`);
         }
 
         return NextResponse.json(reservation);
