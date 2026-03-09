@@ -37,6 +37,22 @@ export async function sendPushNotification(tokens: string[], title: string, body
                 body
             },
             data: data || {},
+            android: {
+                priority: 'high' as const,
+                notification: {
+                    sound: 'default',
+                    clickAction: 'FCM_PLUGIN_ACTIVITY',
+                    icon: 'stock_ticker_update', // Default icon if available
+                },
+            },
+            apns: {
+                payload: {
+                    aps: {
+                        sound: 'default',
+                        badge: 1,
+                    },
+                },
+            },
             tokens: tokens
         };
 
