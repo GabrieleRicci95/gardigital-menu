@@ -45,12 +45,13 @@ export default function SubscriptionAlert() {
             alignItems: "center",
             justifyContent: "center",
             gap: "12px",
-            fontSize: "0.9rem",
+            fontSize: "0.85rem",
             fontWeight: "bold",
             borderBottom: `1px solid ${isExpired ? "#ef4444" : "#eab308"}`,
             zIndex: 1000,
             width: "100%",
-            textAlign: "center"
+            textAlign: "center",
+            flexWrap: 'wrap'
         }}>
             <span>
                 {isExpired

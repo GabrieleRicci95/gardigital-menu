@@ -126,9 +126,13 @@
 
 .main {
     flex: 1;
+    min-width: 0;
+    /* Prevent children from expanding beyond viewport */
     margin-left: 250px;
     display: flex;
     flex-direction: column;
+    width: 100%;
+    max-width: 100%;
 }
 
 .header {
@@ -221,13 +225,18 @@
 
     .main {
         margin-left: 0;
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: hidden !important;
     }
 
     .header {
-        padding: var(--spacing-sm) var(--spacing-md);
-        justify-content: space-between;
-        min-height: 70px;
-        gap: 10px;
+        padding: var(--spacing-sm) var(--spacing-md) !important;
+        justify-content: space-between !important;
+        min-height: 70px !important;
+        gap: 10px !important;
+        width: 100% !important;
+        max-width: 100% !important;
     }
 
     .userMenu {
