@@ -27,7 +27,7 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'Restaurant not found' }, { status: 404 });
         }
 
-        if (session.role !== 'ADMIN' && restaurant.ownerId !== session.id) {
+        if (session.user.role !== 'ADMIN' && restaurant.ownerId !== session.user.id) {
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
         }
 
