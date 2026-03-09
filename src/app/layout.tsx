@@ -80,9 +80,10 @@ export default function RootLayout({
 }>) {
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Service",
+    "@type": "SoftwareApplication",
     "name": "Gardigital Menu",
-    "serviceType": "Soluzioni Digitali Per Ristoranti",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web Browser",
     "description": "Crea Menu Personalizzati e QR Code per il tuo locale. Include Agenda Digitale con sistema di prenotazioni dirette. La soluzione completa per la gestione ristoranti.",
     "provider": {
       "@type": "Organization",

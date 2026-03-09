@@ -30,6 +30,7 @@ interface Restaurant {
     textColor: string;
     fontFamily: string;
     logoUrl: string | null;
+    showNameInPublicMenu?: boolean;
 }
 
 export default function ChampagneListPublicClient({ restaurant, champagneList }: { restaurant: Restaurant, champagneList: ChampagneList | null }) {
@@ -123,7 +124,7 @@ export default function ChampagneListPublicClient({ restaurant, champagneList }:
                     textShadow: '0 2px 10px rgba(0,0,0,0.5)',
                     fontFamily: '"Playfair Display", serif' // Enforce serif for Champagne elegance
                 }} className="animate-fade-in">
-                    {restaurant.name}
+                    {restaurant.showNameInPublicMenu && restaurant.name}
                 </h1>
             </header>
 
@@ -228,7 +229,7 @@ export default function ChampagneListPublicClient({ restaurant, champagneList }:
                 marginTop: '2rem'
             }}>
                 <p style={{ margin: 0, fontSize: '0.9rem', opacity: 0.5, letterSpacing: '2px', textTransform: 'uppercase' }}>
-                    {restaurant.name}
+                    {restaurant.showNameInPublicMenu && restaurant.name}
                 </p>
                 <div style={{
                     marginTop: '1.5rem',

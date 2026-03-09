@@ -20,6 +20,8 @@
   top: 0;
   z-index: 1000;
   transition: all 0.3s ease;
+  height: 85px;
+  /* Fixed height for header */
 }
 
 .logo {
@@ -28,10 +30,18 @@
 }
 
 .logoImage {
-  height: 90px;
-  /* Adjusted for header */
+  height: 190px;
+  /* Increased height even further */
   width: auto;
   object-fit: contain;
+  transition: transform 0.3s ease;
+  margin-top: 15px;
+  /* Moved up and allow overlap */
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.1));
+}
+
+.logoImage:hover {
+  transform: scale(1.05);
 }
 
 .nav {
@@ -516,6 +526,8 @@
   border: 2px solid #e2b13c;
   color: white;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  padding-top: 4rem;
+  /* Added padding to prevent overlap with badge */
 }
 
 .agencyCard .planName,

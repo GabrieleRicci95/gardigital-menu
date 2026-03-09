@@ -16,7 +16,8 @@ async function getRestaurant(slug: string) {
             backgroundColor: true,
             textColor: true,
             fontFamily: true,
-            logoUrl: true
+            logoUrl: true,
+            showNameInPublicMenu: true
         }
     });
 }

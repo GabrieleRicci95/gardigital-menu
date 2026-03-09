@@ -32,6 +32,7 @@ interface Restaurant {
     textColor: string;
     fontFamily: string;
     logoUrl: string | null;
+    showNameInPublicMenu?: boolean;
 }
 
 export default function CustomListPublicClient({ restaurant, customList }: { restaurant: Restaurant, customList: CustomList | null }) {
@@ -105,7 +106,7 @@ export default function CustomListPublicClient({ restaurant, customList }: { res
                 }} className="animate-fade-in">
                     {customList?.name || 'Lista'}
                 </h1>
-                <p style={{ opacity: 0.9, fontSize: '1.2rem', maxWidth: '600px', margin: '0.5rem auto 0' }}>{restaurant.name}</p>
+                <p style={{ opacity: 0.9, fontSize: '1.2rem', maxWidth: '600px', margin: '0.5rem auto 0' }}>{restaurant.showNameInPublicMenu && restaurant.name}</p>
             </header>
 
             <main style={{ maxWidth: '800px', margin: '0 auto', padding: '1rem 1.5rem 4rem 1.5rem' }}>
@@ -205,7 +206,7 @@ export default function CustomListPublicClient({ restaurant, customList }: { res
                 marginTop: '2rem'
             }}>
                 <p style={{ margin: 0, fontSize: '0.9rem', opacity: 0.5 }}>
-                    {restaurant.name}
+                    {restaurant.showNameInPublicMenu && restaurant.name}
                 </p>
                 <div style={{
                     marginTop: '1.5rem',

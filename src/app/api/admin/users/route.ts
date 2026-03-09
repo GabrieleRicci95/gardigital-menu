@@ -69,7 +69,8 @@ export async function POST(request: Request) {
             data: {
                 name: `Ristorante di ${name.split(' ')[0]}`,
                 slug: defaultSlug,
-                ownerId: user.id
+                ownerId: user.id,
+                showNameInPublicMenu: false
             }
         });
 

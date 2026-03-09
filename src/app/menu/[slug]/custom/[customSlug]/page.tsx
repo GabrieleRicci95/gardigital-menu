@@ -20,7 +20,8 @@ async function getCustomList(slug: string, customSlug: string) {
             backgroundColor: true,
             textColor: true,
             fontFamily: true,
-            logoUrl: true
+            logoUrl: true,
+            showNameInPublicMenu: true
         }
     });
 

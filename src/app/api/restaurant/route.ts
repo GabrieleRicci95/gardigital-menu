@@ -53,7 +53,8 @@ export async function PATCH(request: Request) {
             textColor, fontFamily, cardStyle, whatsappNumber, wineListUrl,
             googleReviewsUrl,
             isWineActive, isChampagneActive, isDrinkActive,
-            bookingMaxGuestsPerSlot, bookingAutoConfirm
+            bookingMaxGuestsPerSlot, bookingAutoConfirm,
+            showNameInPublicMenu
         } = data;
 
         const slug = name ? generateSlug(name) : '';
@@ -87,6 +88,7 @@ export async function PATCH(request: Request) {
                     googleReviewsUrl,
                     bookingMaxGuestsPerSlot,
                     bookingAutoConfirm,
+                    showNameInPublicMenu,
                     name: name || existingRestaurant.name,
                     slug: (name && existingRestaurant.name !== name) ? slug + '-' + Math.floor(Math.random() * 1000) : existingRestaurant.slug,
                     // Handle related lists
@@ -135,6 +137,7 @@ export async function PATCH(request: Request) {
                     googleReviewsUrl,
                     bookingMaxGuestsPerSlot: bookingMaxGuestsPerSlot ?? 10,
                     bookingAutoConfirm: bookingAutoConfirm ?? false,
+                    showNameInPublicMenu: showNameInPublicMenu ?? false,
                     ownerId: session.user.id,
                     wineList: { create: { isActive: isWineActive ?? true } },
                     champagneList: { create: { isActive: isChampagneActive ?? false } },

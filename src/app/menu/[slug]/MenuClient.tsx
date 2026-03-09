@@ -52,6 +52,7 @@ export interface MenuPageRestaurant {
     translations?: { language: string; description: string | null }[];
     customLists?: { id: string; name: string; slug: string; isActive: boolean }[] | null;
     googleReviewsUrl?: string | null;
+    showNameInPublicMenu?: boolean;
 }
 const UI_LABELS: Record<string, any> = {
     it: {
@@ -373,7 +374,7 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
             <ReservationModal
                 isOpen={isReservationOpen}
                 onClose={() => setIsReservationOpen(false)}
-                restaurantName={restaurant.name}
+                restaurantName={restaurant.showNameInPublicMenu ? restaurant.name : ''}
                 whatsappNumber={restaurant.whatsappNumber || ''}
                 restaurantId={activeMenuId}
             />
@@ -401,7 +402,7 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
                     ) : restaurant.logoUrl ? (
                         <img src={restaurant.logoUrl} alt={restaurant.name} className={styles.logo} />
                     ) : null}
-                    {restaurant.slug !== 'mastro-arrosticino-884' && (
+                    {restaurant.slug !== 'mastro-arrosticino-884' && restaurant.showNameInPublicMenu && (
                         <h1 className={styles.restaurantName}>{restaurant.name}</h1>
                     )}
                     {restaurant.description && (
@@ -616,7 +617,7 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
                 <ReservationModal
                     isOpen={isReservationOpen}
                     onClose={() => setIsReservationOpen(false)}
-                    restaurantName={restaurant.name}
+                    restaurantName={restaurant.showNameInPublicMenu ? restaurant.name : ''}
                     whatsappNumber={restaurant.whatsappNumber || ''}
                     restaurantId={activeMenuId}
                 />

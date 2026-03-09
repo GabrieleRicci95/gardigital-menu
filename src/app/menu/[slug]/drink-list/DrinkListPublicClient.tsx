@@ -30,6 +30,7 @@ interface Restaurant {
     textColor: string;
     fontFamily: string;
     logoUrl: string | null;
+    showNameInPublicMenu?: boolean;
 }
 
 export default function DrinkListPublicClient({ restaurant, drinkList }: { restaurant: Restaurant, drinkList: DrinkList | null }) {
@@ -104,7 +105,7 @@ export default function DrinkListPublicClient({ restaurant, drinkList }: { resta
                     textShadow: '0 2px 10px rgba(0,0,0,0.5)',
                     fontFamily: '"Playfair Display", serif'
                 }} className="animate-fade-in">
-                    {restaurant.name}
+                    {restaurant.showNameInPublicMenu && restaurant.name}
                 </h1>
             </header>
 
@@ -227,7 +228,7 @@ export default function DrinkListPublicClient({ restaurant, drinkList }: { resta
                 marginTop: '2rem'
             }}>
                 <p style={{ margin: 0, fontSize: '0.9rem', opacity: 0.5, letterSpacing: '2px', textTransform: 'uppercase' }}>
-                    {restaurant.name}
+                    {restaurant.showNameInPublicMenu && restaurant.name}
                 </p>
                 <div style={{
                     marginTop: '1.5rem',

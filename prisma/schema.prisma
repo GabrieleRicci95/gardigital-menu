@@ -63,6 +63,9 @@ model Restaurant {
   bookingMaxGuestsPerSlot Int     @default(10)
   bookingAutoConfirm      Boolean @default(false)
 
+  // Visibility Configuration
+  showNameInPublicMenu    Boolean @default(true)
+
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

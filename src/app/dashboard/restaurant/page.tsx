@@ -24,6 +24,7 @@ export default function RestaurantPage() {
         isWineActive: false,
         isChampagneActive: false,
         isDrinkActive: false,
+        showNameInPublicMenu: true,
     });
 
     useEffect(() => {
@@ -42,6 +43,7 @@ export default function RestaurantPage() {
                         isWineActive: !!data.restaurant.wineList?.isActive,
                         isChampagneActive: !!data.restaurant.champagneList?.isActive,
                         isDrinkActive: !!data.restaurant.drinkList?.isActive,
+                        showNameInPublicMenu: data.restaurant.showNameInPublicMenu ?? true,
                     });
                     setCustomModules(data.restaurant.customLists || []);
                 }
@@ -143,7 +145,24 @@ export default function RestaurantPage() {
             <div className={styles.card}>
                 <form onSubmit={handleSubmit} className={styles.form}>
                     <div className={styles.inputGroup}>
-                        <label htmlFor="name">Nome Ristorante</label>
+                        <label htmlFor="showNameInPublicMenu" style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
+                            <input
+                                type="checkbox"
+                                id="showNameInPublicMenu"
+                                checked={formData.showNameInPublicMenu}
+                                onChange={e => setFormData({ ...formData, showNameInPublicMenu: e.target.checked })}
+                                style={{ width: '20px', height: '20px' }}
+                            />
+                            <span>Mostra Nome Ristorante nel Menu Pubblico</span>
+                        </label>
+                        <span className={styles.helperText}>
+                            ℹ️ Se disattivato, il nome del ristorante non apparirà nell&apos;intestazione del menu pubblico.
+                            (I nuovi ristoranti hanno questa opzione disattivata per impostazione predefinita).
+                        </span>
+                    </div>
+
+                    <div className={styles.inputGroup}>
+                        <label htmlFor="name">Nome Ristorante (Interno)</label>
                         <input
                             type="text"
                             id="name"

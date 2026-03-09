@@ -192,28 +192,56 @@ export default function SubscriptionPage() {
                     50% { background-position: 100% 50%; }
                     100% { background-position: 0% 50%; }
                 }
+                .header-section {
+                    padding: 80px 20px;
+                }
+                .main-title {
+                    font-size: 3.5rem;
+                }
+                .status-container {
+                    padding: 12px 24px;
+                }
+                @media (max-width: 768px) {
+                    .header-section {
+                        padding: 40px 15px !important;
+                        border-radius: 20px !important;
+                    }
+                    .main-title {
+                        font-size: 2rem !important;
+                        letter-spacing: -1px !important;
+                    }
+                    .header-p {
+                        font-size: 1rem !important;
+                    }
+                    .status-item {
+                        padding: 8px 16px !important;
+                        font-size: 0.85rem !important;
+                    }
+                    .floating-ring {
+                        display: none;
+                    }
+                }
             `}</style>
 
             {/* Header Section - Premium Redesign */}
-            <div style={{
+            <div className="header-section" style={{
                 textAlign: 'center',
                 marginBottom: '40px',
                 background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 25%, #1e3a8a 50%, #1e1b4b 75%, #0f172a 100%)',
                 backgroundSize: '400% 400%',
                 animation: 'mesh-bg 15s ease infinite',
-                padding: '80px 20px',
-                borderRadius: '32px',
                 color: 'white',
                 position: 'relative',
                 overflow: 'hidden',
-                boxShadow: '0 30px 60px rgba(0,0,0,0.2), inset 0 0 0 1px rgba(255,255,255,0.1)'
+                boxShadow: '0 30px 60px rgba(0,0,0,0.2), inset 0 0 0 1px rgba(255,255,255,0.1)',
+                borderRadius: '32px'
             }}>
                 {/* Decorative Glass Elements */}
                 <div style={{ position: 'absolute', top: '10%', right: '5%', width: '150px', height: '150px', background: 'radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%)', borderRadius: '50%', filter: 'blur(30px)' }} />
                 <div style={{ position: 'absolute', bottom: '15%', left: '8%', width: '120px', height: '120px', background: 'radial-gradient(circle, rgba(251, 191, 36, 0.1) 0%, transparent 70%)', borderRadius: '50%', filter: 'blur(20px)' }} />
 
                 {/* Floating Rings */}
-                <div style={{
+                <div className="floating-ring" style={{
                     position: 'absolute',
                     top: '50%',
                     left: '50%',
@@ -224,7 +252,7 @@ export default function SubscriptionPage() {
                     borderRadius: '50%',
                     pointerEvents: 'none'
                 }} />
-                <div style={{
+                <div className="floating-ring" style={{
                     position: 'absolute',
                     top: '50%',
                     left: '50%',
@@ -241,8 +269,7 @@ export default function SubscriptionPage() {
                         <Crown size={56} style={{ marginBottom: '24px', color: '#fbbf24', animation: 'pulse-gold 3s ease-in-out infinite' }} />
                     </div>
 
-                    <h1 style={{
-                        fontSize: '3.5rem',
+                    <h1 className="main-title" style={{
                         fontWeight: '900',
                         marginBottom: '20px',
                         letterSpacing: '-2px',
@@ -254,7 +281,7 @@ export default function SubscriptionPage() {
                         Scegli il tuo Successo
                     </h1>
 
-                    <p style={{
+                    <p className="header-p" style={{
                         fontSize: '1.25rem',
                         color: '#94a3b8',
                         maxWidth: '650px',
@@ -274,7 +301,7 @@ export default function SubscriptionPage() {
                         flexWrap: 'wrap',
                         alignItems: 'center'
                     }}>
-                        <div style={{
+                        <div className="status-item" style={{
                             background: 'rgba(255,255,255,0.03)',
                             padding: '12px 24px',
                             borderRadius: '50px',
@@ -292,7 +319,7 @@ export default function SubscriptionPage() {
                         </div>
 
                         {endDate && (
-                            <div style={{
+                            <div className="status-item" style={{
                                 background: 'rgba(255,255,255,0.03)',
                                 padding: '12px 24px',
                                 borderRadius: '50px',
@@ -311,7 +338,7 @@ export default function SubscriptionPage() {
                             </div>
                         )}
 
-                        <div style={{
+                        <div className="status-item" style={{
                             background: isRecurring ? 'rgba(74, 222, 128, 0.05)' : 'rgba(239, 68, 68, 0.05)',
                             padding: '12px 24px',
                             borderRadius: '50px',
