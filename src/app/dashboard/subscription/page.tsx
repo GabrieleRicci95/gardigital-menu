@@ -203,22 +203,35 @@ export default function SubscriptionPage() {
                 }
                 @media (max-width: 768px) {
                     .header-section {
-                        padding: 40px 15px !important;
+                        padding: 30px 15px !important;
                         border-radius: 20px !important;
                     }
                     .main-title {
-                        font-size: 2rem !important;
-                        letter-spacing: -1px !important;
+                        font-size: 1.75rem !important;
+                        letter-spacing: -0.5px !important;
+                        line-height: 1.2 !important;
                     }
                     .header-p {
-                        font-size: 1rem !important;
+                        font-size: 0.95rem !important;
+                        line-height: 1.5 !important;
+                        padding: 0 10px !important;
+                    }
+                    .header-p br {
+                        display: none;
                     }
                     .status-item {
                         padding: 8px 16px !important;
-                        font-size: 0.85rem !important;
+                        font-size: 0.8rem !important;
+                        width: 100% !important;
+                        max-width: 280px !important;
+                        justify-content: center !important;
                     }
                     .floating-ring {
                         display: none;
+                    }
+                    .plans-grid {
+                        grid-template-columns: 1fr !important;
+                        gap: 1.5rem !important;
                     }
                 }
             `}</style>
@@ -500,7 +513,7 @@ export default function SubscriptionPage() {
             </div>
 
             {/* Plan Selection */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', marginBottom: '4rem', justifyContent: 'start' }}>
+            <div className="plans-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem', marginBottom: '4rem', justifyContent: 'center' }}>
                 {[
                     { id: 'MENU', name: 'Menu Base', price: '15,00', features: ['Menu Interattivo', 'QR Code Illimitati', 'Supporto 24/7'] },
                     { id: 'MENU_AI', name: 'Menu + AI', price: '25,00', features: ['Menu Interattivo', 'Traduzioni AI', 'Supporto 24/7'] },
