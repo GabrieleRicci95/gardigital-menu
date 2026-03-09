@@ -22,6 +22,57 @@
     font-size: 1.1rem;
 }
 
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem !important;
+    }
+
+    .header {
+        margin-bottom: 2rem !important;
+    }
+
+    .title {
+        font-size: 1.8rem !important;
+    }
+
+    .subtitle {
+        font-size: 0.95rem !important;
+    }
+
+    .card {
+        padding: 1.25rem !important;
+        border-radius: 16px !important;
+    }
+
+    .grid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+
+    .formInput,
+    .formTextarea {
+        padding: 0.8rem !important;
+        font-size: 0.95rem !important;
+    }
+
+    .actions {
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+
+    .button {
+        width: 100% !important;
+    }
+
+    .linkContainer {
+        padding: 1rem !important;
+    }
+
+    .linkUrl {
+        font-size: 0.8rem !important;
+    }
+}
+
 /* Grid Layout */
 .grid {
     display: grid;

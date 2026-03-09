@@ -222,7 +222,7 @@ export default function RestaurantPage() {
                         <p style={{ fontSize: '0.9rem', color: '#666', marginBottom: '1.5rem' }}>Crea sezioni extra per il tuo menu digitale.</p>
 
                         {customModules.length > 0 && (
-                            <div style={{ marginBottom: '1.5rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
+                            <div style={{ marginBottom: '1.5rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem' }} className={styles.customModulesGrid}>
                                 {customModules.map(m => (
                                     <div key={m.id} style={{ display: 'flex', flexDirection: 'column', gap: '10px', padding: '15px', borderRadius: '12px', background: 'white', border: '1px solid #e2e8f0' }}>
                                         <div>
