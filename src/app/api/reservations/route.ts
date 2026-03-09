@@ -148,12 +148,12 @@ export async function POST(req: NextRequest) {
 
         let initialStatus = 'PENDING';
 
-        if (session) {
-            const { status } = body;
-            if (status === 'CONFIRMED') initialStatus = 'CONFIRMED';
-            else initialStatus = 'CONFIRMED';
+        if (session && body.status) {
+            initialStatus = body.status;
         } else if (restaurant?.bookingAutoConfirm) {
             initialStatus = 'CONFIRMED';
+        } else {
+            initialStatus = 'PENDING';
         }
 
         const reservation = await prisma.reservation.create({
