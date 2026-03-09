@@ -221,26 +221,48 @@ export default function SubscriptionPage() {
                         border-radius: 16px !important;
                         width: 100% !important;
                         max-width: 100% !important;
+                        box-sizing: border-box !important;
                     }
                     .main-title {
                         font-size: 1.6rem !important;
                         letter-spacing: -0.5px !important;
                         line-height: 1.1 !important;
                         word-wrap: break-word !important;
+                        overflow-wrap: break-word !important;
                     }
                     .header-p {
                         font-size: 0.9rem !important;
                         line-height: 1.4 !important;
-                        padding: 0 !important;
+                        padding: 0 5px !important;
                         width: 100% !important;
+                        box-sizing: border-box !important;
                     }
                     .header-p br {
                         display: none;
+                    }
+                    .status-container {
+                        gap: 10px !important;
+                        flex-direction: column !important;
+                        align-items: center !important;
                     }
                     .status-item {
                         padding: 8px 12px !important;
                         font-size: 0.75rem !important;
                         width: 100% !important;
+                        max-width: 300px !important;
+                        justify-content: center !important;
+                        box-sizing: border-box !important;
+                    }
+                    .action-container {
+                        flex-direction: column !important;
+                        width: 100% !important;
+                        gap: 10px !important;
+                        margin-left: 0 !important;
+                        align-items: center !important;
+                    }
+                    .action-button {
+                        width: 100% !important;
+                        max-width: 250px !important;
                         justify-content: center !important;
                     }
                     .floating-ring {
@@ -323,7 +345,7 @@ export default function SubscriptionPage() {
                     </p>
 
                     {/* Status Bar - Glassmorphism Refresh */}
-                    <div style={{
+                    <div className="status-container" style={{
                         marginTop: '40px',
                         display: 'flex',
                         justifyContent: 'center',
@@ -393,11 +415,12 @@ export default function SubscriptionPage() {
 
                         {/* Actions in Header Bar */}
                         {!isExpired && (isRecurring || restaurant?.subscription?.stripeSubscriptionId) && (
-                            <div style={{ display: 'flex', gap: '12px', marginLeft: '10px' }}>
+                            <div className="action-container" style={{ display: 'flex', gap: '12px', marginLeft: '10px', flexWrap: 'wrap', justifyContent: 'center' }}>
                                 <button
                                     onClick={handlePortal}
                                     disabled={loading}
                                     title="Gestisci fatture e metodi di pagamento"
+                                    className="action-button"
                                     style={{
                                         background: 'rgba(255,255,255,0.95)',
                                         color: '#0f172a',
@@ -430,6 +453,7 @@ export default function SubscriptionPage() {
                                     <button
                                         onClick={handleCancel}
                                         disabled={loading}
+                                        className="action-button"
                                         style={{
                                             background: '#ef4444',
                                             color: 'white',
