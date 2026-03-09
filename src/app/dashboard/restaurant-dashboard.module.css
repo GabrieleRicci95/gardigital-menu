@@ -71,6 +71,17 @@
     .linkUrl {
         font-size: 0.8rem !important;
     }
+
+    .createModuleForm {
+        display: flex !important;
+    }
+
+    @media (max-width: 768px) {
+        .createModuleForm {
+            flex-direction: column !important;
+            gap: 15px !important;
+        }
+    }
 }
 
 /* Grid Layout */

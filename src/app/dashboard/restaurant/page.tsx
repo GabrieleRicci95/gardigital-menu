@@ -248,10 +248,10 @@ export default function RestaurantPage() {
                             </div>
                         )}
 
-                        <div style={{ background: '#fff', padding: '1.5rem', borderRadius: '12px', border: '1px dashed #cbd5e1', opacity: isDemo ? 0.7 : 1 }}>
+                        <div style={{ background: '#fff', padding: '1.2rem', borderRadius: '12px', border: '1px dashed #cbd5e1', opacity: isDemo ? 0.7 : 1 }}>
                             <h4 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.5rem' }}>+ Crea un Modulo Personalizzato</h4>
                             <p style={{ fontSize: '0.8rem', color: '#64748b', marginBottom: '1rem' }}>Esempio: "I nostri Amari", "Carta dei Dessert", "Angolo Sigari".</p>
-                            <div style={{ display: 'flex', gap: '10px' }}>
+                            <div style={{ display: 'flex', gap: '10px' }} className={styles.createModuleForm}>
                                 <input
                                     type="text"
                                     value={newModuleTitle}

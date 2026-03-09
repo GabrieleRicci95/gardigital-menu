@@ -271,7 +271,7 @@ export default function DashboardClientLayout({
                         <span>Menu</span>
                     </button>
                     <div className={styles.userMenu}>
-                        <span style={{ fontWeight: 'bold', fontSize: '1.2rem', marginRight: '20px' }}>
+                        <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
                             Benvenuto
                         </span>
                     </div>
