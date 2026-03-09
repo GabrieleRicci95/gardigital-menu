@@ -271,21 +271,9 @@ export default function DashboardClientLayout({
                         <span>Menu</span>
                     </button>
                     <div className={styles.userMenu}>
-                        {isAppMode ? (
-                            <span style={{ fontWeight: 'bold', fontSize: '1.1rem', marginRight: '10px' }}>
-                                Benvenuto
-                            </span>
-                        ) : restaurantLogo ? (
-                            <img
-                                src={restaurantLogo}
-                                alt="Logo Ristorante"
-                                style={{ height: '140px', width: 'auto', objectFit: 'contain', position: 'relative', zIndex: 10 }}
-                            />
-                        ) : (
-                            <span style={{ fontWeight: 'bold', fontSize: '1.2rem', marginRight: '20px' }}>
-                                {restaurantSlug?.toLowerCase() === 'demo' || ownerEmail?.toLowerCase() === 'demo@gardigital.it' || !restaurantName ? 'Benvenuto' : restaurantName}
-                            </span>
-                        )}
+                        <span style={{ fontWeight: 'bold', fontSize: '1.2rem', marginRight: '20px' }}>
+                            Benvenuto
+                        </span>
                     </div>
                 </header>
                 <div className={styles.content}>
