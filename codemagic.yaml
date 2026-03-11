@@ -19,10 +19,10 @@ workflows:
           keychain initialize
           # 1. Generate a new private key locally
           openssl genrsa -out /tmp/cert_key.p8 2048
-          # 2. Create the Distribution Certificate using this key and save it to keychain
-          app-store-connect certificates create --type IOS_DISTRIBUTION --certificate-key /tmp/cert_key.p8 --save
-          # 3. Fetch and create the profile (it will use the newly created certificate)
-          app-store-connect fetch-signing-files "$BUNDLE_ID" --type IOS_APP_STORE --create
+          # 2. Create the Distribution Certificate using this key (note the @file: prefix)
+          app-store-connect certificates create --type IOS_DISTRIBUTION --certificate-key "@file:/tmp/cert_key.p8" --save
+          # 3. Create/Fetch the profile (bundle ID at the end as positional argument)
+          app-store-connect fetch-signing-files --type IOS_APP_STORE --create "$BUNDLE_ID"
       - name: Install dependencies
         script: |
           npm install
