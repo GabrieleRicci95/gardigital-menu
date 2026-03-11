@@ -6,21 +6,16 @@ workflows:
     integrations:
       app_store_connect: "Apple Build"
     environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.gardigital.menu
       vars:
         XCODE_PROJECT: "ios/App/App.xcodeproj"
         XCODE_SCHEME: "App"
-        BUNDLE_ID: "com.gardigital.menu"
       node: latest
       xcode: latest
       cocoapods: default
     scripts:
-      - name: Set up code signing
-        script: |
-          keychain initialize
-          app-store-connect fetch-signing-files --type IOS_APP_STORE "$BUNDLE_ID"
-      - name: Diagnostics - List Apple Profiles
-        script: |
-          app-store-connect list-profiles --bundle-id "$BUNDLE_ID"
       - name: Install dependencies
         script: |
           npm install
