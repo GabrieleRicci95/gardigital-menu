@@ -4,12 +4,15 @@ workflows:
     max_build_duration: 60
     instance_type: mac_mini_m2
     environment:
-      groups:
-        - apple_auth # We will configure this in Codemagic UI
+      # Removed 'groups: apple_auth' as per Plan B
       vars:
         XCODE_PROJECT: "ios/App/App.xcodeproj"
         XCODE_SCHEME: "App"
         APP_ID: "com.gardigital.menu"
+        # The following variables will be defined manually in Codemagic UI:
+        # APP_STORE_CONNECT_ISSUER_ID
+        # APP_STORE_CONNECT_KEY_IDENTIFIER
+        # APP_STORE_CONNECT_PRIVATE_KEY
       node: latest
       xcode: latest
       cocoapods: default
