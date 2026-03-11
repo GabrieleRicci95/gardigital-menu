@@ -17,7 +17,7 @@ workflows:
       - name: Set up code signing
         script: |
           keychain initialize
-          app-store-connect fetch-signing-files "$BUNDLE_ID" --type IOS_APP_STORE --install
+          app-store-connect fetch-signing-files --bundle-id "$BUNDLE_ID" --type IOS_APP_STORE
       - name: Diagnostics - List Apple Profiles
         script: |
           app-store-connect list-profiles --bundle-id "$BUNDLE_ID"
