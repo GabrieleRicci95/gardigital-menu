@@ -14,13 +14,15 @@ workflows:
       xcode: latest
       cocoapods: default
     scripts:
-      - name: Discovery - CLI Help
+      - name: Set up code signing
         script: |
-          app-store-connect certificates create --help
-          echo "---"
-          app-store-connect profiles create --help
-          echo "---"
-          app-store-connect fetch-signing-files --help
+          keychain initialize
+          # 1. Generate a new private key locally
+          openssl genrsa -out /tmp/cert_key.p8 2048
+          # 2. Create the Distribution Certificate using this key and save it to keychain
+          app-store-connect certificates create --type IOS_DISTRIBUTION --certificate-key /tmp/cert_key.p8 --save
+          # 3. Fetch and create the profile (it will use the newly created certificate)
+          app-store-connect fetch-signing-files "$BUNDLE_ID" --type IOS_APP_STORE --create
       - name: Install dependencies
         script: |
           npm install
