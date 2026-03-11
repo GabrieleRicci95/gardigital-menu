@@ -21,10 +21,11 @@ workflows:
         script: |
           npm run build
           npx cap sync ios
+      - name: Set up code signing
+        script: |
+          xcode-project use-profiles
       - name: Build iOS App
         script: |
-          # The certificate and profile will be handled by Codemagic automatically
-          # based on the settings we will configure together.
           xcode-project build-ipa \
             --project "$XCODE_PROJECT" \
             --scheme "$XCODE_SCHEME"
