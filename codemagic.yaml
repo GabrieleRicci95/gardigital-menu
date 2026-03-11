@@ -4,9 +4,6 @@ workflows:
     max_build_duration: 60
     instance_type: mac_mini_m2
     environment:
-      # Link the integration we set up in the UI
-      app_store_connect:
-        - "Apple Build"
       vars:
         XCODE_PROJECT: "ios/App/App.xcodeproj"
         XCODE_SCHEME: "App"
@@ -14,6 +11,8 @@ workflows:
       node: latest
       xcode: latest
       cocoapods: default
+    integrations:
+      app_store_connect: "Apple Build"
     scripts:
       - name: Install dependencies
         script: |
