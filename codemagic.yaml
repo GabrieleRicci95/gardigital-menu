@@ -8,6 +8,7 @@ workflows:
         XCODE_PROJECT: "ios/App/App.xcodeproj"
         XCODE_SCHEME: "App"
         APP_ID: "com.gardigital.menu"
+        DEVELOPMENT_TEAM: "33VT7NT5X9"
       node: latest
       xcode: latest
       cocoapods: default
@@ -23,17 +24,14 @@ workflows:
           npx cap sync ios
       - name: Set up code signing
         script: |
-          # This should now see the 'Apple Build' integration
           xcode-project use-profiles
-      - name: Debug signing (Check profiles)
-        script: |
-          echo "Listing installed profiles:"
-          ls ~/Library/MobileDevice/Provisioning\ Profiles || echo "No profiles found"
       - name: Build iOS App
         script: |
           xcode-project build-ipa \
             --project "$XCODE_PROJECT" \
-            --scheme "$XCODE_SCHEME"
+            --scheme "$XCODE_SCHEME" \
+            --bundle-id "$APP_ID" \
+            --team-id "$DEVELOPMENT_TEAM"
     artifacts:
       - build/ios/ipa/*.ipa
     publishing:
