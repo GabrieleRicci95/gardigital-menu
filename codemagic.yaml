@@ -21,6 +21,8 @@ workflows:
           openssl genrsa -out /tmp/cert_key.p8 2048
           # 2. Unified command to Create Certificate + Create Profile + Save to Keychain
           app-store-connect fetch-signing-files --type IOS_APP_STORE --create --certificate-key "@file:/tmp/cert_key.p8" "$BUNDLE_ID"
+          # 3. LINK the profiles to the Xcode project
+          xcode-project use-profiles
       - name: Install dependencies
         script: |
           npm install
