@@ -23,12 +23,16 @@ workflows:
           npx cap sync ios
       - name: Set up code signing
         script: |
-          xcode-project use-profiles
+          xcode-project use-profiles --bundle-id "$APP_ID"
+      - name: Debug signing (List profiles)
+        script: |
+          ls -R ~/Library/MobileDevice/Provisioning\ Profiles || echo "No profiles found"
       - name: Build iOS App
         script: |
           xcode-project build-ipa \
             --project "$XCODE_PROJECT" \
-            --scheme "$XCODE_SCHEME"
+            --scheme "$XCODE_SCHEME" \
+            --bundle-id "$APP_ID"
     artifacts:
       - build/ios/ipa/*.ipa
     publishing:
