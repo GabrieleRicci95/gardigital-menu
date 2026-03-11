@@ -1,0 +1,39 @@
+workflows:
+  ios-workflow:
+    name: iOS Build
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    environment:
+      groups:
+        - apple_auth # We will configure this in Codemagic UI
+      vars:
+        XCODE_WORKSPACE: "ios/App/App.xcworkspace"
+        XCODE_SCHEME: "App"
+        APP_ID: "com.gardigital.menu"
+      node: latest
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Install dependencies
+        script: |
+          npm install
+      - name: Capacitor build
+        script: |
+          npm run build
+          npx cap sync ios
+      - name: Build iOS App
+        script: |
+          # The certificate and profile will be handled by Codemagic automatically
+          # based on the settings we will configure together.
+          xcode-project build-ipa \
+            --workspace "$XCODE_WORKSPACE" \
+            --scheme "$XCODE_SCHEME"
+    artifacts:
+      - build/ios/ipa/*.ipa
+    publishing:
+      email:
+        recipients:
+          - gabricci95@gmail.com # The user's email from GitHub
+        notify:
+          success: true
+          failure: true
