@@ -18,6 +18,11 @@ workflows:
       - name: Install dependencies
         script: |
           npm install
+      - name: Patch Xcode Project
+        script: |
+          # Set Team ID and Manual signing style directly in the project file
+          sed -i '' "s/ProvisioningStyle = Automatic;/ProvisioningStyle = Manual;/g" "$XCODE_PROJECT/project.pbxproj"
+          sed -i '' "s/PRODUCT_BUNDLE_IDENTIFIER = com.gardigital.menu;/PRODUCT_BUNDLE_IDENTIFIER = com.gardigital.menu; DEVELOPMENT_TEAM = $DEVELOPMENT_TEAM;/g" "$XCODE_PROJECT/project.pbxproj"
       - name: Capacitor build
         script: |
           npm run build
@@ -29,9 +34,7 @@ workflows:
         script: |
           xcode-project build-ipa \
             --project "$XCODE_PROJECT" \
-            --scheme "$XCODE_SCHEME" \
-            --bundle-id "$APP_ID" \
-            --team-id "$DEVELOPMENT_TEAM"
+            --scheme "$XCODE_SCHEME"
     artifacts:
       - build/ios/ipa/*.ipa
     publishing:
