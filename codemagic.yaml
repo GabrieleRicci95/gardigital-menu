@@ -17,7 +17,12 @@ workflows:
       - name: Set up code signing
         script: |
           keychain initialize
-          app-store-connect fetch-signing-files --type IOS_APP_STORE --create "$BUNDLE_ID"
+          # Create a fresh Distribution Certificate in Apple and import it to Keychain
+          app-store-connect certificates create --type IOS_DISTRIBUTION --save
+          # Create a fresh Provisioning Profile linked to that certificate
+          app-store-connect profiles create --type IOS_APP_STORE --bundle-id "$BUNDLE_ID" --name "Gardigital Menu App Store"
+          # Now fetch and install everything
+          app-store-connect fetch-signing-files --type IOS_APP_STORE "$BUNDLE_ID"
       - name: Diagnostics - List Apple Profiles
         script: |
           app-store-connect list-profiles --bundle-id "$BUNDLE_ID"
