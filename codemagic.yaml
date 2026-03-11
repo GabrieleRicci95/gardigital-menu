@@ -9,6 +9,7 @@ workflows:
       ios_signing:
         distribution_type: app_store
         bundle_identifier: com.gardigital.menu
+        team_id: "33VT7NT5X9"
       vars:
         XCODE_PROJECT: "ios/App/App.xcodeproj"
         XCODE_SCHEME: "App"
@@ -16,6 +17,9 @@ workflows:
       xcode: latest
       cocoapods: default
     scripts:
+      - name: Diagnostics - List Apple Profiles
+        script: |
+          app-store-connect list-profiles --bundle-id com.gardigital.menu
       - name: Install dependencies
         script: |
           npm install
