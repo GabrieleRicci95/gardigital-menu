@@ -21,6 +21,10 @@ workflows:
         script: |
           echo "Checking if Apple variables are set (names only):"
           env | grep APP_STORE_CONNECT | cut -d= -f1
+      - name: Capacitor build
+        script: |
+          npm run build
+          npx cap sync ios
       - name: Set up code signing
         script: |
           xcode-project use-profiles
