@@ -14,16 +14,6 @@ workflows:
       xcode: latest
       cocoapods: default
     scripts:
-      - name: Set up code signing
-        script: |
-          keychain initialize
-          # 1. Generate a new private key locally
-          openssl genrsa -out /tmp/cert_key.p8 2048
-          # 2. Unified command to Create Certificate + Create Profile + Save to Keychain
-          app-store-connect fetch-signing-files --type IOS_APP_STORE --create --certificate-key "@file:/tmp/cert_key.p8" "$BUNDLE_ID"
-          # 3. LINK the profiles and save the plist to the root
-          xcode-project use-profiles
-          cp /Users/builder/export_options.plist ./export_options.plist
       - name: Install dependencies
         script: |
           npm install
@@ -33,9 +23,19 @@ workflows:
           npx cap sync ios
       - name: Build iOS App
         script: |
-          # 1. ROBUST SIGNING HANDSHAKE (Plan ZU)
+          # 1. ULTIMATE SIGNING CONSOLIDATION (Plan ZY)
           keychain initialize
-          app-store-connect fetch-signing-files "$BUNDLE_ID" --type IOS_APP_STORE --create
+          
+          # Generate a fresh private key for THIS session
+          openssl genrsa -out /tmp/cert_key.p8 2048
+          
+          # Fetch/Create Certs using the fresh key
+          app-store-connect fetch-signing-files "$BUNDLE_ID" \
+            --type IOS_APP_STORE \
+            --create \
+            --certificate-key "@file:/tmp/cert_key.p8"
+          
+          # Install to Keychain
           keychain add-certificates
           xcode-project use-profiles
           
@@ -69,7 +69,7 @@ workflows:
           CERT_HASH=$(echo "$ID_LINE" | awk '{print $2}')
           CERT_IDENTITY=$(echo "$ID_LINE" | sed -E 's/.*"([^"]+)".*/\1/')
           
-          echo "--- FINAL HANDSHAKE DATA ---"
+          echo "--- FINAL ULTIMATE DATA ---"
           echo "Profile Name: |$PROFILE_NAME|"
           echo "Profile UUID: |$PROFILE_UUID|"
           echo "Cert Hash   : |$CERT_HASH|"
@@ -77,11 +77,11 @@ workflows:
           echo "----------------------------"
           
           if [ -z "$CERT_HASH" ]; then
-            echo "ERROR: CERTIFICATE NOT FOUND. Check portal if any Distribution cert exists."
+            echo "ERROR: CERTIFICATE NOT FOUND. Consolidation failed to keep identity alive."
             exit 1
           fi
           
-          # 2. RAW ARCHIVE (Proven Success)
+          # 2. RAW ARCHIVE
           mkdir -p build/ios/xcarchive
           xcodebuild archive \
             -project "$XCODE_PROJECT" \
