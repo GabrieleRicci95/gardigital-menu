@@ -37,9 +37,20 @@ workflows:
         script: |
           # 1. Extract the hidden UUID
           PROFILE_UUID=$(grep -a -A1 "UUID" /Users/builder/Library/Developer/Xcode/UserData/Provisioning\ Profiles/*.mobileprovision | grep string | sed 's/<[^>]*>//g' | xargs | head -n 1)
-          echo "Using Profile UUID: $PROFILE_UUID"
           
-          # 2. RAW ARCHIVE: Direct call to xcodebuild to avoid wrapper interference
+          # 2. Extract the EXACT Certificate Identity Name (The match-maker)
+          # We search for the Distribution identity in the keychain
+          CERT_IDENTITY=$(security find-identity -v -p codesigning | grep "Apple Distribution" | head -n 1 | sed -E 's/.*"([^"]+)".*/\1/')
+          
+          echo "--- SIGNING ALIGNMENT ---"
+          echo "Profile UUID: $PROFILE_UUID"
+          echo "Cert Identity: $CERT_IDENTITY"
+          echo "--------------------------"
+          
+          # 3. build folder
+          mkdir -p build/ios/xcarchive
+          
+          # 4. RAW ARCHIVE: Direct call to xcodebuild with EXACT identity
           xcodebuild archive \
             -project "$XCODE_PROJECT" \
             -scheme "$XCODE_SCHEME" \
@@ -48,10 +59,10 @@ workflows:
             -allowProvisioningUpdates \
             PROVISIONING_PROFILE=$PROFILE_UUID \
             DEVELOPMENT_TEAM=33VT7NT5X9 \
-            CODE_SIGN_IDENTITY="Apple Distribution" \
+            CODE_SIGN_IDENTITY="$CERT_IDENTITY" \
             CODE_SIGN_STYLE=Manual
           
-          # 3. RAW EXPORT: Create the IPA from the archive
+          # 5. RAW EXPORT: Create the IPA
           xcodebuild -exportArchive \
             -archivePath $(pwd)/build/ios/xcarchive/App.xcarchive \
             -exportOptionsPlist /Users/builder/export_options.plist \
