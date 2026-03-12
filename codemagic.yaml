@@ -35,23 +35,39 @@ workflows:
           npx cap sync ios
       - name: Build iOS App
         script: |
-          # 1. PRECISION EXTRACTION + FINGERPRINT (The absolute fix)
+          # 1. ROBUST PRECISION EXTRACTION
           MP_FILE=$(ls /Users/builder/Library/Developer/Xcode/UserData/Provisioning\ Profiles/*.mobileprovision | head -n 1)
           security cms -D -i "$MP_FILE" > /tmp/decoded.plist
           
           PROFILE_NAME=$(/usr/libexec/PlistBuddy -c "Print :Name" /tmp/decoded.plist)
           PROFILE_UUID=$(/usr/libexec/PlistBuddy -c "Print :UUID" /tmp/decoded.plist)
           
-          # Extract the SHA-1 HASH (Fingerprint). This is inconfutable for Xcode.
-          CERT_HASH=$(security find-identity -v -p codesigning | grep "Apple Distribution" | head -n 1 | awk '{print $2}')
-          CERT_IDENTITY=$(security find-identity -v -p codesigning | grep "Apple Distribution" | head -n 1 | sed -E 's/.*"([^"]+)".*/\1/')
+          # DIAGNOSTIC: List all identities
+          echo "Listing all identities in keychain:"
+          security find-identity -v -p codesigning
           
-          echo "--- FINAL PRECISION DATA ---"
+          # Extract ANY 'Distribution' identity (Apple or iPhone)
+          ID_LINE=$(security find-identity -v -p codesigning | grep "Distribution" | head -n 1)
+          if [ -z "$ID_LINE" ]; then
+            echo "WARNING: No 'Distribution' identity found. Falling back to first available identity."
+            ID_LINE=$(security find-identity -v -p codesigning | grep "1)" | head -n 1)
+          fi
+          
+          CERT_HASH=$(echo "$ID_LINE" | awk '{print $2}')
+          CERT_IDENTITY=$(echo "$ID_LINE" | sed -E 's/.*"([^"]+)".*/\1/')
+          
+          echo "--- FINAL ROBUST DATA ---"
           echo "Profile Name: |$PROFILE_NAME|"
           echo "Profile UUID: |$PROFILE_UUID|"
           echo "Cert Hash   : |$CERT_HASH|"
           echo "Cert Name   : |$CERT_IDENTITY|"
-          echo "----------------------------"
+          echo "--------------------------"
+          
+          if [ -z "$CERT_HASH" ]; then
+            echo "ERROR: Still no certificate found! Checking keychain lock status..."
+            security show-keychain-info
+            exit 1
+          fi
           
           # 2. RAW ARCHIVE (Proven Success)
           mkdir -p build/ios/xcarchive
