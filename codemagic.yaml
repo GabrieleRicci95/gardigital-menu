@@ -21,47 +21,58 @@ workflows:
         script: |
           npm run build
           npx cap sync ios
-      - name: Build and Sign (Plan AAA)
+      - name: Build and Sign (Plan BBB)
         script: |
-          # 1. ATOMIC SIGNING SETUP
-          keychain initialize
+          # 1. DIAGNOSTIC PORTAL CHECK
+          echo "Listing Bundle IDs to verify $BUNDLE_ID existence..."
+          app-store-connect bundle-ids list --filter identifier=$BUNDLE_ID
           
-          # Generate a fresh private key for THIS session
+          echo "Listing existing certificates..."
+          app-store-connect certificates list
+          
+          # 2. ATOMIC SIGNING SETUP
+          keychain initialize
           openssl genrsa -out /tmp/cert_key.p8 2048
           
-          # Force create new certificates/profiles (User has cleaned the portal)
+          # Force create with VERBOSE logging
           app-store-connect fetch-signing-files "$BUNDLE_ID" \
             --type IOS_APP_STORE \
             --create \
-            --certificate-key "@file:/tmp/cert_key.p8"
+            --certificate-key "@file:/tmp/cert_key.p8" \
+            --verbose
           
           keychain add-certificates
           xcode-project use-profiles
           
-          # 2. PROVISIONING INFO EXTRACTION (Fail-safe)
-          MP_FILE=$(ls /Users/builder/Library/Developer/Xcode/UserData/Provisioning\ Profiles/*.mobileprovision | head -n 1)
+          # 3. ROBUST EXTRACTION
+          # Search in multiple possible locations
+          MP_FILE=$(find /Users/builder -name "*.mobileprovision" | head -n 1)
           if [ -z "$MP_FILE" ]; then
-            echo "ERROR: No mobileprovision file found. Apple Portal might be empty or API key failed."
+            echo "ERROR: Still no mobileprovision file found after fetch. Diagnostic required."
             exit 1
           fi
+          echo "Found Profile at: |$MP_FILE|"
           
           security cms -D -i "$MP_FILE" > /tmp/decoded.plist
           PROFILE_NAME=$(/usr/libexec/PlistBuddy -c "Print :Name" /tmp/decoded.plist)
           PROFILE_UUID=$(/usr/libexec/PlistBuddy -c "Print :UUID" /tmp/decoded.plist)
           
-          # Detect Identity from Keychain
+          # Detect Identity
           if [ -z "$CM_KEYCHAIN_PATH" ]; then
             CM_KEYCHAIN_PATH=$(find /Users/builder/Library -name "*.keychain-db" | grep "codemagic" | head -n 1)
           fi
           ID_LINE=$(security find-identity -v -p codesigning "$CM_KEYCHAIN_PATH" 2>/dev/null | grep "Distribution" | head -n 1)
+          if [ -z "$ID_LINE" ]; then
+            ID_LINE=$(security find-identity -v -p codesigning | grep "Distribution" | head -n 1)
+          fi
           CERT_HASH=$(echo "$ID_LINE" | awk '{print $2}')
           
-          echo "--- ATOMIC DATA VERIFIED ---"
+          echo "--- BBB DATA VERIFIED ---"
           echo "Profile: |$PROFILE_NAME| ($PROFILE_UUID)"
           echo "Cert Hash: |$CERT_HASH|"
           
           if [ -z "$CERT_HASH" ] || [ -z "$PROFILE_UUID" ]; then
-            echo "ERROR: Missing critical signing data. Check logs above."
+            echo "ERROR: Critical signing data missing. See portal diagnostics above."
             exit 1
           fi
           
