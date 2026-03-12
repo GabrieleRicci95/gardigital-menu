@@ -14,18 +14,6 @@ workflows:
       xcode: latest
       cocoapods: default
     scripts:
-      - name: Set up code signing
-        script: |
-          keychain initialize
-          # 1. Generate a new private key locally
-          openssl genrsa -out /tmp/cert_key.p8 2048
-          # 2. Unified command to Create Certificate + Create Profile + Save to Keychain
-          app-store-connect fetch-signing-files --type IOS_APP_STORE --create --certificate-key "@file:/tmp/cert_key.p8" "$BUNDLE_ID"
-          # 3. LINK the profiles and save the plist to the root
-          xcode-project use-profiles
-          cp /Users/builder/export_options.plist ./export_options.plist
-          # 4. DISCOVERY: See how to pass variables to build
-          xcode-project build-ipa --help
       - name: Install dependencies
         script: |
           npm install
@@ -128,9 +116,12 @@ workflows:
     artifacts:
       - build/ios/ipa/*.ipa
     publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
       email:
         recipients:
-          - gabricci95@gmail.com # The user's email from GitHub
+          - gabricci95@gmail.com
         notify:
           success: true
           failure: true
