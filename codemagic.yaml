@@ -62,7 +62,10 @@ workflows:
             CODE_SIGN_IDENTITY="$CERT_IDENTITY" \
             CODE_SIGN_STYLE=Manual
           
-          # 5. RAW EXPORT: Create the IPA
+          # 5. RAW EXPORT: Create the IPA (with identity alignment)
+          # We patch the plist to use the EXACT certificate name found
+          /usr/libexec/PlistBuddy -c "Set :signingCertificate $CERT_IDENTITY" /Users/builder/export_options.plist
+          
           xcodebuild -exportArchive \
             -archivePath $(pwd)/build/ios/xcarchive/App.xcarchive \
             -exportOptionsPlist /Users/builder/export_options.plist \
