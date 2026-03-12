@@ -35,15 +35,23 @@ workflows:
           npx cap sync ios
       - name: Build iOS App
         script: |
-          # 1. Extract the profile name using PlistBuddy (much more reliable)
+          # 1. Extract the profile name using PlistBuddy
           PROFILE_NAME=$(/usr/libexec/PlistBuddy -c "Print :provisioningProfiles:$BUNDLE_ID" /Users/builder/export_options.plist)
-          echo "Using Provisioning Profile: $PROFILE_NAME"
-          # 2. Build the IPA passing the profile explicitly
-          xcode-project build-ipa \
-            --project "$XCODE_PROJECT" \
-            --scheme "$XCODE_SCHEME" \
-            --config Release \
-            --archive-xcargs "PROVISIONING_PROFILE_SPECIFIER='$PROFILE_NAME'"
+          echo "Injecting Profile Specifier: $PROFILE_NAME"
+          
+          # 2. Patch the project file on the builder (The Ultimate Fix)
+          # We inject the profile, team, and identity directly into the Manual signing configurations
+          sed -i '' "s/CODE_SIGN_STYLE = Manual;/CODE_SIGN_STYLE = Manual; PROVISIONING_PROFILE_SPECIFIER = \"$PROFILE_NAME\"; DEVELOPMENT_TEAM = 33VT7NT5X9; CODE_SIGN_IDENTITY = \"Apple Distribution\";/g" ios/App/App.xcodeproj/project.pbxproj
+          
+          # 3. Detect and build the Workspace (essential for Capacitor/Pods/SPM)
+          WORKSPACE=$(ls -d ios/App/*.xcworkspace 2>/dev/null | head -n 1)
+          if [ -n "$WORKSPACE" ]; then
+            echo "Found Workspace: $WORKSPACE (Building workspace)"
+            xcode-project build-ipa --workspace "$WORKSPACE" --scheme "$XCODE_SCHEME" --config Release
+          else
+            echo "No Workspace found (Building project)"
+            xcode-project build-ipa --project "$XCODE_PROJECT" --scheme "$XCODE_SCHEME" --config Release
+          fi
     artifacts:
       - build/ios/ipa/*.ipa
     publishing:
