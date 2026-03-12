@@ -35,22 +35,22 @@ workflows:
           npx cap sync ios
       - name: Build iOS App
         script: |
-          # 1. ROBUST PRECISION EXTRACTION
+          # 1. ROBUST PRECISION EXTRACTION (Targeting the Codemagic Keychain)
           MP_FILE=$(ls /Users/builder/Library/Developer/Xcode/UserData/Provisioning\ Profiles/*.mobileprovision | head -n 1)
           security cms -D -i "$MP_FILE" > /tmp/decoded.plist
           
           PROFILE_NAME=$(/usr/libexec/PlistBuddy -c "Print :Name" /tmp/decoded.plist)
           PROFILE_UUID=$(/usr/libexec/PlistBuddy -c "Print :UUID" /tmp/decoded.plist)
           
-          # DIAGNOSTIC: List all identities
-          echo "Listing all identities in keychain:"
-          security find-identity -v -p codesigning
+          # DIAGNOSTIC: List all identities in the specific Codemagic keychain
+          echo "Listing all identities in Codemagic keychain ($CM_KEYCHAIN_PATH):"
+          security find-identity -v -p codesigning "$CM_KEYCHAIN_PATH"
           
-          # Extract ANY 'Distribution' identity (Apple or iPhone)
-          ID_LINE=$(security find-identity -v -p codesigning | grep "Distribution" | head -n 1)
+          # Extract ANY 'Distribution' identity from the local keychain
+          ID_LINE=$(security find-identity -v -p codesigning "$CM_KEYCHAIN_PATH" | grep "Distribution" | head -n 1)
           if [ -z "$ID_LINE" ]; then
-            echo "WARNING: No 'Distribution' identity found. Falling back to first available identity."
-            ID_LINE=$(security find-identity -v -p codesigning | grep "1)" | head -n 1)
+            echo "WARNING: No 'Distribution' identity found in local keychain. Checking default system search..."
+            ID_LINE=$(security find-identity -v -p codesigning | grep "Distribution" | head -n 1)
           fi
           
           CERT_HASH=$(echo "$ID_LINE" | awk '{print $2}')
@@ -64,8 +64,7 @@ workflows:
           echo "--------------------------"
           
           if [ -z "$CERT_HASH" ]; then
-            echo "ERROR: Still no certificate found! Checking keychain lock status..."
-            security show-keychain-info
+            echo "ERROR: STILL NO CERTIFICATE! This means 'fetch-signing-files' didn't import it."
             exit 1
           fi
           
