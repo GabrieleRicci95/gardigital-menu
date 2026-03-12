@@ -42,6 +42,7 @@ workflows:
           xcode-project build-ipa \
             --project "$XCODE_PROJECT" \
             --scheme "$XCODE_SCHEME" \
+            --config Release \
             --archive-xcargs "PROVISIONING_PROFILE_SPECIFIER='$PROFILE_NAME'"
     artifacts:
       - build/ios/ipa/*.ipa
