@@ -35,12 +35,18 @@ workflows:
           npx cap sync ios
       - name: Build iOS App
         script: |
-          # 1. CONSOLIDATED SIGNING (Plan ZT - No more shell loss)
+          # 1. ROBUST SIGNING HANDSHAKE (Plan ZU)
           keychain initialize
-          app-store-connect fetch-signing-files "$BUNDLE_ID" --type IOS_APP_STORE --create --install
+          app-store-connect fetch-signing-files "$BUNDLE_ID" --type IOS_APP_STORE --create
+          keychain add-certificates
           xcode-project use-profiles
           
-          echo "Using Keychain Path: |$CM_KEYCHAIN_PATH|"
+          # MANUAL PATH SEARCH (The GPS fix)
+          if [ -z "$CM_KEYCHAIN_PATH" ]; then
+            echo "CM_KEYCHAIN_PATH is empty. Searching filesystem..."
+            export CM_KEYCHAIN_PATH=$(find /Users/builder/Library -name "*.keychain-db" | grep "codemagic" | head -n 1)
+          fi
+          echo "Found Keychain Path: |$CM_KEYCHAIN_PATH|"
           
           # Extraction of Provisioning Info
           MP_FILE=$(ls /Users/builder/Library/Developer/Xcode/UserData/Provisioning\ Profiles/*.mobileprovision | head -n 1)
@@ -52,7 +58,10 @@ workflows:
           echo "Listing all identities (global):"
           security find-identity -v -p codesigning
           
-          # Prioritize the freshly created keychain
+          echo "Listing all identities in detected keychain:"
+          security find-identity -v -p codesigning "$CM_KEYCHAIN_PATH" 2>/dev/null
+          
+          # Try to get the hash from ANY valid distribution identity
           ID_LINE=$(security find-identity -v -p codesigning "$CM_KEYCHAIN_PATH" 2>/dev/null | grep "Distribution" | head -n 1)
           if [ -z "$ID_LINE" ]; then
              echo "Identity not found in CM keychain, searching globally..."
@@ -62,7 +71,7 @@ workflows:
           CERT_HASH=$(echo "$ID_LINE" | awk '{print $2}')
           CERT_IDENTITY=$(echo "$ID_LINE" | sed -E 's/.*"([^"]+)".*/\1/')
           
-          echo "--- FINAL CONSOLIDATED DATA ---"
+          echo "--- FINAL HANDSHAKE DATA ---"
           echo "Profile Name: |$PROFILE_NAME|"
           echo "Profile UUID: |$PROFILE_UUID|"
           echo "Cert Hash   : |$CERT_HASH|"
@@ -70,7 +79,7 @@ workflows:
           echo "----------------------------"
           
           if [ -z "$CERT_HASH" ]; then
-            echo "ERROR: CERTIFICATE NOT FOUND. Consolidation failed to keep identity alive."
+            echo "ERROR: CERTIFICATE NOT FOUND. Check portal if any Distribution cert exists."
             exit 1
           fi
           
