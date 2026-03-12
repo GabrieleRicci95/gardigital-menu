@@ -62,9 +62,32 @@ workflows:
             CODE_SIGN_IDENTITY="$CERT_IDENTITY" \
             CODE_SIGN_STYLE=Manual
           
-          # 5. RAW EXPORT: Create the IPA (with identity alignment)
-          # We patch the plist to use the EXACT certificate name found
-          /usr/libexec/PlistBuddy -c "Set :signingCertificate $CERT_IDENTITY" /Users/builder/export_options.plist
+          # 5. RAW EXPORT: Create the IPA (The Manual Plist Fix)
+          # We create a 100% correct plist to avoid any naming confusion
+          cat > /Users/builder/export_options.plist <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key>
+            <string>app-store</string>
+            <key>teamID</key>
+            <string>33VT7NT5X9</string>
+            <key>signingStyle</key>
+            <string>manual</string>
+            <key>signingCertificate</key>
+            <string>$CERT_IDENTITY</string>
+            <key>provisioningProfiles</key>
+            <dict>
+              <key>$BUNDLE_ID</key>
+              <string>$PROFILE_NAME</string>
+            </dict>
+          </dict>
+          </plist>
+          EOF
+          
+          echo "Generated Export Plist:"
+          cat /Users/builder/export_options.plist
           
           xcodebuild -exportArchive \
             -archivePath $(pwd)/build/ios/xcarchive/App.xcarchive \
