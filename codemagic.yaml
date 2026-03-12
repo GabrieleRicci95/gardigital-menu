@@ -14,16 +14,6 @@ workflows:
       xcode: latest
       cocoapods: default
     scripts:
-      - name: Set up code signing
-        script: |
-          keychain initialize
-          # 1. Generate a new private key locally
-          openssl genrsa -out /tmp/cert_key.p8 2048
-          # 2. Unified command to Create Certificate + Create Profile + Save to Keychain
-          app-store-connect fetch-signing-files --type IOS_APP_STORE --create --certificate-key "@file:/tmp/cert_key.p8" "$BUNDLE_ID"
-          # 3. LINK the profiles and save the plist to the root
-          xcode-project use-profiles
-          cp /Users/builder/export_options.plist ./export_options.plist
       - name: Install dependencies
         script: |
           npm install
@@ -31,56 +21,67 @@ workflows:
         script: |
           npm run build
           npx cap sync ios
-      - name: Build iOS App
+      - name: Build and Sign (Plan AAA)
         script: |
-          # 1. KEYCHAIN NAVIGATOR (Plan ZZ - Back to proven success)
-          if [ -z "$CM_KEYCHAIN_PATH" ]; then
-            echo "CM_KEYCHAIN_PATH is empty. Searching filesystem..."
-            export CM_KEYCHAIN_PATH=$(find /Users/builder/Library -name "*.keychain-db" | grep "codemagic" | head -n 1)
-          fi
-          echo "Found Keychain Path: |$CM_KEYCHAIN_PATH|"
+          # 1. ATOMIC SIGNING SETUP
+          keychain initialize
           
-          # Extraction
+          # Generate a fresh private key for THIS session
+          openssl genrsa -out /tmp/cert_key.p8 2048
+          
+          # Force create new certificates/profiles (User has cleaned the portal)
+          app-store-connect fetch-signing-files "$BUNDLE_ID" \
+            --type IOS_APP_STORE \
+            --create \
+            --certificate-key "@file:/tmp/cert_key.p8"
+          
+          keychain add-certificates
+          xcode-project use-profiles
+          
+          # 2. PROVISIONING INFO EXTRACTION (Fail-safe)
           MP_FILE=$(ls /Users/builder/Library/Developer/Xcode/UserData/Provisioning\ Profiles/*.mobileprovision | head -n 1)
+          if [ -z "$MP_FILE" ]; then
+            echo "ERROR: No mobileprovision file found. Apple Portal might be empty or API key failed."
+            exit 1
+          fi
+          
           security cms -D -i "$MP_FILE" > /tmp/decoded.plist
           PROFILE_NAME=$(/usr/libexec/PlistBuddy -c "Print :Name" /tmp/decoded.plist)
           PROFILE_UUID=$(/usr/libexec/PlistBuddy -c "Print :UUID" /tmp/decoded.plist)
           
-          # Identities
-          echo "Listing all identities:"
-          security find-identity -v -p codesigning "$CM_KEYCHAIN_PATH" 2>/dev/null
-          
+          # Detect Identity from Keychain
+          if [ -z "$CM_KEYCHAIN_PATH" ]; then
+            CM_KEYCHAIN_PATH=$(find /Users/builder/Library -name "*.keychain-db" | grep "codemagic" | head -n 1)
+          fi
           ID_LINE=$(security find-identity -v -p codesigning "$CM_KEYCHAIN_PATH" 2>/dev/null | grep "Distribution" | head -n 1)
-          if [ -z "$ID_LINE" ]; then
-             ID_LINE=$(security find-identity -v -p codesigning | grep "Distribution" | head -n 1)
+          CERT_HASH=$(echo "$ID_LINE" | awk '{print $2}')
+          
+          echo "--- ATOMIC DATA VERIFIED ---"
+          echo "Profile: |$PROFILE_NAME| ($PROFILE_UUID)"
+          echo "Cert Hash: |$CERT_HASH|"
+          
+          if [ -z "$CERT_HASH" ] || [ -z "$PROFILE_UUID" ]; then
+            echo "ERROR: Missing critical signing data. Check logs above."
+            exit 1
           fi
           
-          CERT_HASH=$(echo "$ID_LINE" | awk '{print $2}')
-          CERT_IDENTITY=$(echo "$ID_LINE" | sed -E 's/.*"([^"]+)".*/\1/')
-          
-          echo "--- FINAL BLUEPRINT DATA ---"
-          echo "Profile Name: |$PROFILE_NAME|"
-          echo "Profile UUID: |$PROFILE_UUID|"
-          echo "Cert Hash   : |$CERT_HASH|"
-          echo "Cert Name   : |$CERT_IDENTITY|"
-          echo "----------------------------"
-          
-          # 2. RAW ARCHIVE
+          # 3. BUILD ARCHIVE
           mkdir -p build/ios/xcarchive
           xcodebuild archive \
             -project "$XCODE_PROJECT" \
             -scheme "$XCODE_SCHEME" \
             -configuration Release \
-            -archivePath $(pwd)/build/ios/xcarchive/App.xcarchive \
+            -archivePath "$(pwd)/build/ios/xcarchive/App.xcarchive" \
             -allowProvisioningUpdates \
-            PROVISIONING_PROFILE=$PROFILE_UUID \
+            PROVISIONING_PROFILE="$PROFILE_UUID" \
             PROVISIONING_PROFILE_SPECIFIER="$PROFILE_NAME" \
             DEVELOPMENT_TEAM=33VT7NT5X9 \
             CODE_SIGN_IDENTITY="$CERT_HASH" \
             CODE_SIGN_STYLE=Manual
           
-          # 3. MANUAL EXPORT PLIST (Using the Hash)
-          cat > /Users/builder/export_options.plist <<EOF
+          # 4. EXPORT IPA
+          # Generate export options on the fly
+          cat > /tmp/export_options.plist <<EOF
           <?xml version="1.0" encoding="UTF-8"?>
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
           <plist version="1.0">
@@ -102,11 +103,10 @@ workflows:
           </plist>
           EOF
           
-          # 4. RAW EXPORT
           xcodebuild -exportArchive \
-            -archivePath $(pwd)/build/ios/xcarchive/App.xcarchive \
-            -exportOptionsPlist /Users/builder/export_options.plist \
-            -exportPath $(pwd)/build/ios/ipa
+            -archivePath "$(pwd)/build/ios/xcarchive/App.xcarchive" \
+            -exportOptionsPlist /tmp/export_options.plist \
+            -exportPath "$(pwd)/build/ios/ipa"
     artifacts:
       - build/ios/ipa/*.ipa
     publishing:
