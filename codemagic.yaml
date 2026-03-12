@@ -35,11 +35,11 @@ workflows:
           npx cap sync ios
       - name: Build iOS App
         script: |
-          # 1. KEYCHAIN NAVIGATOR (Fix for empty path)
-          if [ -z "$CM_KEYCHAIN_PATH" ]; then
-            echo "CM_KEYCHAIN_PATH is empty. Searching for codemagic keychain..."
-            export CM_KEYCHAIN_PATH=$(ls /Users/builder/Library/Keychains/codemagic.keychain-db 2>/dev/null | head -n 1)
-          fi
+          # 1. CONSOLIDATED SIGNING (Plan ZT - No more shell loss)
+          keychain initialize
+          app-store-connect fetch-signing-files "$BUNDLE_ID" --type IOS_APP_STORE --create --install
+          xcode-project use-profiles
+          
           echo "Using Keychain Path: |$CM_KEYCHAIN_PATH|"
           
           # Extraction of Provisioning Info
@@ -48,28 +48,21 @@ workflows:
           PROFILE_NAME=$(/usr/libexec/PlistBuddy -c "Print :Name" /tmp/decoded.plist)
           PROFILE_UUID=$(/usr/libexec/PlistBuddy -c "Print :UUID" /tmp/decoded.plist)
           
-          # SEARCH IN ALL KEYCHAINS (The 'No more shadows' strategy)
+          # SEARCH IDENTITIES
           echo "Listing all identities (global):"
           security find-identity -v -p codesigning
           
-          echo "Listing all identities in detected keychain:"
-          security find-identity -v -p codesigning "$CM_KEYCHAIN_PATH"
-          
-          # Try to get the hash from ANY valid distribution identity
+          # Prioritize the freshly created keychain
           ID_LINE=$(security find-identity -v -p codesigning "$CM_KEYCHAIN_PATH" 2>/dev/null | grep "Distribution" | head -n 1)
           if [ -z "$ID_LINE" ]; then
-             echo "Identity not found in CM keychain, searching system-wide..."
-             ID_LINE=$(security find-identity -v -p codesigning | grep "Distribution" | head -n 1 | grep "valid identity found")
-             # If still empty, just take the first result of grep Distribution
-             if [ -z "$ID_LINE" ]; then
-                ID_LINE=$(security find-identity -v -p codesigning | grep "Distribution" | head -n 1)
-             fi
+             echo "Identity not found in CM keychain, searching globally..."
+             ID_LINE=$(security find-identity -v -p codesigning | grep "Distribution" | head -n 1)
           fi
           
           CERT_HASH=$(echo "$ID_LINE" | awk '{print $2}')
           CERT_IDENTITY=$(echo "$ID_LINE" | sed -E 's/.*"([^"]+)".*/\1/')
           
-          echo "--- FINAL NAVIGATION DATA ---"
+          echo "--- FINAL CONSOLIDATED DATA ---"
           echo "Profile Name: |$PROFILE_NAME|"
           echo "Profile UUID: |$PROFILE_UUID|"
           echo "Cert Hash   : |$CERT_HASH|"
@@ -77,7 +70,7 @@ workflows:
           echo "----------------------------"
           
           if [ -z "$CERT_HASH" ]; then
-            echo "ERROR: CERTIFICATE NOT FOUND IN ANY KEYCHAIN. Check 'Set up code signing' logs."
+            echo "ERROR: CERTIFICATE NOT FOUND. Consolidation failed to keep identity alive."
             exit 1
           fi
           
