@@ -35,22 +35,25 @@ workflows:
           npx cap sync ios
       - name: Build iOS App
         script: |
-          # 1. Extract the profile name
+          # 1. Extract the profile Name and the hidden UUID
           PROFILE_NAME=$(/usr/libexec/PlistBuddy -c "Print :provisioningProfiles:$BUNDLE_ID" /Users/builder/export_options.plist)
-          echo "Using Profile: $PROFILE_NAME"
+          # Search for the UUID in the mobileprovision file created by Codemagic
+          PROFILE_UUID=$(grep -a -A1 "UUID" /Users/builder/Library/Developer/Xcode/UserData/Provisioning\ Profiles/*.mobileprovision | grep string | sed 's/<[^>]*>//g' | xargs | head -n 1)
           
-          # 2. CREATE A NUCLEAR CONFIG FILE (XCConfig)
-          # This overrides everything inside the project file without risk of syntax errors.
+          echo "--- SIGNING TARGET DATA ---"
+          echo "Profile Name: $PROFILE_NAME"
+          echo "Profile UUID: $PROFILE_UUID"
+          echo "----------------------------"
+          
+          # 2. CREATE THE PERFECT CONFIG FILE (XCConfig)
+          # We use both Name and UUID to satisfy every version of the compiler
           cat > signing.xcconfig <<EOF
           CODE_SIGN_STYLE = Manual
-          PROVISIONING_PROFILE_SPECIFIER = $PROFILE_NAME
           DEVELOPMENT_TEAM = 33VT7NT5X9
           CODE_SIGN_IDENTITY = Apple Distribution
+          PROVISIONING_PROFILE_SPECIFIER = $PROFILE_NAME
+          PROVISIONING_PROFILE = $PROFILE_UUID
           EOF
-          
-          echo "--- Generated XCConfig ---"
-          cat signing.xcconfig
-          echo "--------------------------"
           
           # 3. Build the IPA using the XCConfig override
           xcode-project build-ipa \
