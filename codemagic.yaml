@@ -24,6 +24,8 @@ workflows:
           # 3. LINK the profiles and save the plist to the root
           xcode-project use-profiles
           cp /Users/builder/export_options.plist ./export_options.plist
+          # 4. DISCOVERY: See how to pass variables to build
+          xcode-project build-ipa --help
       - name: Install dependencies
         script: |
           npm install
