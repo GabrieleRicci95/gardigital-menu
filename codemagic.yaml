@@ -35,17 +35,27 @@ workflows:
           npx cap sync ios
       - name: Build iOS App
         script: |
-          # 1. Extract the hidden UUID (Foolproof: no spaces, no quoting issues)
+          # 1. Extract the hidden UUID
           PROFILE_UUID=$(grep -a -A1 "UUID" /Users/builder/Library/Developer/Xcode/UserData/Provisioning\ Profiles/*.mobileprovision | grep string | sed 's/<[^>]*>//g' | xargs | head -n 1)
           echo "Using Profile UUID: $PROFILE_UUID"
           
-          # 2. Build the IPA passing the UUID directly to the archive phase
-          # This is the most robust way to link a profile in Manual mode
-          xcode-project build-ipa \
-            --project "$XCODE_PROJECT" \
-            --scheme "$XCODE_SCHEME" \
-            --config Release \
-            --archive-xcargs "PROVISIONING_PROFILE=$PROFILE_UUID PROVISIONING_PROFILE_SPECIFIER= DEVELOPMENT_TEAM=33VT7NT5X9 CODE_SIGN_IDENTITY='Apple Distribution' CODE_SIGN_STYLE=Manual"
+          # 2. RAW ARCHIVE: Direct call to xcodebuild to avoid wrapper interference
+          xcodebuild archive \
+            -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -configuration Release \
+            -archivePath $(pwd)/build/ios/xcarchive/App.xcarchive \
+            -allowProvisioningUpdates \
+            PROVISIONING_PROFILE=$PROFILE_UUID \
+            DEVELOPMENT_TEAM=33VT7NT5X9 \
+            CODE_SIGN_IDENTITY="Apple Distribution" \
+            CODE_SIGN_STYLE=Manual
+          
+          # 3. RAW EXPORT: Create the IPA from the archive
+          xcodebuild -exportArchive \
+            -archivePath $(pwd)/build/ios/xcarchive/App.xcarchive \
+            -exportOptionsPlist /Users/builder/export_options.plist \
+            -exportPath $(pwd)/build/ios/ipa
     artifacts:
       - build/ios/ipa/*.ipa
     publishing:
