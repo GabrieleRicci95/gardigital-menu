@@ -35,32 +35,17 @@ workflows:
           npx cap sync ios
       - name: Build iOS App
         script: |
-          # 1. Extract the profile Name and the hidden UUID
-          PROFILE_NAME=$(/usr/libexec/PlistBuddy -c "Print :provisioningProfiles:$BUNDLE_ID" /Users/builder/export_options.plist)
-          # Search for the UUID in the mobileprovision file created by Codemagic
+          # 1. Extract the hidden UUID (Foolproof: no spaces, no quoting issues)
           PROFILE_UUID=$(grep -a -A1 "UUID" /Users/builder/Library/Developer/Xcode/UserData/Provisioning\ Profiles/*.mobileprovision | grep string | sed 's/<[^>]*>//g' | xargs | head -n 1)
+          echo "Using Profile UUID: $PROFILE_UUID"
           
-          echo "--- SIGNING TARGET DATA ---"
-          echo "Profile Name: $PROFILE_NAME"
-          echo "Profile UUID: $PROFILE_UUID"
-          echo "----------------------------"
-          
-          # 2. CREATE THE PERFECT CONFIG FILE (XCConfig)
-          # We use both Name and UUID to satisfy every version of the compiler
-          cat > signing.xcconfig <<EOF
-          CODE_SIGN_STYLE = Manual
-          DEVELOPMENT_TEAM = 33VT7NT5X9
-          CODE_SIGN_IDENTITY = Apple Distribution
-          PROVISIONING_PROFILE_SPECIFIER = $PROFILE_NAME
-          PROVISIONING_PROFILE = $PROFILE_UUID
-          EOF
-          
-          # 3. Build the IPA using the XCConfig override
+          # 2. Build the IPA passing the UUID directly to the archive phase
+          # This is the most robust way to link a profile in Manual mode
           xcode-project build-ipa \
             --project "$XCODE_PROJECT" \
             --scheme "$XCODE_SCHEME" \
             --config Release \
-            --archive-xcargs "-xcconfig $(pwd)/signing.xcconfig"
+            --archive-xcargs "PROVISIONING_PROFILE=$PROFILE_UUID PROVISIONING_PROFILE_SPECIFIER= DEVELOPMENT_TEAM=33VT7NT5X9 CODE_SIGN_IDENTITY='Apple Distribution' CODE_SIGN_STYLE=Manual"
     artifacts:
       - build/ios/ipa/*.ipa
     publishing:
