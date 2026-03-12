@@ -35,22 +35,22 @@ workflows:
           npx cap sync ios
       - name: Build iOS App
         script: |
-          # 1. Extract the hidden UUID
-          PROFILE_UUID=$(grep -a -A1 "UUID" /Users/builder/Library/Developer/Xcode/UserData/Provisioning\ Profiles/*.mobileprovision | grep string | sed 's/<[^>]*>//g' | xargs | head -n 1)
-          
-          # 2. Extract the EXACT Certificate Identity Name (The match-maker)
-          # We search for the Distribution identity in the keychain
+          # 1. EXTRACT FROM SOURCE OF TRUTH (.mobileprovision)
+          # This is the most robust way to get data that actually exists and worked for Archive
+          MP_FILE=$(ls /Users/builder/Library/Developer/Xcode/UserData/Provisioning\ Profiles/*.mobileprovision | head -n 1)
+          PROFILE_NAME=$(grep -a -A1 "Name" "$MP_FILE" | grep string | sed 's/<[^>]*>//g' | xargs)
+          PROFILE_UUID=$(grep -a -A1 "UUID" "$MP_FILE" | grep string | sed 's/<[^>]*>//g' | xargs)
           CERT_IDENTITY=$(security find-identity -v -p codesigning | grep "Apple Distribution" | head -n 1 | sed -E 's/.*"([^"]+)".*/\1/')
           
-          echo "--- SIGNING ALIGNMENT ---"
-          echo "Profile UUID: $PROFILE_UUID"
-          echo "Cert Identity: $CERT_IDENTITY"
-          echo "--------------------------"
+          echo "--- SOURCE OF TRUTH ---"
+          echo "File: $MP_FILE"
+          echo "Name: |$PROFILE_NAME|"
+          echo "UUID: |$PROFILE_UUID|"
+          echo "Cert: |$CERT_IDENTITY|"
+          echo "-----------------------"
           
-          # 3. build folder
+          # 2. RAW ARCHIVE (Already proven to work)
           mkdir -p build/ios/xcarchive
-          
-          # 4. RAW ARCHIVE: Direct call to xcodebuild with EXACT identity
           xcodebuild archive \
             -project "$XCODE_PROJECT" \
             -scheme "$XCODE_SCHEME" \
@@ -62,8 +62,7 @@ workflows:
             CODE_SIGN_IDENTITY="$CERT_IDENTITY" \
             CODE_SIGN_STYLE=Manual
           
-          # 5. RAW EXPORT: Create the IPA (The Manual Plist Fix)
-          # We create a 100% correct plist to avoid any naming confusion
+          # 3. MANUAL EXPORT PLIST (Using Source of Truth)
           cat > /Users/builder/export_options.plist <<EOF
           <?xml version="1.0" encoding="UTF-8"?>
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -86,9 +85,7 @@ workflows:
           </plist>
           EOF
           
-          echo "Generated Export Plist:"
-          cat /Users/builder/export_options.plist
-          
+          # 4. RAW EXPORT: Create the IPA
           xcodebuild -exportArchive \
             -archivePath $(pwd)/build/ios/xcarchive/App.xcarchive \
             -exportOptionsPlist /Users/builder/export_options.plist \
