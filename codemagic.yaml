@@ -35,24 +35,25 @@ workflows:
           npx cap sync ios
       - name: Build iOS App
         script: |
-          # 1. PRECISION EXTRACTION (The final fix for metadata)
+          # 1. PRECISION EXTRACTION + FINGERPRINT (The absolute fix)
           MP_FILE=$(ls /Users/builder/Library/Developer/Xcode/UserData/Provisioning\ Profiles/*.mobileprovision | head -n 1)
-          
-          # Decode the provision file to a clean plist
           security cms -D -i "$MP_FILE" > /tmp/decoded.plist
           
-          # Extract Name and UUID accurately using PlistBuddy
           PROFILE_NAME=$(/usr/libexec/PlistBuddy -c "Print :Name" /tmp/decoded.plist)
           PROFILE_UUID=$(/usr/libexec/PlistBuddy -c "Print :UUID" /tmp/decoded.plist)
+          
+          # Extract the SHA-1 HASH (Fingerprint). This is inconfutable for Xcode.
+          CERT_HASH=$(security find-identity -v -p codesigning | grep "Apple Distribution" | head -n 1 | awk '{print $2}')
           CERT_IDENTITY=$(security find-identity -v -p codesigning | grep "Apple Distribution" | head -n 1 | sed -E 's/.*"([^"]+)".*/\1/')
           
-          echo "--- PRECISION DATA ---"
-          echo "Name: |$PROFILE_NAME|"
-          echo "UUID: |$PROFILE_UUID|"
-          echo "Cert: |$CERT_IDENTITY|"
-          echo "-----------------------"
+          echo "--- FINAL PRECISION DATA ---"
+          echo "Profile Name: |$PROFILE_NAME|"
+          echo "Profile UUID: |$PROFILE_UUID|"
+          echo "Cert Hash   : |$CERT_HASH|"
+          echo "Cert Name   : |$CERT_IDENTITY|"
+          echo "----------------------------"
           
-          # 2. RAW ARCHIVE
+          # 2. RAW ARCHIVE (Proven Success)
           mkdir -p build/ios/xcarchive
           xcodebuild archive \
             -project "$XCODE_PROJECT" \
@@ -63,10 +64,10 @@ workflows:
             PROVISIONING_PROFILE=$PROFILE_UUID \
             PROVISIONING_PROFILE_SPECIFIER="$PROFILE_NAME" \
             DEVELOPMENT_TEAM=33VT7NT5X9 \
-            CODE_SIGN_IDENTITY="$CERT_IDENTITY" \
+            CODE_SIGN_IDENTITY="$CERT_HASH" \
             CODE_SIGN_STYLE=Manual
           
-          # 3. MANUAL EXPORT PLIST (Now guaranteed correct)
+          # 3. MANUAL EXPORT PLIST (Using the Hash)
           cat > /Users/builder/export_options.plist <<EOF
           <?xml version="1.0" encoding="UTF-8"?>
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -79,7 +80,7 @@ workflows:
             <key>signingStyle</key>
             <string>manual</string>
             <key>signingCertificate</key>
-            <string>$CERT_IDENTITY</string>
+            <string>$CERT_HASH</string>
             <key>provisioningProfiles</key>
             <dict>
               <key>$BUNDLE_ID</key>
