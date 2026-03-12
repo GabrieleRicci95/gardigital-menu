@@ -35,10 +35,10 @@ workflows:
           npx cap sync ios
       - name: Build iOS App
         script: |
-          # 1. Extract the profile name from the generated plist
-          PROFILE_NAME=$(grep -A1 "provisioningProfiles" /Users/builder/export_options.plist | grep "<string>" | sed -E 's/.*<string>(.*)<\/string>.*/\1/')
+          # 1. Extract the profile name using PlistBuddy (much more reliable)
+          PROFILE_NAME=$(/usr/libexec/PlistBuddy -c "Print :provisioningProfiles:$BUNDLE_ID" /Users/builder/export_options.plist)
           echo "Using Provisioning Profile: $PROFILE_NAME"
-          # 2. Build the IPA passing the profile explicitly to the archive phase
+          # 2. Build the IPA passing the profile explicitly
           xcode-project build-ipa \
             --project "$XCODE_PROJECT" \
             --scheme "$XCODE_SCHEME" \
