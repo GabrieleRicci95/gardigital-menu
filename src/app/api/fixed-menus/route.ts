@@ -12,7 +12,8 @@ export async function GET(request: Request) {
             where: { 
                 ownerId: session.user.id,
                 NOT: { slug: { endsWith: '-solo' } }
-            }
+            },
+            orderBy: { createdAt: 'asc' }
         });
 
         if (!restaurant) {
@@ -42,7 +43,8 @@ export async function POST(request: Request) {
             where: { 
                 ownerId: session.user.id,
                 NOT: { slug: { endsWith: '-solo' } }
-            }
+            },
+            orderBy: { createdAt: 'asc' }
         });
 
         if (!restaurant) {

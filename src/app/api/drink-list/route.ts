@@ -11,7 +11,8 @@ export async function GET() {
             where: { 
                 ownerId: session.user.id,
                 NOT: { slug: { endsWith: '-solo' } }
-            }
+            },
+            orderBy: { createdAt: 'asc' }
         });
 
         if (!restaurant) return NextResponse.json({ error: 'Restaurant not found' }, { status: 404 });
@@ -64,7 +65,8 @@ export async function POST(req: Request) {
             where: { 
                 ownerId: session.user.id,
                 NOT: { slug: { endsWith: '-solo' } }
-            }
+            },
+            orderBy: { createdAt: 'asc' }
         });
 
         if (!restaurant) return NextResponse.json({ error: 'Restaurant not found' }, { status: 404 });

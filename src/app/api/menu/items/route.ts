@@ -21,6 +21,7 @@ export async function POST(request: Request) {
                 ownerId: session.user.id,
                 NOT: { slug: { endsWith: '-solo' } }
             },
+            orderBy: { createdAt: 'asc' },
             include: {
                 subscription: true,
                 menus: {

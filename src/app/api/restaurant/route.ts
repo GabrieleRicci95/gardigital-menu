@@ -20,6 +20,7 @@ export async function GET() {
                 ownerId: session.user.id,
                 NOT: { slug: { endsWith: '-solo' } }
             },
+            orderBy: { createdAt: 'asc' },
             include: {
                 subscription: true,
                 owner: {
@@ -68,6 +69,7 @@ export async function PATCH(request: Request) {
                 ownerId: session.user.id,
                 NOT: { slug: { endsWith: '-solo' } }
             },
+            orderBy: { createdAt: 'asc' },
             include: {
                 wineList: true,
                 champagneList: true,
