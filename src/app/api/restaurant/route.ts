@@ -16,7 +16,10 @@ export async function GET() {
 
     try {
         const restaurant = await prisma.restaurant.findFirst({
-            where: { ownerId: session.user.id },
+            where: { 
+                ownerId: session.user.id,
+                NOT: { slug: { endsWith: '-solo' } }
+            },
             include: {
                 subscription: true,
                 owner: {
@@ -61,7 +64,10 @@ export async function PATCH(request: Request) {
 
         // Check if user already has a restaurant
         const existingRestaurant = await prisma.restaurant.findFirst({
-            where: { ownerId: session.user.id },
+            where: { 
+                ownerId: session.user.id,
+                NOT: { slug: { endsWith: '-solo' } }
+            },
             include: {
                 wineList: true,
                 champagneList: true,

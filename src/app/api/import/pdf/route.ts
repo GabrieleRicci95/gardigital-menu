@@ -166,7 +166,12 @@ export async function POST(req: Request) {
         const menu = await prisma.menu.create({
             data: {
                 name: menuName,
-                restaurantId: session.restaurantId || (await prisma.restaurant.findFirst({ where: { ownerId: session.user.id } }))?.id!,
+                restaurantId: session.restaurantId || (await prisma.restaurant.findFirst({ 
+                    where: { 
+                        ownerId: session.user.id,
+                        NOT: { slug: { endsWith: '-solo' } }
+                    } 
+                }))?.id!,
                 isActive: false
             }
         });

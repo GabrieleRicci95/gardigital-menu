@@ -15,7 +15,10 @@ export async function GET() {
 
     try {
         const restaurant = await prisma.restaurant.findFirst({
-            where: { ownerId: session.user.id }
+            where: { 
+                ownerId: session.user.id,
+                NOT: { slug: { endsWith: '-solo' } }
+            }
         });
 
         if (!restaurant) return NextResponse.json({ error: 'Restaurant not found' }, { status: 404 });
@@ -47,7 +50,10 @@ export async function POST(request: Request) {
         if (!name) return NextResponse.json({ error: 'Il nome è obbligatorio' }, { status: 400 });
 
         const restaurant = await (prisma as any).restaurant.findFirst({
-            where: { ownerId: session.user.id }
+            where: { 
+                ownerId: session.user.id,
+                NOT: { slug: { endsWith: '-solo' } }
+            }
         });
 
         if (!restaurant) return NextResponse.json({ error: 'Restaurant not found' }, { status: 404 });
@@ -91,7 +97,10 @@ export async function DELETE(request: Request) {
         if (!slug) return NextResponse.json({ error: 'Lo slug è obbligatorio' }, { status: 400 });
 
         const restaurant = await (prisma as any).restaurant.findFirst({
-            where: { ownerId: session.user.id }
+            where: { 
+                ownerId: session.user.id,
+                NOT: { slug: { endsWith: '-solo' } }
+            }
         });
 
         if (!restaurant) return NextResponse.json({ error: 'Restaurant not found' }, { status: 404 });

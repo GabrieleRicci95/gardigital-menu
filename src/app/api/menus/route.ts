@@ -9,7 +9,10 @@ export async function GET() {
     try {
         // Find the restaurant belonging to this user
         const restaurant = await prisma.restaurant.findFirst({
-            where: { ownerId: session.user.id }
+            where: { 
+                ownerId: session.user.id,
+                NOT: { slug: { endsWith: '-solo' } }
+            }
         });
 
         if (!restaurant) {
@@ -40,7 +43,10 @@ export async function POST(req: Request) {
 
         // Find Restaurant for this user
         const restaurant = await prisma.restaurant.findFirst({
-            where: { ownerId: session.user.id }
+            where: { 
+                ownerId: session.user.id,
+                NOT: { slug: { endsWith: '-solo' } }
+            }
         });
 
         if (!restaurant) {

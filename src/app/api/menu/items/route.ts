@@ -17,7 +17,10 @@ export async function POST(request: Request) {
         }
 
         const restaurant = await prisma.restaurant.findFirst({
-            where: { ownerId: session.user.id },
+            where: { 
+                ownerId: session.user.id,
+                NOT: { slug: { endsWith: '-solo' } }
+            },
             include: {
                 subscription: true,
                 menus: {

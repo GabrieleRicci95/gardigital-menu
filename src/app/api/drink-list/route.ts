@@ -8,7 +8,10 @@ export async function GET() {
 
     try {
         const restaurant = await prisma.restaurant.findFirst({
-            where: { ownerId: session.user.id }
+            where: { 
+                ownerId: session.user.id,
+                NOT: { slug: { endsWith: '-solo' } }
+            }
         });
 
         if (!restaurant) return NextResponse.json({ error: 'Restaurant not found' }, { status: 404 });
@@ -58,7 +61,10 @@ export async function POST(req: Request) {
         const { isActive, sections } = body;
 
         const restaurant = await prisma.restaurant.findFirst({
-            where: { ownerId: session.user.id }
+            where: { 
+                ownerId: session.user.id,
+                NOT: { slug: { endsWith: '-solo' } }
+            }
         });
 
         if (!restaurant) return NextResponse.json({ error: 'Restaurant not found' }, { status: 404 });
