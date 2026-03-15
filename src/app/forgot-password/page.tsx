@@ -67,7 +67,7 @@ export default function ForgotPasswordPage() {
                     </form>
 
                     <p className={styles.footer}>
-                        <Link href="/login" className={styles.secondaryButton}>Torna al Login</Link>
+                        Riceverai un'email con le istruzioni.
                     </p>
                 </div>
             </div>

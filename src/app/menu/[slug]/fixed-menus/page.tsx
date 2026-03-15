@@ -4,7 +4,8 @@ import { notFound } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
 
-async function getRestaurantAndMenus(slug: string) {
+async function getRestaurantAndMenus(inputSlug: string) {
+    const slug = inputSlug.endsWith('-solo') ? inputSlug.replace(/-solo$/, '') : inputSlug;
     const restaurant = await prisma.restaurant.findUnique({
         where: { slug },
         include: {

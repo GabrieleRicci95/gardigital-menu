@@ -3,12 +3,12 @@ import type { Metadata } from "next";
 import DashboardClientLayout from "./DashboardClientLayout";
 
 export const metadata: Metadata = {
-    title: "Gardigital Dashboard",
+    title: "SoloMenu Dashboard",
     manifest: "/manifest.json",
     appleWebApp: {
         capable: true,
         statusBarStyle: "default",
-        title: "Gardigital Dashboard",
+        title: "SoloMenu Dashboard",
     },
 };
 

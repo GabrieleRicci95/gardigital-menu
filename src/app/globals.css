@@ -1,20 +1,18 @@
 :root {
-  /* Premium Color Palette */
-  --color-primary: #1a237e;
-  /* Midnight Blue */
-  --color-primary-light: #534bae;
-  --color-primary-dark: #000051;
+  /* Premium Color Palette - Nocturne Gold */
+  --color-primary: #d4af37;
+  --color-primary-light: #f1d58a;
+  --color-primary-dark: #aa8c2c;
 
-  --color-accent: #ffd700;
-  /* Gold */
-  --color-accent-light: #ffff52;
-  --color-accent-dark: #c7a500;
+  --color-accent: #d4af37;
+  --color-accent-light: #f1d58a;
+  --color-accent-dark: #aa8c2c;
 
-  --color-background: #f8f9fa;
-  --color-surface: #ffffff;
-  --color-text-main: #212121;
-  --color-text-secondary: #757575;
-  --color-border: #e0e0e0;
+  --color-background: #050505;
+  --color-surface: #0f0f0f;
+  --color-text-main: #ffffff;
+  --color-text-secondary: rgba(255, 255, 255, 0.6);
+  --color-border: rgba(212, 175, 55, 0.1);
 
   --color-success: #4caf50;
   --color-error: #f44336;

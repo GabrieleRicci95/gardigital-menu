@@ -4,7 +4,7 @@
     max-width: 1400px;
     margin: 0 auto;
     font-family: var(--font-inter, sans-serif);
-    background: linear-gradient(180deg, #f9fafb 0%, #f3f4f6 100%);
+    background: #050505;
     min-height: 100vh;
 }
 
@@ -15,21 +15,20 @@
     margin-bottom: 3rem;
     flex-wrap: wrap;
     gap: 1.5rem;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.1);
     padding-bottom: 1.5rem;
 }
 
 .title {
     font-size: 3rem;
-    font-weight: 700;
-    color: #1a1a1a;
+    font-weight: 400;
+    color: #ffffff;
     margin: 0;
-    letter-spacing: -0.02em;
-    font-family: var(--font-playfair, serif);
+    font-family: 'Playfair Display', serif;
 }
 
 .subtitle {
-    color: #6b7280;
+    color: rgba(255, 255, 255, 0.5);
     margin: 0.5rem 0 0 0;
     font-family: var(--font-inter, sans-serif);
     font-size: 1.1rem;
@@ -52,11 +51,11 @@
 }
 
 .card {
-    background: white;
-    border: none;
-    border-radius: 20px;
-    padding: 2rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    background: #0f0f0f;
+    border: 1px solid rgba(212, 175, 55, 0.1);
+    border-radius: 4px;
+    padding: 2.5rem;
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
     /* Soft, diffused shadow */
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     display: flex;
@@ -68,43 +67,43 @@
 
 .card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+    border-color: #d4af37;
 }
 
 /* Form Elements */
 .input,
 .dateInput,
 .select {
-    padding: 0.8rem 1.2rem;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
+    padding: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
     font-size: 1rem;
     outline: none;
     transition: all 0.3s ease;
-    background: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    background: rgba(255, 255, 255, 0.03);
     font-family: var(--font-inter, sans-serif);
-    color: #374151;
+    color: #ffffff;
     width: 100%;
 }
 
 .input:focus,
 .dateInput:focus,
 .select:focus {
-    border-color: #1a1a1a;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-color: #d4af37;
+    background: rgba(255, 255, 255, 0.05);
 }
 
 /* Buttons */
 .btnPrimary {
-    background: #1e3a8a;
+    background: #d4af37;
     /* Deep blue from reference */
-    color: white;
+    color: #050505;
     border: none;
-    padding: 0.8rem 1.8rem;
-    border-radius: 12px;
+    padding: 1rem 2rem;
+    border-radius: 4px;
     cursor: pointer;
-    font-weight: 700;
+    font-weight: 800;
     font-family: var(--font-inter, sans-serif);
     transition: all 0.3s ease;
     box-shadow: 0 4px 14px rgba(30, 58, 138, 0.25);
@@ -113,12 +112,14 @@
     justify-content: center;
     gap: 0.5rem;
     text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 .btnPrimary:hover {
-    background: #1e40af;
+    background: #ffffff;
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(30, 58, 138, 0.35);
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
 }
 
 .btnPrimary:disabled {
@@ -412,11 +413,11 @@
 /* Chrome, Safari, Edge, Opera */
 .input::-webkit-outer-spin-button,
 .input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 /* Firefox */
 .input[type=number] {
-  -moz-appearance: textfield;
+    -moz-appearance: textfield;
 }

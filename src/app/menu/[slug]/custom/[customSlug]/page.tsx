@@ -9,7 +9,8 @@ interface PageProps {
     }>
 }
 
-async function getCustomList(slug: string, customSlug: string) {
+async function getCustomList(inputSlug: string, customSlug: string) {
+    const slug = inputSlug.endsWith('-solo') ? inputSlug.replace(/-solo$/, '') : inputSlug;
     const restaurant = await prisma.restaurant.findUnique({
         where: { slug: slug },
         select: {

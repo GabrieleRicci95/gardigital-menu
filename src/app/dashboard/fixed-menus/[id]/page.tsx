@@ -1,8 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
+import styles from '../../restaurant-dashboard.module.css';
+import { Utensils, Plus, Trash2, Save, X, ChevronLeft } from 'lucide-react';
 
 interface MenuItem {
     id?: string;
@@ -10,23 +12,6 @@ interface MenuItem {
     description?: string;
     allergens?: number[]; // Array of allergen IDs
 }
-
-const allergensData = [
-    { id: 1, name: 'Glutine', icon: '🌾' },
-    { id: 2, name: 'Crostacei', icon: '🦞' },
-    { id: 3, name: 'Uova', icon: '🥚' },
-    { id: 4, name: 'Pesce', icon: '🐟' },
-    { id: 5, name: 'Arachidi', icon: '🥜' },
-    { id: 6, name: 'Soia', icon: '🫘' },
-    { id: 7, name: 'Latte', icon: '🥛' },
-    { id: 8, name: 'Frutta a Guscio', icon: '🌰' },
-    { id: 9, name: 'Sedano', icon: '🥬' },
-    { id: 10, name: 'Senape', icon: '🧴' },
-    { id: 11, name: 'Sesamo', icon: '🌱' },
-    { id: 12, name: 'Lupini', icon: '🧆' },
-    { id: 13, name: 'Molluschi', icon: '🐚' },
-    { id: 14, name: 'Anidride Solforosa', icon: '🧪' },
-];
 
 interface MenuSection {
     id?: string;
@@ -46,11 +31,7 @@ interface FixedMenu {
     sections: MenuSection[];
 }
 
-export default function FixedMenuEditorPage({ params }: { params: Promise<{ id: string }> }) {
-    // Unwrap params using React.use() or await in async component. 
-    // Since this is a client component, we use the useParams hook or async unwrapping.
-    // Next.js 15: params is a promise.
-
+export default function FixedMenuEditorPage({ params: paramsPromise }: { params: Promise<{ id: string }> }) {
     const [menu, setMenu] = useState<FixedMenu>({
         name: '',
         subtitle: '',
@@ -60,39 +41,47 @@ export default function FixedMenuEditorPage({ params }: { params: Promise<{ id: 
         sections: []
     });
 
-    // We need to handle the unwrapping of params properly
     const [id, setId] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [isDemo, setIsDemo] = useState(false);
     const router = useRouter();
 
+    // Dirty state management
+    const originalDataRef = useRef<string>('');
+    const [isDirty, setIsDirty] = useState(false);
+
     useEffect(() => {
-        params.then((p) => {
+        paramsPromise.then((p) => {
             setId(p.id);
             if (p.id !== 'new') {
                 fetchMenu(p.id);
             } else {
                 setLoading(false);
-                // Auto-add one section for better UX
-                setMenu(prev => ({
-                    ...prev,
+                const initialMenu = {
+                    name: '',
+                    subtitle: '',
+                    price: '',
+                    description: '',
+                    isActive: true,
                     sections: [{
                         id: `temp_${Date.now()}`,
                         name: '',
                         items: []
                     }]
-                }));
+                };
+                setMenu(initialMenu);
+                originalDataRef.current = JSON.stringify(initialMenu);
             }
         });
-    }, [params]);
+    }, [paramsPromise]);
 
     const fetchMenu = async (menuId: string) => {
         try {
             const res = await fetch(`/api/fixed-menus/${menuId}`);
             if (res.ok) {
                 const data = await res.json();
-                setMenu({
+                const formattedData = {
                     ...data,
                     price: Number(data.price),
                     sections: data.sections.map((s: any) => ({
@@ -102,7 +91,9 @@ export default function FixedMenuEditorPage({ params }: { params: Promise<{ id: 
                             allergens: i.allergens ? JSON.parse(i.allergens) : []
                         }))
                     }))
-                });
+                };
+                setMenu(formattedData);
+                originalDataRef.current = JSON.stringify(formattedData);
                 setIsDemo(!!data.isDemo);
             } else {
                 alert('Menu non trovato');
@@ -115,6 +106,25 @@ export default function FixedMenuEditorPage({ params }: { params: Promise<{ id: 
         }
     };
 
+    // Check for dirty state
+    useEffect(() => {
+        if (!originalDataRef.current) return;
+        const currentDataStr = JSON.stringify(menu);
+        setIsDirty(currentDataStr !== originalDataRef.current);
+    }, [menu]);
+
+    // Before unload protection
+    useEffect(() => {
+        const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+            if (isDirty) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        };
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+    }, [isDirty]);
+
     const handleSave = async () => {
         if (!menu.name || !menu.price) {
             alert('Inserisci Nome e Prezzo');
@@ -123,21 +133,18 @@ export default function FixedMenuEditorPage({ params }: { params: Promise<{ id: 
 
         if (isDemo) {
             alert('Modalità Demo: modifiche non consentite');
-            setSaving(false);
             return;
         }
         setSaving(true);
         try {
             let res;
             if (id === 'new') {
-                // Create
                 res = await fetch('/api/fixed-menus', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(menu)
                 });
             } else {
-                // Update
                 res = await fetch(`/api/fixed-menus/${id}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
@@ -147,12 +154,12 @@ export default function FixedMenuEditorPage({ params }: { params: Promise<{ id: 
 
             if (res.ok) {
                 const savedMenu = await res.json();
-                // If created, might need to redirect to edit page or back to list
+                originalDataRef.current = JSON.stringify(menu);
+                setIsDirty(false);
                 if (id === 'new') {
                     router.push(`/dashboard/fixed-menus/${savedMenu.id}`);
                 } else {
                     alert('Menu salvato con successo');
-                    fetchMenu(id!); // Refresh data
                 }
             } else {
                 alert('Errore nel salvataggio');
@@ -165,218 +172,146 @@ export default function FixedMenuEditorPage({ params }: { params: Promise<{ id: 
         }
     };
 
-    // --- Form Handlers ---
-
-    const addSection = () => {
-        setMenu(prev => ({
-            ...prev,
-            sections: [
-                ...prev.sections,
-                {
-                    id: `temp_${Date.now()}`,
-                    name: '',
-                    items: []
-                }
-            ]
-        }));
-    };
-
-    const removeSection = (index: number) => {
-        setMenu(prev => {
-            const newSections = [...prev.sections];
-            newSections.splice(index, 1);
-            return { ...prev, sections: newSections };
-        });
-    };
-
-    const updateSection = (index: number, field: keyof MenuSection, value: any) => {
-        setMenu(prev => {
-            const newSections = [...prev.sections];
-            newSections[index] = { ...newSections[index], [field]: value };
-            return { ...prev, sections: newSections };
-        });
-    };
-
-    const addItem = (sectionIndex: number) => {
-        setMenu(prev => {
-            const newSections = [...prev.sections];
-            newSections[sectionIndex].items.push({
-                id: `temp_${Date.now()}`,
-                name: ''
-            });
-            return { ...prev, sections: newSections };
-        });
-    };
-
-    const removeItem = (sectionIndex: number, itemIndex: number) => {
-        setMenu(prev => {
-            const newSections = [...prev.sections];
-            newSections[sectionIndex].items.splice(itemIndex, 1);
-            return { ...prev, sections: newSections };
-        });
-    };
-
-    const updateItem = (sectionIndex: number, itemIndex: number, field: keyof MenuItem, value: any) => {
-        setMenu(prev => {
-            const newSections = [...prev.sections];
-            newSections[sectionIndex].items[itemIndex] = {
-                ...newSections[sectionIndex].items[itemIndex],
-                [field]: value
-            };
-            return { ...prev, sections: newSections };
-        });
-    };
-
-    const toggleAllergen = (sectionIndex: number, itemIndex: number, allergenId: number) => {
-        setMenu(prev => {
-            const newSections = [...prev.sections];
-            const item = newSections[sectionIndex].items[itemIndex];
-            const currentAllergens = item.allergens || [];
-
-            let newAllergens;
-            if (currentAllergens.includes(allergenId)) {
-                newAllergens = currentAllergens.filter(id => id !== allergenId);
-            } else {
-                newAllergens = [...currentAllergens, allergenId];
-            }
-
-            newSections[sectionIndex].items[itemIndex] = { ...item, allergens: newAllergens };
-            return { ...prev, sections: newSections };
-        });
-    };
-
-    if (loading) return <div style={{ padding: '2rem' }}>Caricamento...</div>;
+    if (loading) return (
+        <div className={styles.container}>
+            <div className={styles.loaderContainer}>
+                <div className={styles.spinner}></div>
+                <p className={styles.loaderText}>Preparando l'eccellenza...</p>
+            </div>
+        </div>
+    );
 
     return (
-        <div style={{ maxWidth: '800px', margin: '0 auto', padding: '2rem', paddingBottom: '100px' }}>
+        <div className={styles.container} style={{ paddingBottom: '140px' }}>
             <div style={{ marginBottom: '2rem' }}>
-                <Link href="/dashboard/fixed-menus" style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    padding: '10px 20px',
-                    borderRadius: '12px',
-                    background: 'white',
-                    color: '#333',
-                    textDecoration: 'none',
-                    fontSize: '0.95rem',
-                    fontWeight: '600',
-                    boxShadow: '0 2px 5px rgba(0,0,0,0.05)',
-                    border: '1px solid #eee',
-                    marginBottom: '1rem'
-                }}>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M19 12H5M12 19l-7-7 7-7" />
-                    </svg>
-                    Torna ai Menu
+                <Link href="/dashboard/fixed-menus" className={styles.btnSm} style={{ width: 'auto', marginBottom: '1.5rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                    <ChevronLeft size={18} /> Torna ai Menu
                 </Link>
-                <h1 style={{ marginTop: '1rem', fontSize: '2rem' }}>
-                    {id === 'new' ? 'Nuovo Menu Fisso' : 'Modifica Menu'}
-                </h1>
+                <header className={styles.header}>
+                    <div>
+                        <h1 className={styles.title}>{id === 'new' ? 'Nuovo Menu Fisso' : 'Modifica Menu Fisso'}</h1>
+                        <p className={styles.subtitle}>Configura i dettagli del tuo menu degustazione o a prezzo fisso.</p>
+                    </div>
+                </header>
             </div>
 
-            <div style={{ background: 'white', padding: '2rem', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)', marginBottom: '2rem' }}>
-                <div style={{ marginBottom: '1.5rem' }}>
-                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>Nome Menu</label>
+            <div className={styles.card} style={{ background: 'rgba(212, 175, 55, 0.02)', border: '1px solid rgba(212, 175, 55, 0.1)' }}>
+                <div className={styles.formGroup}>
+                    <label className={styles.label}>Nome Menu</label>
                     <input
                         type="text"
                         value={menu.name}
                         onChange={e => setMenu({ ...menu, name: e.target.value })}
-                        placeholder="Es. Menu Degustazione"
-                        style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #ccc', fontSize: '1rem' }}
+                        placeholder="Es. Menu Degustazione Reale"
+                        className={styles.formInput}
+                        readOnly={isDemo}
                     />
                 </div>
 
-                <div style={{ marginBottom: '1.5rem' }}>
-                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>Sottotitolo (opzionale)</label>
+                <div className={styles.formGroup}>
+                    <label className={styles.label}>Sottotitolo (opzionale)</label>
                     <input
                         type="text"
                         value={menu.subtitle || ''}
                         onChange={e => setMenu({ ...menu, subtitle: e.target.value })}
-                        placeholder="Breve descrizione"
-                        style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #ccc', fontSize: '1rem' }}
+                        placeholder="Breve descrizione o dedica"
+                        className={styles.formInput}
+                        readOnly={isDemo}
                     />
                 </div>
 
-                <div style={{ marginBottom: '1.5rem' }}>
-                    <div style={{ marginBottom: '1.5rem' }}>
-                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>Prezzo (€)</label>
+                <div className={styles.formGroup}>
+                    <label className={styles.label}>Prezzo (€)</label>
+                    <div style={{ position: 'relative' }}>
                         <input
                             type="number"
                             value={menu.price}
                             onChange={e => setMenu({ ...menu, price: e.target.value })}
-                            onWheel={(e) => (e.target as HTMLInputElement).blur()}
+                            className={styles.formInput}
+                            style={{ paddingRight: '30px' }}
                             placeholder="0.00"
-                            style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #ccc', fontSize: '1rem' }}
+                            readOnly={isDemo}
                         />
-                    </div>
-
-                    <div style={{ marginBottom: '1.5rem' }}>
-                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>Descrizione Menu</label>
-                        <p style={{ fontSize: '0.85rem', color: '#666', marginBottom: '0.5rem', marginTop: 0 }}>Inserisci qui tutto il testo del menu (piatti, allergeni, note). Puoi andare a capo.</p>
-                        <textarea
-                            value={menu.description || ''}
-                            onChange={e => setMenu({ ...menu, description: e.target.value })}
-                            placeholder="Inserisci qui il contenuto del menu..."
-                            style={{
-                                width: '100%',
-                                padding: '12px',
-                                borderRadius: '6px',
-                                border: '1px solid #ccc',
-                                fontSize: '1rem',
-                                minHeight: '200px',
-                                fontFamily: 'inherit',
-                                resize: 'vertical',
-                                lineHeight: '1.5'
-                            }}
-                        />
-                    </div>
-
-                    <div>
-                        <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
-                            <input
-                                type="checkbox"
-                                checked={menu.isActive}
-                                onChange={e => setMenu({ ...menu, isActive: e.target.checked })}
-                                style={{ width: '20px', height: '20px' }}
-                            />
-                            <span style={{ fontSize: '1rem' }}>Visibile ai clienti</span>
-                        </label>
+                        <span style={{ position: 'absolute', right: '15px', top: '50%', transform: 'translateY(-50%)', color: '#d4af37' }}>€</span>
                     </div>
                 </div>
 
-                {/* Sticky Save Bar */}
-                <div style={{
-                    position: 'fixed',
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    background: 'white',
-                    borderTop: '1px solid #eaeaea',
-                    padding: '1rem',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    boxShadow: '0 -4px 20px rgba(0,0,0,0.05)'
-                }}>
-                    <button
-                        onClick={handleSave}
-                        disabled={saving}
-                        style={{
-                            background: isDemo ? '#ccc' : '#0070f3',
-                            color: 'white',
-                            padding: '12px 40px',
-                            borderRadius: '50px',
-                            fontSize: '1.1rem',
-                            fontWeight: 'bold',
-                            border: 'none',
-                            cursor: (saving || isDemo) ? 'not-allowed' : 'pointer',
-                            opacity: (saving || isDemo) ? 0.7 : 1
-                        }}
+                <div className={styles.formGroup}>
+                    <label className={styles.label}>Descrizione Menu</label>
+                    <p className={styles.cardDesc} style={{ marginBottom: '10px' }}>Inserisci qui tutto il testo del menu. Puoi andare a capo liberamente.</p>
+                    <textarea
+                        value={menu.description || ''}
+                        onChange={e => setMenu({ ...menu, description: e.target.value })}
+                        placeholder="Es. Benvenuto dello Chef, Selezione di Antipasti..."
+                        className={styles.formTextarea}
+                        style={{ minHeight: '250px' }}
+                        readOnly={isDemo}
+                    />
+                </div>
+
+                <div style={{ marginTop: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1.5rem', background: 'rgba(255,255,255,0.02)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                    <div>
+                        <h4 style={{ color: '#fff', margin: 0, fontSize: '1.1rem' }}>Visibilità Pubblica</h4>
+                        <p className={styles.cardDesc} style={{ margin: 0, marginTop: '4px' }}>Rendi questo menu selezionabile dai tuoi ospiti.</p>
+                    </div>
+                    <label style={{ position: 'relative', display: 'inline-block', width: '60px', height: '32px', cursor: 'pointer' }}>
+                        <input
+                            type="checkbox"
+                            checked={menu.isActive}
+                            onChange={e => !isDemo && setMenu({ ...menu, isActive: e.target.checked })}
+                            style={{ opacity: 0, width: 0, height: 0 }}
+                        />
+                        <span style={{
+                            position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+                            backgroundColor: menu.isActive ? '#d4af37' : 'rgba(255,255,255,0.1)',
+                            transition: '.4s', borderRadius: '34px',
+                            boxShadow: menu.isActive ? '0 0 15px rgba(212, 175, 55, 0.4)' : 'none'
+                        }}></span>
+                        <span style={{
+                            position: 'absolute', height: '24px', width: '24px', left: '4px', bottom: '4px',
+                            backgroundColor: '#fff', transition: '.4s', borderRadius: '50%',
+                            transform: menu.isActive ? 'translateX(28px)' : 'translateX(0)'
+                        }}></span>
+                    </label>
+                </div>
+            </div>
+
+            {/* Sticky Save Bar */}
+            <div className={styles.stickySaveBar}>
+                <div className={styles.unsavedWarning}>
+                    {isDirty ? (
+                        <span>Modifiche non salvate!</span>
+                    ) : (
+                        <span style={{ color: '#4ade80' }}>Menu aggiornato</span>
+                    )}
+                </div>
+                <div style={{ display: 'flex', gap: '12px' }}>
+                    <button 
+                        onClick={handleSave} 
+                        disabled={saving || !isDirty || isDemo}
+                        className={styles.btnPrimary}
+                        style={{ padding: '12px 30px', borderRadius: '30px', opacity: (!isDirty && !saving) ? 0.5 : 1 }}
                     >
-                        {saving ? 'Salvataggio...' : (isDemo ? 'Disabilitato (Demo)' : 'Salva Modifiche')}
+                        {saving ? 'Salvataggio...' : 'Salva Menu'}
+                        <Save size={18} />
+                    </button>
+                    <button 
+                        onClick={() => {
+                            if (originalDataRef.current) {
+                                setMenu(JSON.parse(originalDataRef.current));
+                                setIsDirty(false);
+                            }
+                        }}
+                        disabled={!isDirty || saving}
+                        className={styles.btnSm}
+                        style={{ borderRadius: '30px', padding: '12px' }}
+                        title="Annulla modifiche"
+                    >
+                        <X size={20} />
                     </button>
                 </div>
-            </div >
-        </div >
+            </div>
+
+        </div>
     );
 }

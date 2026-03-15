@@ -38,7 +38,7 @@ function ResetPasswordForm() {
 
             if (res.ok) {
                 setMessage(data.message);
-                setTimeout(() => router.push('/login'), 2000);
+                setTimeout(() => router.push('/'), 2000);
             } else {
                 setError(data.error || 'Errore durante il reset');
             }
@@ -55,7 +55,7 @@ function ResetPasswordForm() {
                 <div className={styles.card}>
                     <div className={styles.error}>Token mancante o non valido.</div>
                     <p className={styles.footer}>
-                        <Link href="/login" className={styles.secondaryButton}>Torna al Login</Link>
+                        Contatta il supporto se il problema persiste.
                     </p>
                 </div>
             </div>

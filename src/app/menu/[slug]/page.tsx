@@ -14,7 +14,8 @@ interface PageProps {
 }
 
 
-async function getRestaurant(slug: string): Promise<MenuPageRestaurant | null> {
+async function getRestaurant(inputSlug: string): Promise<MenuPageRestaurant | null> {
+    const slug = inputSlug.endsWith('-solo') ? inputSlug.replace(/-solo$/, '') : inputSlug;
     const restaurant = await (prisma.restaurant.findUnique as any)({
         where: { slug: slug },
         include: {

@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import styles from '../restaurant-dashboard.module.css';
+import { Palette, Image as ImageIcon, Type, Layout, Save, X } from 'lucide-react';
 
 interface Restaurant {
     id: string;
@@ -26,6 +27,10 @@ export default function DesignPage() {
     const [isDemo, setIsDemo] = useState(false);
     const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
 
+    // Dirty state management
+    const originalDataRef = useRef<Restaurant | null>(null);
+    const [isDirty, setIsDirty] = useState(false);
+
     useEffect(() => {
         fetchRestaurant();
     }, []);
@@ -36,6 +41,7 @@ export default function DesignPage() {
             const data = await res.json();
             if (data.restaurant) {
                 setRestaurant(data.restaurant);
+                originalDataRef.current = { ...data.restaurant };
                 setIsDemo(!!data.isDemo);
             }
         } catch (error) {
@@ -44,6 +50,25 @@ export default function DesignPage() {
             setLoading(false);
         }
     };
+
+    // Check for dirty state
+    useEffect(() => {
+        if (!restaurant || !originalDataRef.current) return;
+        const hasChanged = JSON.stringify(restaurant) !== JSON.stringify(originalDataRef.current);
+        setIsDirty(hasChanged);
+    }, [restaurant]);
+
+    // Before unload protection
+    useEffect(() => {
+        const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+            if (isDirty) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        };
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+    }, [isDirty]);
 
     const handleSave = async (e?: React.FormEvent) => {
         if (e) e.preventDefault();
@@ -63,6 +88,8 @@ export default function DesignPage() {
 
             if (res.ok) {
                 setMessage({ type: 'success', text: 'Design aggiornato con successo!' });
+                originalDataRef.current = { ...restaurant! };
+                setIsDirty(false);
             } else {
                 setMessage({ type: 'error', text: 'Errore durante il salvataggio' });
             }
@@ -103,7 +130,14 @@ export default function DesignPage() {
         }
     };
 
-    if (loading) return <div className={styles.container}>Caricamento impostazioni...</div>;
+    if (loading) return (
+        <div className={styles.container}>
+            <div className={styles.loaderContainer}>
+                <div className={styles.spinner}></div>
+                <p className={styles.loaderText}>Caricamento design...</p>
+            </div>
+        </div>
+    );
     if (!restaurant) return <div className={styles.container}>Ristorante non trovato.</div>;
 
     const fontOptions = [
@@ -122,46 +156,57 @@ export default function DesignPage() {
     ];
 
     return (
-        <div className={styles.container} style={{ paddingBottom: '120px' }}>
+        <div className={styles.container} style={{ paddingBottom: '140px' }}>
             <div className={styles.header}>
                 <h1 className={styles.title}>Aspetto & Design</h1>
-                <p className={styles.subtitle}>Personalizza l'identità visiva del tuo menù digitale.</p>
+                <p className={styles.subtitle}>Personalizza l&apos;identità visiva del tuo menù digitale con uno stile Premium.</p>
             </div>
 
             {message && (
-                <div className={styles.message} style={{ marginBottom: '1.5rem', color: message.type === 'error' ? '#c62828' : undefined }}>
-                    {message.text}
+                <div className={styles.message} style={{
+                    marginBottom: '2rem',
+                    padding: '1.2rem',
+                    borderRadius: '16px',
+                    background: message.type === 'error' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(74, 222, 128, 0.1)',
+                    border: `1px solid ${message.type === 'error' ? 'rgba(239, 68, 68, 0.2)' : 'rgba(74, 222, 128, 0.2)'}`,
+                    color: message.type === 'error' ? '#ef4444' : '#4ade80',
+                    fontWeight: 600,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px'
+                }}>
+                    {message.type === 'error' ? '❌' : '✅'} {message.text}
                 </div>
             )}
 
             <form onSubmit={handleSave} className={styles.form} style={{ maxWidth: '100%' }}>
-
                 <div className={styles.grid}>
                     {/* Branding Section */}
                     <div className={styles.card}>
-                        <h2 className={styles.cardTitle}>Branding & Logo</h2>
+                        <h2 className={styles.cardTitle}><ImageIcon size={20} /> Branding & Logo</h2>
                         <div className={styles.cardDesc}>
-                            Gestisci il logo e l'immagine di copertina del tuo ristorante.
+                            Gestisci il logo e l&apos;immagine di copertina del tuo ristorante per un brand riconoscibile.
                         </div>
 
                         <div className={styles.inputGroup} style={{ marginBottom: '1.5rem' }}>
-                            <label>Logo Ristorante</label>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                            <label style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Logo Ristorante</label>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', marginTop: '1rem' }}>
                                 <div style={{
-                                    width: '80px',
-                                    height: '80px',
+                                    width: '100px',
+                                    height: '100px',
                                     borderRadius: '50%',
-                                    background: '#f5f5f5',
+                                    background: 'rgba(255,255,255,0.05)',
                                     overflow: 'hidden',
-                                    border: '2px solid #eee',
+                                    border: '1px solid rgba(212, 175, 55, 0.2)',
                                     display: 'flex',
                                     alignItems: 'center',
-                                    justifyContent: 'center'
+                                    justifyContent: 'center',
+                                    boxShadow: '0 8px 32px rgba(0,0,0,0.3)'
                                 }}>
                                     {restaurant.logoUrl ? (
                                         <img src={restaurant.logoUrl} alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                     ) : (
-                                        <span style={{ fontSize: '2rem', color: '#ccc' }}>📷</span>
+                                        <ImageIcon size={32} color="rgba(212, 175, 55, 0.3)" />
                                     )}
                                 </div>
                                 <div style={{ flex: 1 }}>
@@ -172,110 +217,99 @@ export default function DesignPage() {
                                         onChange={(e) => handleFileUpload(e, 'logoUrl')}
                                         style={{ display: 'none' }}
                                     />
-                                    <label htmlFor="logo-upload" className={styles.btnSm} style={{ cursor: isDemo ? 'not-allowed' : 'pointer', display: 'inline-flex', opacity: isDemo ? 0.6 : 1 }}>
-                                        {uploading === 'logoUrl' ? 'Caricamento...' : (isDemo ? 'Disabilitato' : 'Carica Logo')}
+                                    <label htmlFor="logo-upload" className={styles.btnPrimary} style={{
+                                        cursor: isDemo ? 'not-allowed' : 'pointer',
+                                        display: 'inline-flex',
+                                        opacity: isDemo ? 0.6 : 1,
+                                        width: 'auto',
+                                        padding: '10px 20px',
+                                        fontSize: '0.85rem'
+                                    }}>
+                                        {uploading === 'logoUrl' ? 'Caricamento...' : (isDemo ? 'Disabilitato' : 'Sostituisci Logo')}
                                     </label>
-                                    <p className={styles.helperText}>Formato consigliato: PNG o JPG quadrata (500x500px)</p>
+                                    <p className={styles.helperText}>PNG o JPG quadrata (consigliato 500x500px)</p>
                                 </div>
                             </div>
                         </div>
-
                     </div>
 
                     {/* Style Section */}
                     <div className={styles.card}>
-                        <h2 className={styles.cardTitle}>Stile & Tipografia</h2>
+                        <h2 className={styles.cardTitle}><Palette size={20} /> Stile & Tipografia</h2>
                         <div className={styles.cardDesc}>
-                            Personalizza i colori e i font del tuo menù.
+                            Personalizza i font e l&apos;aspetto delle schede per un&apos;esperienza di lettura superiore.
                         </div>
 
-                        <div className={styles.form} style={{ gap: '1.5rem' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                             <div className={styles.inputGroup}>
-                                <label>Font (Carattere)</label>
+                                <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <Type size={16} color="#d4af37" /> Font (Carattere)
+                                </label>
                                 <select
                                     value={restaurant.fontFamily}
                                     onChange={(e) => setRestaurant({ ...restaurant, fontFamily: e.target.value })}
                                     className={styles.formInput}
+                                    style={{ background: 'rgba(0,0,0,0.3)' }}
                                 >
                                     {fontOptions.map(opt => (
-                                        <option key={opt.value} value={opt.value}>{opt.label}</option>
+                                        <option key={opt.value} value={opt.value} style={{ background: '#1a1a1a', color: '#fff' }}>{opt.label}</option>
                                     ))}
                                 </select>
                             </div>
 
                             <div className={styles.inputGroup}>
-                                <label>Stile Schede Piatti</label>
+                                <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <Layout size={16} color="#d4af37" /> Stile Schede Piatti
+                                </label>
                                 <select
                                     value={restaurant.cardStyle}
                                     onChange={(e) => setRestaurant({ ...restaurant, cardStyle: e.target.value })}
                                     className={styles.formInput}
+                                    style={{ background: 'rgba(0,0,0,0.3)' }}
                                 >
                                     {cardStyleOptions.map(opt => (
-                                        <option key={opt.value} value={opt.value}>{opt.label}</option>
+                                        <option key={opt.value} value={opt.value} style={{ background: '#1a1a1a', color: '#fff' }}>{opt.label}</option>
                                     ))}
                                 </select>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </form>
 
             {/* Sticky Save Bar */}
-            <div style={{
-                position: 'fixed',
-                bottom: 30,
-                left: '50%',
-                transform: 'translateX(-50%)',
-                background: 'rgba(255, 255, 255, 0.9)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(0,0,0,0.1)',
-                padding: '10px 10px',
-                borderRadius: '50px',
-                display: 'flex',
-                boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
-                zIndex: 100,
-                gap: '10px'
-            }}>
-                <button
-                    onClick={() => handleSave()}
-                    disabled={saving || isDemo}
-                    style={{
-                        background: isDemo ? '#ccc' : '#000',
-                        color: 'white',
-                        padding: '12px 30px',
-                        borderRadius: '40px',
-                        fontSize: '1rem',
-                        fontWeight: '600',
-                        border: 'none',
-                        cursor: (saving || isDemo) ? 'not-allowed' : 'pointer',
-                        opacity: (saving || isDemo) ? 0.7 : 1,
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '8px',
-                        boxShadow: isDemo ? 'none' : '0 4px 12px rgba(0,0,0,0.2)'
-                    }}
-                >
-                    {saving ? 'Salvataggio...' : (isDemo ? 'Disabilitato (Demo)' : (
-                        <>
-                            <span>Salva Modifiche</span>
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
-                        </>
-                    ))}
-                </button>
-                <Link href="/dashboard" style={{
-                    background: '#f3f4f6',
-                    color: '#333',
-                    padding: '12px',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    textDecoration: 'none',
-                    border: '1px solid #ddd'
-                }} title="Torna alla Dashboard">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                </Link>
+            <div className={styles.stickySaveBar}>
+                <div className={styles.unsavedWarning}>
+                    {isDirty ? (
+                        <span>Hai modifiche non salvate!</span>
+                    ) : (
+                        <span style={{ color: '#4ade80' }}>Tutte le modifiche salvate</span>
+                    )}
+                </div>
+                <div style={{ display: 'flex', gap: '12px' }}>
+                    <button 
+                        onClick={() => handleSave()} 
+                        disabled={saving || !isDirty || isDemo}
+                        className={styles.btnPrimary}
+                        style={{ padding: '12px 30px', borderRadius: '30px', opacity: (!isDirty && !saving) ? 0.5 : 1 }}
+                    >
+                        {saving ? 'Salvataggio...' : 'Salva Stile'}
+                        <Save size={18} />
+                    </button>
+                    <button 
+                        onClick={() => {
+                            setRestaurant({ ...originalDataRef.current! });
+                            setIsDirty(false);
+                            setMessage(null);
+                        }}
+                        disabled={!isDirty || saving}
+                        className={styles.btnSm}
+                        style={{ borderRadius: '30px', padding: '12px' }}
+                        title="Annulla modifiche"
+                    >
+                        <X size={20} />
+                    </button>
+                </div>
             </div>
         </div>
     );
