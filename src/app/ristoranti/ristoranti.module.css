@@ -1,12 +1,7 @@
 .container {
     min-height: 100vh;
-<<<<<<< HEAD
-    background-color: #ffffff;
-    color: #1a1a1a;
-=======
     background-color: #050505;
     color: #ffffff;
->>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
     font-family: 'Inter', sans-serif;
     overflow-x: hidden;
 }
@@ -16,15 +11,9 @@
     top: 0;
     width: 100%;
     z-index: 50;
-<<<<<<< HEAD
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid #f0f0f0;
-=======
     background: rgba(5, 5, 5, 0.8);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(212, 175, 55, 0.1);
->>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
 }
 
 .navContent {
@@ -38,19 +27,6 @@
 }
 
 .logoImg {
-<<<<<<< HEAD
-    height: 40px;
-    width: auto;
-}
-
-.navBtn {
-    background: #000;
-    color: #fff;
-    padding: 0.75rem 1.5rem;
-    border-radius: 12px;
-    font-weight: 700;
-    text-decoration: none;
-=======
     height: 32px;
     width: auto;
     filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.3));
@@ -65,18 +41,12 @@
     text-decoration: none;
     text-transform: uppercase;
     letter-spacing: 1px;
->>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
     transition: all 0.2s;
 }
 
 .navBtn:hover {
-<<<<<<< HEAD
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-=======
     background: #ffffff;
     transform: translateY(-2px);
->>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
 }
 
 .hero {
@@ -104,29 +74,6 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 1rem;
-<<<<<<< HEAD
-    background: #f8f9fa;
-    border: 1px solid #eee;
-    border-radius: 100px;
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 2rem;
-}
-
-.heroTitle {
-    font-size: 4rem;
-    font-weight: 900;
-    line-height: 1.1;
-    margin-bottom: 2rem;
-}
-
-.highlight {
-    background: linear-gradient(120deg, #ff6b6b, #ee5253);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-=======
     background: rgba(212, 175, 55, 0.1);
     border: 1px solid rgba(212, 175, 55, 0.2);
     border-radius: 4px;
@@ -153,17 +100,12 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
->>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
 }
 
 .heroSubtitle {
     font-size: 1.25rem;
     line-height: 1.6;
-<<<<<<< HEAD
-    color: #666;
-=======
     color: rgba(255, 255, 255, 0.6);
->>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
     margin-bottom: 3rem;
     max-width: 540px;
 }
@@ -179,15 +121,6 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-<<<<<<< HEAD
-    background: #000;
-    color: #fff;
-    padding: 1.25rem 2.5rem;
-    border-radius: 16px;
-    font-size: 1.125rem;
-    font-weight: 800;
-    text-decoration: none;
-=======
     background: #d4af37;
     color: #050505;
     padding: 1.25rem 2.5rem;
@@ -197,18 +130,12 @@
     text-decoration: none;
     text-transform: uppercase;
     letter-spacing: 2px;
->>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
     transition: all 0.3s;
 }
 
 .mainBtn:hover {
-<<<<<<< HEAD
-    transform: scale(1.05);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-=======
     background: #fff;
     transform: translateY(-5px);
->>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
 }
 
 .heroVisual {
@@ -216,21 +143,12 @@
 }
 
 .mockupContainer {
-<<<<<<< HEAD
-    background: #fdfdfd;
-    border: 1px solid #f0f0f0;
-    border-radius: 40px;
-    overflow: hidden;
-    position: relative;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
-=======
     background: #0f0f0f;
     border: 1px solid rgba(212, 175, 55, 0.1);
     border-radius: 8px;
     overflow: hidden;
     position: relative;
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
->>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
 }
 
 .mockupImg {
@@ -243,22 +161,6 @@
     position: absolute;
     top: 2rem;
     right: -1rem;
-<<<<<<< HEAD
-    background: #fff;
-    padding: 1rem 1.5rem;
-    border-radius: 20px;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-weight: 800;
-    font-size: 0.85rem;
-    border: 1px solid #f0f0f0;
-}
-
-.sparkleIcon {
-    color: #f1c40f;
-=======
     background: #0f0f0f;
     padding: 1rem 1.5rem;
     border-radius: 4px;
@@ -274,18 +176,12 @@
 
 .sparkleIcon {
     color: #d4af37;
->>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
 }
 
 .features {
     padding: 100px 2rem;
-<<<<<<< HEAD
-    background: #fafafa;
-    border-top: 1px solid #f0f0f0;
-=======
     background: #050505;
     border-top: 1px solid rgba(212, 175, 55, 0.1);
->>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
 }
 
 .featuresGrid {
@@ -303,34 +199,6 @@
 }
 
 .featureCard {
-<<<<<<< HEAD
-    background: #fff;
-    padding: 3rem;
-    border-radius: 32px;
-    border: 1px solid #f0f0f0;
-    transition: all 0.3s;
-}
-
-.featureCard:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
-}
-
-.featureIcon {
-    color: #000;
-    margin-bottom: 1.5rem;
-}
-
-.featureTitle {
-    font-size: 1.5rem;
-    font-weight: 800;
-    margin-bottom: 1rem;
-}
-
-.featureText {
-    color: #666;
-    line-height: 1.6;
-=======
     background: #0f0f0f;
     padding: 4rem 2rem;
     border-radius: 4px;
@@ -360,7 +228,6 @@
 .featureText {
     color: rgba(255, 255, 255, 0.6);
     line-height: 1.8;
->>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
 }
 
 .showcase {
@@ -383,19 +250,12 @@
 }
 
 .sectionTitle {
-<<<<<<< HEAD
-    font-size: 3rem;
-    font-weight: 900;
-    margin-bottom: 2rem;
-    line-height: 1.1;
-=======
     font-family: 'Playfair Display', serif;
     font-size: 3rem;
     font-weight: 400;
     margin-bottom: 2rem;
     line-height: 1.1;
     color: #ffffff;
->>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
 }
 
 .checkList {
@@ -408,15 +268,6 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-<<<<<<< HEAD
-    margin-bottom: 1.25rem;
-    font-weight: 700;
-    color: #444;
-}
-
-.checkList li svg {
-    color: #27ae60;
-=======
     margin-bottom: 1.5rem;
     font-weight: 400;
     color: rgba(255, 255, 255, 0.8);
@@ -424,20 +275,12 @@
 
 .checkList li svg {
     color: #d4af37;
->>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
 }
 
 .secondaryBtn {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-<<<<<<< HEAD
-    color: #000;
-    font-weight: 800;
-    text-decoration: none;
-    border-bottom: 2px solid #000;
-    padding-bottom: 0.25rem;
-=======
     color: #d4af37;
     font-weight: 800;
     text-decoration: none;
@@ -445,7 +288,6 @@
     padding-bottom: 0.25rem;
     text-transform: uppercase;
     letter-spacing: 2px;
->>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
     transition: all 0.2s;
 }
 
@@ -456,14 +298,9 @@
 .showcaseImg {
     width: 100%;
     height: auto;
-<<<<<<< HEAD
-    border-radius: 40px;
-    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.1);
-=======
     border-radius: 8px;
     box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
     border: 1px solid rgba(212, 175, 55, 0.1);
->>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
 }
 
 .cta {
@@ -473,26 +310,13 @@
 .ctaBox {
     max-width: 1100px;
     margin: 0 auto;
-<<<<<<< HEAD
-    background: #000;
-    border-radius: 60px;
-    padding: 6rem 4rem;
-=======
     background: #0f0f0f;
     border-radius: 4px;
     padding: 8rem 4rem;
->>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
     text-align: center;
     color: #fff;
     position: relative;
     overflow: hidden;
-<<<<<<< HEAD
-}
-
-.ctaTitle {
-    font-size: 3.5rem;
-    font-weight: 900;
-=======
     border: 1px solid #d4af37;
 }
 
@@ -500,32 +324,18 @@
     font-family: 'Playfair Display', serif;
     font-size: 4rem;
     font-weight: 400;
->>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
     margin-bottom: 1.5rem;
 }
 
 .ctaSubtitle {
     font-size: 1.5rem;
-<<<<<<< HEAD
-    color: #999;
-=======
     color: rgba(255, 255, 255, 0.5);
->>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
     margin-bottom: 3.5rem;
 }
 
 .finalBtn {
     display: inline-flex;
     align-items: center;
-<<<<<<< HEAD
-    background: #fff;
-    color: #000;
-    padding: 1.5rem 3.5rem;
-    border-radius: 20px;
-    font-size: 1.25rem;
-    font-weight: 900;
-    text-decoration: none;
-=======
     background: #d4af37;
     color: #050505;
     padding: 1.5rem 4rem;
@@ -535,15 +345,10 @@
     text-decoration: none;
     text-transform: uppercase;
     letter-spacing: 3px;
->>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
     transition: all 0.3s;
 }
 
 .finalBtn:hover {
     transform: scale(1.05);
-<<<<<<< HEAD
-    box-shadow: 0 20px 40px rgba(255, 255, 255, 0.2);
-=======
     box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2);
->>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
 }
