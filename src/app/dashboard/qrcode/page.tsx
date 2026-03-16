@@ -1,8 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import QRCode from 'qrcode';
 import styles from '../restaurant-dashboard.module.css';
+import { QrCode, Download, ExternalLink, Box, Layout as LayoutIcon, Share2, Copy } from 'lucide-react';
 
 export default function QRCodePage() {
     const [loading, setLoading] = useState(true);
@@ -21,14 +23,15 @@ export default function QRCodePage() {
                     setMenuUrl(url);
                     setRestaurantName(data.restaurant.name);
 
-                    // Generate QR
+                    // Generate QR - High quality for print
                     const qr = await QRCode.toDataURL(url, {
-                        width: 400,
+                        width: 800,
                         margin: 2,
                         color: {
                             dark: '#000000',
                             light: '#ffffff'
-                        }
+                        },
+                        errorCorrectionLevel: 'H'
                     });
                     setQrDataUrl(qr);
                 }
@@ -52,14 +55,29 @@ export default function QRCodePage() {
         document.body.removeChild(link);
     };
 
-    if (loading) return <div className={styles.container}> Generazione QR Code in corso...</div>;
+    const copyToClipboard = () => {
+        if (!menuUrl) return;
+        navigator.clipboard.writeText(menuUrl);
+        alert('Link copiato negli appunti!');
+    };
+
+    if (loading) return (
+        <div className={styles.container}>
+            <div className={styles.loaderContainer}>
+                <div className={styles.spinner}></div>
+                <p className={styles.loaderText}>Generazione QR Code...</p>
+            </div>
+        </div>
+    );
 
     if (!menuUrl) return (
         <div className={styles.container}>
-            <div className={styles.card} style={{ textAlign: 'center', maxWidth: '500px', margin: '0 auto' }}>
-                <h3 className={styles.cardTitle}>Nessun menu trovato.</h3>
-                <p className={styles.cardDesc}>Configura prima il nome del tuo ristorante nella sezione "Il mio Ristorante".</p>
-                <a href="/dashboard/restaurant" className={styles.btnSm} style={{ display: 'inline-block' }}>Configura Ristorante</a>
+            <div className={styles.card} style={{ textAlign: 'center', maxWidth: '600px', margin: '4rem auto' }}>
+                <h3 className={styles.cardTitle}>Nessun menu trovato</h3>
+                <p className={styles.cardDesc}>Configura prima il nome del tuo ristorante nella sezione dedicata per generare il tuo codice unico.</p>
+                <Link href="/dashboard/restaurant" className={styles.btnPrimary} style={{ width: 'auto', display: 'inline-flex' }}>
+                    Configura Ristorante
+                </Link>
             </div>
         </div>
     );
@@ -68,23 +86,26 @@ export default function QRCodePage() {
         <div className={styles.container}>
             <div className={styles.header}>
                 <h1 className={styles.title}>Il tuo QR Code</h1>
-                <p className={styles.subtitle}>Scarica e stampa il codice per permettere ai clienti di accedere al menu.</p>
+                <p className={styles.subtitle}>Scarica e stampa il codice per permettere ai clienti di accedere al menu con un tocco di classe.</p>
             </div>
 
             <div className={styles.grid}>
                 {/* QR Card */}
-                <div className={`${styles.card} ${styles.cardQr}`} style={{ alignItems: 'center', textAlign: 'center' }}>
-                    <h2 className={styles.cardTitle} style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Scansionami</h2>
-                    <p className={styles.cardDesc}>Accesso diretto al menu di <br /><strong>{restaurantName}</strong></p>
+                <div className={styles.card} style={{ alignItems: 'center', textAlign: 'center' }}>
+                    <h2 className={styles.cardTitle} style={{ fontSize: '1.8rem', justifyContent: 'center' }}>
+                        <QrCode size={28} /> Scansionami
+                    </h2>
+                    <p className={styles.cardDesc}>Accesso immediato al menu digitale di <br /><strong style={{ color: '#fff' }}>{restaurantName}</strong></p>
 
                     {qrDataUrl ? (
                         <div style={{
-                            padding: '1.5rem',
+                            padding: '2rem',
                             background: 'white',
-                            borderRadius: '20px',
-                            boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
-                            marginBottom: '2rem',
-                            border: '1px solid #eee'
+                            borderRadius: '24px',
+                            boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
+                            marginBottom: '2.5rem',
+                            border: '4px solid #d4af37',
+                            position: 'relative'
                         }}>
                             <img
                                 src={qrDataUrl}
@@ -98,62 +119,65 @@ export default function QRCodePage() {
                             />
                         </div>
                     ) : (
-                        <div style={{ height: '280px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Caricamento...</div>
+                        <div style={{ height: '280px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <div className={styles.spinner}></div>
+                        </div>
                     )}
 
                     <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center', width: '100%' }}>
-                        <button onClick={downloadQR} className={`${styles.button} ${styles.btnPrimary}`}>
-                            Scarica PNG
+                        <button onClick={downloadQR} className={styles.btnPrimary} style={{ flex: 1, minWidth: '180px' }}>
+                            <Download size={18} /> Scarica PNG
                         </button>
                         <a
                             href={menuUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className={styles.button}
-                            style={{ background: 'white', border: '1px solid #ccc', color: '#555' }}
+                            className={styles.btnSm}
+                            style={{ flex: 1, minWidth: '180px', justifyContent: 'center' }}
                         >
-                            Apri Link Menu ↗
+                            <ExternalLink size={18} /> Apri Link
                         </a>
                     </div>
-
-
                 </div>
 
                 {/* Instructions Card */}
                 <div className={styles.card}>
-                    <h3 className={styles.cardTitle}>Come usarlo al meglio?</h3>
+                    <h3 className={styles.cardTitle}>Guida all&apos;uso Premium</h3>
                     <div className={styles.cardDesc}>
-                        Ecco alcuni consigli per ottenere il massimo dal tuo menu digitale:
+                        Ottimizza l&apos;esperienza dei tuoi clienti posizionando strategicamente il tuo QR Code.
                     </div>
 
-                    <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                        <li style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                            <span style={{ fontSize: '2rem', background: '#e3f2fd', width: '60px', height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%' }}>🪑</span>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                        <div style={{ display: 'flex', gap: '1.2rem', alignItems: 'start' }}>
+                            <div style={{ fontSize: '1.5rem', background: 'rgba(212, 175, 55, 0.1)', width: '56px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '16px', flexShrink: 0, border: '1px solid rgba(212, 175, 55, 0.2)' }}>🪑</div>
                             <div>
-                                <strong style={{ display: 'block', color: '#333' }}>Sui Tavoli</strong>
-                                <span className={styles.helperText}>Inseriscilo in un cavaliere in plexiglass su ogni tavolo.</span>
+                                <strong style={{ display: 'block', color: '#fff', fontSize: '1.1rem', marginBottom: '4px' }}>Sui Tavoli</strong>
+                                <span className={styles.helperText} style={{ fontSize: '0.95rem' }}>Inseriscilo in eleganti supporti in plexiglass o legno su ogni tavolo.</span>
                             </div>
-                        </li>
-                        <li style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                            <span style={{ fontSize: '2rem', background: '#fff3e0', width: '60px', height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%' }}>🪟</span>
+                        </div>
+                        <div style={{ display: 'flex', gap: '1.2rem', alignItems: 'start' }}>
+                            <div style={{ fontSize: '1.5rem', background: 'rgba(212, 175, 55, 0.1)', width: '56px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '16px', flexShrink: 0, border: '1px solid rgba(212, 175, 55, 0.2)' }}>🖼️</div>
                             <div>
-                                <strong style={{ display: 'block', color: '#333' }}>In Vetrina</strong>
-                                <span className={styles.helperText}>Attirara i passanti permettendo loro di vedere i prezzi da fuori.</span>
+                                <strong style={{ display: 'block', color: '#fff', fontSize: '1.1rem', marginBottom: '4px' }}>In Vetrina</strong>
+                                <span className={styles.helperText} style={{ fontSize: '0.95rem' }}>Mostra il menu ai passanti per incuriosirli prima ancora che entrino.</span>
                             </div>
-                        </li>
-                        <li style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                            <span style={{ fontSize: '2rem', background: '#e8f5e9', width: '60px', height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%' }}>🥡</span>
+                        </div>
+                        <div style={{ display: 'flex', gap: '1.2rem', alignItems: 'start' }}>
+                            <div style={{ fontSize: '1.5rem', background: 'rgba(212, 175, 55, 0.1)', width: '56px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '16px', flexShrink: 0, border: '1px solid rgba(212, 175, 55, 0.2)' }}>📱</div>
                             <div>
-                                <strong style={{ display: 'block', color: '#333' }}>Asporto & Social</strong>
-                                <span className={styles.helperText}>Stampalo sui volantini o condividi il link su Instagram/Facebook.</span>
+                                <strong style={{ display: 'block', color: '#fff', fontSize: '1.1rem', marginBottom: '4px' }}>Digital & Social</strong>
+                                <span className={styles.helperText} style={{ fontSize: '0.95rem' }}>Condividi il link su Instagram, Facebook e WhatsApp Business.</span>
                             </div>
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
 
-                    <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid #eee' }}>
-                        <div className={styles.helperText} style={{ marginBottom: '0.5rem' }}>Link diretto (da condividere su WhatsApp/Social):</div>
-                        <div className={styles.linkContainer} style={{ padding: '0.8rem' }}>
-                            <code className={styles.linkUrl} style={{ fontSize: '0.85rem' }}>{menuUrl}</code>
+                    <div style={{ marginTop: 'auto', paddingTop: '2.5rem', borderTop: '1px solid rgba(212, 175, 55, 0.1)' }}>
+                        <div className={styles.helperText} style={{ marginBottom: '0.8rem', fontWeight: 600, color: '#d4af37' }}>Link Diretto Menu:</div>
+                        <div className={styles.linkContainer} style={{ background: 'rgba(0,0,0,0.3)' }}>
+                            <code className={styles.linkUrl} style={{ fontSize: '0.9rem' }}>{menuUrl}</code>
+                            <button onClick={copyToClipboard} className={styles.btnSm} style={{ padding: '8px' }} title="Copia Link">
+                                <Copy size={16} />
+                            </button>
                         </div>
                     </div>
                 </div>

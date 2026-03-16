@@ -1,0 +1,932 @@
+[
+  {
+    "id": "cml5dm7co0002xktb4r4p6ua3",
+    "name": "Ristorante La Gorgonia",
+    "slug": "demo",
+    "description": null,
+    "logoUrl": null,
+    "themeColor": "#1a237e",
+    "coverImageUrl": null,
+    "backgroundColor": "#ffffff",
+    "textColor": "#000000",
+    "fontFamily": "inter",
+    "whatsappNumber": null,
+    "wineListUrl": null,
+    "googleReviewsUrl": null,
+    "cardStyle": "minimal",
+    "ownerId": "cmm21bdns00011zi7p1e3foew",
+    "pushTokens": [],
+    "bookingMaxGuestsPerSlot": 10,
+    "bookingAutoConfirm": false,
+    "showNameInPublicMenu": true,
+    "createdAt": "2026-02-25T12:52:44.731Z",
+    "updatedAt": "2026-02-25T12:52:44.731Z",
+    "wineList": null,
+    "drinkList": null,
+    "champagneList": null,
+    "customLists": [],
+    "fixedMenus": []
+  },
+  {
+    "id": "cmkppvueb0002gp84tz62em7w",
+    "name": "Ristorante di Gabriele",
+    "slug": "gabriele-ricci-4361",
+    "description": null,
+    "logoUrl": null,
+    "themeColor": "#ffd700",
+    "coverImageUrl": null,
+    "backgroundColor": "#f8f9fa",
+    "textColor": "#1a237e",
+    "fontFamily": "Playfair Display",
+    "whatsappNumber": null,
+    "wineListUrl": null,
+    "googleReviewsUrl": null,
+    "cardStyle": "modern",
+    "ownerId": "cmm21bcux00001zi71h2f01ce",
+    "pushTokens": [],
+    "bookingMaxGuestsPerSlot": 10,
+    "bookingAutoConfirm": false,
+    "showNameInPublicMenu": true,
+    "createdAt": "2026-02-25T12:52:43.696Z",
+    "updatedAt": "2026-02-25T13:59:10.791Z",
+    "wineList": null,
+    "drinkList": null,
+    "champagneList": null,
+    "customLists": [],
+    "fixedMenus": []
+  },
+  {
+    "id": "cmme02v5000022jil863y758w",
+    "name": "Ristorante di demo.google@gardigital.it",
+    "slug": "demo-google-gardigital-it-1992",
+    "description": null,
+    "logoUrl": null,
+    "themeColor": "#1a237e",
+    "coverImageUrl": null,
+    "backgroundColor": "#ffffff",
+    "textColor": "#000000",
+    "fontFamily": "inter",
+    "whatsappNumber": null,
+    "wineListUrl": null,
+    "googleReviewsUrl": null,
+    "cardStyle": "minimal",
+    "ownerId": "cmme02uyw00002jilkoqm7ll1",
+    "pushTokens": [],
+    "bookingMaxGuestsPerSlot": 10,
+    "bookingAutoConfirm": false,
+    "showNameInPublicMenu": true,
+    "createdAt": "2026-03-05T21:51:21.637Z",
+    "updatedAt": "2026-03-05T21:51:21.637Z",
+    "wineList": null,
+    "drinkList": null,
+    "champagneList": null,
+    "customLists": [],
+    "fixedMenus": []
+  },
+  {
+    "id": "cmmdlwo1v0002boipsmlwkmjb",
+    "name": "Arion club",
+    "slug": "arion-club-143",
+    "description": "",
+    "logoUrl": null,
+    "themeColor": "#d32f2f",
+    "coverImageUrl": "https://res.cloudinary.com/dwjtyc9eb/image/upload/v1772806951/gardigital/restaurants/arion-club-143_background.jpg",
+    "backgroundColor": "#ffffff",
+    "textColor": "#000000",
+    "fontFamily": "inter",
+    "whatsappNumber": "3518004038",
+    "wineListUrl": null,
+    "googleReviewsUrl": "https://www.google.com/search?sca_esv=3407319d660045c2&sxsrf=ANbL-n7nWJCLVWsn-HvwkqZGVos2tq0nQg:1772807309526&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOROx_8fKZQMgXwd_DKiIwx1HOne0ICdBN8ccomdlebceiE9oOiLFvsnOKP2Jn2JBvOEyRahqeAH409ZxsulUagaxlqAm&q=Arion+Club+Recensioni&sa=X&ved=2ahUKEwiO4MHvvYuTAxVfhv0HHXrOLiUQ0bkNegQIMRAF&biw=1536&bih=695&dpr=1.25",
+    "cardStyle": "minimal",
+    "ownerId": "cmmdlwnwa0000boipyus1qr4m",
+    "pushTokens": [
+      "ei2Y78_DSTKlMTboYYZfdK:APA91bF1uKcfW4hwY-iaGgfcb2wy1W9x3RoP1CW-kdL2xfcJ5lzPE1bAj2DkAye4XBT7PyI5NxXFiwNNbf_AXQ3moKqAhupv-gYH7oe1cgxdN55JmhD1F4E"
+    ],
+    "bookingMaxGuestsPerSlot": 10,
+    "bookingAutoConfirm": false,
+    "showNameInPublicMenu": false,
+    "createdAt": "2026-03-05T15:14:37.891Z",
+    "updatedAt": "2026-03-10T20:41:56.142Z",
+    "wineList": {
+      "id": "cmmez37a50000a62tixtt5qtn",
+      "isActive": false,
+      "restaurantId": "cmmdlwo1v0002boipsmlwkmjb",
+      "createdAt": "2026-03-06T14:11:23.933Z",
+      "updatedAt": "2026-03-10T20:41:56.142Z",
+      "sections": []
+    },
+    "drinkList": {
+      "id": "cmmez37a50002a62tl129jshl",
+      "isActive": false,
+      "restaurantId": "cmmdlwo1v0002boipsmlwkmjb",
+      "createdAt": "2026-03-06T14:11:23.933Z",
+      "updatedAt": "2026-03-10T20:41:56.142Z",
+      "sections": []
+    },
+    "champagneList": {
+      "id": "cmmez37a50001a62telisnh7e",
+      "isActive": false,
+      "restaurantId": "cmmdlwo1v0002boipsmlwkmjb",
+      "createdAt": "2026-03-06T14:11:23.933Z",
+      "updatedAt": "2026-03-10T20:41:56.142Z",
+      "sections": []
+    },
+    "customLists": [],
+    "fixedMenus": []
+  },
+  {
+    "id": "cmmp2nisc0034nxc1ylrmstw3",
+    "name": "Aperifish & XL Drink e Wine",
+    "slug": "aperifish-xl-drink-e-wine-600",
+    "description": "Aperifish & XL: L'eccellenza del crudo di pesce incontra l'arte della mixology. Un viaggio sensoriale tra sapori freschi e cocktail d'autore in un'atmosfera unica.",
+    "logoUrl": null,
+    "themeColor": "#1a237e",
+    "coverImageUrl": null,
+    "backgroundColor": "#ffffff",
+    "textColor": "#000000",
+    "fontFamily": "playfair",
+    "whatsappNumber": "333 113 0097",
+    "wineListUrl": null,
+    "googleReviewsUrl": "https://www.google.com/search?sca_esv=ee81a51e8e25352b&sxsrf=ANbL-n7Cs6trnQymFgEaLxrJXXDG_UDzXg:1772028767652&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOeuQI_3gXDZ-IReGO7I-93IFoC2xKjnAhedT7Y0pvJ7yOm3I8bMX2Q7GPJ86brMio9Ywva7UJOUciQ_ZLlvcsh6EWRRLJvG5aaACrqrG02ViF5Hq8A%3D%3D&q=Aperifish+%26+XL+Drink+e+Wine+Recensioni&sa=X&ved=2ahUKEwiX6-jJ6fSSAxW4B9sEHe5MA1sQ0bkNegQIIRAH&biw=1722&bih=1270&dpr=1",
+    "cardStyle": "glass",
+    "ownerId": "cmm21bg3g00041zi7oyqzooaj",
+    "pushTokens": [],
+    "bookingMaxGuestsPerSlot": 10,
+    "bookingAutoConfirm": false,
+    "showNameInPublicMenu": true,
+    "createdAt": "2026-03-13T15:48:52.572Z",
+    "updatedAt": "2026-03-13T20:04:56.532Z",
+    "wineList": {
+      "id": "cmmpbqb5r000086g6grb6mwky",
+      "isActive": false,
+      "restaurantId": "cmmp2nisc0034nxc1ylrmstw3",
+      "createdAt": "2026-03-13T20:02:59.197Z",
+      "updatedAt": "2026-03-13T20:04:56.532Z",
+      "sections": []
+    },
+    "drinkList": {
+      "id": "cmmpbqb5t000286g66pbbqbho",
+      "isActive": false,
+      "restaurantId": "cmmp2nisc0034nxc1ylrmstw3",
+      "createdAt": "2026-03-13T20:02:59.197Z",
+      "updatedAt": "2026-03-13T20:04:56.532Z",
+      "sections": []
+    },
+    "champagneList": {
+      "id": "cmmpbqb5s000186g62r8r2702",
+      "isActive": false,
+      "restaurantId": "cmmp2nisc0034nxc1ylrmstw3",
+      "createdAt": "2026-03-13T20:02:59.197Z",
+      "updatedAt": "2026-03-13T20:04:56.532Z",
+      "sections": []
+    },
+    "customLists": [],
+    "fixedMenus": []
+  },
+  {
+    "id": "cmkr7204r00023abok44svdus",
+    "name": "Aperifish & XL Drink e Wine",
+    "slug": "aperifish-xl-drink-e-wine-733",
+    "description": "Aperifish & XL: L'eccellenza del crudo di pesce incontra l'arte della mixology. Un viaggio sensoriale tra sapori freschi e cocktail d'autore in un'atmosfera unica.",
+    "logoUrl": null,
+    "themeColor": "#1a237e",
+    "coverImageUrl": null,
+    "backgroundColor": "#ffffff",
+    "textColor": "#000000",
+    "fontFamily": "playfair",
+    "whatsappNumber": "333 113 0097",
+    "wineListUrl": null,
+    "googleReviewsUrl": "https://www.google.com/search?sca_esv=ee81a51e8e25352b&sxsrf=ANbL-n7Cs6trnQymFgEaLxrJXXDG_UDzXg:1772028767652&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOeuQI_3gXDZ-IReGO7I-93IFoC2xKjnAhedT7Y0pvJ7yOm3I8bMX2Q7GPJ86brMio9Ywva7UJOUciQ_ZLlvcsh6EWRRLJvG5aaACrqrG02ViF5Hq8A%3D%3D&q=Aperifish+%26+XL+Drink+e+Wine+Recensioni&sa=X&ved=2ahUKEwiX6-jJ6fSSAxW4B9sEHe5MA1sQ0bkNegQIIRAH&biw=1722&bih=1270&dpr=1",
+    "cardStyle": "glass",
+    "ownerId": "cmm21bg3g00041zi7oyqzooaj",
+    "pushTokens": [
+      "cnkWCar7Q-aeUBXyGRFfzc:APA91bEt8fG7nZg1wjZWWk7SwfJmPbA_7RCLR538Qtq22zq7idv9A0eIJjwboPe0YXjw2GwrERX72todcnkbVHaSap9wOUtVnffWQoq6hzZNT26Vn06X9Qk"
+    ],
+    "bookingMaxGuestsPerSlot": 10,
+    "bookingAutoConfirm": false,
+    "showNameInPublicMenu": true,
+    "createdAt": "2026-02-25T12:52:47.883Z",
+    "updatedAt": "2026-03-09T13:20:46.532Z",
+    "wineList": {
+      "id": "cmm22wd1h00007og5h7ij8dtr",
+      "isActive": true,
+      "restaurantId": "cmkr7204r00023abok44svdus",
+      "createdAt": "2026-02-25T13:37:02.981Z",
+      "updatedAt": "2026-02-26T16:09:52.684Z",
+      "sections": [
+        {
+          "id": "cmm3nsr8m000nf317pebm73za",
+          "name": "BOLLICINE",
+          "sortOrder": 0,
+          "wineListId": "cmm22wd1h00007og5h7ij8dtr",
+          "createdAt": "2026-02-26T16:09:52.871Z",
+          "updatedAt": "2026-02-26T16:09:52.871Z"
+        },
+        {
+          "id": "cmm3nsriw000uf317wpxzwk6t",
+          "name": "VINI BIANCHI",
+          "sortOrder": 0,
+          "wineListId": "cmm22wd1h00007og5h7ij8dtr",
+          "createdAt": "2026-02-26T16:09:53.240Z",
+          "updatedAt": "2026-02-26T16:09:53.240Z"
+        }
+      ]
+    },
+    "drinkList": {
+      "id": "cmm22wd1h00027og5e2epy2sf",
+      "isActive": true,
+      "restaurantId": "cmkr7204r00023abok44svdus",
+      "createdAt": "2026-02-25T13:37:02.981Z",
+      "updatedAt": "2026-02-26T20:40:59.416Z",
+      "sections": [
+        {
+          "id": "cmm3xhey400188a83s9tx9vf4",
+          "name": "COCKTAIL SIGNATURE",
+          "sortOrder": 0,
+          "drinkListId": "cmm22wd1h00027og5e2epy2sf",
+          "createdAt": "2026-02-26T20:40:59.884Z",
+          "updatedAt": "2026-02-26T20:40:59.884Z"
+        },
+        {
+          "id": "cmm3xhfdp001l8a8370m8qvnc",
+          "name": "COCKTAIL TIKI",
+          "sortOrder": 1,
+          "drinkListId": "cmm22wd1h00027og5e2epy2sf",
+          "createdAt": "2026-02-26T20:41:00.446Z",
+          "updatedAt": "2026-02-26T20:41:00.446Z"
+        },
+        {
+          "id": "cmm3xhfo4001t8a83lqz29ug8",
+          "name": "I CLASSICI",
+          "sortOrder": 2,
+          "drinkListId": "cmm22wd1h00027og5e2epy2sf",
+          "createdAt": "2026-02-26T20:41:00.820Z",
+          "updatedAt": "2026-02-26T20:41:00.820Z"
+        },
+        {
+          "id": "cmm3xhfyi002f8a83w8khnbsm",
+          "name": "COCKTAILS ANALCOLICI ",
+          "sortOrder": 3,
+          "drinkListId": "cmm22wd1h00027og5e2epy2sf",
+          "createdAt": "2026-02-26T20:41:01.195Z",
+          "updatedAt": "2026-02-26T20:41:01.195Z"
+        }
+      ]
+    },
+    "champagneList": {
+      "id": "cmm22wd1h00017og5w2v3sc3u",
+      "isActive": false,
+      "restaurantId": "cmkr7204r00023abok44svdus",
+      "createdAt": "2026-02-25T13:37:02.981Z",
+      "updatedAt": "2026-02-25T14:32:49.648Z",
+      "sections": [
+        {
+          "id": "cmm24w3n50002144awl79lm5f",
+          "name": "CHAMPAGNE",
+          "sortOrder": 0,
+          "champagneListId": "cmm22wd1h00017og5w2v3sc3u",
+          "createdAt": "2026-02-25T14:32:50.033Z",
+          "updatedAt": "2026-02-25T14:32:50.033Z"
+        }
+      ]
+    },
+    "customLists": [
+      {
+        "id": "cmm232vf30001bmx036tcemev",
+        "name": "Gin Selection",
+        "slug": "gin-selection",
+        "isActive": true,
+        "restaurantId": "cmkr7204r00023abok44svdus",
+        "createdAt": "2026-02-25T13:42:06.735Z",
+        "updatedAt": "2026-02-25T13:42:06.735Z",
+        "sections": [
+          {
+            "id": "cmm3nt8xt0019f317m451f8mf",
+            "name": "I Nostri Gin",
+            "sortOrder": 0,
+            "customListId": "cmm232vf30001bmx036tcemev",
+            "createdAt": "2026-02-26T16:10:15.809Z",
+            "updatedAt": "2026-02-26T16:10:15.809Z"
+          }
+        ]
+      }
+    ],
+    "fixedMenus": [
+      {
+        "id": "cmm235f5b0007eyjjdyay0uoc",
+        "name": "Pacchero Day (Ogni Mercoledì)",
+        "subtitle": null,
+        "price": "15",
+        "description": "Scelta tra: Pacchero Pistacchio e Mazzancolle / Pacchero allo Scoglio. Calice incluso.",
+        "isActive": true,
+        "restaurantId": "cmkr7204r00023abok44svdus",
+        "createdAt": "2026-02-25T13:44:05.616Z",
+        "updatedAt": "2026-02-25T13:44:05.616Z",
+        "sections": []
+      },
+      {
+        "id": "cmm3lfol70001x9ntk7uatjey",
+        "name": "APERIGUSTO 22",
+        "subtitle": "",
+        "price": "22",
+        "description": "6 portate di antipasti cotti\n(variazione giornaliera)\n\n1 primo a scelta tra:\npacchero allo scoglio o risotto alla crema di scampi",
+        "isActive": true,
+        "restaurantId": "cmkr7204r00023abok44svdus",
+        "createdAt": "2026-02-26T15:03:43.675Z",
+        "updatedAt": "2026-02-26T15:05:26.237Z",
+        "sections": [
+          {
+            "id": "cmm3lfol70002x9ntp8wi8z4v",
+            "name": "",
+            "description": null,
+            "fixedMenuId": "cmm3lfol70001x9ntk7uatjey",
+            "sortOrder": 0
+          }
+        ]
+      },
+      {
+        "id": "cmm3lhe4j0009c6m3gb6wjgt9",
+        "name": "APERIGUSTO 29",
+        "subtitle": "",
+        "price": "29",
+        "description": "6 portate di antipasti cotti\n(variazione giornaliera)\n\n1 primo a scelta tra:\npacchero allo scoglio o risotto alla crema di scampi\n\n1 secondo a scelta tra:\nfiletto di spigola o frittura calamari e gamberi",
+        "isActive": true,
+        "restaurantId": "cmkr7204r00023abok44svdus",
+        "createdAt": "2026-02-26T15:05:03.427Z",
+        "updatedAt": "2026-02-26T15:06:10.310Z",
+        "sections": [
+          {
+            "id": "cmm3lhe4j000ac6m3wfqxcwoq",
+            "name": "",
+            "description": null,
+            "fixedMenuId": "cmm3lhe4j0009c6m3gb6wjgt9",
+            "sortOrder": 0
+          }
+        ]
+      },
+      {
+        "id": "cmm235egk0005eyjjikijzoue",
+        "name": "APERICENA COTTO E CRUDO",
+        "subtitle": null,
+        "price": "26",
+        "description": "7 assaggini di antipasti cotti e 7 assaggini di antipasti crudi\n\nCalice di vino o Spritz inclusi (valido fino alle 20:00)",
+        "isActive": true,
+        "restaurantId": "cmkr7204r00023abok44svdus",
+        "createdAt": "2026-02-25T13:44:04.725Z",
+        "updatedAt": "2026-02-26T15:09:29.691Z",
+        "sections": []
+      },
+      {
+        "id": "cmm235dv50003eyjj0ja06lqv",
+        "name": "APERIFISH CRUDO",
+        "subtitle": null,
+        "price": "18",
+        "description": "Calice di vino o Spritz inclusi (valido tutti i giorni fino alle 20:00, tranne la domenica a pranzo)",
+        "isActive": true,
+        "restaurantId": "cmkr7204r00023abok44svdus",
+        "createdAt": "2026-02-25T13:44:03.953Z",
+        "updatedAt": "2026-02-26T15:11:53.082Z",
+        "sections": []
+      },
+      {
+        "id": "cmm235d9r0001eyjj6pyb548s",
+        "name": "APERIFISH COTTO",
+        "subtitle": null,
+        "price": "15",
+        "description": "Calice di vino o Spritz inclusi (valido tutti i giorni fino alle 20:00, tranne la domenica a pranzo)",
+        "isActive": true,
+        "restaurantId": "cmkr7204r00023abok44svdus",
+        "createdAt": "2026-02-25T13:44:03.183Z",
+        "updatedAt": "2026-02-26T15:13:23.998Z",
+        "sections": []
+      }
+    ]
+  },
+  {
+    "id": "cmlqf9ez300023gn2a547whlk",
+    "name": "Mastro arrosticino",
+    "slug": "mastro-arrosticino-884",
+    "description": "",
+    "logoUrl": null,
+    "themeColor": "#1a237e",
+    "coverImageUrl": "https://res.cloudinary.com/dwjtyc9eb/image/upload/v1772031546/gardigital-menu/mastro-arrosticino-logo.jpg",
+    "backgroundColor": "#ffffff",
+    "textColor": "#000000",
+    "fontFamily": "inter",
+    "whatsappNumber": "342 684 2313",
+    "wineListUrl": null,
+    "googleReviewsUrl": "https://www.google.com/search?sca_esv=ee81a51e8e25352b&sxsrf=ANbL-n6tIFLnajLgMOkc9OLdF2kRPR3xag:1772032015812&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOVrrSM6pBJG_PDsp6Adn2FAyc5aImfUm6950MZJUnAF5n6Sy7mcQcL4UMFRCPn_wljnnk1_QOiVum_eAxNGtafMxCD2fpJwWtCOaWRDBhoX0ivfkA1cgMi6ODZmuON06xwfxk-Y%3D&q=Mastro+Arrosticino+%26+cucina+tipica+romana+Recensioni&sa=X&ved=2ahUKEwil2NTW9fSSAxWQRfEDHeWhLBUQ0bkNegQIJBAH&biw=1728&bih=1270&dpr=1",
+    "cardStyle": "minimal",
+    "ownerId": "cmm21blm1000b1zi78cisj3ky",
+    "pushTokens": [
+      "d3tAIH06SLK523pCiRyRrD:APA91bFIrhS204SWT-U7tFIQJasBPs6EaF3uFRpFFb5wsUKT5-Kg-xIF5TxPd7S2dK3rutjTtIDyB_-YkXLqH14tVtSPD_k9o-zXiUYfKJrw2DPpxcm-uOY"
+    ],
+    "bookingMaxGuestsPerSlot": 10,
+    "bookingAutoConfirm": false,
+    "showNameInPublicMenu": true,
+    "createdAt": "2026-02-25T12:52:55.032Z",
+    "updatedAt": "2026-03-09T17:23:05.213Z",
+    "wineList": {
+      "id": "cmm264lfp0000tncqxge0au6h",
+      "isActive": false,
+      "restaurantId": "cmlqf9ez300023gn2a547whlk",
+      "createdAt": "2026-02-25T15:07:25.958Z",
+      "updatedAt": "2026-02-25T15:07:25.958Z",
+      "sections": []
+    },
+    "drinkList": {
+      "id": "cmm264lfq0002tncqdo8i10ei",
+      "isActive": false,
+      "restaurantId": "cmlqf9ez300023gn2a547whlk",
+      "createdAt": "2026-02-25T15:07:25.958Z",
+      "updatedAt": "2026-02-25T15:07:25.958Z",
+      "sections": []
+    },
+    "champagneList": {
+      "id": "cmm264lfq0001tncqi0yj6lkt",
+      "isActive": false,
+      "restaurantId": "cmlqf9ez300023gn2a547whlk",
+      "createdAt": "2026-02-25T15:07:25.958Z",
+      "updatedAt": "2026-02-25T15:07:25.958Z",
+      "sections": []
+    },
+    "customLists": [],
+    "fixedMenus": []
+  },
+  {
+    "id": "cmmpdz3o50001omd314vi4sgv",
+    "name": "Ristorante La Gorgonia (SOLO)",
+    "slug": "demo-solo",
+    "description": null,
+    "logoUrl": null,
+    "themeColor": "#1a237e",
+    "coverImageUrl": null,
+    "backgroundColor": "#ffffff",
+    "textColor": "#000000",
+    "fontFamily": "inter",
+    "whatsappNumber": null,
+    "wineListUrl": null,
+    "googleReviewsUrl": null,
+    "cardStyle": "minimal",
+    "ownerId": "cmm21bdns00011zi7p1e3foew",
+    "pushTokens": [],
+    "bookingMaxGuestsPerSlot": 10,
+    "bookingAutoConfirm": false,
+    "showNameInPublicMenu": true,
+    "createdAt": "2026-03-13T21:05:48.629Z",
+    "updatedAt": "2026-03-13T21:05:48.629Z",
+    "wineList": null,
+    "drinkList": null,
+    "champagneList": null,
+    "customLists": [],
+    "fixedMenus": []
+  },
+  {
+    "id": "cmmpdz5a00004omd3s8e9ffod",
+    "name": "Ristorante di Gabriele (SOLO)",
+    "slug": "gabriele-ricci-4361-solo",
+    "description": null,
+    "logoUrl": null,
+    "themeColor": "#ffd700",
+    "coverImageUrl": null,
+    "backgroundColor": "#f8f9fa",
+    "textColor": "#1a237e",
+    "fontFamily": "Playfair Display",
+    "whatsappNumber": null,
+    "wineListUrl": null,
+    "googleReviewsUrl": null,
+    "cardStyle": "modern",
+    "ownerId": "cmm21bcux00001zi71h2f01ce",
+    "pushTokens": [],
+    "bookingMaxGuestsPerSlot": 10,
+    "bookingAutoConfirm": false,
+    "showNameInPublicMenu": true,
+    "createdAt": "2026-03-13T21:05:50.713Z",
+    "updatedAt": "2026-03-13T21:05:50.713Z",
+    "wineList": null,
+    "drinkList": null,
+    "champagneList": null,
+    "customLists": [],
+    "fixedMenus": []
+  },
+  {
+    "id": "cmmpdz6ue0007omd3v6eodfhd",
+    "name": "Ristorante di demo.google@gardigital.it (SOLO)",
+    "slug": "demo-google-gardigital-it-1992-solo",
+    "description": null,
+    "logoUrl": null,
+    "themeColor": "#1a237e",
+    "coverImageUrl": null,
+    "backgroundColor": "#ffffff",
+    "textColor": "#000000",
+    "fontFamily": "inter",
+    "whatsappNumber": null,
+    "wineListUrl": null,
+    "googleReviewsUrl": null,
+    "cardStyle": "minimal",
+    "ownerId": "cmme02uyw00002jilkoqm7ll1",
+    "pushTokens": [],
+    "bookingMaxGuestsPerSlot": 10,
+    "bookingAutoConfirm": false,
+    "showNameInPublicMenu": true,
+    "createdAt": "2026-03-13T21:05:52.743Z",
+    "updatedAt": "2026-03-13T21:05:52.743Z",
+    "wineList": null,
+    "drinkList": null,
+    "champagneList": null,
+    "customLists": [],
+    "fixedMenus": []
+  },
+  {
+    "id": "cmmpdz8yg0009omd3jn6ok4u7",
+    "name": "Arion club (SOLO)",
+    "slug": "arion-club-143-solo",
+    "description": "",
+    "logoUrl": null,
+    "themeColor": "#d32f2f",
+    "coverImageUrl": "https://res.cloudinary.com/dwjtyc9eb/image/upload/v1772806951/gardigital/restaurants/arion-club-143_background.jpg",
+    "backgroundColor": "#ffffff",
+    "textColor": "#000000",
+    "fontFamily": "inter",
+    "whatsappNumber": "3518004038",
+    "wineListUrl": null,
+    "googleReviewsUrl": "https://www.google.com/search?sca_esv=3407319d660045c2&sxsrf=ANbL-n7nWJCLVWsn-HvwkqZGVos2tq0nQg:1772807309526&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOROx_8fKZQMgXwd_DKiIwx1HOne0ICdBN8ccomdlebceiE9oOiLFvsnOKP2Jn2JBvOEyRahqeAH409ZxsulUagaxlqAm&q=Arion+Club+Recensioni&sa=X&ved=2ahUKEwiO4MHvvYuTAxVfhv0HHXrOLiUQ0bkNegQIMRAF&biw=1536&bih=695&dpr=1.25",
+    "cardStyle": "minimal",
+    "ownerId": "cmmdlwnwa0000boipyus1qr4m",
+    "pushTokens": [],
+    "bookingMaxGuestsPerSlot": 10,
+    "bookingAutoConfirm": false,
+    "showNameInPublicMenu": false,
+    "createdAt": "2026-03-13T21:05:55.479Z",
+    "updatedAt": "2026-03-13T21:05:55.479Z",
+    "wineList": {
+      "id": "cmmpdz8yl0032omd3oftr8ns3",
+      "isActive": false,
+      "restaurantId": "cmmpdz8yg0009omd3jn6ok4u7",
+      "createdAt": "2026-03-13T21:05:55.479Z",
+      "updatedAt": "2026-03-13T21:05:55.479Z",
+      "sections": []
+    },
+    "drinkList": {
+      "id": "cmmpdz8yl0034omd3zy5q6bbr",
+      "isActive": false,
+      "restaurantId": "cmmpdz8yg0009omd3jn6ok4u7",
+      "createdAt": "2026-03-13T21:05:55.479Z",
+      "updatedAt": "2026-03-13T21:05:55.479Z",
+      "sections": []
+    },
+    "champagneList": {
+      "id": "cmmpdz8yl0033omd3md1h4fcw",
+      "isActive": false,
+      "restaurantId": "cmmpdz8yg0009omd3jn6ok4u7",
+      "createdAt": "2026-03-13T21:05:55.479Z",
+      "updatedAt": "2026-03-13T21:05:55.479Z",
+      "sections": []
+    },
+    "customLists": [],
+    "fixedMenus": []
+  },
+  {
+    "id": "cmmpdzpk3005nomd3t7r4s5tz",
+    "name": "Aperifish & XL Drink e Wine (SOLO)",
+    "slug": "aperifish-xl-drink-e-wine-733-solo",
+    "description": "Aperifish & XL: L'eccellenza del crudo di pesce incontra l'arte della mixology. Un viaggio sensoriale tra sapori freschi e cocktail d'autore in un'atmosfera unica.",
+    "logoUrl": null,
+    "themeColor": "#1a237e",
+    "coverImageUrl": null,
+    "backgroundColor": "#ffffff",
+    "textColor": "#000000",
+    "fontFamily": "playfair",
+    "whatsappNumber": "333 113 0097",
+    "wineListUrl": null,
+    "googleReviewsUrl": "https://www.google.com/search?sca_esv=ee81a51e8e25352b&sxsrf=ANbL-n7Cs6trnQymFgEaLxrJXXDG_UDzXg:1772028767652&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOeuQI_3gXDZ-IReGO7I-93IFoC2xKjnAhedT7Y0pvJ7yOm3I8bMX2Q7GPJ86brMio9Ywva7UJOUciQ_ZLlvcsh6EWRRLJvG5aaACrqrG02ViF5Hq8A%3D%3D&q=Aperifish+%26+XL+Drink+e+Wine+Recensioni&sa=X&ved=2ahUKEwiX6-jJ6fSSAxW4B9sEHe5MA1sQ0bkNegQIIRAH&biw=1722&bih=1270&dpr=1",
+    "cardStyle": "glass",
+    "ownerId": "cmm21bg3g00041zi7oyqzooaj",
+    "pushTokens": [],
+    "bookingMaxGuestsPerSlot": 10,
+    "bookingAutoConfirm": false,
+    "showNameInPublicMenu": true,
+    "createdAt": "2026-03-13T21:06:16.995Z",
+    "updatedAt": "2026-03-13T21:06:16.995Z",
+    "wineList": {
+      "id": "cmmpdzpk7007xomd3zepaj22a",
+      "isActive": true,
+      "restaurantId": "cmmpdzpk3005nomd3t7r4s5tz",
+      "createdAt": "2026-03-13T21:06:16.995Z",
+      "updatedAt": "2026-03-13T21:06:16.995Z",
+      "sections": [
+        {
+          "id": "cmmpdzpk7007yomd3p7fkk208",
+          "name": "BOLLICINE",
+          "sortOrder": 0,
+          "wineListId": "cmmpdzpk7007xomd3zepaj22a",
+          "createdAt": "2026-03-13T21:06:16.995Z",
+          "updatedAt": "2026-03-13T21:06:16.995Z"
+        },
+        {
+          "id": "cmmpdzpk70084omd3ih5w5d7u",
+          "name": "VINI BIANCHI",
+          "sortOrder": 0,
+          "wineListId": "cmmpdzpk7007xomd3zepaj22a",
+          "createdAt": "2026-03-13T21:06:16.995Z",
+          "updatedAt": "2026-03-13T21:06:16.995Z"
+        }
+      ]
+    },
+    "drinkList": {
+      "id": "cmmpdzpk8008nomd3thqloct5",
+      "isActive": true,
+      "restaurantId": "cmmpdzpk3005nomd3t7r4s5tz",
+      "createdAt": "2026-03-13T21:06:16.995Z",
+      "updatedAt": "2026-03-13T21:06:16.995Z",
+      "sections": [
+        {
+          "id": "cmmpdzpk8008oomd31toj15lt",
+          "name": "COCKTAIL SIGNATURE",
+          "sortOrder": 0,
+          "drinkListId": "cmmpdzpk8008nomd3thqloct5",
+          "createdAt": "2026-03-13T21:06:16.995Z",
+          "updatedAt": "2026-03-13T21:06:16.995Z"
+        },
+        {
+          "id": "cmmpdzpk80090omd3qkvl2cy8",
+          "name": "COCKTAIL TIKI",
+          "sortOrder": 1,
+          "drinkListId": "cmmpdzpk8008nomd3thqloct5",
+          "createdAt": "2026-03-13T21:06:16.995Z",
+          "updatedAt": "2026-03-13T21:06:16.995Z"
+        },
+        {
+          "id": "cmmpdzpk80097omd35j4z362z",
+          "name": "I CLASSICI",
+          "sortOrder": 2,
+          "drinkListId": "cmmpdzpk8008nomd3thqloct5",
+          "createdAt": "2026-03-13T21:06:16.995Z",
+          "updatedAt": "2026-03-13T21:06:16.995Z"
+        },
+        {
+          "id": "cmmpdzpk8009somd3vtvpivgo",
+          "name": "COCKTAILS ANALCOLICI ",
+          "sortOrder": 3,
+          "drinkListId": "cmmpdzpk8008nomd3thqloct5",
+          "createdAt": "2026-03-13T21:06:16.995Z",
+          "updatedAt": "2026-03-13T21:06:16.995Z"
+        }
+      ]
+    },
+    "champagneList": {
+      "id": "cmmpdzpk7008homd3gc0ekhtu",
+      "isActive": false,
+      "restaurantId": "cmmpdzpk3005nomd3t7r4s5tz",
+      "createdAt": "2026-03-13T21:06:16.995Z",
+      "updatedAt": "2026-03-13T21:06:16.995Z",
+      "sections": [
+        {
+          "id": "cmmpdzpk8008iomd3c8v57on7",
+          "name": "CHAMPAGNE",
+          "sortOrder": 0,
+          "champagneListId": "cmmpdzpk7008homd3gc0ekhtu",
+          "createdAt": "2026-03-13T21:06:16.995Z",
+          "updatedAt": "2026-03-13T21:06:16.995Z"
+        }
+      ]
+    },
+    "customLists": [
+      {
+        "id": "cmmpdzpk900a6omd3zby5a630",
+        "name": "Gin Selection",
+        "slug": "gin-selection",
+        "isActive": true,
+        "restaurantId": "cmmpdzpk3005nomd3t7r4s5tz",
+        "createdAt": "2026-03-13T21:06:16.995Z",
+        "updatedAt": "2026-03-13T21:06:16.995Z",
+        "sections": [
+          {
+            "id": "cmmpdzpk900a7omd332ysx7rr",
+            "name": "I Nostri Gin",
+            "sortOrder": 0,
+            "customListId": "cmmpdzpk900a6omd3zby5a630",
+            "createdAt": "2026-03-13T21:06:16.995Z",
+            "updatedAt": "2026-03-13T21:06:16.995Z"
+          }
+        ]
+      }
+    ],
+    "fixedMenus": [
+      {
+        "id": "cmmpdzpk8009yomd31d22nz19",
+        "name": "Pacchero Day (Ogni Mercoledì)",
+        "subtitle": null,
+        "price": "15",
+        "description": "Scelta tra: Pacchero Pistacchio e Mazzancolle / Pacchero allo Scoglio. Calice incluso.",
+        "isActive": true,
+        "restaurantId": "cmmpdzpk3005nomd3t7r4s5tz",
+        "createdAt": "2026-03-13T21:06:16.995Z",
+        "updatedAt": "2026-03-13T21:06:16.995Z",
+        "sections": []
+      },
+      {
+        "id": "cmmpdzpk8009zomd3d2xlfn1w",
+        "name": "APERIGUSTO 22",
+        "subtitle": "",
+        "price": "22",
+        "description": "6 portate di antipasti cotti\n(variazione giornaliera)\n\n1 primo a scelta tra:\npacchero allo scoglio o risotto alla crema di scampi",
+        "isActive": true,
+        "restaurantId": "cmmpdzpk3005nomd3t7r4s5tz",
+        "createdAt": "2026-03-13T21:06:16.995Z",
+        "updatedAt": "2026-03-13T21:06:16.995Z",
+        "sections": [
+          {
+            "id": "cmmpdzpk800a0omd3h06cu3vq",
+            "name": "",
+            "description": null,
+            "fixedMenuId": "cmmpdzpk8009zomd3d2xlfn1w",
+            "sortOrder": 0
+          }
+        ]
+      },
+      {
+        "id": "cmmpdzpk800a1omd3yzmqr8de",
+        "name": "APERIGUSTO 29",
+        "subtitle": "",
+        "price": "29",
+        "description": "6 portate di antipasti cotti\n(variazione giornaliera)\n\n1 primo a scelta tra:\npacchero allo scoglio o risotto alla crema di scampi\n\n1 secondo a scelta tra:\nfiletto di spigola o frittura calamari e gamberi",
+        "isActive": true,
+        "restaurantId": "cmmpdzpk3005nomd3t7r4s5tz",
+        "createdAt": "2026-03-13T21:06:16.995Z",
+        "updatedAt": "2026-03-13T21:06:16.995Z",
+        "sections": [
+          {
+            "id": "cmmpdzpk800a2omd3kn8q9zfi",
+            "name": "",
+            "description": null,
+            "fixedMenuId": "cmmpdzpk800a1omd3yzmqr8de",
+            "sortOrder": 0
+          }
+        ]
+      },
+      {
+        "id": "cmmpdzpk800a3omd3ff0wh3to",
+        "name": "APERICENA COTTO E CRUDO",
+        "subtitle": null,
+        "price": "26",
+        "description": "7 assaggini di antipasti cotti e 7 assaggini di antipasti crudi\n\nCalice di vino o Spritz inclusi (valido fino alle 20:00)",
+        "isActive": true,
+        "restaurantId": "cmmpdzpk3005nomd3t7r4s5tz",
+        "createdAt": "2026-03-13T21:06:16.995Z",
+        "updatedAt": "2026-03-13T21:06:16.995Z",
+        "sections": []
+      },
+      {
+        "id": "cmmpdzpk800a4omd3nz3heito",
+        "name": "APERIFISH CRUDO",
+        "subtitle": null,
+        "price": "18",
+        "description": "Calice di vino o Spritz inclusi (valido tutti i giorni fino alle 20:00, tranne la domenica a pranzo)",
+        "isActive": true,
+        "restaurantId": "cmmpdzpk3005nomd3t7r4s5tz",
+        "createdAt": "2026-03-13T21:06:16.995Z",
+        "updatedAt": "2026-03-13T21:06:16.995Z",
+        "sections": []
+      },
+      {
+        "id": "cmmpdzpk800a5omd3n6gxok37",
+        "name": "APERIFISH COTTO",
+        "subtitle": null,
+        "price": "15",
+        "description": "Calice di vino o Spritz inclusi (valido tutti i giorni fino alle 20:00, tranne la domenica a pranzo)",
+        "isActive": true,
+        "restaurantId": "cmmpdzpk3005nomd3t7r4s5tz",
+        "createdAt": "2026-03-13T21:06:16.995Z",
+        "updatedAt": "2026-03-13T21:06:16.995Z",
+        "sections": []
+      }
+    ]
+  },
+  {
+    "id": "cmmpdzyq000b2omd3lc43e3kh",
+    "name": "Mastro arrosticino (SOLO)",
+    "slug": "mastro-arrosticino-884-solo",
+    "description": "",
+    "logoUrl": null,
+    "themeColor": "#1a237e",
+    "coverImageUrl": "https://res.cloudinary.com/dwjtyc9eb/image/upload/v1772031546/gardigital-menu/mastro-arrosticino-logo.jpg",
+    "backgroundColor": "#ffffff",
+    "textColor": "#000000",
+    "fontFamily": "inter",
+    "whatsappNumber": "342 684 2313",
+    "wineListUrl": null,
+    "googleReviewsUrl": "https://www.google.com/search?sca_esv=ee81a51e8e25352b&sxsrf=ANbL-n6tIFLnajLgMOkc9OLdF2kRPR3xag:1772032015812&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOVrrSM6pBJG_PDsp6Adn2FAyc5aImfUm6950MZJUnAF5n6Sy7mcQcL4UMFRCPn_wljnnk1_QOiVum_eAxNGtafMxCD2fpJwWtCOaWRDBhoX0ivfkA1cgMi6ODZmuON06xwfxk-Y%3D&q=Mastro+Arrosticino+%26+cucina+tipica+romana+Recensioni&sa=X&ved=2ahUKEwil2NTW9fSSAxWQRfEDHeWhLBUQ0bkNegQIJBAH&biw=1728&bih=1270&dpr=1",
+    "cardStyle": "minimal",
+    "ownerId": "cmm21blm1000b1zi78cisj3ky",
+    "pushTokens": [],
+    "bookingMaxGuestsPerSlot": 10,
+    "bookingAutoConfirm": false,
+    "showNameInPublicMenu": true,
+    "createdAt": "2026-03-13T21:06:28.872Z",
+    "updatedAt": "2026-03-13T21:06:28.872Z",
+    "wineList": {
+      "id": "cmmpdzyq600gwomd3qwcosorj",
+      "isActive": false,
+      "restaurantId": "cmmpdzyq000b2omd3lc43e3kh",
+      "createdAt": "2026-03-13T21:06:28.872Z",
+      "updatedAt": "2026-03-13T21:06:28.872Z",
+      "sections": []
+    },
+    "drinkList": {
+      "id": "cmmpdzyq600gyomd3kgrlg2af",
+      "isActive": false,
+      "restaurantId": "cmmpdzyq000b2omd3lc43e3kh",
+      "createdAt": "2026-03-13T21:06:28.872Z",
+      "updatedAt": "2026-03-13T21:06:28.872Z",
+      "sections": []
+    },
+    "champagneList": {
+      "id": "cmmpdzyq600gxomd38p7jhjc8",
+      "isActive": false,
+      "restaurantId": "cmmpdzyq000b2omd3lc43e3kh",
+      "createdAt": "2026-03-13T21:06:28.872Z",
+      "updatedAt": "2026-03-13T21:06:28.872Z",
+      "sections": []
+    },
+    "customLists": [],
+    "fixedMenus": []
+  },
+  {
+    "id": "cmmpf1dw200014j50y3y5m8cq",
+    "name": "Aperifish & XL Drink e Wine (SOLO)",
+    "slug": "aperifish-xl-drink-e-wine-600-solo",
+    "description": "Aperifish & XL: L'eccellenza del crudo di pesce incontra l'arte della mixology. Un viaggio sensoriale tra sapori freschi e cocktail d'autore in un'atmosfera unica.",
+    "logoUrl": null,
+    "themeColor": "#1a237e",
+    "coverImageUrl": null,
+    "backgroundColor": "#ffffff",
+    "textColor": "#000000",
+    "fontFamily": "playfair",
+    "whatsappNumber": "333 113 0097",
+    "wineListUrl": null,
+    "googleReviewsUrl": "https://www.google.com/search?sca_esv=ee81a51e8e25352b&sxsrf=ANbL-n7Cs6trnQymFgEaLxrJXXDG_UDzXg:1772028767652&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOeuQI_3gXDZ-IReGO7I-93IFoC2xKjnAhedT7Y0pvJ7yOm3I8bMX2Q7GPJ86brMio9Ywva7UJOUciQ_ZLlvcsh6EWRRLJvG5aaACrqrG02ViF5Hq8A%3D%3D&q=Aperifish+%26+XL+Drink+e+Wine+Recensioni&sa=X&ved=2ahUKEwiX6-jJ6fSSAxW4B9sEHe5MA1sQ0bkNegQIIRAH&biw=1722&bih=1270&dpr=1",
+    "cardStyle": "glass",
+    "ownerId": "cmm21bg3g00041zi7oyqzooaj",
+    "pushTokens": [],
+    "bookingMaxGuestsPerSlot": 10,
+    "bookingAutoConfirm": false,
+    "showNameInPublicMenu": true,
+    "createdAt": "2026-03-13T21:35:34.799Z",
+    "updatedAt": "2026-03-13T21:35:34.799Z",
+    "wineList": {
+      "id": "cmmpf1dw5002b4j50kt20rngt",
+      "isActive": false,
+      "restaurantId": "cmmpf1dw200014j50y3y5m8cq",
+      "createdAt": "2026-03-13T21:35:34.799Z",
+      "updatedAt": "2026-03-13T21:35:34.799Z",
+      "sections": []
+    },
+    "drinkList": {
+      "id": "cmmpf1dw5002d4j50az4rkzub",
+      "isActive": false,
+      "restaurantId": "cmmpf1dw200014j50y3y5m8cq",
+      "createdAt": "2026-03-13T21:35:34.799Z",
+      "updatedAt": "2026-03-13T21:35:34.799Z",
+      "sections": []
+    },
+    "champagneList": {
+      "id": "cmmpf1dw5002c4j50azejsipg",
+      "isActive": false,
+      "restaurantId": "cmmpf1dw200014j50y3y5m8cq",
+      "createdAt": "2026-03-13T21:35:34.799Z",
+      "updatedAt": "2026-03-13T21:35:34.799Z",
+      "sections": []
+    },
+    "customLists": [],
+    "fixedMenus": []
+  },
+  {
+    "id": "cmmq0zz2f0002u0dqv88k824n",
+    "name": "Ristorante di Rrr",
+    "slug": "rrr-4659",
+    "description": null,
+    "logoUrl": null,
+    "themeColor": "#1a237e",
+    "coverImageUrl": null,
+    "backgroundColor": "#ffffff",
+    "textColor": "#000000",
+    "fontFamily": "inter",
+    "whatsappNumber": null,
+    "wineListUrl": null,
+    "googleReviewsUrl": null,
+    "cardStyle": "minimal",
+    "ownerId": "cmmq0zywx0000u0dqhuajxkgi",
+    "pushTokens": [],
+    "bookingMaxGuestsPerSlot": 10,
+    "bookingAutoConfirm": false,
+    "showNameInPublicMenu": false,
+    "createdAt": "2026-03-14T07:50:20.488Z",
+    "updatedAt": "2026-03-14T07:50:20.488Z",
+    "wineList": null,
+    "drinkList": null,
+    "champagneList": null,
+    "customLists": [],
+    "fixedMenus": []
+  }
+]

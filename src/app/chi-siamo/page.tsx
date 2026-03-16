@@ -23,7 +23,6 @@ export default function ChiSiamo() {
                 </div>
                 <nav style={{ display: 'flex', gap: '2rem' }}>
                     <Link href="/" style={{ color: 'white', fontWeight: 600, textDecoration: 'none', fontSize: '0.95rem', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>Home</Link>
-                    <Link href="/login" style={{ color: 'white', fontWeight: 600, textDecoration: 'none', fontSize: '0.95rem', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>Area Clienti</Link>
                 </nav>
             </header>
 

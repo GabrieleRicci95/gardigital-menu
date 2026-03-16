@@ -3,7 +3,21 @@
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { Menu as MenuIcon } from 'lucide-react';
+import { 
+    Menu as MenuIcon, 
+    LayoutDashboard, 
+    CreditCard, 
+    Calendar, 
+    Store, 
+    Utensils, 
+    Wine, 
+    GlassWater, 
+    Martini, 
+    Palette, 
+    QrCode, 
+    LogOut,
+    Layers
+} from 'lucide-react';
 import styles from './dashboard.module.css';
 import SubscriptionAlert from '@/components/common/SubscriptionAlert';
 import { usePushNotifications } from '@/lib/hooks/usePushNotifications';
@@ -136,37 +150,37 @@ export default function DashboardClientLayout({
     }, []);
 
     const navItems = [
-        { label: 'Panoramica', href: '/dashboard', icon: 'Items' },
-        { label: 'Abbonamenti', href: '/dashboard/subscription', icon: 'CreditCard', isSubscription: true },
+        { label: 'Panoramica', href: '/dashboard', icon: <LayoutDashboard size={20} /> },
+        { label: 'Abbonamenti', href: '/dashboard/subscription', icon: <CreditCard size={20} />, isSubscription: true },
         {
             label: 'Agenda',
             href: '/dashboard/reservations',
-            icon: 'Calendar',
+            icon: <Calendar size={20} />,
             isReservation: true,
             badge: pendingReservationsCount > 0 ? pendingReservationsCount : null
         },
-        { label: 'Il mio Ristorante', href: '/dashboard/restaurant', icon: 'Store' },
-        { label: 'Menu', href: '/dashboard/menu', icon: 'Menu' },
-        { label: 'Vini/Bollicine', href: '/dashboard/wine-list', icon: 'Wine' },
-        { label: 'Champagne', href: '/dashboard/champagne-list', icon: 'Glass' },
-        { label: 'Drink', href: '/dashboard/drink-list', icon: 'Cocktail' },
+        { label: 'Il mio Ristorante', href: '/dashboard/restaurant', icon: <Store size={20} /> },
+        { label: 'Menu', href: '/dashboard/menu', icon: <Utensils size={20} /> },
+        { label: 'Vini/Bollicine', href: '/dashboard/wine-list', icon: <Wine size={20} /> },
+        { label: 'Champagne', href: '/dashboard/champagne-list', icon: <GlassWater size={20} /> },
+        { label: 'Drink', href: '/dashboard/drink-list', icon: <Martini size={20} /> },
         // Add Gin Selection here if it's in custom modules
         ...customModules
             .filter(m => m.name.toLowerCase().includes('gin'))
             .map(m => ({
                 label: m.name,
                 href: `/dashboard/custom-list/${m.slug}`,
-                icon: 'Layers'
+                icon: <Layers size={20} />
             })),
-        { label: 'Aspetto & Design', href: '/dashboard/design', icon: 'Palette' },
-        { label: 'QR Code', href: '/dashboard/qrcode', icon: 'QR' },
+        { label: 'Aspetto & Design', href: '/dashboard/design', icon: <Palette size={20} /> },
+        { label: 'QR Code', href: '/dashboard/qrcode', icon: <QrCode size={20} /> },
         // Add other custom modules that are not Gin Selection
         ...customModules
             .filter(m => !m.name.toLowerCase().includes('gin'))
             .map(m => ({
                 label: m.name,
                 href: `/dashboard/custom-list/${m.slug}`,
-                icon: 'Layers'
+                icon: <Layers size={20} />
             }))
     ]
         .filter((item: any) => {
@@ -230,19 +244,11 @@ export default function DashboardClientLayout({
                     {restaurantSlug?.toLowerCase() === 'demo' || ownerEmail?.toLowerCase() === 'demo@gardigital.it' || restaurantName?.toLowerCase().includes('demo') ? (
                         <span style={{ color: 'white', fontWeight: 'bold', fontSize: '1.2rem' }}>Benvenuto</span>
                     ) : (
-                        <img src="/logo_dashboard.png" alt="Logo" className={styles.logoImage} />
+                        <img src="/logo.png" alt="SoloMenu" className={styles.logoImage} />
                     )}
                 </div>
 
-                {/* Subscription Status Badge */}
-                {!isAppMode && (
-                    <div className={styles.statusContainer}>
-                        <div className={`${styles.statusBadge} ${isSubscriptionActive ? styles.statusActive : styles.statusExpired}`}>
-                            <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: isSubscriptionActive ? '#10b981' : '#ef4444' }} />
-                            {isSubscriptionActive ? 'Abbonamento Attivo' : 'Abbonamento Scaduto'}
-                        </div>
-                    </div>
-                )}
+
                 <nav className={styles.nav}>
                     {navItems.map((item: any) => (
                         <Link
@@ -251,14 +257,20 @@ export default function DashboardClientLayout({
                             className={`${styles.navItem} ${pathname === item.href ? styles.active : ''}`}
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
-                            <span>{item.label}</span>
+                            <div className={styles.navItemContent}>
+                                {item.icon}
+                                <span>{item.label}</span>
+                            </div>
                             {item.badge && (
                                 <span className={styles.badge}>{item.badge}</span>
                             )}
                         </Link>
                     ))}
                     <button onClick={handleLogout} className={`${styles.navItem} ${styles.logout}`}>
-                        <span>Esci</span>
+                        <div className={styles.navItemContent}>
+                            <LogOut size={20} />
+                            <span>Esci</span>
+                        </div>
                     </button>
                 </nav>
             </aside>

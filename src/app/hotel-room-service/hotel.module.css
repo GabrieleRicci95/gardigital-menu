@@ -1,7 +1,12 @@
 .container {
     min-height: 100vh;
+<<<<<<< HEAD
     background-color: #fbfbfb;
     color: #2c3e50;
+=======
+    background-color: #050505;
+    color: #ffffff;
+>>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
     font-family: 'Inter', sans-serif;
     overflow-x: hidden;
 }
@@ -11,6 +16,7 @@
     top: 0;
     width: 100%;
     z-index: 50;
+<<<<<<< HEAD
     background: rgba(251, 251, 251, 0.8);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid #eee;
@@ -28,10 +34,20 @@
 
 .logoImg {
     height: 40px;
+=======
+    background: rgba(5, 5, 5, 0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.logoImg {
+    height: 32px;
+>>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
     width: auto;
 }
 
 .navBtn {
+<<<<<<< HEAD
     background: #1a1a1a;
     color: #fff;
     padding: 0.75rem 1.5rem;
@@ -39,6 +55,14 @@
     font-weight: 700;
     text-decoration: none;
     transition: all 0.2s;
+=======
+    background: #d4af37;
+    color: #050505;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-weight: 800;
+    text-decoration: none;
+>>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
 }
 
 .hero {
@@ -47,6 +71,7 @@
     margin: 0 auto;
 }
 
+<<<<<<< HEAD
 .heroContent {
     display: grid;
     grid-template-columns: 1.2fr 1fr;
@@ -61,11 +86,14 @@
     }
 }
 
+=======
+>>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
 .badge {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 1rem;
+<<<<<<< HEAD
     background: #fdfdfd;
     border: 1px solid #ddd;
     border-radius: 100px;
@@ -80,19 +108,41 @@
 .heroTitle {
     font-size: 4rem;
     font-weight: 900;
+=======
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #d4af37;
+}
+
+.heroTitle {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 400;
+>>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
     line-height: 1.1;
     margin-bottom: 2rem;
 }
 
 .highlight {
+<<<<<<< HEAD
     background: linear-gradient(120deg, #8e44ad 0%, #c0392b 100%);
     -webkit-background-clip: text;
+=======
+    background: linear-gradient(120deg, #d4af37, #f1d58a);
+    -webkit-background-clip: text;
+    background-clip: text;
+>>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
     -webkit-text-fill-color: transparent;
 }
 
 .heroSubtitle {
     font-size: 1.25rem;
     line-height: 1.6;
+<<<<<<< HEAD
     color: #7f8c8d;
     margin-bottom: 3rem;
     max-width: 540px;
@@ -103,12 +153,16 @@
         margin-left: auto;
         margin-right: auto;
     }
+=======
+    color: rgba(255, 255, 255, 0.6);
+>>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
 }
 
 .mainBtn {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
+<<<<<<< HEAD
     background: #2c3e50;
     color: #fff;
     padding: 1.25rem 2.5rem;
@@ -235,4 +289,50 @@
     font-weight: 900;
     text-decoration: none;
     transition: all 0.3s;
+=======
+    background: #d4af37;
+    color: #050505;
+    padding: 1.25rem 2.5rem;
+    border-radius: 4px;
+    font-weight: 800;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.featureCard {
+    background: #0f0f0f;
+    padding: 3rem;
+    border-radius: 4px;
+    border: 1px solid rgba(212, 175, 55, 0.05);
+}
+
+.featureIcon {
+    color: #d4af37;
+    margin-bottom: 1.5rem;
+}
+
+.ctaBox {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: #0f0f0f;
+    border: 1px solid #d4af37;
+    border-radius: 4px;
+    padding: 8rem 4rem;
+    text-align: center;
+}
+
+.ctaTitle {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 400;
+}
+
+.finalBtn {
+    background: #d4af37;
+    color: #050505;
+    padding: 1.5rem 4rem;
+    border-radius: 4px;
+    font-weight: 800;
+    text-decoration: none;
+>>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
 }

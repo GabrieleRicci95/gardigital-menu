@@ -6,10 +6,14 @@ export const dynamic = 'force-dynamic';
 export async function GET(request: Request) {
     try {
         const { searchParams } = new URL(request.url);
-        const slug = searchParams.get('slug');
+        let slug = searchParams.get('slug');
 
         if (!slug) {
             return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
+        }
+
+        if (slug.endsWith('-solo')) {
+            slug = slug.replace(/-solo$/, '');
         }
 
         const restaurant = await prisma.restaurant.findUnique({

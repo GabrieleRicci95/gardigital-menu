@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar, Users, Phone, FileText, CheckCircle, XCircle, AlertCircle, Settings, Plus, LayoutDashboard, Utensils, Sparkles, Crown } from 'lucide-react';
 import styles from './reservations.module.css';
 
 interface Reservation {
@@ -146,7 +146,7 @@ export default function ReservationsPage() {
             case 'CONFIRMED': return <span className={`${styles.badge} ${styles.badgeSuccess}`}>Confermata</span>;
             case 'REJECTED': return <span className={`${styles.badge} ${styles.badgeError}`}>Rifiutata</span>;
             case 'CANCELLED': return <span className={`${styles.badge} ${styles.badgeGray}`}>Cancellata</span>;
-            default: return <span className={`${styles.badge} ${styles.badgeWarning}`}>In Attesa</span>;
+            default: return <span className={`${styles.badge} ${styles.badgeWarning}`}>Sospesa</span>;
         }
     };
 
@@ -308,8 +308,8 @@ export default function ReservationsPage() {
         <div className={styles.container}>
             <header className={styles.header}>
                 <div>
-                    <h1 className={styles.title}>Agenda Prenotazioni <span style={{ fontSize: '0.8rem', color: '#3b82f6', verticalAlign: 'middle' }}>(v7)</span></h1>
-                    <p className={styles.subtitle}>Gestisci le richieste dei tuoi clienti in modo professionale.</p>
+                    <h1 className={styles.title}>Agenda Prenotazioni</h1>
+                    <p className={styles.subtitle}>Gestisci le richieste dei tuoi clienti con l'eccellenza SoloMenu.</p>
                 </div>
 
 
@@ -318,15 +318,16 @@ export default function ReservationsPage() {
                         className={styles.btnSettings}
                         onClick={() => setIsSettingsOpen(true)}
                     >
+                        <Settings size={18} />
                         Impostazioni
                     </button>
                     <button
                         className={styles.btnPrimary}
-                        style={{ backgroundColor: isDemo ? '#ccc' : '#10b981' }}
+                        style={{ background: isDemo ? 'rgba(255,255,255,0.05)' : undefined, color: isDemo ? 'rgba(255,255,255,0.2)' : undefined }}
                         onClick={() => !isDemo && setIsModalOpen(true)}
                         disabled={isDemo}
                     >
-                        + Nuova Prenotazione
+                        Nuova Prenotazione
                     </button>
                 </div>
             </header>
@@ -352,172 +353,179 @@ export default function ReservationsPage() {
                 </div>
             )}
 
-            {/* CALENDAR VIEW */}
-            <div className={styles.calendarContainer}>
-                <div className={styles.calendarHeader}>
-                    <h2 className={styles.calendarTitle}>
-                        {currentMonth.toLocaleDateString('it-IT', { month: 'long', year: 'numeric' })}
-                    </h2>
-                    <div style={{ display: 'flex', gap: '10px' }}>
-                        <button
-                            className={styles.calendarNavBtn}
-                            onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(currentMonth.getMonth() - 1)))}
-                            title="Mese precedente"
-                        >
-                            <ChevronLeft size={20} />
-                        </button>
-                        <button
-                            className={styles.calendarNavBtn}
-                            onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(currentMonth.getMonth() + 1)))}
-                            title="Mese successivo"
-                        >
-                            <ChevronRight size={20} />
-                        </button>
-                    </div>
-                </div>
-
-                <div className={styles.calendarGrid}>
-                    {['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'].map(d => (
-                        <div key={d} className={styles.weekday}>{d}</div>
-                    ))}
-                    {generateCalendarDays().map((day, idx) => {
-                        const dateString = day ? `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}` : '';
-                        const isActive = dateString === filterDate;
-
-                        return (
-                            <div
-                                key={idx}
-                                className={`${styles.dayCell} ${day ? '' : styles.otherMonth} ${day && isToday(day) ? styles.today : ''} ${day && isActive ? styles.activeDay : ''}`}
-                                onClick={() => day && setFilterDate(dateString)}
-                            >
-                                {day}
-                                {day && hasResOnDay(day) && (
-                                    <div className={styles.reservationDot}></div>
-                                )}
-                            </div>
-                        );
-                    })}
-                </div>
-            </div>
-
-
-            {/* TABS */}
-            <div className={styles.tabs}>
-                <button
-                    className={`${styles.tab} ${filterStatus === 'ALL' ? styles.activeTab : ''}`}
-                    onClick={() => setFilterStatus('ALL')}
-                >
-                    Tutte ({counts.ALL})
-                </button>
-                <button
-                    className={`${styles.tab} ${filterStatus === 'PENDING' ? styles.activeTab : ''}`}
-                    onClick={() => setFilterStatus('PENDING')}
-                >
-                    In Attesa ({counts.PENDING})
-                </button>
-                <button
-                    className={`${styles.tab} ${filterStatus === 'CONFIRMED' ? styles.activeTab : ''}`}
-                    onClick={() => setFilterStatus('CONFIRMED')}
-                >
-                    Confermate ({counts.CONFIRMED})
-                </button>
-                <button
-                    className={`${styles.tab} ${filterStatus === 'HISTORY' ? styles.activeTab : ''}`}
-                    onClick={() => setFilterStatus('HISTORY')}
-                >
-                    Storico ({counts.HISTORY})
-                </button>
-            </div>
-
-            {loading ? (
-                <div className={styles.loading}>Caricamento...</div>
-            ) : filteredReservations.length === 0 ? (
-                <div className={styles.emptyState}>
-                    <div className={styles.emptyIcon}></div>
-                    <h3>Nessuna prenotazione in questa sezione</h3>
-                    <p>Prova a cambiare filtro o data.</p>
-                </div>
-            ) : (
-                <div className={styles.list}>
-                    {filteredReservations.map(res => (
-                        <div key={res.id} className={styles.card}>
-                            <div className={styles.cardHeader}>
-                                <div className={styles.timeInfo}>
-                                    <span className={styles.time}>
-                                        {/* Show Date if it's not the filtered date (e.g. Pending from another day) */}
-                                        {new Date(res.date).toISOString().split('T')[0] !== filterDate && (
-                                            <span style={{ marginRight: '8px', color: '#eab308', fontWeight: 'bold' }}>
-                                                {new Date(res.date).toLocaleDateString('it-IT', { day: 'numeric', month: 'short' })}
-                                            </span>
-                                        )}
-                                        {new Date(res.date).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit', hour12: false })}
-                                    </span>
-                                    {getStatusBadge(res.status)}
-                                </div>
-                                <div className={styles.guestInfo}>
-                                    <strong>{res.guests}</strong> Persone
-                                </div>
-                            </div>
-                            <div className={styles.cardBody}>
-                                <h3 className={styles.customerName}>{res.name}</h3>
-                                {res.phone && <a href={`tel:${res.phone}`} className={styles.contactLink}>Tel: {res.phone}</a>}
-                                {res.notes && <p className={styles.notes}>Note: "{res.notes}"</p>}
-                            </div>
-                            <div className={styles.cardActions}>
-                                {res.status === 'PENDING' && (
-                                    <>
-                                        <button
-                                            className={styles.btnActionSuccess}
-                                            onClick={() => handleStatusUpdate(res.id, 'CONFIRMED')}
-                                        >
-                                            Accetta
-                                        </button>
-                                        <button
-                                            className={styles.btnActionDanger}
-                                            onClick={() => handleStatusUpdate(res.id, 'REJECTED')}
-                                        >
-                                            Rifiuta
-                                        </button>
-                                    </>
-                                )}
-                                {res.phone && (
-                                    <a
-                                        href={`https://wa.me/${res.phone.replace(/\s/g, '').replace(/[^0-9]/g, '')}?text=Ciao ${res.name}, confermiamo la tua prenotazione da noi per ${res.guests} persone alle ${new Date(res.date).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit', hour12: false })}!`}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        className={styles.btnWhatsapp}
-                                    >
-                                        WhatsApp
-                                    </a>
-                                )}
+            <div className={styles.mainContent}>
+                <div className={styles.sideColumn}>
+                    {/* CALENDAR VIEW */}
+                    <div className={styles.calendarContainer}>
+                        <div className={styles.calendarHeader}>
+                            <h2 className={styles.calendarTitle}>
+                                {currentMonth.toLocaleDateString('it-IT', { month: 'long', year: 'numeric' })}
+                            </h2>
+                            <div style={{ display: 'flex', gap: '10px' }}>
                                 <button
-                                    className={styles.btnActionDanger}
-                                    style={{
-                                        gridColumn: '1 / -1',
-                                        background: 'transparent',
-                                        border: '1px solid #ef4444',
-                                        color: '#ef4444',
-                                        borderRadius: '12px',
-                                        padding: '0.75rem',
-                                        fontSize: '0.95rem',
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        gap: '8px',
-                                        width: '100%',
-                                        marginTop: '0.25rem'
-                                    }}
-                                    onClick={() => handleDelete(res.id)}
-                                    title="Elimina definitivamente"
+                                    className={styles.calendarNavBtn}
+                                    onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(currentMonth.getMonth() - 1)))}
+                                    title="Mese precedente"
                                 >
-                                    ✕ Elimina Prenotazione
+                                    <ChevronLeft size={20} />
+                                </button>
+                                <button
+                                    className={styles.calendarNavBtn}
+                                    onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(currentMonth.getMonth() + 1)))}
+                                    title="Mese successivo"
+                                >
+                                    <ChevronRight size={20} />
                                 </button>
                             </div>
                         </div>
-                    ))}
+
+                        <div className={styles.calendarGrid}>
+                            {['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'].map(d => (
+                                <div key={d} className={styles.weekday}>{d}</div>
+                            ))}
+                            {generateCalendarDays().map((day, idx) => {
+                                const dateString = day ? `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}` : '';
+                                const isActive = dateString === filterDate;
+
+                                return (
+                                    <div
+                                        key={idx}
+                                        className={`${styles.dayCell} ${day ? '' : styles.otherMonth} ${day && isToday(day) ? styles.today : ''} ${day && isActive ? styles.activeDay : ''}`}
+                                        onClick={() => day && setFilterDate(dateString)}
+                                    >
+                                        {day}
+                                        {day && hasResOnDay(day) && (
+                                            <div className={styles.reservationDot}></div>
+                                        )}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
                 </div>
-            )
-            }
+
+                <div className={styles.listColumn}>
+                    {/* TABS */}
+                    <div className={styles.tabs}>
+                        <button
+                            className={`${styles.tab} ${filterStatus === 'ALL' ? styles.activeTab : ''}`}
+                            onClick={() => setFilterStatus('ALL')}
+                        >
+                            Tutte ({counts.ALL})
+                        </button>
+                        <button
+                            className={`${styles.tab} ${filterStatus === 'PENDING' ? styles.activeTab : ''}`}
+                            onClick={() => setFilterStatus('PENDING')}
+                        >
+                            Attesa ({counts.PENDING})
+                        </button>
+                        <button
+                            className={`${styles.tab} ${filterStatus === 'CONFIRMED' ? styles.activeTab : ''}`}
+                            onClick={() => setFilterStatus('CONFIRMED')}
+                        >
+                            Confermate ({counts.CONFIRMED})
+                        </button>
+                        <button
+                            className={`${styles.tab} ${filterStatus === 'HISTORY' ? styles.activeTab : ''}`}
+                            onClick={() => setFilterStatus('HISTORY')}
+                        >
+                            Storico ({counts.HISTORY})
+                        </button>
+                    </div>
+
+                    {loading ? (
+                        <div className={styles.loading}>
+                            <div className={styles.spinner}></div>
+                            <span>Caricamento...</span>
+                        </div>
+                    ) : filteredReservations.length === 0 ? (
+                        <div className={styles.emptyState}>
+                            <div className={styles.emptyIcon}></div>
+                            <h3>Nessuna prenotazione</h3>
+                            <p>Prova a cambiare filtro o data.</p>
+                        </div>
+                    ) : (
+                        <div className={styles.list}>
+                            {filteredReservations.map(res => (
+                                <div key={res.id} className={styles.card}>
+                                    <div className={styles.cardHeader}>
+                                        <div className={styles.timeInfo}>
+                                            <span className={styles.time}>
+                                                {/* Show Date if it's not the filtered date (e.g. Pending from another day) */}
+                                                {new Date(res.date).toISOString().split('T')[0] !== filterDate && (
+                                                    <span style={{ marginRight: '8px', color: '#eab308', fontWeight: 'bold' }}>
+                                                        {new Date(res.date).toLocaleDateString('it-IT', { day: 'numeric', month: 'short' })}
+                                                    </span>
+                                                )}
+                                                {new Date(res.date).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit', hour12: false })}
+                                            </span>
+                                            {getStatusBadge(res.status)}
+                                        </div>
+                                        <div className={styles.guestInfo}>
+                                            <strong>{res.guests}</strong> Persone
+                                        </div>
+                                    </div>
+                                    <div className={styles.cardBody}>
+                                        <h3 className={styles.customerName}>{res.name}</h3>
+                                        {res.phone && <a href={`tel:${res.phone}`} className={styles.contactLink}><Phone size={14} style={{ display: 'inline', marginRight: '6px' }} /> {res.phone}</a>}
+                                        {res.notes && <p className={styles.notes}><FileText size={14} style={{ display: 'inline', marginRight: '6px' }} /> "{res.notes}"</p>}
+                                    </div>
+                                    <div className={styles.cardActions}>
+                                        {res.status === 'PENDING' && (
+                                            <>
+                                                <button
+                                                    className={styles.btnActionSuccess}
+                                                    onClick={() => handleStatusUpdate(res.id, 'CONFIRMED')}
+                                                >
+                                                    Accetta
+                                                </button>
+                                                <button
+                                                    className={styles.btnActionDanger}
+                                                    onClick={() => handleStatusUpdate(res.id, 'REJECTED')}
+                                                >
+                                                    Rifiuta
+                                                </button>
+                                            </>
+                                        )}
+                                        {res.phone && (
+                                            <a
+                                                href={`https://wa.me/${res.phone.replace(/\s/g, '').replace(/[^0-9]/g, '')}?text=Ciao ${res.name}, confermiamo la tua prenotazione da noi per ${res.guests} persone alle ${new Date(res.date).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit', hour12: false })}!`}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                                className={styles.btnWhatsapp}
+                                            >
+                                                WhatsApp
+                                            </a>
+                                        )}
+                                        <button
+                                            className={styles.btnActionDanger}
+                                            style={{
+                                                gridColumn: '1 / -1',
+                                                background: 'transparent',
+                                                border: '1px solid #ef4444',
+                                                color: '#ef4444',
+                                                borderRadius: '12px',
+                                                padding: '0.75rem',
+                                                fontSize: '0.95rem',
+                                                display: 'flex',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                                gap: '8px',
+                                                width: '100%',
+                                                marginTop: '0.25rem'
+                                            }}
+                                            onClick={() => handleDelete(res.id)}
+                                            title="Elimina definitivamente"
+                                        >
+                                            ✕ Elimina
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </div>
 
             {/* SETTINGS MODAL */}
             {isSettingsOpen && (
@@ -566,7 +574,7 @@ export default function ReservationsPage() {
                                 <button
                                     type="submit"
                                     className={styles.btnPrimary}
-                                    style={{ backgroundColor: '#1e3a8a', border: 'none' }}
+                                    style={{ border: 'none' }}
                                 >
                                     Salva Impostazioni
                                 </button>
@@ -660,7 +668,7 @@ export default function ReservationsPage() {
                                 <button
                                     type="submit"
                                     className={styles.btnPrimary}
-                                    style={{ backgroundColor: '#10b981', border: 'none' }}
+                                    style={{ border: 'none' }}
                                 >
                                     Crea Prenotazione
                                 </button>

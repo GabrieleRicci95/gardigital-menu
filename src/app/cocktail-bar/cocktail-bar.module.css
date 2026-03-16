@@ -1,6 +1,10 @@
 .container {
     min-height: 100vh;
+<<<<<<< HEAD
     background-color: #0c0c0e;
+=======
+    background-color: #050505;
+>>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
     color: #ffffff;
     font-family: 'Inter', sans-serif;
     overflow-x: hidden;
@@ -11,9 +15,15 @@
     top: 0;
     width: 100%;
     z-index: 50;
+<<<<<<< HEAD
     background: rgba(12, 12, 14, 0.9);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+=======
+    background: rgba(5, 5, 5, 0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+>>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
 }
 
 .navContent {
@@ -27,6 +37,7 @@
 }
 
 .logoImg {
+<<<<<<< HEAD
     height: 40px;
     width: auto;
     filter: invert(1);
@@ -39,6 +50,22 @@
     border-radius: 12px;
     font-weight: 700;
     text-decoration: none;
+=======
+    height: 32px;
+    width: auto;
+    filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.3));
+}
+
+.navBtn {
+    background: #d4af37;
+    color: #050505;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-weight: 800;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+>>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
     transition: all 0.2s;
 }
 
@@ -67,6 +94,7 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 1rem;
+<<<<<<< HEAD
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 100px;
@@ -88,13 +116,43 @@
 .highlight {
     background: linear-gradient(120deg, #f093fb 0%, #f5576c 100%);
     -webkit-background-clip: text;
+=======
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 2rem;
+    color: #d4af37;
+}
+
+.heroTitle {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 2rem;
+    color: #ffffff;
+}
+
+.highlight {
+    background: linear-gradient(120deg, #d4af37, #f1d58a);
+    -webkit-background-clip: text;
+    background-clip: text;
+>>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
     -webkit-text-fill-color: transparent;
 }
 
 .heroSubtitle {
     font-size: 1.25rem;
     line-height: 1.6;
+<<<<<<< HEAD
     color: #a0a0a0;
+=======
+    color: rgba(255, 255, 255, 0.6);
+>>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
     margin-bottom: 3rem;
     max-width: 540px;
 }
@@ -110,6 +168,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
+<<<<<<< HEAD
     background: #fff;
     color: #000;
     padding: 1.25rem 2.5rem;
@@ -118,6 +177,17 @@
     font-weight: 800;
     text-decoration: none;
     transition: all 0.3s;
+=======
+    background: #d4af37;
+    color: #050505;
+    padding: 1.25rem 2.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 800;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+>>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
 }
 
 .mainBtn:hover {
@@ -126,12 +196,21 @@
 }
 
 .mockupContainer {
+<<<<<<< HEAD
     background: #1a1a1c;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 40px;
     overflow: hidden;
     position: relative;
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+=======
+    background: #0f0f0f;
+    border: 1px solid rgba(212, 175, 55, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+>>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
 }
 
 .mockupImg {
@@ -143,6 +222,7 @@
     position: absolute;
     bottom: 2rem;
     right: 2rem;
+<<<<<<< HEAD
     background: rgba(245, 87, 108, 0.2);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(245, 87, 108, 0.3);
@@ -154,11 +234,30 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+=======
+    background: #0f0f0f;
+    border: 1px solid #d4af37;
+    padding: 0.75rem 1.25rem;
+    border-radius: 4px;
+    color: #d4af37;
+    font-weight: 800;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+>>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
 }
 
 .features {
     padding: 100px 2rem;
+<<<<<<< HEAD
     background: #000000;
+=======
+    background: #050505;
+    border-top: 1px solid rgba(212, 175, 55, 0.1);
+>>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
 }
 
 .featuresGrid {
@@ -176,6 +275,7 @@
 }
 
 .featureCard {
+<<<<<<< HEAD
     background: #0c0c0e;
     padding: 3rem;
     border-radius: 32px;
@@ -185,10 +285,28 @@
 
 .featureIcon {
     color: #f5576c;
+=======
+    background: #0f0f0f;
+    padding: 3rem;
+    border-radius: 4px;
+    border: 1px solid rgba(212, 175, 55, 0.05);
+    transition: all 0.3s;
+    text-align: center;
+}
+
+.featureCard:hover {
+    border-color: #d4af37;
+    transform: translateY(-10px);
+}
+
+.featureIcon {
+    color: #d4af37;
+>>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
     margin-bottom: 1.5rem;
 }
 
 .featureTitle {
+<<<<<<< HEAD
     font-size: 1.5rem;
     font-weight: 800;
     margin-bottom: 1rem;
@@ -197,6 +315,18 @@
 .featureText {
     color: #888;
     line-height: 1.6;
+=======
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+    color: #ffffff;
+}
+
+.featureText {
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.8;
+>>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
 }
 
 .cta {
@@ -207,30 +337,50 @@
 .ctaBox {
     max-width: 1100px;
     margin: 0 auto;
+<<<<<<< HEAD
     background: linear-gradient(135deg, #1a1a1c 0%, #000000 100%);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 60px;
     padding: 6rem 4rem;
+=======
+    background: #0f0f0f;
+    border: 1px solid #d4af37;
+    border-radius: 4px;
+    padding: 8rem 4rem;
+>>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
     text-align: center;
     position: relative;
     overflow: hidden;
 }
 
 .ctaTitle {
+<<<<<<< HEAD
     font-size: 3.5rem;
     font-weight: 900;
     margin-bottom: 1.5rem;
+=======
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 400;
+    margin-bottom: 1.5rem;
+    color: #ffffff;
+>>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
 }
 
 .ctaSubtitle {
     font-size: 1.5rem;
+<<<<<<< HEAD
     color: #666;
+=======
+    color: rgba(255, 255, 255, 0.5);
+>>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
     margin-bottom: 3.5rem;
 }
 
 .finalBtn {
     display: inline-flex;
     align-items: center;
+<<<<<<< HEAD
     background: #fff;
     color: #000;
     padding: 1.5rem 3.5rem;
@@ -238,5 +388,16 @@
     font-size: 1.25rem;
     font-weight: 900;
     text-decoration: none;
+=======
+    background: #d4af37;
+    color: #050505;
+    padding: 1.5rem 4rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 800;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+>>>>>>> af7a590 (Fix public menu slug fallback and cleanup duplicates)
     transition: all 0.3s;
 }

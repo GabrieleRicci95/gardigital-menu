@@ -2,6 +2,18 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { 
+    Calendar, 
+    Users, 
+    Clock, 
+    TrendingUp, 
+    ShieldCheck, 
+    Utensils, 
+    QrCode,
+    CheckCircle2,
+    AlertCircle,
+    ExternalLink
+} from 'lucide-react';
 import styles from './restaurant-dashboard.module.css';
 
 export default function DashboardPage() {
@@ -57,7 +69,12 @@ export default function DashboardPage() {
         }
     };
 
-    if (loading) return <div className={styles.container}>Caricamento Dashboard...</div>;
+    if (loading) return (
+        <div className={styles.loaderContainer}>
+            <div className={styles.spinner}></div>
+            <div className={styles.loaderText}>Caricamento SoloMenu...</div>
+        </div>
+    );
 
     const isPremium = (subscription?.plan === 'PREMIUM' || subscription?.plan === 'FULL') && subscription?.status === 'ACTIVE';
 
@@ -75,22 +92,28 @@ export default function DashboardPage() {
             {subscription?.hasReservations && (
                 <div className={styles.statsRow}>
                     <div className={styles.statCard}>
-                        <div className={`${styles.statIcon} ${styles.statToday}`}>📅</div>
+                        <div className={`${styles.statIcon} ${styles.statToday}`}>
+                            <Calendar size={24} />
+                        </div>
                         <div className={styles.statInfo}>
                             <div className={styles.statValue}>{stats?.todayCount || 0}</div>
                             <div className={styles.statLabel}>Prenotazioni Oggi</div>
                         </div>
                     </div>
                     <div className={styles.statCard}>
-                        <div className={`${styles.statIcon} ${styles.statToday}`}>👥</div>
+                        <div className={`${styles.statIcon} ${styles.statToday}`}>
+                            <Users size={24} />
+                        </div>
                         <div className={styles.statInfo}>
                             <div className={styles.statValue}>{stats?.todayGuests || 0}</div>
                             <div className={styles.statLabel}>Coperti Oggi</div>
                         </div>
                     </div>
-                    <Link href="/dashboard/reservations" style={{ textDecoration: 'none' }}>
-                        <div className={`${styles.statCard} ${stats?.pendingCount > 0 ? styles.statAlert : ''}`}>
-                            <div className={`${styles.statIcon} ${styles.statPending}`}>⏳</div>
+                    <Link href="/dashboard/reservations" style={{ textDecoration: 'none', display: 'flex', height: '100%' }}>
+                        <div className={`${styles.statCard} ${stats?.pendingCount > 0 ? styles.statAlert : ''}`} style={{ width: '100%' }}>
+                            <div className={`${styles.statIcon} ${styles.statPending}`}>
+                                <Clock size={24} />
+                            </div>
                             <div className={styles.statInfo}>
                                 <div className={styles.statValue}>{stats?.pendingCount || 0}</div>
                                 <div className={styles.statLabel}>Da Confermare</div>
@@ -98,7 +121,9 @@ export default function DashboardPage() {
                         </div>
                     </Link>
                     <div className={styles.statCard}>
-                        <div className={`${styles.statIcon} ${styles.statMonth}`}>📈</div>
+                        <div className={`${styles.statIcon} ${styles.statMonth}`}>
+                            <TrendingUp size={24} />
+                        </div>
                         <div className={styles.statInfo}>
                             <div className={styles.statValue}>{stats?.monthCount || 0}</div>
                             <div className={styles.statLabel}>Prenotazioni Mese</div>
@@ -111,6 +136,7 @@ export default function DashboardPage() {
                 {/* Status Card */}
                 <div className={`${styles.card} ${styles.cardPremium}`}>
                     <div className={styles.cardTitle}>
+                        <ShieldCheck size={20} className={styles.titleIcon} />
                         Stato Abbonamento
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
@@ -127,10 +153,12 @@ export default function DashboardPage() {
                             return (
                                 <>
                                     <div className={styles.statusText} style={{
-                                        fontSize: '1.4rem',
-                                        color: subscription?.plan === 'FULL' ? '#fbc02d' : '#2e7d32',
+                                        fontSize: '1.2rem',
+                                        color: '#d4af37',
                                         textTransform: 'uppercase',
-                                        marginBottom: '0.5rem'
+                                        marginBottom: '0.8rem',
+                                        fontWeight: '800',
+                                        letterSpacing: '1px'
                                     }}>
                                         {statusText}
                                     </div>
@@ -144,28 +172,30 @@ export default function DashboardPage() {
 
                                     <div style={{
                                         marginTop: 'auto',
-                                        padding: '12px',
-                                        backgroundColor: isExpired ? '#fee2e2' : '#f8fafc',
-                                        borderRadius: '12px',
-                                        border: `1px solid ${isExpired ? '#fecaca' : '#e2e8f0'}`,
-                                        marginBottom: '1rem'
+                                        padding: '16px',
+                                        backgroundColor: isExpired ? 'rgba(239, 68, 68, 0.1)' : 'rgba(255, 255, 255, 0.03)',
+                                        backdropFilter: 'blur(8px)',
+                                        borderRadius: '16px',
+                                        border: `1px solid ${isExpired ? 'rgba(239, 68, 68, 0.3)' : 'rgba(212, 175, 55, 0.1)'}`,
+                                        marginBottom: '1.5rem'
                                     }}>
-                                        <div style={{ fontSize: '0.8rem', color: '#64748b', marginBottom: '4px' }}>Scadenza Servizio</div>
+                                        <div style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.5)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Scadenza Servizio</div>
                                         <div style={{
                                             fontWeight: 'bold',
-                                            color: isExpired ? '#991b1b' : '#334155',
+                                            color: isExpired ? '#ef4444' : '#ffffff',
                                             display: 'flex',
                                             alignItems: 'center',
-                                            gap: '6px'
+                                            gap: '8px',
+                                            fontSize: '1.1rem'
                                         }}>
-                                            📅 {expiryDate ? expiryDate.toLocaleDateString() : 'Non impostata'}
-                                            {isExpired && <span style={{ fontSize: '0.7rem', backgroundColor: '#ef4444', color: 'white', padding: '2px 6px', borderRadius: '4px' }}>SCADUTO</span>}
+                                            <Calendar size={18} className={styles.titleIcon} style={{ opacity: 1 }} />
+                                            {expiryDate ? expiryDate.toLocaleDateString() : 'Non impostata'}
                                         </div>
                                     </div>
 
                                     {!isAppMode && (
                                         <Link href="/dashboard/subscription" className={`${styles.button} ${styles.btnPrimary}`} style={{ width: '100%', textAlign: 'center' }}>
-                                            Gestisci / Rinnova
+                                            Abbonamento
                                         </Link>
                                     )}
                                 </>
@@ -174,9 +204,52 @@ export default function DashboardPage() {
                     </div>
                 </div>
 
+                {/* Restaurant Settings Card */}
+                <div className={`${styles.card} ${styles.cardRestaurant}`}>
+                    <div className={styles.cardTitle}>
+                        <ShieldCheck size={20} className={styles.titleIcon} />
+                        Il Mio Ristorante
+                    </div>
+                    <p className={styles.cardDesc}>Aggiorna le informazioni di base, contatti e social della tua attività.</p>
+                    <div style={{ marginTop: 'auto' }}>
+                        <Link href="/dashboard/restaurant" className={`${styles.button} ${styles.btnPrimary}`}>
+                            Configura
+                        </Link>
+                    </div>
+                </div>
+
+                {/* Design Card */}
+                <div className={`${styles.card} ${styles.cardDesign}`}>
+                    <div className={styles.cardTitle}>
+                        <ShieldCheck size={20} className={styles.titleIcon} />
+                        Aspetto & Design
+                    </div>
+                    <p className={styles.cardDesc}>Personalizza colori, font e stile per rendere unico il tuo menu.</p>
+                    <div style={{ marginTop: 'auto' }}>
+                        <Link href="/dashboard/design" className={`${styles.button} ${styles.btnPrimary}`}>
+                            Personalizza
+                        </Link>
+                    </div>
+                </div>
+
+                {/* Reservations Card */}
+                <div className={`${styles.card} ${styles.cardAgenda}`}>
+                    <div className={styles.cardTitle}>
+                        <Calendar size={20} className={styles.titleIcon} />
+                        Agenda
+                    </div>
+                    <p className={styles.cardDesc}>Visualizza e gestisci le prenotazioni dei tuoi tavoli in tempo reale.</p>
+                    <div style={{ marginTop: 'auto' }}>
+                        <Link href="/dashboard/reservations" className={`${styles.button} ${styles.btnPrimary}`}>
+                            Apri Agenda
+                        </Link>
+                    </div>
+                </div>
+
                 {/* Menu Link Card */}
                 <div className={`${styles.card} ${styles.cardMenu}`}>
                     <div className={styles.cardTitle}>
+                        <Utensils size={20} className={styles.titleIcon} />
                         I Tuoi Menu
                     </div>
                     <p className={styles.cardDesc}>Gestisci i piatti, i prezzi e organizza le categorie del tuo menu digitale.</p>
@@ -190,6 +263,7 @@ export default function DashboardPage() {
                 {/* QR Code Card */}
                 <div className={`${styles.card} ${styles.cardQr}`}>
                     <div className={styles.cardTitle}>
+                        <QrCode size={20} className={styles.titleIcon} />
                         Il Tuo QR Code
                     </div>
                     <p className={styles.cardDesc}>Scarica e stampa il codice QR da posizionare sui tavoli per i tuoi clienti.</p>

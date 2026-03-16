@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { CreditCard, CheckCircle, Zap, ShieldCheck, ArrowRight, Calendar, AlertCircle, Star, Crown, Sparkles } from 'lucide-react';
+import { CreditCard, CheckCircle, Zap, ShieldCheck, ArrowRight, Calendar, AlertCircle, Star, Crown, Sparkles, Utensils } from 'lucide-react';
 
 export default function SubscriptionPage() {
     const [restaurant, setRestaurant] = useState<any>(null);
@@ -119,9 +119,25 @@ export default function SubscriptionPage() {
 
     if (loading && !restaurant) {
         return (
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column', gap: '20px' }}>
-                <div className="spinner" style={{ width: '50px', height: '50px', border: '5px solid #f3f3f3', borderTop: '5px solid #1a237e', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
-                <p style={{ fontWeight: '600', color: '#1a237e' }}>Caricamento dati ristorante...</p>
+            <div style={{ 
+                display: 'flex', 
+                justifyContent: 'center', 
+                alignItems: 'center', 
+                height: '100vh', 
+                flexDirection: 'column', 
+                gap: '20px',
+                background: '#050505',
+                color: '#d4af37'
+            }}>
+                <div className="spinner" style={{ 
+                    width: '48px', 
+                    height: '48px', 
+                    border: '3px solid rgba(212, 175, 55, 0.1)', 
+                    borderTop: '3px solid #d4af37', 
+                    borderRadius: '50%', 
+                    animation: 'spin 1s linear infinite' 
+                }} />
+                <p style={{ fontWeight: '600', fontFamily: 'Inter, sans-serif' }}>Caricamento Abbonamento...</p>
                 <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
             </div>
         );
@@ -144,29 +160,30 @@ export default function SubscriptionPage() {
         return (
             <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto', fontFamily: 'Inter, sans-serif', textAlign: 'center' }}>
                 <div style={{
-                    background: 'white',
+                    background: '#0f0f0f',
                     padding: '60px 40px',
                     borderRadius: '32px',
-                    boxShadow: '0 20px 40px rgba(0,0,0,0.05)',
-                    border: '1px solid #eee',
-                    marginTop: '40px'
+                    boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
+                    border: '1px solid rgba(212, 175, 55, 0.1)',
+                    marginTop: '40px',
+                    color: '#ffffff'
                 }}>
-                    <ShieldCheck size={64} color="#1e3a8a" style={{ marginBottom: '24px' }} />
-                    <h1 style={{ fontSize: '2rem', fontWeight: '900', color: '#0f172a', marginBottom: '16px' }}>Gestione Abbonamento</h1>
-                    <p style={{ fontSize: '1.1rem', color: '#64748b', lineHeight: '1.6', marginBottom: '32px' }}>
+                    <ShieldCheck size={64} color="#d4af37" style={{ marginBottom: '24px' }} />
+                    <h1 style={{ fontSize: '2rem', fontWeight: '900', marginBottom: '16px', fontFamily: 'Playfair Display, serif' }}>Gestione Abbonamento</h1>
+                    <p style={{ fontSize: '1.1rem', color: 'rgba(255,255,255,0.6)', lineHeight: '1.6', marginBottom: '32px' }}>
                         Per garantire la massima sicurezza e trasparenza, la gestione dei pagamenti e delle fatture è disponibile esclusivamente tramite il nostro portale web ufficiale.
                     </p>
                     <div style={{
-                        background: '#f8fafc',
+                        background: 'rgba(212, 175, 55, 0.05)',
                         padding: '24px',
                         borderRadius: '20px',
-                        border: '1px dashed #cbd5e1',
+                        border: '1px dashed rgba(212, 175, 55, 0.3)',
                         marginBottom: '32px'
                     }}>
-                        <p style={{ fontWeight: '700', color: '#1e3a8a', marginBottom: '8px' }}>Accedi da Computer o Browser su:</p>
-                        <code style={{ fontSize: '1.2rem', color: '#0f172a', fontWeight: '900' }}>master.gardigital.it</code>
+                        <p style={{ fontWeight: '700', color: '#d4af37', marginBottom: '8px' }}>Accedi da Computer o Browser su:</p>
+                        <code style={{ fontSize: '1.2rem', color: '#ffffff', fontWeight: '900' }}>master.gardigital.it</code>
                     </div>
-                    <p style={{ fontSize: '0.9rem', color: '#94a3b8' }}>
+                    <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.4)' }}>
                         Le tue funzionalità attive rimarranno operative nell'app dopo il rinnovo via web.
                     </p>
                 </div>
@@ -176,514 +193,332 @@ export default function SubscriptionPage() {
 
     return (
         <div style={{
-            padding: '20px',
+            padding: '2rem',
             maxWidth: '1200px',
             margin: '0 auto',
             fontFamily: 'Inter, sans-serif',
-            overflowX: 'hidden',
-            width: '100%',
+            color: '#ffffff',
+            background: '#050505',
+            minHeight: '100vh',
             boxSizing: 'border-box'
         }} className="main-container">
             <style>{`
-                @media (max-width: 768px) {
-                    .main-container {
-                        padding: 10px !important;
-                    }
-                }
                 @keyframes float {
-                    0% { transform: translateY(0px) rotate(0deg); }
-                    50% { transform: translateY(-10px) rotate(2deg); }
-                    100% { transform: translateY(0px) rotate(0deg); }
+                    0% { transform: translateY(0px); }
+                    50% { transform: translateY(-5px); }
+                    100% { transform: translateY(0px); }
                 }
-                @keyframes pulse-gold {
-                    0% { filter: drop-shadow(0 0 5px rgba(251, 191, 36, 0.4)); }
-                    50% { filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.8)); }
-                    100% { filter: drop-shadow(0 0 5px rgba(251, 191, 36, 0.4)); }
+                .glass-card {
+                    background: rgba(15, 15, 15, 0.6) !important;
+                    backdrop-filter: blur(20px) !important;
+                    border: 1px solid rgba(212, 175, 55, 0.1) !important;
+                    box-shadow: 0 20px 40px rgba(0,0,0,0.4) !important;
+                    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
                 }
-                @keyframes mesh-bg {
-                    0% { background-position: 0% 50%; }
-                    50% { background-position: 100% 50%; }
-                    100% { background-position: 0% 50%; }
-                }
-                .header-section {
-                    padding: 80px 20px;
-                }
-                .main-title {
-                    font-size: 3.5rem;
-                    letter-spacing: -2px;
-                }
-                .status-container {
-                    padding: 12px 24px;
+                .status-pill {
+                    padding: 8px 16px;
+                    border-radius: 50px;
+                    font-size: 0.85rem;
+                    font-weight: 700;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    border: 1px solid rgba(212, 175, 55, 0.2);
+                    background: rgba(212, 175, 55, 0.05);
+                    color: #d4af37;
+                    letter-spacing: 0.5px;
                 }
                 @media (max-width: 768px) {
-                    .header-section {
-                        padding: 30px 10px !important;
-                        border-radius: 16px !important;
-                        width: 100% !important;
-                        max-width: 100% !important;
-                        box-sizing: border-box !important;
-                    }
-                    .main-title {
-                        font-size: 1.6rem !important;
-                        letter-spacing: -0.5px !important;
-                        line-height: 1.1 !important;
-                        word-wrap: break-word !important;
-                        overflow-wrap: break-word !important;
-                    }
-                    .header-p {
-                        font-size: 0.9rem !important;
-                        line-height: 1.4 !important;
-                        padding: 0 5px !important;
-                        width: 100% !important;
-                        box-sizing: border-box !important;
-                    }
-                    .header-p br {
-                        display: none;
-                    }
-                    .status-container {
-                        gap: 10px !important;
-                        flex-direction: column !important;
-                        align-items: center !important;
-                    }
-                    .status-item {
-                        padding: 8px 12px !important;
-                        font-size: 0.75rem !important;
-                        width: 100% !important;
-                        max-width: 300px !important;
-                        justify-content: center !important;
-                        box-sizing: border-box !important;
-                    }
-                    .action-container {
-                        flex-direction: column !important;
-                        width: 100% !important;
-                        gap: 10px !important;
-                        margin-left: 0 !important;
-                        align-items: center !important;
-                    }
-                    .action-button {
-                        width: 100% !important;
-                        max-width: 250px !important;
-                        justify-content: center !important;
-                    }
-                    .floating-ring {
-                        display: none;
-                    }
-                    .plans-grid {
-                        grid-template-columns: 1fr !important;
-                        gap: 1rem !important;
-                        padding: 0 !important;
-                    }
+                    .main-container { padding: 1rem !important; }
+                    .status-bar { flex-direction: column !important; align-items: stretch !important; padding: 1.5rem !important; }
+                    .status-group { flex-direction: column !important; gap: 1rem !important; }
+                    .divider { display: none !important; }
                 }
             `}</style>
 
-            {/* Header Section - Premium Redesign */}
-            <div className="header-section" style={{
-                textAlign: 'center',
-                marginBottom: '40px',
-                background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 25%, #1e3a8a 50%, #1e1b4b 75%, #0f172a 100%)',
-                backgroundSize: '400% 400%',
-                animation: 'mesh-bg 15s ease infinite',
-                color: 'white',
-                position: 'relative',
-                overflow: 'hidden',
-                boxShadow: '0 30px 60px rgba(0,0,0,0.2), inset 0 0 0 1px rgba(255,255,255,0.1)',
-                borderRadius: '32px'
+            {/* Slim Premium Status Bar */}
+            <div className="glass-card status-bar" style={{
+                padding: '1.2rem 2rem',
+                borderRadius: '24px',
+                marginBottom: '4rem',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '1.5rem'
             }}>
-                {/* Decorative Glass Elements */}
-                <div style={{ position: 'absolute', top: '10%', right: '5%', width: '150px', height: '150px', background: 'radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%)', borderRadius: '50%', filter: 'blur(30px)' }} />
-                <div style={{ position: 'absolute', bottom: '15%', left: '8%', width: '120px', height: '120px', background: 'radial-gradient(circle, rgba(251, 191, 36, 0.1) 0%, transparent 70%)', borderRadius: '50%', filter: 'blur(20px)' }} />
-
-                {/* Floating Rings */}
-                <div className="floating-ring" style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    width: '600px',
-                    height: '600px',
-                    border: '1px solid rgba(255,255,255,0.03)',
-                    borderRadius: '50%',
-                    pointerEvents: 'none'
-                }} />
-                <div className="floating-ring" style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%) rotate(45deg)',
-                    width: '800px',
-                    height: '800px',
-                    border: '1px solid rgba(255,255,255,0.02)',
-                    borderRadius: '50%',
-                    pointerEvents: 'none'
-                }} />
-
-                <div style={{ position: 'relative', zIndex: 2 }}>
-                    <div style={{ animation: 'float 4s ease-in-out infinite' }}>
-                        <Crown size={56} style={{ marginBottom: '24px', color: '#fbbf24', animation: 'pulse-gold 3s ease-in-out infinite' }} />
-                    </div>
-
-                    <h1 className="main-title" style={{
-                        fontWeight: '900',
-                        marginBottom: '20px',
-                        background: 'linear-gradient(to bottom, #ffffff 30%, #cbd5e1 100%)',
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        textShadow: '0 10px 30px rgba(0,0,0,0.3)'
-                    }}>
-                        Scegli il tuo Successo
-                    </h1>
-
-                    <p className="header-p" style={{
-                        fontSize: '1.25rem',
-                        color: '#94a3b8',
-                        maxWidth: '650px',
-                        margin: '0 auto',
-                        lineHeight: '1.7',
-                        fontWeight: '500'
-                    }}>
-                        Sblocca tutto il potenziale del tuo ristorante con strumenti progettati <br /> per rivoluzionare la tua esperienza digitale.
-                    </p>
-
-                    {/* Status Bar - Glassmorphism Refresh */}
-                    <div className="status-container" style={{
-                        marginTop: '40px',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        gap: '20px',
-                        flexWrap: 'wrap',
-                        alignItems: 'center'
-                    }}>
-                        <div className="status-item" style={{
-                            background: 'rgba(255,255,255,0.03)',
-                            padding: '12px 24px',
-                            borderRadius: '50px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '10px',
-                            border: '1px solid rgba(255,255,255,0.08)',
-                            backdropFilter: 'blur(12px)',
-                            boxShadow: '0 8px 32px rgba(0,0,0,0.2)'
-                        }}>
-                            <ShieldCheck size={20} color="#4ade80" />
-                            <span style={{ fontWeight: '600', fontSize: '0.95rem', letterSpacing: '0.3px' }}>
-                                Piano: <span style={{ color: '#fbbf24' }}>{currentPlan}</span>
+                <div className="status-group" style={{ display: 'flex', alignItems: 'center', gap: '2rem', flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '4px' }}>Stato Account</span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <div className="status-pill">
+                                <Crown size={14} />
+                                {currentPlan}
+                            </div>
+                            <span style={{ 
+                                fontSize: '0.9rem', 
+                                fontWeight: '700',
+                                color: isExpired ? '#ef4444' : '#4ade80'
+                            }}>
+                                {isExpired ? 'SOSPESO' : 'ATTIVO'}
                             </span>
                         </div>
+                    </div>
 
-                        {endDate && (
-                            <div className="status-item" style={{
-                                background: 'rgba(255,255,255,0.03)',
-                                padding: '12px 24px',
-                                borderRadius: '50px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '10px',
-                                border: '1px solid rgba(255,255,255,0.08)',
-                                backdropFilter: 'blur(12px)',
-                                boxShadow: '0 8px 32px rgba(0,0,0,0.2)'
-                            }}>
-                                <Calendar size={20} color={isPilot ? "#fbbf24" : (isExpired ? "#ef4444" : "#fbbf24")} />
-                                <span style={{ fontWeight: '600', fontSize: '0.95rem', letterSpacing: '0.3px' }}>
-                                    {isPilot ? 'Status: ' : (isExpired ? 'Scaduto il: ' : 'Fino al: ')}
-                                    <strong>{isPilot ? 'Accesso Vitalizio' : new Date(endDate).toLocaleDateString('it-IT')}</strong>
-                                </span>
-                            </div>
-                        )}
+                    <div style={{ width: '1px', height: '32px', background: 'rgba(255,255,255,0.1)' }} className="divider" />
+                    
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '4px' }}>
+                            {isPilot ? 'Validità' : (isExpired ? 'Scaduto il' : 'Prossimo Rinnovo')}
+                        </span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#ffffff', fontWeight: 'bold', fontSize: '0.95rem' }}>
+                            <Calendar size={14} color="#d4af37" />
+                            {isPilot ? 'Illimitata' : (endDate ? new Date(endDate).toLocaleDateString('it-IT') : '---')}
+                        </div>
+                    </div>
 
-                        <div className="status-item" style={{
-                            background: isRecurring ? 'rgba(74, 222, 128, 0.05)' : 'rgba(239, 68, 68, 0.05)',
-                            padding: '12px 24px',
-                            borderRadius: '50px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '10px',
-                            border: `1px solid ${isRecurring ? 'rgba(74, 222, 128, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`,
-                            backdropFilter: 'blur(12px)',
-                            boxShadow: '0 8px 32px rgba(0,0,0,0.2)'
-                        }}>
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '4px' }}>Rinnovo Auto</span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                             <div style={{
-                                width: '10px',
-                                height: '10px',
+                                width: '6px',
+                                height: '6px',
                                 borderRadius: '50%',
                                 backgroundColor: isRecurring ? '#4ade80' : '#ef4444',
                                 boxShadow: `0 0 10px ${isRecurring ? '#4ade80' : '#ef4444'}`
                             }} />
-                            <span style={{ fontWeight: '600', fontSize: '0.95rem', letterSpacing: '0.3px' }}>
-                                Rinnovo Automatico: <strong style={{ color: isRecurring ? '#4ade80' : '#ef4444' }}>{isRecurring ? 'ATTIVO' : 'DISATTIVATO'}</strong>
+                            <span style={{ fontWeight: '700', fontSize: '0.85rem', color: isRecurring ? '#4ade80' : '#ef4444' }}>
+                                {isRecurring ? 'ON' : 'OFF'}
                             </span>
                         </div>
+                    </div>
+                </div>
 
-                        {/* Actions in Header Bar */}
-                        {!isExpired && (isRecurring || restaurant?.subscription?.stripeSubscriptionId) && (
-                            <div className="action-container" style={{ display: 'flex', gap: '12px', marginLeft: '10px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                <div style={{ display: 'flex', gap: '12px' }}>
+                    {!isExpired && (isRecurring || restaurant?.subscription?.stripeSubscriptionId) && (
+                        <>
+                            <button
+                                onClick={handlePortal}
+                                disabled={loading}
+                                style={{
+                                    background: 'rgba(255,255,255,0.05)',
+                                    color: '#ffffff',
+                                    padding: '10px 18px',
+                                    borderRadius: '12px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '8px',
+                                    border: '1px solid rgba(255,255,255,0.1)',
+                                    fontWeight: '600',
+                                    fontSize: '0.8rem',
+                                    cursor: 'pointer',
+                                    transition: '0.3s all'
+                                }}
+                            >
+                                <CreditCard size={14} />
+                                Fatture
+                            </button>
+
+                            {isRecurring && (
                                 <button
-                                    onClick={handlePortal}
+                                    onClick={handleCancel}
                                     disabled={loading}
-                                    title="Gestisci fatture e metodi di pagamento"
-                                    className="action-button"
                                     style={{
-                                        background: 'rgba(255,255,255,0.95)',
-                                        color: '#0f172a',
-                                        padding: '12px 24px',
-                                        borderRadius: '50px',
+                                        background: 'rgba(239, 68, 68, 0.08)',
+                                        color: '#ef4444',
+                                        padding: '10px 18px',
+                                        borderRadius: '12px',
                                         display: 'flex',
                                         alignItems: 'center',
-                                        gap: '10px',
-                                        border: 'none',
-                                        fontWeight: '800',
+                                        gap: '8px',
+                                        border: '1px solid rgba(239, 68, 68, 0.2)',
+                                        fontWeight: '600',
+                                        fontSize: '0.8rem',
                                         cursor: 'pointer',
-                                        transition: '0.3s all',
-                                        boxShadow: '0 10px 25px rgba(0,0,0,0.2)',
-                                        fontSize: '0.95rem'
-                                    }}
-                                    onMouseEnter={(e) => {
-                                        e.currentTarget.style.transform = 'translateY(-2px)';
-                                        e.currentTarget.style.boxShadow = '0 15px 30px rgba(0,0,0,0.3)';
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        e.currentTarget.style.transform = 'translateY(0)';
-                                        e.currentTarget.style.boxShadow = '0 10px 25px rgba(0,0,0,0.2)';
+                                        transition: '0.3s all'
                                     }}
                                 >
-                                    <CreditCard size={18} />
-                                    Info Pagamenti
+                                    Disdici
                                 </button>
-
-                                {isRecurring && (
-                                    <button
-                                        onClick={handleCancel}
-                                        disabled={loading}
-                                        className="action-button"
-                                        style={{
-                                            background: '#ef4444',
-                                            color: 'white',
-                                            padding: '12px 24px',
-                                            borderRadius: '50px',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: '10px',
-                                            border: 'none',
-                                            fontWeight: '800',
-                                            cursor: 'pointer',
-                                            transition: '0.3s all',
-                                            boxShadow: '0 10px 25px rgba(239, 68, 68, 0.4)',
-                                            fontSize: '0.95rem'
-                                        }}
-                                        onMouseEnter={(e) => {
-                                            e.currentTarget.style.transform = 'translateY(-2px)';
-                                            e.currentTarget.style.boxShadow = '0 15px 30px rgba(239, 68, 68, 0.5)';
-                                        }}
-                                        onMouseLeave={(e) => {
-                                            e.currentTarget.style.transform = 'translateY(0)';
-                                            e.currentTarget.style.boxShadow = '0 10px 25px rgba(239, 68, 68, 0.4)';
-                                        }}
-                                    >
-                                        <AlertCircle size={18} />
-                                        Disdici Rinnovo
-                                    </button>
-                                )}
-                            </div>
-                        )}
-                    </div>
+                            )}
+                        </>
+                    )}
                 </div>
             </div>
 
             {isSuccess && (
-                <div style={{ backgroundColor: '#dcfce7', color: '#166534', padding: '1rem', borderRadius: '12px', marginBottom: '2rem', textAlign: 'center', border: '1px solid #bbf7d0' }}>
+                <div style={{ background: 'rgba(74, 222, 128, 0.1)', color: '#4ade80', padding: '1.2rem', borderRadius: '16px', marginBottom: '2.5rem', textAlign: 'center', border: '1px solid rgba(74, 222, 128, 0.2)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
                         <CheckCircle size={20} />
-                        <strong>Pagamento Riuscito!</strong> La tua sottoscrizione è stata estesa.
+                        <strong style={{ fontWeight: '800' }}>PAGAMENTO RIUSCITO!</strong> La tua sottoscrizione è stata aggiornata con successo.
                     </div>
                 </div>
             )}
 
             {isCanceled && (
-                <div style={{ backgroundColor: '#fee2e2', color: '#991b1b', padding: '1rem', borderRadius: '12px', marginBottom: '2rem', textAlign: 'center', border: '1px solid #fecaca' }}>
+                <div style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', padding: '1.2rem', borderRadius: '16px', marginBottom: '2.5rem', textAlign: 'center', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
                         <AlertCircle size={20} />
-                        <strong>Pagamento Annullato.</strong> Non è stato effettuato alcun addebito.
+                        <strong style={{ fontWeight: '800' }}>OPERAZIONE ANNULLATA.</strong> Nessun addebito è stato effettuato sul tuo conto.
                     </div>
                 </div>
             )}
-            {/* The original h1 and p tags are now part of the new Header Section */}
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', marginBottom: '3rem' }}>
-                {/* Current Status */}
-                <div style={{ background: 'white', padding: '2rem', borderRadius: '20px', boxShadow: '0 4px 20px rgba(0,0,0,0.05)', border: '1px solid #eee' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1.5rem' }}>
-                        <Calendar color="#1a237e" />
-                        <h2 style={{ fontSize: '1.25rem', margin: 0 }}>Stato Account</h2>
-                    </div>
-                    <div style={{ textAlign: 'center' }}>
-                        <div style={{
-                            display: 'inline-block',
-                            padding: '6px 20px',
-                            borderRadius: '20px',
-                            fontWeight: 'bold',
-                            backgroundColor: isPilot ? '#fdf4ff' : (isExpired ? '#fee2e2' : '#dcfce7'),
-                            color: isPilot ? '#a21caf' : (isExpired ? '#991b1b' : '#166534'),
-                            marginBottom: '10px',
-                            border: isPilot ? '1px solid #f0abfc' : 'none'
-                        }}>
-                            {isPilot ? 'PARTNER GARDIGITAL' : (isExpired ? 'SCADUTO' : 'ATTIVO')}
-                        </div>
-                        <p style={{ fontSize: '1.1rem', fontWeight: '600' }}>
-                            {isPilot ? 'Accesso Vitalizio' : (endDate ? `Scadenza: ${new Date(endDate).toLocaleDateString()}` : 'Data non disponibile')}
-                        </p>
-                    </div>
-                </div>
-
-                {/* Plan Info */}
-                <div style={{ background: 'white', padding: '2rem', borderRadius: '20px', boxShadow: '0 4px 20px rgba(0,0,0,0.05)', border: '1px solid #eee' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1.5rem' }}>
-                        <Zap color="#1a237e" />
-                        <h2 style={{ fontSize: '1.25rem', margin: 0 }}>Piano {currentPlan}</h2>
-                    </div>
-                    <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                        <li style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
-                            <CheckCircle size={16} color="#4caf50" /> Menu Digitale Interattivo
-                        </li>
-                        <li style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
-                            <CheckCircle size={16} color="#4caf50" /> Traduzione AI automatica
-                        </li>
-                        <li style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
-                            <CheckCircle size={16} color="#4caf50" /> Gestione Prenotazioni
-                        </li>
-                    </ul>
-                </div>
+            <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+                <h2 style={{ 
+                    fontFamily: 'Playfair Display, serif', 
+                    fontSize: '2.5rem', 
+                    marginBottom: '1rem',
+                    color: '#d4af37',
+                    fontWeight: '900'
+                }}>
+                    Piani di Successo
+                </h2>
+                <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '1.1rem', maxWidth: '600px', margin: '0 auto' }}>
+                    Scegli la configurazione perfetta per elevare l'esperienza digitale del tuo ristorante.
+                </p>
             </div>
 
-            {/* Plan Selection */}
-            <div className="plans-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '2rem', marginBottom: '4rem', justifyContent: 'center', width: '100%' }}>
+            {/* Plan Selection Grid */}
+            <div className="plans-grid" style={{ 
+                display: 'grid', 
+                gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', 
+                gap: '1.5rem', 
+                marginBottom: '5rem', 
+                justifyContent: 'center', 
+                width: '100%' 
+            }}>
                 {[
-                    { id: 'MENU', name: 'Menu Base', price: '15,00', features: ['Menu Interattivo', 'QR Code Illimitati', 'Supporto 24/7'] },
-                    { id: 'MENU_AI', name: 'Menu + AI', price: '25,00', features: ['Menu Interattivo', 'Traduzioni AI', 'Supporto 24/7'] },
-                    { id: 'MENU_AGENDA', name: 'Menu + Agenda', price: '25,00', features: ['Menu Interattivo', 'Gestione prenotazioni', 'Supporto 24/7'] },
-                    { id: 'FULL', name: 'PACCHETTO FULL', price: '29,99', features: ['Menu', 'Traduzioni AI', 'Agenda', 'Supporto 24/7'], highlight: true },
+                    { id: 'MENU', name: 'Menu Base', price: '15,00', features: ['Menu Interattivo', 'QR Code Illimitati', 'Supporto 24/7'], icon: <Utensils size={22} /> },
+                    { id: 'MENU_AI', name: 'Menu + AI', price: '25,00', features: ['Menu Interattivo', 'Traduzioni AI', 'Supporto 24/7'], icon: <Sparkles size={22} /> },
+                    { id: 'MENU_AGENDA', name: 'Menu + Agenda', price: '25,00', features: ['Menu Interattivo', 'Gestione prenotazioni', 'Supporto 24/7'], icon: <Calendar size={22} /> },
+                    { id: 'FULL', name: 'PACCHETTO FULL', price: '29,99', features: ['Menu', 'Traduzioni AI', 'Agenda', 'Supporto 24/7'], highlight: true, icon: <Crown size={24} /> },
                 ].filter(p => {
-                    // SE IL RISTORANTE È MASTRO ARROSTICINO, MOSTRA SOLO IL PACCHETTO FULL
                     const isMastro = restaurant?.id === 'cmlmuyjwe0002hgn2a547whlk' || restaurant?.slug?.includes('mastro-arrosticino');
-                    if (isMastro) {
-                        return p.id === 'FULL';
-                    }
+                    if (isMastro) return p.id === 'FULL';
                     return true;
                 }).map((p) => {
                     const isMastro = restaurant?.id === 'cmlmuyjwe0002hgn2a547whlk' || restaurant?.slug?.includes('mastro-arrosticino');
-
-                    // SPECIAL PRICE FOR PILOT PARTNER: Mastroarrosticino (Gaspare)
                     let displayPrice = p.price;
-                    if (p.id === 'FULL' && isMastro) {
-                        displayPrice = '15,00';
-                    }
+                    if (p.id === 'FULL' && isMastro) displayPrice = '15,00';
 
                     const isCurrentPlan = restaurant?.subscription?.plan === p.id;
-                    const isRecurring = restaurant?.subscription?.isRecurring;
-                    const endDate = restaurant?.subscription?.endDate;
 
                     return (
-                        <div key={p.id} style={{
-                            background: p.highlight ? '#1a237e' : 'white',
-                            color: p.highlight ? 'white' : '#333',
-                            padding: '2rem',
+                        <div key={p.id} className="glass-card" style={{
+                            padding: '2rem 1.5rem',
                             borderRadius: '24px',
-                            boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
-                            border: p.highlight ? 'none' : '1px solid #eee',
                             display: 'flex',
                             flexDirection: 'column',
-                            transform: (p.highlight || isCurrentPlan) ? 'scale(1.02)' : 'none',
-                            zIndex: (p.highlight || isCurrentPlan) ? 1 : 0,
-                            maxWidth: '400px',
-                            margin: '0',
-                            position: 'relative'
+                            transform: (p.highlight || isCurrentPlan) ? 'translateY(-5px)' : 'none',
+                            border: (p.highlight || isCurrentPlan) ? '1px solid #d4af37' : '1px solid rgba(212, 175, 55, 0.1)',
+                            position: 'relative',
+                            boxShadow: (p.highlight || isCurrentPlan) ? '0 20px 40px rgba(0,0,0,0.6), 0 0 15px rgba(212, 175, 55, 0.1)' : '0 15px 30px rgba(0,0,0,0.4)',
                         }}>
-                            {/* Recurring Status Badge */}
-                            {isCurrentPlan && isRecurring && (
+                            {p.highlight && !isCurrentPlan && (
                                 <div style={{
                                     position: 'absolute',
-                                    top: '-12px',
-                                    left: '50%',
-                                    transform: 'translateX(-50%)',
-                                    backgroundColor: '#4caf50',
-                                    color: 'white',
-                                    padding: '4px 12px',
-                                    borderRadius: '20px',
-                                    fontSize: '0.75rem',
-                                    fontWeight: 'bold',
-                                    boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '4px',
-                                    whiteSpace: 'nowrap'
-                                }}>
-                                    <ShieldCheck size={14} /> RINNOVO AUTOMATICO ATTIVO
-                                </div>
-                            )}
-
-                            <h3 style={{ fontSize: '1.2rem', marginBottom: '1rem', fontWeight: 'bold', color: p.highlight ? 'white' : 'inherit' }}>{p.name}</h3>
-                            <div style={{ marginBottom: '2rem' }}>
-                                <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-                                    <span style={{ fontSize: '2.5rem', fontWeight: '800', color: p.highlight ? 'white' : 'inherit' }}>€{displayPrice}</span>
-                                    <small style={{ opacity: 0.7, color: p.highlight ? 'white' : 'inherit' }}>/mese</small>
-                                </div>
-                                {isMastro && (
-                                    <div style={{ color: '#fbbf24', fontSize: '0.8rem', fontWeight: '600', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                        <Star size={12} fill="currentColor" /> Prezzo di favore applicato
-                                    </div>
-                                )}
-
-                                {isCurrentPlan && endDate && (
-                                    <div style={{ fontSize: '0.85rem', marginTop: '12px', color: p.highlight ? 'rgba(255,255,255,0.8)' : '#666' }}>
-                                        {isRecurring ? 'Prossimo addebito:' : 'Scade il:'} <strong>{new Date(endDate).toLocaleDateString('it-IT')}</strong>
-                                    </div>
-                                )}
-                            </div>
-                            <ul style={{ listStyle: 'none', padding: 0, marginBottom: '2rem', flexGrow: 1 }}>
-                                {p.features.map(f => (
-                                    <li key={f} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px', fontSize: '0.95rem' }}>
-                                        <CheckCircle size={14} color={p.highlight ? '#fff' : '#4caf50'} /> {f}
-                                    </li>
-                                ))}
-                            </ul>
-                            {isCurrentPlan && !isExpired ? (
-                                <div style={{
-                                    backgroundColor: p.highlight ? 'rgba(255,255,255,0.1)' : 'rgba(26, 35, 126, 0.05)',
-                                    color: p.highlight ? 'white' : '#1a237e',
-                                    padding: '1rem',
-                                    borderRadius: '12px',
-                                    fontWeight: '800',
-                                    textAlign: 'center',
-                                    border: p.highlight ? '1px solid rgba(255,255,255,0.3)' : '1px solid #1a237e',
-                                    fontSize: '1rem',
-                                    marginTop: 'auto',
+                                    top: '16px',
+                                    right: '16px',
+                                    background: 'linear-gradient(135deg, #d4af37, #f1d58a)',
+                                    color: '#000',
+                                    padding: '4px 10px',
+                                    borderRadius: '50px',
+                                    fontSize: '0.6rem',
+                                    fontWeight: '900',
                                     textTransform: 'uppercase',
                                     letterSpacing: '1px'
                                 }}>
-                                    <CheckCircle size={18} style={{ verticalAlign: 'middle', marginRight: '8px' }} />
-                                    PIANO ATTIVO
+                                    TOP
+                                </div>
+                            )}
+
+                            <div style={{ color: '#d4af37', marginBottom: '1.2rem', animation: 'float 3s ease-in-out infinite' }}>
+                                {p.icon}
+                            </div>
+
+                            <h3 style={{ 
+                                fontSize: '1.2rem', 
+                                marginBottom: '0.8rem', 
+                                fontWeight: '700', 
+                                fontFamily: 'Playfair Display, serif',
+                                color: '#ffffff'
+                            }}>
+                                {p.name}
+                            </h3>
+
+                            <div style={{ marginBottom: '2rem' }}>
+                                <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+                                    <span style={{ fontSize: '2rem', fontWeight: '800', color: '#ffffff', fontFamily: 'Playfair Display, serif' }}>€{displayPrice}</span>
+                                    <small style={{ opacity: 0.5, color: '#ffffff', fontSize: '0.8rem' }}>/mese</small>
+                                </div>
+                                {isMastro && (
+                                    <div style={{ color: '#d4af37', fontSize: '0.65rem', fontWeight: '700', marginTop: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                        <Star size={10} fill="currentColor" /> EXCLUSIVE PRICE
+                                    </div>
+                                )}
+                            </div>
+
+                            <ul style={{ listStyle: 'none', padding: 0, marginBottom: '2.5rem', flexGrow: 1 }}>
+                                {p.features.map(f => (
+                                    <li key={f} style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '0.8rem', fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)' }}>
+                                        <CheckCircle size={14} color="#d4af37" /> {f}
+                                    </li>
+                                ))}
+                            </ul>
+
+                            {isCurrentPlan && !isExpired ? (
+                                <div style={{
+                                    background: 'rgba(212, 175, 55, 0.1)',
+                                    color: '#d4af37',
+                                    padding: '0.8rem',
+                                    borderRadius: '12px',
+                                    fontWeight: '900',
+                                    textAlign: 'center',
+                                    border: '1px solid rgba(212, 175, 55, 0.3)',
+                                    fontSize: '0.8rem',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '1px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    gap: '8px'
+                                }}>
+                                    <CheckCircle size={16} />
+                                    Attivo
                                 </div>
                             ) : (
                                 <button
                                     onClick={() => handlePayment(p.id)}
                                     style={{
-                                        backgroundColor: p.highlight ? 'white' : '#1a237e',
-                                        color: p.highlight ? '#1a237e' : 'white',
-                                        border: 'none',
+                                        background: p.highlight ? 'linear-gradient(135deg, #d4af37, #aa8c2c)' : 'transparent',
+                                        color: p.highlight ? '#000' : '#d4af37',
+                                        border: p.highlight ? 'none' : '1px solid rgba(212, 175, 55, 0.4)',
                                         padding: '1rem',
                                         borderRadius: '12px',
-                                        fontWeight: 'bold',
+                                        fontWeight: '800',
                                         cursor: 'pointer',
                                         width: '100%',
-                                        transition: '0.2s',
+                                        transition: 'all 0.3s ease',
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',
                                         gap: '8px',
-                                        marginTop: 'auto'
+                                        fontSize: '0.85rem',
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '1px'
                                     }}
-                                    disabled={isCurrentPlan && isRecurring}
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.transform = 'translateY(-2px)';
+                                        if (!p.highlight) e.currentTarget.style.background = 'rgba(212, 175, 55, 0.05)';
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.transform = 'translateY(0)';
+                                        if (!p.highlight) e.currentTarget.style.background = 'transparent';
+                                    }}
                                 >
-                                    {isCurrentPlan ? (isRecurring ? 'ABBONAMENTO ATTIVO' : 'Rinnova Abbonamento') : (isMastro ? 'RINNOVA' : 'Attiva Abbonamento')}
-                                    <ArrowRight size={18} />
+                                    Scegli
+                                    <ArrowRight size={16} />
                                 </button>
                             )}
                         </div>
@@ -692,9 +527,12 @@ export default function SubscriptionPage() {
             </div>
 
             {/* Support Message */}
-            <div style={{ textAlign: 'center', color: '#94a3b8', fontSize: '0.9rem', marginTop: 'auto' }}>
-                <ShieldCheck size={16} style={{ marginBottom: '-3px', marginRight: '5px' }} />
-                Pagamenti criptati e sicuri tramite Stripe. Fatturazione automatica ogni 30 giorni.
+            <div style={{ textAlign: 'center', color: 'rgba(255,255,255,0.3)', fontSize: '0.8rem', marginTop: 'auto', paddingBottom: '3rem', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '2rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '8px' }}>
+                    <ShieldCheck size={14} color="#d4af37" />
+                    <span style={{ fontWeight: '600', color: 'rgba(255,255,255,0.5)' }}>SISTEMA DI PAGAMENTO SICURO</span>
+                </div>
+                Transazioni protette da Stripe. Fatturazione automatica mensile con possibilità di disdetta in ogni momento.
             </div>
         </div>
     );

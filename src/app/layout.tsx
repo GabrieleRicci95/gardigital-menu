@@ -15,40 +15,32 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Gardigital Menu | Il Menu Digitale Premium per Ristoranti",
-  description: "Crea Menu Personalizzati e QR Code per il tuo locale. Include Agenda Digitale con sistema di prenotazioni dirette. La soluzione completa per la gestione ristoranti.",
+  title: "SoloMenu | I Migliori Menu Digitali QR per Ristoranti Premium",
+  description: "Eleva il tuo locale con SoloMenu. Menu digitali QR d'autore, agenda prenotazioni integrata e traduzioni AI istantanee. La soluzione d'eccellenza per la ristorazione moderna.",
   keywords: [
-    "menu digitale",
-    "qr code menu",
-    "facile menu",
-    "menu",
-    "menu ristorante",
-    "menu facile",
-    "menu semplice",
-    "software menu digitale ristoranti",
-    "qr code ristorante",
-    "menu digitale interattivo",
-    "ordinazioni al tavolo qr code",
-    "prenotazioni whatsapp ristorante",
-    "gestione allergeni digitale",
-    "traduzione automatica menu AI",
-    "sito web professionale ristorante",
-    "digitalizzazione horeca",
-    "miglior menu digitale 2026",
-    "agenda elettronica prenotazioni"
+    "SoloMenu",
+    "menu digitali premium",
+    "menu digitale qr",
+    "migliori menu digitali 2026",
+    "menu ristorante lusso",
+    "software menu digitale elegante",
+    "qr code ristorazione boutique",
+    "ordinazioni al tavolo eleganti",
+    "prenotazioni digitali ristoranti",
+    "traduzione menu AI"
   ],
-  authors: [{ name: "Gardigital" }],
+  authors: [{ name: "SoloMenu" }],
   openGraph: {
-    title: "Gardigital Menu | Il Menu Digitale QR Premium & Gestionale Ristoranti",
-    description: "L'unica piattaforma professionale che unisce Menu Digitale QR, Agenda Elettronica e Sito Web. Gestisci piatti, allergeni e prenotazioni in un sistema elegante e veloce.",
-    url: "https://www.gardigital.it",
-    siteName: "Gardigital Menu",
+    title: "SoloMenu | Menu Digitali QR Premium & Eccellenza Hospitality",
+    description: "Sinergia tra design d'autore e tecnologia invisibile. Gestisci il tuo menu e le prenotazioni con l'eleganza di SoloMenu.",
+    url: "https://www.solomenu.it",
+    siteName: "SoloMenu",
     images: [
       {
         url: "/og-banner.png",
         width: 1200,
         height: 630,
-        alt: "Gardigital Menu - Premium Digital Experience"
+        alt: "SoloMenu - L'eccellenza nei Menu Digitali"
       },
     ],
     locale: "it_IT",
@@ -56,8 +48,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Gardigital Menu | Il Menu Digitale Premium",
-    description: "Crea il tuo menu digitale premium in pochi minuti. Elegante, veloce e completo di agenda prenotazioni.",
+    title: "SoloMenu | Menu Digitali d'Autore",
+    description: "Crea un'esperienza sensoriale per i tuoi ospiti con i menu digitali SoloMenu. Eleganti, veloci, unici.",
     images: ["/og-banner.png"],
   },
   icons: {
@@ -81,31 +73,31 @@ export default function RootLayout({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "Gardigital Menu",
+    "name": "SoloMenu",
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Web Browser",
-    "description": "Crea Menu Personalizzati e QR Code per il tuo locale. Include Agenda Digitale con sistema di prenotazioni dirette. La soluzione completa per la gestione ristoranti.",
+    "description": "SoloMenu trasforma l'ospitalità con menu digitali QR eleganti e un'agenda elettronica integrata per prenotazioni dirette.",
     "provider": {
       "@type": "Organization",
-      "name": "Gardigital"
+      "name": "SoloMenu"
     },
-    "featureList": "Menu Personalizzati, QR Code, Agenda Digitale, Prenotazioni Dirette su Agenda",
+    "featureList": "Menu Digitali d'Autore, QR Code Premium, Agenda Elettronica, Prenotazioni Dirette",
     "aggregateRating": {
       "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "120"
+      "ratingValue": "4.9",
+      "ratingCount": "150"
     }
   };
 
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "url": "https://www.gardigital.it",
-    "logo": "https://www.gardigital.it/logo_v2.png",
-    "name": "Gardigital Menu",
+    "url": "https://www.solomenu.it",
+    "logo": "https://www.solomenu.it/logo_v2.png",
+    "name": "SoloMenu",
     "contactPoint": {
       "@type": "ContactPoint",
-      "email": "gardigital16@gmail.com",
+      "email": "info@solomenu.it",
       "telephone": "+39 351 348 7580",
       "contactType": "customer service"
     }

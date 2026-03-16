@@ -2,10 +2,9 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    font-family: var(--font-family-sans);
-    background-color: #f4f6f8;
-    /* Soft Cloud White */
-    color: #1a1a1a;
+    font-family: 'Inter', sans-serif;
+    background-color: #050505;
+    color: #ffffff;
 }
 
 /* --- HERO SECTION --- */
@@ -18,17 +17,14 @@
     text-align: center;
     padding: 0 2rem;
     /* Dark Premium Overlay + Image */
-    background: linear-gradient(135deg, rgba(13, 27, 42, 0.95) 0%, rgba(27, 38, 59, 0.9) 100%),
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(15, 15, 15, 0.9) 100%),
         url('/assets/chisiamo/hero.jpg');
     background-size: cover;
     background-position: center;
     color: white;
     margin-bottom: -4rem;
     padding-bottom: 6rem;
-    border-bottom-left-radius: 50px;
-    /* Modern curve */
-    border-bottom-right-radius: 50px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.1);
 }
 
 .heroContent {
@@ -50,11 +46,11 @@
 }
 
 .highlight {
-    background: linear-gradient(120deg, #ffd700, #ffe066);
+    background: linear-gradient(120deg, #d4af37, #f1d58a);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    color: #ffd700;
+    color: #d4af37;
     position: relative;
     display: inline-block;
 }
@@ -84,7 +80,7 @@
 
 /* --- SECTIONS --- */
 .section {
-    padding: 5rem 2rem;
+    padding: 8rem 2rem;
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -99,23 +95,24 @@
 }
 
 .sectionTitle {
-    font-size: 2.8rem;
-    font-weight: 700;
-    color: #0d1b2a;
-    margin-bottom: 3rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 400;
+    color: #ffffff;
+    margin-bottom: 4rem;
     text-align: center;
+    letter-spacing: -1px;
 }
 
 /* --- STORY --- */
 .storyBlock {
-    background: white;
-    border-radius: 20px;
-    padding: 3rem;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
-    /* Soft premium shadow */
+    background: #0f0f0f;
+    border: 1px solid rgba(212, 175, 55, 0.05);
+    border-radius: 4px;
+    padding: 4rem;
     display: flex;
     align-items: center;
-    gap: 3rem;
+    gap: 4rem;
     margin-bottom: 4rem;
     transition: transform 0.3s ease;
 }
@@ -133,19 +130,18 @@
 }
 
 .storyTitle {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: #1b263b;
-    font-variant-ligatures: none;
-    /* Disable ff ligature */
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 400;
+    margin-bottom: 1.5rem;
+    color: #d4af37;
 }
 
 .storyDesc {
     font-size: 1.1rem;
     line-height: 1.8;
-    color: #555;
-    margin-bottom: 1.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 300;
 }
 
 .storyImageContainer {
@@ -169,12 +165,12 @@
 
 /* Floating Card Effect for Values */
 .valueCard {
-    background: white;
-    padding: 3rem 2rem;
-    border-radius: 20px;
+    background: #0f0f0f;
+    padding: 4rem 2rem;
+    border: 1px solid rgba(212, 175, 55, 0.1);
+    border-radius: 4px;
     text-align: center;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
     position: relative;
     overflow: hidden;
 }
@@ -186,10 +182,11 @@
     left: 0;
     width: 100%;
     height: 6px;
-    background: linear-gradient(90deg, #1b263b, #ffd700);
+    background: linear-gradient(90deg, #d4af37, #f1d58a);
 }
 
 .valueCard:hover {
+    border-color: #d4af37;
     transform: translateY(-10px);
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
 }

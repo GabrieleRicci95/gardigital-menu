@@ -39,7 +39,7 @@ export default function LoginPage() {
         <div className={styles.container}>
             <div className={styles.contentWrapper}>
                 <div className={styles.card}>
-                    <h1 className={styles.title}>Gardigital Menu</h1>
+                    <h1 className={styles.title}>SoloMenu</h1>
                     <p className={styles.subtitle}>Accedi alla tua dashboard</p>
 
                     {error && <div className={styles.error}>{error}</div>}

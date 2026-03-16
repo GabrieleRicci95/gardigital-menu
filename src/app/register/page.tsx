@@ -91,7 +91,7 @@ export default function RegisterPage() {
                     </form>
 
                     <p className={styles.footer}>
-                        Hai già un account? <Link href="/login">Accedi</Link>
+                        Crea il tuo menu in pochi istanti e inizia a lavorare.
                     </p>
                 </div>
             </div>
