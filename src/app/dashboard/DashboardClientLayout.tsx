@@ -16,7 +16,10 @@ import {
     Palette, 
     QrCode, 
     LogOut,
-    Layers
+    Layers,
+    ChevronDown,
+    Plus,
+    Trash2
 } from 'lucide-react';
 import styles from './dashboard.module.css';
 import SubscriptionAlert from '@/components/common/SubscriptionAlert';
@@ -28,7 +31,7 @@ export default function DashboardClientLayout({
     children: React.ReactNode;
 }) {
     const pathname = usePathname();
-    const router = useRouter(); // Import useRouter
+    const router = useRouter();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const [restaurantName, setRestaurantName] = useState('');
@@ -44,6 +47,8 @@ export default function DashboardClientLayout({
     const [customModules, setCustomModules] = useState<{ name: string, slug: string }[]>([]);
     const [pendingReservationsCount, setPendingReservationsCount] = useState(0);
     const [isSubscriptionActive, setIsSubscriptionActive] = useState(true);
+    const [isModulesOpen, setIsModulesOpen] = useState(true);
+    const [isCreatingModule, setIsCreatingModule] = useState(false);
 
     // Dynamic Push Notification Setup (only for mobile app)
     usePushNotifications(restaurantId);
@@ -67,14 +72,12 @@ export default function DashboardClientLayout({
                         setSubscriptionPlan(data.restaurant.subscription.plan);
                         setHasReservations(!!data.restaurant.subscription.hasReservations);
 
-                        // Check subscription status
                         const endDate = data.restaurant.subscription.endDate;
                         if (endDate) {
                             const isExpired = new Date(endDate) < new Date();
                             setIsSubscriptionActive(!isExpired);
                         }
 
-                        // Fetch pending reservations count if user has the module
                         if (data.restaurant.subscription.hasReservations) {
                             fetchPendingCount(data.restaurant.id);
                         }
@@ -88,9 +91,9 @@ export default function DashboardClientLayout({
         }
     };
 
-    const fetchPendingCount = async (restaurantId: string) => {
+    const fetchPendingCount = async (id: string) => {
         try {
-            const res = await fetch(`/api/reservations?restaurantId=${restaurantId}&countPending=true`);
+            const res = await fetch(`/api/reservations?restaurantId=${id}&countPending=true`);
             if (res.ok) {
                 const data = await res.json();
                 setPendingReservationsCount(data.pendingCount || 0);
@@ -102,18 +105,12 @@ export default function DashboardClientLayout({
 
     useEffect(() => {
         fetchRestaurantData();
-
-        // Refresh count every 2 minutes
         const interval = setInterval(() => {
-            if (restaurantSlug) { // Simple check to avoid early fetches
-                fetchRestaurantData();
-            }
+            if (restaurantId) fetchRestaurantData();
         }, 120000);
-
         return () => clearInterval(interval);
-    }, [router]);
+    }, [router, restaurantId]);
 
-    // Lock body scroll when mobile menu is open
     useEffect(() => {
         if (isMobileMenuOpen) {
             document.body.style.overflow = 'hidden';
@@ -128,19 +125,12 @@ export default function DashboardClientLayout({
     useEffect(() => {
         const checkAppMode = () => {
             if (typeof window === 'undefined') return;
-
             const params = new URLSearchParams(window.location.search);
             const ua = navigator.userAgent || '';
-
-            // 1. Check via URL Param
             const hasParam = params.get('platform') === 'app';
-            // 2. Check via SessionStorage (persistenza della sessione)
             const hasSession = sessionStorage.getItem('isAppMode') === 'true';
-            // 3. Check via UserAgent (Rileva se è una WebView Android / l'App reale)
             const isWebView = /Android/i.test(ua) && /Version\/[0-9.]+/i.test(ua);
-            // 4. Check via Standalone Mode (PWA/TWA)
-            const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone;
-            // 5. Capacitor Native Check (iOS / Android App)
+            const isStandalone = (window.matchMedia('(display-mode: standalone)').matches) || (navigator as any).standalone;
             const isCapacitorNative = (window as any).Capacitor?.isNativePlatform?.() === true;
 
             if (hasParam || hasSession || isWebView || isStandalone || isCapacitorNative) {
@@ -150,6 +140,71 @@ export default function DashboardClientLayout({
         };
         checkAppMode();
     }, []);
+
+    const handleCreateModule = async (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const name = prompt("Inserisci il nome del nuovo modulo (es. Carta dei Gin):");
+        if (!name || !name.trim()) return;
+
+        setIsCreatingModule(true);
+        try {
+            const res = await fetch('/api/custom-lists', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name }),
+            });
+            if (res.ok) {
+                const data = await res.json();
+                await fetchRestaurantData();
+                router.push(`/dashboard/custom-list/${data.customList.slug}`);
+            }
+        } catch (error) {
+            console.error("Modulo creation failed", error);
+        } finally {
+            setIsCreatingModule(false);
+        }
+    };
+
+    const handleDeleteModule = async (e: React.MouseEvent, slug: string, name: string) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!confirm(`Sei sicuro di voler rimuovere il modulo "${name}"? Questa azione è irreversibile.`)) return;
+
+        try {
+            const res = await fetch(`/api/custom-lists?slug=${slug}`, {
+                method: 'DELETE',
+            });
+            if (res.ok) {
+                await fetchRestaurantData();
+                if (pathname.includes(slug)) {
+                    router.push('/dashboard');
+                }
+            }
+        } catch (error) {
+            console.error("Modulo deletion failed", error);
+        }
+    };
+
+    const handleLogout = async () => {
+        await fetch('/api/auth/logout', { method: 'POST' });
+        window.location.href = isAppMode ? '/login' : '/';
+    };
+
+    const [touchStart, setTouchStart] = useState<number | null>(null);
+    const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+    const onTouchStart = (e: React.TouchEvent) => {
+        setTouchEnd(null);
+        setTouchStart(e.targetTouches[0].clientX);
+    };
+
+    const onTouchMove = (e: React.TouchEvent) => setTouchEnd(e.targetTouches[0].clientX);
+
+    const onTouchEnd = () => {
+        if (!touchStart || !touchEnd) return;
+        if (touchStart - touchEnd > 50) setIsMobileMenuOpen(false);
+    };
 
     const navItems = [
         { label: 'Panoramica', href: '/dashboard', icon: <LayoutDashboard size={20} /> },
@@ -163,76 +218,13 @@ export default function DashboardClientLayout({
         },
         { label: 'Il mio Ristorante', href: '/dashboard/restaurant', icon: <Store size={20} /> },
         { label: 'Menu', href: '/dashboard/menu', icon: <Utensils size={20} /> },
-        { label: 'Vini/Bollicine', href: '/dashboard/wine-list', icon: <Wine size={20} /> },
-        { label: 'Champagne', href: '/dashboard/champagne-list', icon: <GlassWater size={20} /> },
-        { label: 'Drink', href: '/dashboard/drink-list', icon: <Martini size={20} /> },
-        // Add Gin Selection here if it's in custom modules
-        ...customModules
-            .filter(m => m.name.toLowerCase().includes('gin'))
-            .map(m => ({
-                label: m.name,
-                href: `/dashboard/custom-list/${m.slug}`,
-                icon: <Layers size={20} />
-            })),
         { label: 'Aspetto & Design', href: '/dashboard/design', icon: <Palette size={20} /> },
         { label: 'QR Code', href: '/dashboard/qrcode', icon: <QrCode size={20} /> },
-        // Add other custom modules that are not Gin Selection
-        ...customModules
-            .filter(m => !m.name.toLowerCase().includes('gin'))
-            .map(m => ({
-                label: m.name,
-                href: `/dashboard/custom-list/${m.slug}`,
-                icon: <Layers size={20} />
-            }))
-    ]
-        .filter((item: any) => {
-            if (item.isSubscription && isAppMode) return false;
-            if (item.isReservation && !hasReservations) return false;
-
-            const isDemo = restaurantSlug?.toLowerCase() === 'demo' ||
-                ownerEmail?.toLowerCase() === 'demo@gardigital.it' ||
-                restaurantName?.toLowerCase().includes('demo');
-
-            // Hide special lists if not active for normal users
-            if (item.label === 'Vini/Bollicine' && (!isWineActive || isDemo)) return false;
-            if (item.label === 'Champagne' && (!isChampagneActive || isDemo)) return false;
-            if (item.label === 'Drink' && (!isDrinkActive || isDemo)) return false;
-
-            return true;
-        });
-
-    const handleLogout = async () => {
-        await fetch('/api/auth/logout', { method: 'POST' });
-        if (isAppMode) {
-            window.location.href = '/login';
-        } else {
-            window.location.href = '/';
-        }
-    };
-
-    // Swipe to close logic
-    const [touchStart, setTouchStart] = useState<number | null>(null);
-    const [touchEnd, setTouchEnd] = useState<number | null>(null);
-
-    const minSwipeDistance = 50;
-
-    const onTouchStart = (e: React.TouchEvent) => {
-        setTouchEnd(null);
-        setTouchStart(e.targetTouches[0].clientX);
-    };
-
-    const onTouchMove = (e: React.TouchEvent) => {
-        setTouchEnd(e.targetTouches[0].clientX);
-    };
-
-    const onTouchEnd = () => {
-        if (!touchStart || !touchEnd) return;
-        const distance = touchStart - touchEnd;
-        const isLeftSwipe = distance > minSwipeDistance;
-        if (isLeftSwipe) {
-            setIsMobileMenuOpen(false);
-        }
-    };
+    ].filter(item => {
+        if (item.isSubscription && isAppMode) return false;
+        if (item.isReservation && !hasReservations) return false;
+        return true;
+    });
 
     return (
         <div className={styles.layout}>
@@ -243,13 +235,8 @@ export default function DashboardClientLayout({
                 onTouchEnd={onTouchEnd}
             >
                 <div className={styles.logo}>
-                    {restaurantSlug?.toLowerCase() === 'demo' || ownerEmail?.toLowerCase() === 'demo@gardigital.it' || restaurantName?.toLowerCase().includes('demo') ? (
-                        <span style={{ color: 'white', fontWeight: 'bold', fontSize: '1.2rem' }}>Benvenuto</span>
-                    ) : (
-                        <img src="/logo.png" alt="SoloMenu" className={styles.logoImage} />
-                    )}
+                    <img src="/logo.png" alt="SoloMenu" className={styles.logoImage} />
                 </div>
-
 
                 <nav className={styles.nav}>
                     {navItems.map((item: any) => (
@@ -263,11 +250,88 @@ export default function DashboardClientLayout({
                                 {item.icon}
                                 <span>{item.label}</span>
                             </div>
-                            {item.badge && (
-                                <span className={styles.badge}>{item.badge}</span>
-                            )}
+                            {item.badge && <span className={styles.badge}>{item.badge}</span>}
                         </Link>
                     ))}
+
+                    {/* Moduli Dropdown */}
+                    <div className={`${styles.navDropdown} ${isModulesOpen ? styles.dropdownActive : ''}`}>
+                        <div 
+                            className={styles.dropdownHeader}
+                            onClick={() => setIsModulesOpen(!isModulesOpen)}
+                        >
+                            <div className={styles.navItemContent}>
+                                <Layers size={20} />
+                                <span>Moduli</span>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <button 
+                                    className={styles.addModuleBtn}
+                                    onClick={handleCreateModule}
+                                    disabled={isCreatingModule}
+                                    title="Aggiungi modulo"
+                                >
+                                    <Plus size={16} />
+                                </button>
+                                <ChevronDown 
+                                    size={18} 
+                                    className={`${styles.chevron} ${isModulesOpen ? styles.chevronRotate : ''}`} 
+                                />
+                            </div>
+                        </div>
+                        
+                        <div className={styles.dropdownContent}>
+                            {(restaurantSlug === 'aperifish' || restaurantSlug === 'xl-aperifish') && (
+                                <>
+                                    <Link 
+                                        href="/dashboard/wine-list" 
+                                        className={`${styles.dropdownItem} ${pathname === '/dashboard/wine-list' ? styles.activeDropdownItem : ''}`}
+                                        onClick={() => setIsMobileMenuOpen(false)}
+                                    >
+                                        <Wine size={16} />
+                                        <span>Vini/Bollicine</span>
+                                    </Link>
+                                    <Link 
+                                        href="/dashboard/champagne-list" 
+                                        className={`${styles.dropdownItem} ${pathname === '/dashboard/champagne-list' ? styles.activeDropdownItem : ''}`}
+                                        onClick={() => setIsMobileMenuOpen(false)}
+                                    >
+                                        <GlassWater size={16} />
+                                        <span>Champagne</span>
+                                    </Link>
+                                    <Link 
+                                        href="/dashboard/drink-list" 
+                                        className={`${styles.dropdownItem} ${pathname === '/dashboard/drink-list' ? styles.activeDropdownItem : ''}`}
+                                        onClick={() => setIsMobileMenuOpen(false)}
+                                    >
+                                        <Martini size={16} />
+                                        <span>Drink</span>
+                                    </Link>
+                                </>
+                            )}
+
+                            {customModules.map(m => (
+                                <div key={m.slug} className={styles.customModuleWrapper}>
+                                    <Link 
+                                        href={`/dashboard/custom-list/${m.slug}`} 
+                                        className={`${styles.dropdownItem} ${pathname === `/dashboard/custom-list/${m.slug}` ? styles.activeDropdownItem : ''}`}
+                                        onClick={() => setIsMobileMenuOpen(false)}
+                                    >
+                                        <Layers size={16} />
+                                        <span>{m.name}</span>
+                                    </Link>
+                                    <button 
+                                        className={styles.deleteModuleBtn}
+                                        onClick={(e) => handleDeleteModule(e, m.slug, m.name)}
+                                        title="Elimina modulo"
+                                    >
+                                        <Trash2 size={14} />
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
                     <button onClick={handleLogout} className={`${styles.navItem} ${styles.logout}`}>
                         <div className={styles.navItemContent}>
                             <LogOut size={20} />
@@ -277,7 +341,6 @@ export default function DashboardClientLayout({
                 </nav>
             </aside>
 
-            {/* Backdrop Overlay for Mobile */}
             <div
                 className={`${styles.overlay} ${isMobileMenuOpen ? styles.open : ''}`}
                 onClick={() => setIsMobileMenuOpen(false)}
@@ -291,14 +354,10 @@ export default function DashboardClientLayout({
                         <span>Menu</span>
                     </button>
                     <div className={styles.userMenu}>
-                        <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
-                            Benvenuto
-                        </span>
+                        <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Benvenuto</span>
                     </div>
                 </header>
-                <div className={styles.content}>
-                    {children}
-                </div>
+                <div className={styles.content}>{children}</div>
             </main>
         </div>
     );

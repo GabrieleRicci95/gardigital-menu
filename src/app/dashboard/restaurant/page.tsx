@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from '../restaurant-dashboard.module.css';
-import { Store, MessageSquare, Globe, Plus, Trash2, Heart, Save, ExternalLink, X } from 'lucide-react';
+import { Store, MessageSquare, Globe, Heart, Save, ExternalLink, X } from 'lucide-react';
 import LoadingOverlay from '@/components/common/LoadingOverlay';
 
 export default function RestaurantPage() {
@@ -12,9 +12,6 @@ export default function RestaurantPage() {
     const [saving, setSaving] = useState(false);
     const [message, setMessage] = useState('');
     const [isDemo, setIsDemo] = useState(false);
-    const [newModuleTitle, setNewModuleTitle] = useState('');
-    const [creatingModule, setCreatingModule] = useState(false);
-    const [customModules, setCustomModules] = useState<{ id: string, name: string, slug: string }[]>([]);
     
     // Original data to compare for dirty state
     const originalDataRef = useRef<any>(null);
@@ -53,7 +50,6 @@ export default function RestaurantPage() {
                     };
                     setFormData(initialData);
                     originalDataRef.current = initialData;
-                    setCustomModules(data.restaurant.customLists || []);
                 }
                 setLoading(false);
             })
@@ -109,58 +105,6 @@ export default function RestaurantPage() {
         }
     };
 
-    const handleCreateModule = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!newModuleTitle.trim()) return;
-        if (isDemo) {
-            setMessage('Modalità Demo: modifiche non consentite');
-            return;
-        }
-        setCreatingModule(true);
-        try {
-            const res = await fetch('/api/custom-lists', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name: newModuleTitle }),
-            });
-            if (res.ok) {
-                const data = await res.json();
-                const newSlug = data.customList.slug;
-                setMessage('Nuovo modulo creato con successo!');
-                setNewModuleTitle('');
-                router.push(`/dashboard/custom-list/${newSlug}`);
-            } else {
-                setMessage('Errore nella creazione del modulo.');
-            }
-        } catch (error) {
-            setMessage('Errore di connessione.');
-        } finally {
-            setCreatingModule(false);
-        }
-    };
-
-    const handleDeleteModule = async (slug: string) => {
-        if (!confirm('Sei sicuro di voler eliminare questo modulo? Questa azione è irreversibile.')) return;
-        if (isDemo) {
-            setMessage('Modalità Demo: modifiche non consentite');
-            return;
-        }
-
-        try {
-            const res = await fetch(`/api/custom-lists?slug=${slug}`, {
-                method: 'DELETE',
-            });
-
-            if (res.ok) {
-                setCustomModules(prev => prev.filter(m => m.slug !== slug));
-                setMessage('Modulo eliminato con successo!');
-            } else {
-                setMessage('Errore durante l\'eliminazione del modulo.');
-            }
-        } catch (error) {
-            setMessage('Errore di connessione.');
-        }
-    };
 
     if (loading) return <LoadingOverlay />;
 
@@ -252,80 +196,6 @@ export default function RestaurantPage() {
                         </span>
                     </div>
 
-                    <div style={{ marginTop: '3.5rem', borderTop: '1px solid rgba(212, 175, 55, 0.1)', paddingTop: '2.5rem' }}>
-                        <h3 className={styles.cardTitle}>Moduli Personalizzati</h3>
-                        <p className={styles.cardDesc}>Crea sezioni extra come &quot;Carta dei Vini&quot;, &quot;Amari&quot; o &quot;Eventi Speciali&quot;.</p>
-
-                        {customModules.length > 0 && (
-                            <div style={{ marginBottom: '2rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
-                                {customModules.map(m => (
-                                    <div key={m.id} style={{
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        gap: '12px',
-                                        padding: '20px',
-                                        borderRadius: '18px',
-                                        background: 'rgba(255, 255, 255, 0.03)',
-                                        border: '1px solid rgba(212, 175, 55, 0.1)'
-                                    }}>
-                                        <div>
-                                            <span style={{ fontWeight: 700, display: 'block', color: '#d4af37', fontSize: '1.1rem' }}>{m.name}</span>
-                                            <span style={{ fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.4)' }}>Modulo Premium</span>
-                                        </div>
-                                        <div style={{ display: 'flex', gap: '10px', width: '100%' }}>
-                                            <button
-                                                type="button"
-                                                onClick={() => router.push(`/dashboard/custom-list/${m.slug}`)}
-                                                className={styles.btnSm}
-                                                style={{ flex: 1 }}
-                                            >
-                                                Gestisci
-                                            </button>
-                                            <button
-                                                type="button"
-                                                onClick={() => handleDeleteModule(m.slug)}
-                                                className={styles.btnSm}
-                                                style={{ border: '1px solid rgba(239, 68, 68, 0.2)', color: '#ef4444' }}
-                                            >
-                                                <Trash2 size={16} />
-                                            </button>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-
-                        <div style={{ background: 'rgba(212, 175, 55, 0.03)', padding: '2rem', borderRadius: '20px', border: '1px dashed rgba(212, 175, 55, 0.2)', opacity: isDemo ? 0.6 : 1 }}>
-                            <h4 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.8rem', color: '#ffffff' }}>Nuovo Modulo</h4>
-                            <div style={{ display: 'flex', gap: '12px' }}>
-                                <input
-                                    type="text"
-                                    value={newModuleTitle}
-                                    onChange={e => !isDemo && setNewModuleTitle(e.target.value)}
-                                    placeholder={isDemo ? "Creazione disabilitata" : "Esempio: Carta dei Gin..."}
-                                    style={{
-                                        flex: 1,
-                                        padding: '12px 18px',
-                                        borderRadius: '12px',
-                                        border: '1px solid rgba(255, 255, 255, 0.1)',
-                                        background: 'rgba(0,0,0,0.2)',
-                                        color: '#fff',
-                                        cursor: isDemo ? 'not-allowed' : 'text'
-                                    }}
-                                    readOnly={isDemo}
-                                />
-                                <button
-                                    type="button"
-                                    onClick={handleCreateModule}
-                                    disabled={creatingModule || isDemo || !newModuleTitle.trim()}
-                                    className={styles.btnPrimary}
-                                    style={{ width: 'auto', padding: '0 25px' }}
-                                >
-                                    <Plus size={18} />
-                                </button>
-                            </div>
-                        </div>
-                    </div>
                 </form>
 
                 {formData.slug && (

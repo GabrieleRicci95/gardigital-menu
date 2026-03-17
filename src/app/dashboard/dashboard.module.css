@@ -137,7 +137,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: env(safe-area-inset-top, 0px) 2rem 0;
+    padding: env(safe-area-inset-top, 0px) 1.5rem 0;
     width: 100%;
     overflow: hidden;
     flex-shrink: 0;
@@ -288,4 +288,4 @@
         opacity: 1;
         visibility: visible;
     }
-}
+}$content
