@@ -218,7 +218,6 @@ export default function DashboardClientLayout({
         },
         { label: 'Il mio Ristorante', href: '/dashboard/restaurant', icon: <Store size={20} /> },
         { label: 'Menu', href: '/dashboard/menu', icon: <Utensils size={20} /> },
-        { label: 'Aspetto & Design', href: '/dashboard/design', icon: <Palette size={20} /> },
         { label: 'QR Code', href: '/dashboard/qrcode', icon: <QrCode size={20} /> },
     ].filter(item => {
         if (item.isSubscription && isAppMode) return false;
@@ -271,6 +270,17 @@ export default function DashboardClientLayout({
                         </div>
                         
                         <div className={styles.dropdownContent}>
+                            {/* Add New Module Item - Moved to Top */}
+                            <button 
+                                className={styles.addModuleDropdownBtn}
+                                onClick={handleCreateModule}
+                                disabled={isCreatingModule}
+                                style={{ marginBottom: '12px' }}
+                            >
+                                <Plus size={16} />
+                                <span>Aggiungi Modulo</span>
+                            </button>
+
                             {isWineActive && (
                                 <Link 
                                     href="/dashboard/wine-list" 
@@ -321,16 +331,6 @@ export default function DashboardClientLayout({
                                     </button>
                                 </div>
                             ))}
-
-                            {/* Add New Module Item */}
-                            <button 
-                                className={styles.addModuleDropdownBtn}
-                                onClick={handleCreateModule}
-                                disabled={isCreatingModule}
-                            >
-                                <Plus size={16} />
-                                <span>Aggiungi Modulo</span>
-                            </button>
                         </div>
                     </div>
 
