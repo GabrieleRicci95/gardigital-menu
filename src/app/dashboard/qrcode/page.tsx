@@ -5,6 +5,7 @@ import Link from 'next/link';
 import QRCode from 'qrcode';
 import styles from '../restaurant-dashboard.module.css';
 import { QrCode, Download, ExternalLink, Box, Layout as LayoutIcon, Share2, Copy } from 'lucide-react';
+import LoadingOverlay from '@/components/common/LoadingOverlay';
 
 export default function QRCodePage() {
     const [loading, setLoading] = useState(true);
@@ -61,14 +62,7 @@ export default function QRCodePage() {
         alert('Link copiato negli appunti!');
     };
 
-    if (loading) return (
-        <div className={styles.container}>
-            <div className={styles.loaderContainer}>
-                <div className={styles.spinner}></div>
-                <p className={styles.loaderText}>Generazione QR Code...</p>
-            </div>
-        </div>
-    );
+    if (loading) return <LoadingOverlay />;
 
     if (!menuUrl) return (
         <div className={styles.container}>

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import styles from '../restaurant-dashboard.module.css';
 import { Wine, Plus, Trash2, Save, X, ChevronRight } from 'lucide-react';
+import LoadingOverlay from '@/components/common/LoadingOverlay';
 
 interface WineItem {
     id?: string;
@@ -203,14 +204,7 @@ export default function WineListPage() {
         });
     };
 
-    if (loading) return (
-        <div className={styles.container}>
-            <div className={styles.loaderContainer}>
-                <div className={styles.spinner}></div>
-                <p className={styles.loaderText}>Preparando la Cantina...</p>
-            </div>
-        </div>
-    );
+    if (loading) return <LoadingOverlay />;
 
     return (
         <div className={styles.container} style={{ paddingBottom: '140px' }}>

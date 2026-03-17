@@ -15,6 +15,7 @@ import {
     ExternalLink
 } from 'lucide-react';
 import styles from './restaurant-dashboard.module.css';
+import LoadingOverlay from '@/components/common/LoadingOverlay';
 
 export default function DashboardPage() {
     const [subscription, setSubscription] = useState<any>(null);
@@ -69,12 +70,7 @@ export default function DashboardPage() {
         }
     };
 
-    if (loading) return (
-        <div className={styles.loaderContainer}>
-            <div className={styles.spinner}></div>
-            <div className={styles.loaderText}>Caricamento SoloMenu...</div>
-        </div>
-    );
+    if (loading) return <LoadingOverlay />;
 
     const isPremium = (subscription?.plan === 'PREMIUM' || subscription?.plan === 'FULL') && subscription?.status === 'ACTIVE';
 

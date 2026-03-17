@@ -5,6 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import styles from '../../restaurant-dashboard.module.css';
 import { Utensils, Plus, Trash2, Save, X, ChevronLeft } from 'lucide-react';
+import LoadingOverlay from '@/components/common/LoadingOverlay';
 
 interface MenuItem {
     id?: string;
@@ -172,14 +173,7 @@ export default function FixedMenuEditorPage({ params: paramsPromise }: { params:
         }
     };
 
-    if (loading) return (
-        <div className={styles.container}>
-            <div className={styles.loaderContainer}>
-                <div className={styles.spinner}></div>
-                <p className={styles.loaderText}>Preparando l'eccellenza...</p>
-            </div>
-        </div>
-    );
+    if (loading) return <LoadingOverlay />;
 
     return (
         <div className={styles.container} style={{ paddingBottom: '140px' }}>

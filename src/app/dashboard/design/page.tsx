@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import styles from '../restaurant-dashboard.module.css';
 import { Palette, Image as ImageIcon, Type, Layout, Save, X } from 'lucide-react';
+import LoadingOverlay from '@/components/common/LoadingOverlay';
 
 interface Restaurant {
     id: string;
@@ -130,14 +131,7 @@ export default function DesignPage() {
         }
     };
 
-    if (loading) return (
-        <div className={styles.container}>
-            <div className={styles.loaderContainer}>
-                <div className={styles.spinner}></div>
-                <p className={styles.loaderText}>Caricamento design...</p>
-            </div>
-        </div>
-    );
+    if (loading) return <LoadingOverlay />;
     if (!restaurant) return <div className={styles.container}>Ristorante non trovato.</div>;
 
     const fontOptions = [

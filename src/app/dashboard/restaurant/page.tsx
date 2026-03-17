@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from '../restaurant-dashboard.module.css';
 import { Store, MessageSquare, Globe, Plus, Trash2, Heart, Save, ExternalLink, X } from 'lucide-react';
+import LoadingOverlay from '@/components/common/LoadingOverlay';
 
 export default function RestaurantPage() {
     const router = useRouter();
@@ -161,14 +162,7 @@ export default function RestaurantPage() {
         }
     };
 
-    if (loading) return (
-        <div className={styles.container}>
-            <div className={styles.loaderContainer}>
-                <div className={styles.spinner}></div>
-                <p className={styles.loaderText}>Caricamento ristorante...</p>
-            </div>
-        </div>
-    );
+    if (loading) return <LoadingOverlay />;
 
     return (
         <div className={styles.container} style={{ paddingBottom: '120px' }}>

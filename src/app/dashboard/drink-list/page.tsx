@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import styles from '../restaurant-dashboard.module.css';
 import { GlassWater, Plus, Trash2, Save, X, Camera } from 'lucide-react';
+import LoadingOverlay from '@/components/common/LoadingOverlay';
 
 interface DrinkItem {
     id?: string;
@@ -236,14 +237,7 @@ export default function DrinkListPage() {
         });
     };
 
-    if (loading) return (
-        <div className={styles.container}>
-            <div className={styles.loaderContainer}>
-                <div className={styles.spinner}></div>
-                <p className={styles.loaderText}>Preparando i Drink...</p>
-            </div>
-        </div>
-    );
+    if (loading) return <LoadingOverlay />;
 
     return (
         <div className={styles.container} style={{ paddingBottom: '140px' }}>
