@@ -307,7 +307,7 @@ export default function MenuPage() {
         if (res.ok) { await fetchInitialData(); setEditingMenuId(null); }
     };
 
-    if (loading) return <LoadingOverlay message="Il tuo Atelier dei Gusti sta arrivando..." />;
+    if (loading) return <LoadingOverlay />;
 
     // --- Shared allergen grid ---
     const AllergenGrid = ({ allergens, onChange }: { allergens: number[], onChange: (nums: number[]) => void }) => (
