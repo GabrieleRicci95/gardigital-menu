@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Calendar, Users, Phone, FileText, CheckCircle, XCircle, AlertCircle, Settings, Plus, LayoutDashboard, Utensils, Sparkles, Crown } from 'lucide-react';
 import styles from './reservations.module.css';
+import LoadingOverlay from '@/components/common/LoadingOverlay';
 
 interface Reservation {
     id: string;
@@ -434,10 +435,7 @@ export default function ReservationsPage() {
                     </div>
 
                     {loading ? (
-                        <div className={styles.loading}>
-                            <div className={styles.spinner}></div>
-                            <span>Caricamento...</span>
-                        </div>
+                        <LoadingOverlay fullScreen={false} message="Consultando l'agenda..." />
                     ) : filteredReservations.length === 0 ? (
                         <div className={styles.emptyState}>
                             <div className={styles.emptyIcon}></div>

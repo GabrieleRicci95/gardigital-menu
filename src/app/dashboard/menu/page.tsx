@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import styles from '../restaurant-dashboard.module.css';
 import { Plus, Edit3, Trash2, Camera, MoreVertical, Coffee, Wine, Pizza, Utensils, Save, X, Eye, ChevronRight } from 'lucide-react';
+import LoadingOverlay from '@/components/common/LoadingOverlay';
 
 interface MenuItem {
     id: string;
@@ -139,14 +140,7 @@ export default function MenuPage() {
         }
     };
 
-    if (loading) return (
-        <div className={styles.container}>
-            <div className={styles.loaderContainer}>
-                <div className={styles.spinner}></div>
-                <p className={styles.loaderText}>Il tuo Atelier dei Gusti sta arrivando...</p>
-            </div>
-        </div>
-    );
+    if (loading) return <LoadingOverlay message="Il tuo Atelier dei Gusti sta arrivando..." />;
 
     return (
         <div className={styles.container}>
