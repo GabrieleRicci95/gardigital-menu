@@ -70,10 +70,6 @@ export default function DashboardPage() {
     return (
         <div className={styles.container}>
             <header className={styles.header}>
-                <div className={`${styles.welcomeBadge} ${!isActive ? styles.welcomeBadgeOffline : ''}`}>
-                    <div style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: isActive ? '#4ade80' : '#ef4444', boxShadow: `0 0 10px ${isActive ? '#4ade80' : '#ef4444'}` }} />
-                    {isActive ? 'Menu Online' : 'Menu Offline'}
-                </div>
                 <h1 className={styles.title}>Benvenuto, {restaurantName}</h1>
                 <p className={styles.subtitle}>Ecco un riepilogo della tua attività per oggi.</p>
             </header>
