@@ -4,11 +4,10 @@ import Image from 'next/image';
 import styles from './LoadingOverlay.module.css';
 
 interface LoadingOverlayProps {
-    message?: string;
     fullScreen?: boolean;
 }
 
-export default function LoadingOverlay({ message = "Preparando l'eccellenza...", fullScreen = true }: LoadingOverlayProps) {
+export default function LoadingOverlay({ fullScreen = true }: LoadingOverlayProps) {
     return (
         <div className={`${styles.overlay} ${fullScreen ? styles.fullScreen : styles.relative}`}>
             <div className={styles.container}>
@@ -22,12 +21,6 @@ export default function LoadingOverlay({ message = "Preparando l'eccellenza...",
                         priority
                     />
                     <div className={styles.glow}></div>
-                </div>
-                <p className={styles.message}>{message}</p>
-                <div className={styles.dots}>
-                    <span></span>
-                    <span></span>
-                    <span></span>
                 </div>
             </div>
         </div>
