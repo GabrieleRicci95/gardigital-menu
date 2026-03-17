@@ -142,6 +142,26 @@
     .calendarContainer {
         width: 100%;
         margin: 0 auto;
+        padding: 1.5rem 1rem;
+        border-radius: 20px;
+    }
+
+    .calendarTitle {
+        font-size: 1.4rem;
+    }
+
+    .calendarGrid {
+        gap: 4px;
+    }
+
+    .weekday {
+        font-size: 0.7rem;
+        padding-bottom: 8px;
+    }
+
+    .dayCell {
+        font-size: 0.9rem;
+        border-radius: 8px;
     }
 }
 

@@ -435,7 +435,7 @@ export default function ReservationsPage() {
                     </div>
 
                     {loading ? (
-                        <LoadingOverlay fullScreen={false} />
+                        <LoadingOverlay />
                     ) : filteredReservations.length === 0 ? (
                         <div className={styles.emptyState}>
                             <div className={styles.emptyIcon}></div>
