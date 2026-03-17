@@ -111,7 +111,8 @@
 .addCategory {
     margin-bottom: var(--spacing-xl);
     padding: var(--spacing-lg);
-    background: white;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(212, 175, 55, 0.1);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-sm);
 }
@@ -124,17 +125,18 @@
 }
 
 .categoryCard {
-    background: white;
+    background: rgba(15, 15, 15, 0.4);
     border-radius: var(--radius-lg);
-    border: 1px solid var(--color-border);
+    border: 1px solid rgba(212, 175, 55, 0.1);
     margin-bottom: var(--spacing-lg);
     overflow: hidden;
+    backdrop-filter: blur(10px);
 }
 
 .categoryHeader {
     padding: var(--spacing-md) var(--spacing-lg);
-    background: #f8f9fa;
-    border-bottom: 1px solid var(--color-border);
+    background: rgba(212, 175, 55, 0.05);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -163,8 +165,8 @@
 
 .itemForm {
     padding: var(--spacing-md);
-    background: #f0f7ff;
-    border-bottom: 1px solid var(--color-border);
+    background: rgba(212, 175, 55, 0.03);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.1);
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
@@ -286,8 +288,8 @@
     align-items: center;
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
-    background: white;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 0;
 }
 
@@ -301,8 +303,8 @@
 }
 
 .roundBtnEdit {
-    color: #3b82f6;
-    border: 1px solid #dbeafe;
+    color: #d4af37;
+    border: 1px solid rgba(212, 175, 55, 0.2);
 }
 
 .roundBtnEdit:hover {
@@ -313,7 +315,7 @@
 
 .roundBtnDelete {
     color: #ef4444;
-    border: 1px solid #fee2e2;
+    border: 1px solid rgba(239, 68, 68, 0.2);
 }
 
 .roundBtnDelete:hover {
@@ -329,15 +331,15 @@
 }
 
 .miniActionBtn {
-    background: white;
-    border: 1px solid #e5e7eb;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 4px;
     width: 22px;
     height: 18px;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #4b5563;
+    color: rgba(255, 255, 255, 0.4);
     padding: 0;
     cursor: pointer;
     transition: all 0.2s;
@@ -350,15 +352,15 @@
 }
 
 .editBtn {
-    background: white;
-    border: 1px solid var(--color-primary);
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.3);
     border-radius: 50%;
     width: 32px;
     height: 32px;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: var(--color-primary);
+    color: #d4af37;
     font-size: 1rem;
     cursor: pointer;
     transition: all 0.2s;
