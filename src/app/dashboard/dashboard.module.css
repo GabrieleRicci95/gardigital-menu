@@ -19,7 +19,7 @@
     border-right: 1px solid rgba(212, 175, 55, 0.1);
     display: flex;
     flex-direction: column;
-    padding: env(safe-area-inset-top, 0) var(--spacing-lg) var(--spacing-lg) var(--spacing-lg);
+    padding: max(44px, env(safe-area-inset-top, 0px)) var(--spacing-lg) var(--spacing-lg) var(--spacing-lg);
     position: fixed;
     height: 100vh;
     height: 100dvh;
@@ -131,9 +131,9 @@
 
 .header {
     height: calc(80px + env(safe-area-inset-top, 0px));
-    background-color: rgba(10, 10, 10, 0.5);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background-color: rgba(10, 10, 10, 0.8);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.1);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -225,13 +225,14 @@
     }
 
     .header {
-        height: calc(70px + env(safe-area-inset-top, 0px)) !important;
-        padding: env(safe-area-inset-top, 0px) var(--spacing-md) 0 !important;
+        height: calc(85px + env(safe-area-inset-top, 20px)) !important;
+        padding: max(44px, env(safe-area-inset-top, 0px)) var(--spacing-md) 0 !important;
         justify-content: space-between !important;
-        min-height: calc(70px + env(safe-area-inset-top, 0px)) !important;
+        min-height: calc(85px + env(safe-area-inset-top, 20px)) !important;
         gap: 10px !important;
         width: 100% !important;
         max-width: 100% !important;
+        align-items: center !important;
     }
 
     .userMenu {

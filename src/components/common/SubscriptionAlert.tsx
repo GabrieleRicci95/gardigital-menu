@@ -4,8 +4,23 @@ import { useEffect, useState } from "react";
 
 export default function SubscriptionAlert() {
     const [expiryInfo, setExpiryInfo] = useState<{ daysLeft: number; isExpired: boolean } | null>(null);
+    const [isAppMode, setIsAppMode] = useState(false);
 
     useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const params = new URLSearchParams(window.location.search);
+            const ua = navigator.userAgent || '';
+            const hasParam = params.get('platform') === 'app';
+            const hasSession = sessionStorage.getItem('isAppMode') === 'true';
+            const isWebView = /Android/i.test(ua) && /Version\/[0-9.]+/i.test(ua);
+            const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone;
+            const isCapacitorNative = (window as any).Capacitor?.isNativePlatform?.() === true;
+
+            if (hasParam || hasSession || isWebView || isStandalone || isCapacitorNative) {
+                setIsAppMode(true);
+            }
+        }
+
         const checkExpiry = async () => {
             try {
                 const res = await fetch("/api/restaurant");
@@ -32,7 +47,7 @@ export default function SubscriptionAlert() {
         checkExpiry();
     }, []);
 
-    if (!expiryInfo) return null;
+    if (isAppMode || !expiryInfo) return null;
 
     const { daysLeft, isExpired } = expiryInfo;
 

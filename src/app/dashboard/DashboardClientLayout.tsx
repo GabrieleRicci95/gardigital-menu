@@ -140,8 +140,10 @@ export default function DashboardClientLayout({
             const isWebView = /Android/i.test(ua) && /Version\/[0-9.]+/i.test(ua);
             // 4. Check via Standalone Mode (PWA/TWA)
             const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone;
+            // 5. Capacitor Native Check (iOS / Android App)
+            const isCapacitorNative = (window as any).Capacitor?.isNativePlatform?.() === true;
 
-            if (hasParam || hasSession || isWebView || isStandalone) {
+            if (hasParam || hasSession || isWebView || isStandalone || isCapacitorNative) {
                 setIsAppMode(true);
                 sessionStorage.setItem('isAppMode', 'true');
             }

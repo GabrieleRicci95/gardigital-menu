@@ -19,7 +19,9 @@ export default function SubscriptionPage() {
                 const isWebView = /Android/i.test(ua) && /Version\/[0-9.]+/i.test(ua);
                 const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone;
 
-                if (hasParam || hasSession || isWebView || isStandalone) {
+                const isCapacitorNative = (window as any).Capacitor?.isNativePlatform?.() === true;
+
+                if (hasParam || hasSession || isWebView || isStandalone || isCapacitorNative) {
                     setIsAppMode(true);
                 }
             } catch (e) {
