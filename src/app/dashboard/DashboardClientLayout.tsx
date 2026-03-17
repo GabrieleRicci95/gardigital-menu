@@ -281,33 +281,35 @@ export default function DashboardClientLayout({
                         </div>
                         
                         <div className={styles.dropdownContent}>
-                            {(restaurantSlug === 'aperifish' || restaurantSlug === 'xl-aperifish') && (
-                                <>
-                                    <Link 
-                                        href="/dashboard/wine-list" 
-                                        className={`${styles.dropdownItem} ${pathname === '/dashboard/wine-list' ? styles.activeDropdownItem : ''}`}
-                                        onClick={() => setIsMobileMenuOpen(false)}
-                                    >
-                                        <Wine size={16} />
-                                        <span>Vini/Bollicine</span>
-                                    </Link>
-                                    <Link 
-                                        href="/dashboard/champagne-list" 
-                                        className={`${styles.dropdownItem} ${pathname === '/dashboard/champagne-list' ? styles.activeDropdownItem : ''}`}
-                                        onClick={() => setIsMobileMenuOpen(false)}
-                                    >
-                                        <GlassWater size={16} />
-                                        <span>Champagne</span>
-                                    </Link>
-                                    <Link 
-                                        href="/dashboard/drink-list" 
-                                        className={`${styles.dropdownItem} ${pathname === '/dashboard/drink-list' ? styles.activeDropdownItem : ''}`}
-                                        onClick={() => setIsMobileMenuOpen(false)}
-                                    >
-                                        <Martini size={16} />
-                                        <span>Drink</span>
-                                    </Link>
-                                </>
+                            {isWineActive && (
+                                <Link 
+                                    href="/dashboard/wine-list" 
+                                    className={`${styles.dropdownItem} ${pathname === '/dashboard/wine-list' ? styles.activeDropdownItem : ''}`}
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                >
+                                    <Wine size={16} />
+                                    <span>Vini/Bollicine</span>
+                                </Link>
+                            )}
+                            {isChampagneActive && (
+                                <Link 
+                                    href="/dashboard/champagne-list" 
+                                    className={`${styles.dropdownItem} ${pathname === '/dashboard/champagne-list' ? styles.activeDropdownItem : ''}`}
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                >
+                                    <GlassWater size={16} />
+                                    <span>Champagne</span>
+                                </Link>
+                            )}
+                            {isDrinkActive && (
+                                <Link 
+                                    href="/dashboard/drink-list" 
+                                    className={`${styles.dropdownItem} ${pathname === '/dashboard/drink-list' ? styles.activeDropdownItem : ''}`}
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                >
+                                    <Martini size={16} />
+                                    <span>Drink</span>
+                                </Link>
                             )}
 
                             {customModules.map(m => (
