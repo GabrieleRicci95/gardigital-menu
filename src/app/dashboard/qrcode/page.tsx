@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import QRCode from 'qrcode';
 import styles from '../restaurant-dashboard.module.css';
-import { QrCode, Download, ExternalLink, Box, Layout as LayoutIcon, Share2, Copy } from 'lucide-react';
+import { QrCode, Download, ExternalLink, Box, Layout as LayoutIcon, Share2, Copy, Share } from 'lucide-react';
 import LoadingOverlay from '@/components/common/LoadingOverlay';
 
 export default function QRCodePage() {
@@ -12,6 +12,11 @@ export default function QRCodePage() {
     const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
     const [menuUrl, setMenuUrl] = useState<string | null>(null);
     const [restaurantName, setRestaurantName] = useState('');
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        setIsMobile(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
+    }, []);
 
     useEffect(() => {
         const fetchAndGenerate = async () => {
@@ -46,8 +51,41 @@ export default function QRCodePage() {
         fetchAndGenerate();
     }, []);
 
-    const downloadQR = () => {
+    const handleAction = async () => {
         if (!qrDataUrl) return;
+
+        // On mobile, try to use native share
+        if (isMobile && typeof navigator !== 'undefined' && navigator.share) {
+            try {
+                // Robust dataURL to File conversion
+                const response = await fetch(qrDataUrl);
+                const blob = await response.blob();
+                const file = new File([blob], `qrcode-${restaurantName.replace(/\s+/g, '-').toLowerCase()}.png`, { type: 'image/png' });
+
+                // Check if sharing files is supported
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    await navigator.share({
+                        files: [file],
+                        title: `QR Code ${restaurantName}`,
+                        text: `Ecco il QR Code per il menu di ${restaurantName}`
+                    });
+                    return; // Share successful
+                } else if (navigator.share) {
+                    // Fallback to sharing just text/url if files not supported
+                    await navigator.share({
+                        title: `QR Code ${restaurantName}`,
+                        url: menuUrl || undefined,
+                        text: `Vedi il menu di ${restaurantName}`
+                    });
+                    return;
+                }
+            } catch (err) {
+                console.error("Error sharing", err);
+                // Fallback to download on error
+            }
+        }
+
+        // Standard Download Fallback (for Desktop or if Share fails)
         const link = document.createElement('a');
         link.download = `qrcode-${restaurantName.replace(/\s+/g, '-').toLowerCase()}.png`;
         link.href = qrDataUrl;
@@ -119,8 +157,9 @@ export default function QRCodePage() {
                     )}
 
                     <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center', width: '100%' }}>
-                        <button onClick={downloadQR} className={`${styles.button} ${styles.btnPrimary}`} style={{ flex: 1, minWidth: '180px' }}>
-                            <Download size={18} /> Scarica PNG
+                        <button onClick={handleAction} className={`${styles.button} ${styles.btnPrimary}`} style={{ flex: 1, minWidth: '180px' }}>
+                            {isMobile ? <Share2 size={18} /> : <Download size={18} />}
+                            {isMobile ? 'Condividi QR' : 'Scarica PNG'}
                         </button>
                         <a
                             href={menuUrl}

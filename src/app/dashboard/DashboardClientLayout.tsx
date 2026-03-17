@@ -263,8 +263,8 @@ export default function DashboardClientLayout({
                 </div>
 
                 <nav className={styles.nav}>
-                    {/* Top Items up to Menu */}
-                    {navItems.slice(0, 5).map((item: any) => (
+                    {/* Top Items (Panoramica, Abbonamenti, Agenda, Ristorante) */}
+                    {navItems.filter(item => ['Panoramica', 'Abbonamenti', 'Agenda', 'Il mio Ristorante'].includes(item.label)).map((item: any) => (
                         <Link
                             key={item.href}
                             href={item.href}
@@ -279,7 +279,22 @@ export default function DashboardClientLayout({
                         </Link>
                     ))}
 
-                    {/* Moduli Dropdown - Positioned after Menu */}
+                    {/* Menu Item */}
+                    {navItems.filter(item => item.label === 'Menu').map((item: any) => (
+                        <Link
+                            key={item.href}
+                            href={item.href}
+                            className={`${styles.navItem} ${pathname === item.href ? styles.active : ''}`}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                            <div className={styles.navItemContent}>
+                                {item.icon}
+                                <span>{item.label}</span>
+                            </div>
+                        </Link>
+                    ))}
+
+                    {/* Moduli Dropdown - Positioned ALWAYS after Menu */}
                     <div className={`${styles.navDropdown} ${isModulesOpen ? styles.dropdownActive : ''}`}>
                         <div 
                             className={styles.dropdownHeader}
@@ -387,8 +402,8 @@ export default function DashboardClientLayout({
                         </div>
                     </div>
 
-                    {/* Bottom Nav Items (QR Code) */}
-                    {navItems.slice(5).map((item: any) => (
+                    {/* QR Code */}
+                    {navItems.filter(item => item.label === 'QR Code').map((item: any) => (
                         <Link
                             key={item.href}
                             href={item.href}
