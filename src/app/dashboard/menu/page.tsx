@@ -266,33 +266,14 @@ export default function MenuPage() {
 
             {selectedMenu ? (
                 <div className={styles.grid} style={{ gridTemplateColumns: '1fr' }}>
-                    <div className={styles.card} style={{ padding: '2rem', background: 'rgba(15, 15, 15, 0.4)', border: '1px solid rgba(212, 175, 55, 0.1)' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem', flexWrap: 'wrap', gap: '1rem' }}>
+                    <div className={styles.card} style={{ padding: '2rem', background: 'rgba(15, 15, 15, 0.4)', border: '1px solid rgba(212, 175, 55, 0.1)' }}>                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem', flexWrap: 'wrap', gap: '1rem' }}>
                             <div>
                                 <h2 className={styles.cardTitle} style={{ margin: 0, fontSize: '2rem' }}>
                                     {selectedMenu.name}
                                 </h2>
-                                <p style={{ color: 'rgba(255,255,255,0.4)', marginTop: '4px' }}>Gestisci la sequenza delle portate e i dettagli di ogni piatto.</p>
-                            </div>
-                            <div style={{ display: 'flex', gap: '1rem' }}>
-                                <Link
-                                    href={`/dashboard/menu/${selectedMenu.id}`}
-                                    className={styles.btnPrimary}
-                                    style={{ width: 'auto', padding: '12px 28px', fontSize: '0.95rem' }}
-                                >
-                                    <Edit3 size={18} /> Editor Struttura
-                                </Link>
-                                <a
-                                    href={`/menu/${(selectedMenu as any).slug || ''}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className={styles.btnSm}
-                                    style={{ background: 'rgba(255,255,255,0.05)', color: '#fff', border: '1px solid rgba(255,255,255,0.1)', padding: '12px 20px', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}
-                                >
-                                    <Eye size={18} /> Anteprima
-                                </a>
                             </div>
                         </div>
+
 
                         <div className={styles.categoryList} style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                             {selectedMenu.categories?.length === 0 ? (

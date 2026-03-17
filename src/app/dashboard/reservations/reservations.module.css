@@ -80,6 +80,7 @@
     align-items: center;
     justify-content: center;
     gap: 1.5rem;
+    min-height: 400px;
 }
 
 .spinner {
@@ -127,13 +128,20 @@
     .mainContent {
         flex-direction: column;
         align-items: center;
+        gap: 2rem;
     }
     .sideColumn {
         flex: 1;
         width: 100%;
-        max-width: 520px;
+        max-width: 100%;
+        display: flex;
+        justify-content: center;
         position: relative;
         top: 0;
+    }
+    .calendarContainer {
+        width: 100%;
+        margin: 0 auto;
     }
 }
 
