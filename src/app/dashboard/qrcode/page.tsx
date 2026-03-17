@@ -126,7 +126,7 @@ export default function QRCodePage() {
                             href={menuUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className={styles.btnSm}
+                            className={`${styles.button} ${styles.btnSm}`}
                             style={{ flex: 1, minWidth: '180px', justifyContent: 'center' }}
                         >
                             <ExternalLink size={18} /> Apri Link
