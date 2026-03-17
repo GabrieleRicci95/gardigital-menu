@@ -190,6 +190,27 @@
     letter-spacing: 1px;
 }
 
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.stat {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin: var(--spacing-sm) 0;
+}
+
+.subtext {
+    font-size: 0.8rem;
+    color: var(--color-accent-dark);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
 .desc {
     color: var(--color-text-secondary);
     margin-bottom: var(--spacing-md);
@@ -288,4 +309,134 @@
         opacity: 1;
         visibility: visible;
     }
-}$content
+}
+
+/* Moduli Dropdown Styles */
+.navDropdown {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 4px;
+}
+
+.dropdownHeader {
+    padding: 0.7rem 1rem;
+    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 500;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.dropdownHeader:hover {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.dropdownActive .dropdownHeader {
+    color: #d4af37;
+}
+
+.chevron {
+    transition: transform 0.3s ease;
+    opacity: 0.5;
+}
+
+.chevronRotate {
+    transform: rotate(180deg);
+}
+
+.dropdownContent {
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    padding-left: 1.5rem;
+}
+
+.dropdownActive .dropdownContent {
+    max-height: 800px;
+    margin-top: 4px;
+    padding-bottom: 8px;
+}
+
+.dropdownItem {
+    padding: 0.6rem 1rem;
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.dropdownItem:hover {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+.activeDropdownItem {
+    color: #d4af37 !important;
+    font-weight: 600;
+}
+
+.addModuleBtn {
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    color: #d4af37;
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.addModuleBtn:hover {
+    background: rgba(212, 175, 55, 0.2);
+    transform: scale(1.1);
+}
+
+.customModuleWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding-right: 8px;
+}
+
+.customModuleWrapper .dropdownItem {
+    flex: 1;
+}
+
+.deleteModuleBtn {
+    opacity: 0;
+    background: none;
+    border: none;
+    color: rgba(239, 68, 68, 0.6);
+    cursor: pointer;
+    padding: 6px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.customModuleWrapper:hover .deleteModuleBtn {
+    opacity: 1;
+}
+
+.deleteModuleBtn:hover {
+    color: #ef4444;
+    transform: scale(1.1);
+}
