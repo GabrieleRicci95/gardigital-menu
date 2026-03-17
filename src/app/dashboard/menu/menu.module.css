@@ -91,8 +91,20 @@
 }
 
 .createInput:focus {
-    border-color: #4f46e5;
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    border-color: #d4af37;
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+}
+
+.menuGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.menuCardActive {
+    border-color: #d4af37 !important;
+    background: rgba(212, 175, 55, 0.08) !important;
+    box-shadow: 0 10px 40px rgba(212, 175, 55, 0.15);
 }
 
 /* ... existing styles ... */
