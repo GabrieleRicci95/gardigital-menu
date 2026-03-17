@@ -12,7 +12,12 @@ import {
     QrCode,
     CheckCircle2,
     AlertCircle,
-    ExternalLink
+    ExternalLink,
+    ChevronRight,
+    Layers,
+    MapPin,
+    Wine,
+    Store
 } from 'lucide-react';
 import styles from './restaurant-dashboard.module.css';
 import LoadingOverlay from '@/components/common/LoadingOverlay';
@@ -20,8 +25,10 @@ import LoadingOverlay from '@/components/common/LoadingOverlay';
 export default function DashboardPage() {
     const [subscription, setSubscription] = useState<any>(null);
     const [stats, setStats] = useState<any>(null);
+    const [recentReservations, setRecentReservations] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [isAppMode, setIsAppMode] = useState(false);
+    const [restaurant, setRestaurant] = useState<any>(null);
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -46,9 +53,11 @@ export default function DashboardPage() {
             const res = await fetch('/api/restaurant?t=' + Date.now());
             if (res.ok) {
                 const data = await res.json();
+                setRestaurant(data.restaurant);
                 setSubscription(data.restaurant?.subscription);
                 if (data.restaurant?.id) {
                     fetchStats(data.restaurant.id);
+                    fetchRecentReservations(data.restaurant.id);
                 }
             }
         } catch (error) {
@@ -70,204 +79,180 @@ export default function DashboardPage() {
         }
     };
 
+    const fetchRecentReservations = async (restaurantId: string) => {
+        try {
+            const res = await fetch(`/api/reservations?restaurantId=${restaurantId}&limit=5&t=${Date.now()}`);
+            if (res.ok) {
+                const data = await res.json();
+                setRecentReservations(data.reservations || []);
+            }
+        } catch (error) {
+            console.error("Error fetching recent reservations:", error);
+        }
+    };
+
     if (loading) return <LoadingOverlay />;
 
     const isPremium = (subscription?.plan === 'PREMIUM' || subscription?.plan === 'FULL') && subscription?.status === 'ACTIVE';
-
-    // Mock Name for greeting (could come from API)
-    const restaurantName = subscription?.restaurant?.name || "Ristoratore";
+    const restaurantName = restaurant?.name || "Ristoratore";
+    const isActive = restaurant?.isActive;
 
     return (
         <div className={styles.container}>
             <header className={styles.header}>
-                <h1 className={styles.title}>Bentornato</h1>
-                <p className={styles.subtitle}>Ecco una panoramica del tuo ristorante digitale.</p>
+                <div className={`${styles.welcomeBadge} ${!isActive ? styles.welcomeBadgeOffline : ''}`}>
+                    <div style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: isActive ? '#4ade80' : '#ef4444', boxShadow: `0 0 10px ${isActive ? '#4ade80' : '#ef4444'}` }} />
+                    {isActive ? 'Menu Online' : 'Menu Offline'}
+                </div>
+                <h1 className={styles.title}>Benvenuto, {restaurantName}</h1>
+                <p className={styles.subtitle}>Gestisci la tua attività digitale da un unico posto.</p>
             </header>
 
             {/* Stats Row */}
-            {subscription?.hasReservations && (
-                <div className={styles.statsRow}>
-                    <div className={styles.statCard}>
-                        <div className={`${styles.statIcon} ${styles.statToday}`}>
-                            <Calendar size={24} />
+            <div className={styles.statsRow}>
+                <div className={styles.statCard}>
+                    <div className={`${styles.statIcon} ${styles.statToday}`}>
+                        <Calendar size={24} />
+                    </div>
+                    <div className={styles.statInfo}>
+                        <div className={styles.statValue}>{stats?.todayCount || 0}</div>
+                        <div className={styles.statLabel}>Prenotazioni Oggi</div>
+                    </div>
+                </div>
+                <div className={styles.statCard}>
+                    <div className={`${styles.statIcon} ${styles.statToday}`}>
+                        <Users size={24} />
+                    </div>
+                    <div className={styles.statInfo}>
+                        <div className={styles.statValue}>{stats?.todayGuests || 0}</div>
+                        <div className={styles.statLabel}>Coperti Oggi</div>
+                    </div>
+                </div>
+                <Link href="/dashboard/reservations" style={{ textDecoration: 'none', display: 'flex', height: '100%' }}>
+                    <div className={`${styles.statCard} ${stats?.pendingCount > 0 ? styles.statAlert : ''}`} style={{ width: '100%' }}>
+                        <div className={`${styles.statIcon} ${styles.statPending}`}>
+                            <Clock size={24} />
                         </div>
                         <div className={styles.statInfo}>
-                            <div className={styles.statValue}>{stats?.todayCount || 0}</div>
-                            <div className={styles.statLabel}>Prenotazioni Oggi</div>
+                            <div className={styles.statValue}>{stats?.pendingCount || 0}</div>
+                            <div className={styles.statLabel}>Da Confermare</div>
                         </div>
                     </div>
-                    <div className={styles.statCard}>
-                        <div className={`${styles.statIcon} ${styles.statToday}`}>
-                            <Users size={24} />
-                        </div>
-                        <div className={styles.statInfo}>
-                            <div className={styles.statValue}>{stats?.todayGuests || 0}</div>
-                            <div className={styles.statLabel}>Coperti Oggi</div>
-                        </div>
+                </Link>
+                <div className={styles.statCard}>
+                    <div className={`${styles.statIcon} ${styles.statMonth}`}>
+                        <TrendingUp size={24} />
                     </div>
-                    <Link href="/dashboard/reservations" style={{ textDecoration: 'none', display: 'flex', height: '100%' }}>
-                        <div className={`${styles.statCard} ${stats?.pendingCount > 0 ? styles.statAlert : ''}`} style={{ width: '100%' }}>
-                            <div className={`${styles.statIcon} ${styles.statPending}`}>
-                                <Clock size={24} />
+                    <div className={styles.statInfo}>
+                        <div className={styles.statValue}>{stats?.monthCount || 0}</div>
+                        <div className={styles.statLabel}>Prenotazioni Mese</div>
+                    </div>
+                </div>
+            </div>
+
+            <div className={styles.overviewGrid}>
+                {/* Agenda Rapida Section */}
+                <div className={styles.quickAgendaCard}>
+                    <div className={styles.quickAgendaHeader}>
+                        <h2 className={styles.quickAgendaTitle}>
+                            <Calendar size={22} />
+                            Prossime Prenotazioni
+                        </h2>
+                        <Link href="/dashboard/reservations" className={styles.btnSm} style={{ textDecoration: 'none' }}>
+                            Vedi Agenda <ChevronRight size={16} />
+                        </Link>
+                    </div>
+
+                    <div className={styles.reservationList}>
+                        {recentReservations.length > 0 ? (
+                            recentReservations.map((res) => (
+                                <div key={res.id} className={styles.reservationItem}>
+                                    <div className={styles.resLeft}>
+                                        <div className={styles.resName}>{res.customerName}</div>
+                                        <div className={styles.resMeta}>
+                                            <Users size={14} /> {res.guests} persone
+                                        </div>
+                                    </div>
+                                    <div className={styles.resTime}>
+                                        {res.time}
+                                    </div>
+                                </div>
+                            ))
+                        ) : (
+                            <div className={styles.emptyState}>
+                                Non ci sono prenotazioni recenti.
                             </div>
-                            <div className={styles.statInfo}>
-                                <div className={styles.statValue}>{stats?.pendingCount || 0}</div>
-                                <div className={styles.statLabel}>Da Confermare</div>
+                        )}
+                    </div>
+                </div>
+
+                {/* Right Side - Management Mini Cards */}
+                <div className={styles.managementGrid}>
+                    {/* Menu Card */}
+                    <Link href="/dashboard/menu" style={{ textDecoration: 'none' }}>
+                        <div className={styles.miniCard}>
+                            <div className={styles.miniCardHeader}>
+                                <Utensils size={18} />
+                                I Tuoi Menu
+                            </div>
+                            <p className={styles.miniCardDesc}>
+                                Gestisci piatti, prezzi e categorie. Il tuo menu è il cuore della tua attività.
+                            </p>
+                            <div className={styles.btnSm} style={{ marginTop: 'auto', alignSelf: 'flex-start' }}>
+                                Gestisci
                             </div>
                         </div>
                     </Link>
-                    <div className={styles.statCard}>
-                        <div className={`${styles.statIcon} ${styles.statMonth}`}>
-                            <TrendingUp size={24} />
+
+                    {/* QR Code Card */}
+                    <Link href="/dashboard/qrcode" style={{ textDecoration: 'none' }}>
+                        <div className={styles.miniCard}>
+                            <div className={styles.miniCardHeader}>
+                                <QrCode size={18} />
+                                QR Code
+                            </div>
+                            <p className={styles.miniCardDesc}>
+                                Visualizza e scarica il tuo QR Code unico per i tavoli.
+                            </p>
+                            <div className={styles.btnSm} style={{ marginTop: 'auto', alignSelf: 'flex-start' }}>
+                                Vedi QR
+                            </div>
                         </div>
-                        <div className={styles.statInfo}>
-                            <div className={styles.statValue}>{stats?.monthCount || 0}</div>
-                            <div className={styles.statLabel}>Prenotazioni Mese</div>
+                    </Link>
+
+                    {/* Restaurant Settings Card */}
+                    <Link href="/dashboard/restaurant" style={{ textDecoration: 'none' }}>
+                        <div className={styles.miniCard}>
+                            <div className={styles.miniCardHeader}>
+                                <Store size={18} />
+                                Ristorante
+                            </div>
+                            <p className={styles.miniCardDesc}>
+                                Orari, contatti e impostazioni generali della tua attività.
+                            </p>
+                            <div className={styles.btnSm} style={{ marginTop: 'auto', alignSelf: 'flex-start' }}>
+                                Modifica
+                            </div>
                         </div>
-                    </div>
-                </div>
-            )}
+                    </Link>
 
-            <div className={styles.grid}>
-                {/* Status Card */}
-                <div className={`${styles.card} ${styles.cardPremium}`}>
-                    <div className={styles.cardTitle}>
-                        <ShieldCheck size={20} className={styles.titleIcon} />
-                        Stato Abbonamento
-                    </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-                        {(() => {
-                            let parts = ['Menu'];
-                            if (subscription?.hasTranslations) parts.push('Traduzioni');
-                            if (subscription?.hasReservations) parts.push('Prenotazioni');
-                            const statusText = parts.join(' + ');
-                            const modulesCount = parts.length;
-
-                            const expiryDate = subscription?.endDate ? new Date(subscription.endDate) : null;
-                            const isExpired = expiryDate ? expiryDate < new Date() : false;
-
-                            return (
-                                <>
-                                    <div className={styles.statusText} style={{
-                                        fontSize: '1.2rem',
-                                        color: '#d4af37',
-                                        textTransform: 'uppercase',
-                                        marginBottom: '0.8rem',
-                                        fontWeight: '800',
-                                        letterSpacing: '1px'
-                                    }}>
-                                        {statusText}
-                                    </div>
-                                    <p className={styles.cardDesc} style={{ marginBottom: '1rem' }}>
-                                        {subscription?.plan === 'FULL'
-                                            ? 'Hai il pacchetto completo con tutti i moduli attivi.'
-                                            : modulesCount > 1
-                                                ? 'Hai un piano personalizzato con moduli aggiuntivi.'
-                                                : 'Hai il piano base (Solo Menu).'}
-                                    </p>
-
-                                    <div style={{
-                                        marginTop: 'auto',
-                                        padding: '16px',
-                                        backgroundColor: isExpired ? 'rgba(239, 68, 68, 0.1)' : 'rgba(255, 255, 255, 0.03)',
-                                        backdropFilter: 'blur(8px)',
-                                        borderRadius: '16px',
-                                        border: `1px solid ${isExpired ? 'rgba(239, 68, 68, 0.3)' : 'rgba(212, 175, 55, 0.1)'}`,
-                                        marginBottom: '1.5rem'
-                                    }}>
-                                        <div style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.5)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Scadenza Servizio</div>
-                                        <div style={{
-                                            fontWeight: 'bold',
-                                            color: isExpired ? '#ef4444' : '#ffffff',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: '8px',
-                                            fontSize: '1.1rem'
-                                        }}>
-                                            <Calendar size={18} className={styles.titleIcon} style={{ opacity: 1 }} />
-                                            {expiryDate ? expiryDate.toLocaleDateString() : 'Non impostata'}
-                                        </div>
-                                    </div>
-
-                                    {!isAppMode && (
-                                        <Link href="/dashboard/subscription" className={`${styles.button} ${styles.btnPrimary}`} style={{ width: '100%', textAlign: 'center' }}>
-                                            Abbonamento
-                                        </Link>
-                                    )}
-                                </>
-                            );
-                        })()}
-                    </div>
-                </div>
-
-                {/* Restaurant Settings Card */}
-                <div className={`${styles.card} ${styles.cardRestaurant}`}>
-                    <div className={styles.cardTitle}>
-                        <ShieldCheck size={20} className={styles.titleIcon} />
-                        Il Mio Ristorante
-                    </div>
-                    <p className={styles.cardDesc}>Aggiorna le informazioni di base, contatti e social della tua attività.</p>
-                    <div style={{ marginTop: 'auto' }}>
-                        <Link href="/dashboard/restaurant" className={`${styles.button} ${styles.btnPrimary}`}>
-                            Configura
+                    {/* Subscription Card */}
+                    {!isAppMode && (
+                        <Link href="/dashboard/subscription" style={{ textDecoration: 'none' }}>
+                            <div className={styles.miniCard} style={{ borderColor: 'rgba(212, 175, 55, 0.3)', background: 'rgba(212, 175, 55, 0.03)' }}>
+                                <div className={styles.miniCardHeader}>
+                                    <ShieldCheck size={18} />
+                                    Abbonamento
+                                </div>
+                                <div style={{ fontSize: '0.85rem', color: '#d4af37', fontWeight: '800' }}>
+                                    {subscription?.plan || 'SOLO MENU'}
+                                </div>
+                                <p className={styles.miniCardDesc}>
+                                    Gestisci il tuo piano e la fatturazione.
+                                </p>
+                            </div>
                         </Link>
-                    </div>
-                </div>
-
-                {/* Design Card */}
-                <div className={`${styles.card} ${styles.cardDesign}`}>
-                    <div className={styles.cardTitle}>
-                        <ShieldCheck size={20} className={styles.titleIcon} />
-                        Aspetto & Design
-                    </div>
-                    <p className={styles.cardDesc}>Personalizza colori, font e stile per rendere unico il tuo menu.</p>
-                    <div style={{ marginTop: 'auto' }}>
-                        <Link href="/dashboard/design" className={`${styles.button} ${styles.btnPrimary}`}>
-                            Personalizza
-                        </Link>
-                    </div>
-                </div>
-
-                {/* Reservations Card */}
-                <div className={`${styles.card} ${styles.cardAgenda}`}>
-                    <div className={styles.cardTitle}>
-                        <Calendar size={20} className={styles.titleIcon} />
-                        Agenda
-                    </div>
-                    <p className={styles.cardDesc}>Visualizza e gestisci le prenotazioni dei tuoi tavoli in tempo reale.</p>
-                    <div style={{ marginTop: 'auto' }}>
-                        <Link href="/dashboard/reservations" className={`${styles.button} ${styles.btnPrimary}`}>
-                            Apri Agenda
-                        </Link>
-                    </div>
-                </div>
-
-                {/* Menu Link Card */}
-                <div className={`${styles.card} ${styles.cardMenu}`}>
-                    <div className={styles.cardTitle}>
-                        <Utensils size={20} className={styles.titleIcon} />
-                        I Tuoi Menu
-                    </div>
-                    <p className={styles.cardDesc}>Gestisci i piatti, i prezzi e organizza le categorie del tuo menu digitale.</p>
-                    <div style={{ marginTop: 'auto' }}>
-                        <Link href="/dashboard/menu" className={`${styles.button} ${styles.btnPrimary}`}>
-                            Gestisci Menu
-                        </Link>
-                    </div>
-                </div>
-
-                {/* QR Code Card */}
-                <div className={`${styles.card} ${styles.cardQr}`}>
-                    <div className={styles.cardTitle}>
-                        <QrCode size={20} className={styles.titleIcon} />
-                        Il Tuo QR Code
-                    </div>
-                    <p className={styles.cardDesc}>Scarica e stampa il codice QR da posizionare sui tavoli per i tuoi clienti.</p>
-                    <div style={{ marginTop: 'auto' }}>
-                        <Link href="/dashboard/qrcode" className={`${styles.button} ${styles.btnPrimary}`}>
-                            Vedi QR Code
-                        </Link>
-                    </div>
+                    )}
                 </div>
             </div>
         </div>
