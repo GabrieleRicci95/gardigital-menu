@@ -69,7 +69,7 @@ export default function QRCodePage() {
             <div className={styles.card} style={{ textAlign: 'center', maxWidth: '600px', margin: '4rem auto' }}>
                 <h3 className={styles.cardTitle}>Nessun menu trovato</h3>
                 <p className={styles.cardDesc}>Configura prima il nome del tuo ristorante nella sezione dedicata per generare il tuo codice unico.</p>
-                <Link href="/dashboard/restaurant" className={styles.btnPrimary} style={{ width: 'auto', display: 'inline-flex' }}>
+                <Link href="/dashboard/restaurant" className={`${styles.button} ${styles.btnPrimary}`} style={{ width: 'auto', display: 'inline-flex' }}>
                     Configura Ristorante
                 </Link>
             </div>
@@ -119,7 +119,7 @@ export default function QRCodePage() {
                     )}
 
                     <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center', width: '100%' }}>
-                        <button onClick={downloadQR} className={styles.btnPrimary} style={{ flex: 1, minWidth: '180px' }}>
+                        <button onClick={downloadQR} className={`${styles.button} ${styles.btnPrimary}`} style={{ flex: 1, minWidth: '180px' }}>
                             <Download size={18} /> Scarica PNG
                         </button>
                         <a
