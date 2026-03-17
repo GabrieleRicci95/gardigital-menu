@@ -166,6 +166,31 @@ export default function DashboardClientLayout({
         }
     };
 
+    const handleDeleteSpecialModule = async (e: React.MouseEvent, type: 'wine' | 'champagne' | 'drink', name: string) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!confirm(`Sei sicuro di voler rimuovere il modulo "${name}"? Potrai riattivarlo dalle impostazioni del ristorante.`)) return;
+
+        try {
+            const body = {
+                [type === 'wine' ? 'isWineActive' : type === 'champagne' ? 'isChampagneActive' : 'isDrinkActive']: false
+            };
+            const res = await fetch('/api/restaurant', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body),
+            });
+            if (res.ok) {
+                await fetchRestaurantData();
+                if (pathname.includes(type)) {
+                    router.push('/dashboard');
+                }
+            }
+        } catch (error) {
+            console.error("Special modulo deletion failed", error);
+        }
+    };
+
     const handleDeleteModule = async (e: React.MouseEvent, slug: string, name: string) => {
         e.preventDefault();
         e.stopPropagation();
@@ -238,7 +263,8 @@ export default function DashboardClientLayout({
                 </div>
 
                 <nav className={styles.nav}>
-                    {navItems.map((item: any) => (
+                    {/* Top Items up to Menu */}
+                    {navItems.slice(0, 5).map((item: any) => (
                         <Link
                             key={item.href}
                             href={item.href}
@@ -253,7 +279,7 @@ export default function DashboardClientLayout({
                         </Link>
                     ))}
 
-                    {/* Moduli Dropdown */}
+                    {/* Moduli Dropdown - Positioned after Menu */}
                     <div className={`${styles.navDropdown} ${isModulesOpen ? styles.dropdownActive : ''}`}>
                         <div 
                             className={styles.dropdownHeader}
@@ -270,7 +296,7 @@ export default function DashboardClientLayout({
                         </div>
                         
                         <div className={styles.dropdownContent}>
-                            {/* Add New Module Item - Moved to Top */}
+                            {/* Add New Module Item - Top */}
                             <button 
                                 className={styles.addModuleDropdownBtn}
                                 onClick={handleCreateModule}
@@ -282,34 +308,61 @@ export default function DashboardClientLayout({
                             </button>
 
                             {isWineActive && (
-                                <Link 
-                                    href="/dashboard/wine-list" 
-                                    className={`${styles.dropdownItem} ${pathname === '/dashboard/wine-list' ? styles.activeDropdownItem : ''}`}
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                >
-                                    <Wine size={16} />
-                                    <span>Vini/Bollicine</span>
-                                </Link>
+                                <div className={styles.customModuleWrapper}>
+                                    <Link 
+                                        href="/dashboard/wine-list" 
+                                        className={`${styles.dropdownItem} ${pathname === '/dashboard/wine-list' ? styles.activeDropdownItem : ''}`}
+                                        onClick={() => setIsMobileMenuOpen(false)}
+                                    >
+                                        <Wine size={16} />
+                                        <span>Vini/Bollicine</span>
+                                    </Link>
+                                    <button 
+                                        className={styles.deleteModuleBtn}
+                                        onClick={(e) => handleDeleteSpecialModule(e, 'wine', 'Vini/Bollicine')}
+                                        title="Elimina modulo"
+                                    >
+                                        <Trash2 size={14} />
+                                    </button>
+                                </div>
                             )}
                             {isChampagneActive && (
-                                <Link 
-                                    href="/dashboard/champagne-list" 
-                                    className={`${styles.dropdownItem} ${pathname === '/dashboard/champagne-list' ? styles.activeDropdownItem : ''}`}
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                >
-                                    <GlassWater size={16} />
-                                    <span>Champagne</span>
-                                </Link>
+                                <div className={styles.customModuleWrapper}>
+                                    <Link 
+                                        href="/dashboard/champagne-list" 
+                                        className={`${styles.dropdownItem} ${pathname === '/dashboard/champagne-list' ? styles.activeDropdownItem : ''}`}
+                                        onClick={() => setIsMobileMenuOpen(false)}
+                                    >
+                                        <GlassWater size={16} />
+                                        <span>Champagne</span>
+                                    </Link>
+                                    <button 
+                                        className={styles.deleteModuleBtn}
+                                        onClick={(e) => handleDeleteSpecialModule(e, 'champagne', 'Champagne')}
+                                        title="Elimina modulo"
+                                    >
+                                        <Trash2 size={14} />
+                                    </button>
+                                </div>
                             )}
                             {isDrinkActive && (
-                                <Link 
-                                    href="/dashboard/drink-list" 
-                                    className={`${styles.dropdownItem} ${pathname === '/dashboard/drink-list' ? styles.activeDropdownItem : ''}`}
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                >
-                                    <Martini size={16} />
-                                    <span>Drink</span>
-                                </Link>
+                                <div className={styles.customModuleWrapper}>
+                                    <Link 
+                                        href="/dashboard/drink-list" 
+                                        className={`${styles.dropdownItem} ${pathname === '/dashboard/drink-list' ? styles.activeDropdownItem : ''}`}
+                                        onClick={() => setIsMobileMenuOpen(false)}
+                                    >
+                                        <Martini size={16} />
+                                        <span>Drink</span>
+                                    </Link>
+                                    <button 
+                                        className={styles.deleteModuleBtn}
+                                        onClick={(e) => handleDeleteSpecialModule(e, 'drink', 'Drink')}
+                                        title="Elimina modulo"
+                                    >
+                                        <Trash2 size={14} />
+                                    </button>
+                                </div>
                             )}
 
                             {customModules.map(m => (
@@ -333,6 +386,21 @@ export default function DashboardClientLayout({
                             ))}
                         </div>
                     </div>
+
+                    {/* Bottom Nav Items (QR Code) */}
+                    {navItems.slice(5).map((item: any) => (
+                        <Link
+                            key={item.href}
+                            href={item.href}
+                            className={`${styles.navItem} ${pathname === item.href ? styles.active : ''}`}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                            <div className={styles.navItemContent}>
+                                {item.icon}
+                                <span>{item.label}</span>
+                            </div>
+                        </Link>
+                    ))}
 
                     <button onClick={handleLogout} className={`${styles.navItem} ${styles.logout}`}>
                         <div className={styles.navItemContent}>
