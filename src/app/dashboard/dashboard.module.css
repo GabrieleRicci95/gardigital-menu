@@ -440,3 +440,31 @@
     color: #ef4444;
     transform: scale(1.1);
 }
+
+.addModuleDropdownBtn {
+    margin-top: 8px;
+    padding: 0.6rem 1rem;
+    border-radius: 10px;
+    background: rgba(212, 175, 55, 0.05);
+    border: 1px dashed rgba(212, 175, 55, 0.2);
+    color: #d4af37;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: fit-content;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.addModuleDropdownBtn:hover:not(:disabled) {
+    background: rgba(212, 175, 55, 0.1);
+    border-style: solid;
+    transform: translateX(4px);
+}
+
+.addModuleDropdownBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

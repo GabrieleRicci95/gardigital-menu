@@ -264,20 +264,10 @@ export default function DashboardClientLayout({
                                 <Layers size={20} />
                                 <span>Moduli</span>
                             </div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                <button 
-                                    className={styles.addModuleBtn}
-                                    onClick={handleCreateModule}
-                                    disabled={isCreatingModule}
-                                    title="Aggiungi modulo"
-                                >
-                                    <Plus size={16} />
-                                </button>
-                                <ChevronDown 
-                                    size={18} 
-                                    className={`${styles.chevron} ${isModulesOpen ? styles.chevronRotate : ''}`} 
-                                />
-                            </div>
+                            <ChevronDown 
+                                size={18} 
+                                className={`${styles.chevron} ${isModulesOpen ? styles.chevronRotate : ''}`} 
+                            />
                         </div>
                         
                         <div className={styles.dropdownContent}>
@@ -331,6 +321,16 @@ export default function DashboardClientLayout({
                                     </button>
                                 </div>
                             ))}
+
+                            {/* Add New Module Item */}
+                            <button 
+                                className={styles.addModuleDropdownBtn}
+                                onClick={handleCreateModule}
+                                disabled={isCreatingModule}
+                            >
+                                <Plus size={16} />
+                                <span>Aggiungi Modulo</span>
+                            </button>
                         </div>
                     </div>
 
