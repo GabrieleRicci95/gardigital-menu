@@ -5,6 +5,14 @@ import { getSession } from './lib/auth';
 export async function middleware(request: NextRequest) {
     const session = await getSession();
     const path = request.nextUrl.pathname;
+    const host = request.headers.get('host') || '';
+
+    // 🔥 Redirect 301 per i vecchi QR code stampati su gardigital.it
+    if (host.includes('gardigital.it')) {
+        if (path.startsWith('/menu') || path.startsWith('/book')) {
+            return NextResponse.redirect(new URL(path, 'https://www.solomenu.it'), 301);
+        }
+    }
 
     // Define public paths
     const isPublicPath = path === '/login' || path === '/register' || path === '/forgot-password' || path === '/reset-password' || path === '/' || path === '/contact' || path === '/vantaggi' || path === '/chi-siamo' || path === '/privacy' || path === '/terms' || path === '/cookies' || path === '/landing-menu' || path === '/ristoranti' || path === '/cocktail-bar' || path === '/beach-club' || path === '/hotel-room-service' || path.startsWith('/api/auth') || path.startsWith('/api/contact') || path.startsWith('/api/public') || path.startsWith('/demo');
