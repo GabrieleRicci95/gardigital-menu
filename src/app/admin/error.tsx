@@ -14,19 +14,22 @@ export default function AdminError({
     }, [error]);
 
     return (
-        <div style={{ padding: '40px', textAlign: 'center' }}>
-            <h2 style={{ color: '#c62828' }}>Si è verificato un errore nel pannello admin</h2>
-            <p style={{ margin: '20px 0', color: '#666' }}>{error.message || 'Errore imprevisto'}</p>
-            {error.digest && <p style={{ fontSize: '0.8rem', color: '#999' }}>ID Errore: {error.digest}</p>}
+        <div style={{ padding: '60px', textAlign: 'center', backgroundColor: 'var(--color-background)', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+            <h2 style={{ color: '#ef4444', fontFamily: 'var(--font-family-serif)', fontSize: '2.5rem', marginBottom: '1rem' }}>Spiacenti, si è verificato un errore</h2>
+            <p style={{ margin: '20px 0', color: 'rgba(255, 255, 255, 0.6)', maxWidth: '500px', lineHeight: '1.6' }}>{error.message || 'Si è verificato un problema imprevisto nel pannello amministrativo.'}</p>
+            {error.digest && <p style={{ fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.3)', marginBottom: '2rem' }}>Codice Errore: {error.digest}</p>}
             <button
                 onClick={() => reset()}
                 style={{
-                    padding: '10px 20px',
-                    background: '#1a237e',
-                    color: 'white',
+                    padding: '12px 32px',
+                    background: 'var(--color-primary)',
+                    color: '#000',
                     border: 'none',
-                    borderRadius: '8px',
-                    cursor: 'pointer'
+                    borderRadius: 'var(--radius-md)',
+                    cursor: 'pointer',
+                    fontWeight: '800',
+                    textTransform: 'uppercase',
+                    letterSpacing: '1px'
                 }}
             >
                 Riprova

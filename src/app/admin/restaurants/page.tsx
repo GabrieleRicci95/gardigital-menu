@@ -150,21 +150,21 @@ export default function AdminRestaurantsPage() {
 
             <div className={styles.statsGrid}>
                 <div className={styles.statCard}>
-                    <div className={styles.statIcon} style={{ background: '#eef2ff', color: '#4338ca' }}><Users size={24} /></div>
+                    <div className={styles.statIcon}><Users size={24} /></div>
                     <div className={styles.statInfo}>
                         <span className={styles.statValue}>{stats.total}</span>
                         <span className={styles.statLabel}>Partner Totali</span>
                     </div>
                 </div>
                 <div className={styles.statCard}>
-                    <div className={styles.statIcon} style={{ background: '#ecfdf5', color: '#059669' }}><CheckCircle2 size={24} /></div>
+                    <div className={styles.statIcon}><CheckCircle2 size={24} /></div>
                     <div className={styles.statInfo}>
                         <span className={styles.statValue}>{stats.active}</span>
                         <span className={styles.statLabel}>Abbonamenti Attivi</span>
                     </div>
                 </div>
                 <div className={styles.statCard}>
-                    <div className={styles.statIcon} style={{ background: '#fef2f2', color: '#dc2626' }}><Clock size={24} /></div>
+                    <div className={styles.statIcon}><Clock size={24} /></div>
                     <div className={styles.statInfo}>
                         <span className={styles.statValue}>{stats.expired}</span>
                         <span className={styles.statLabel}>Scaduti / In attesa</span>
@@ -196,7 +196,7 @@ export default function AdminRestaurantsPage() {
                         <option value={6}>6 Mesi</option>
                         <option value={12}>12 Mesi</option>
                     </select>
-                    <ChevronDown size={16} color="#64748b" />
+                    <ChevronDown size={16} />
                 </div>
             </div>
 
@@ -234,9 +234,9 @@ export default function AdminRestaurantsPage() {
                                                     <XCircle size={14} /> Scaduto
                                                 </span>
                                             ) : (
-                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                                                     {r.subscription?.plan === 'PILOT' ? (
-                                                        <span className={`${styles.badge} ${styles.badgeActive}`} style={{ background: '#fdf4ff', color: '#a21caf', border: '1px solid #f0abfc' }}>
+                                                        <span className={`${styles.badge} ${styles.badgeActive}`} style={{ background: 'rgba(162, 28, 175, 0.1)', color: '#a21caf', border: '1px solid rgba(162, 28, 175, 0.2)' }}>
                                                             <Crown size={14} /> Socio Pilota
                                                         </span>
                                                     ) : (
@@ -253,23 +253,10 @@ export default function AdminRestaurantsPage() {
                                                             </span>
                                                         )}
                                                     </div>
-                                                    {r.subscription?.isRecurring && (
-                                                        <span style={{
-                                                            fontSize: '0.65rem',
-                                                            color: '#10b981',
-                                                            fontWeight: 'bold',
-                                                            marginTop: '2px',
-                                                            display: 'flex',
-                                                            alignItems: 'center',
-                                                            gap: '2px'
-                                                        }}>
-                                                            <CreditCard size={10} /> RICORRENTE
-                                                        </span>
-                                                    )}
                                                 </div>
                                             )}
                                         </td>
-                                        <td style={{ color: '#64748b' }}>
+                                        <td style={{ opacity: 0.6 }}>
                                             {new Date(r.createdAt).toLocaleDateString('it-IT')}
                                         </td>
                                         <td>
@@ -277,16 +264,16 @@ export default function AdminRestaurantsPage() {
                                                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                                                     <span style={{
                                                         fontWeight: 700,
-                                                        color: isExpired ? '#ef4444' : '#334155'
+                                                        color: isExpired ? '#ef4444' : '#fff'
                                                     }}>
                                                         {new Date(r.subscription.endDate).toLocaleDateString('it-IT')}
                                                     </span>
-                                                    {!isExpired && <span style={{ fontSize: '0.7rem', color: '#94a3b8' }}>Scade presto</span>}
+                                                    {!isExpired && <span style={{ fontSize: '0.7rem', color: 'rgba(255, 255, 255, 0.4)' }}>Scade presto</span>}
                                                 </div>
                                             ) : r.subscription?.plan === 'PILOT' ? (
                                                 <span style={{ color: '#a21caf', fontWeight: 600 }}>Illimitato</span>
                                             ) : (
-                                                <span style={{ color: '#cbd5e1' }}>Mancante</span>
+                                                <span style={{ color: 'rgba(255, 255, 255, 0.2)' }}>Mancante</span>
                                             )}
                                         </td>
                                         <td>
@@ -309,7 +296,7 @@ export default function AdminRestaurantsPage() {
                                                     <button
                                                         onClick={() => handlePlanChange(r.id, 'PILOT')}
                                                         className={`${styles.btnAction}`}
-                                                        style={{ background: '#fdf4ff', color: '#a21caf', border: '1px solid #f5d0fe' }}
+                                                        style={{ background: 'rgba(162, 28, 175, 0.1)', color: '#a21caf', border: '1px solid rgba(162, 28, 175, 0.2)' }}
                                                         title="Socio Pilota (Free Forever)"
                                                     >
                                                         <Crown size={14} /> Pilot
@@ -334,7 +321,7 @@ export default function AdminRestaurantsPage() {
                                                     <Calendar size={18} />
                                                 </button>
 
-                                                <div style={{ width: '1px', height: '24px', background: '#e2e8f0', margin: '0 4px' }} />
+                                                <div style={{ width: '1px', height: '24px', background: 'rgba(212, 175, 55, 0.1)', margin: '0 4px' }} />
 
                                                 <button
                                                     onClick={() => handlePlanChange(r.id, 'BLOCKED')}

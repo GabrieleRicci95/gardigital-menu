@@ -98,38 +98,38 @@ export default async function AdminDashboardPage() {
 
                 <div className={styles.statsGrid}>
                     {/* Ristoranti */}
-                    <div className={`${styles.statCard} ${styles.cardBlue}`}>
-                        <div className={`${styles.statIcon} ${styles.iconBlue}`}>
+                    <div className={styles.statCard}>
+                        <div className={styles.statIcon}>
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18M5 21V7l8-4 8 4v14M8 21v-4h8v4" /></svg>
                         </div>
                         <div className={styles.statInfo}>
-                            <span className={styles.statLabel}>Ristoranti Iscritti</span>
                             <p className={styles.statValue}>{stats.totalRestaurants}</p>
-                            <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>Totale Piattaforma</span>
+                            <span className={styles.statLabel}>Ristoranti Iscritti</span>
+                            <span style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.4)', marginTop: '4px' }}>Totale Piattaforma</span>
                         </div>
                     </div>
 
                     {/* Abbonamenti */}
-                    <div className={`${styles.statCard} ${styles.cardPurple}`}>
-                        <div className={`${styles.statIcon} ${styles.iconPurple}`}>
+                    <div className={styles.statCard}>
+                        <div className={styles.statIcon}>
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
                         </div>
                         <div className={styles.statInfo}>
-                            <span className={styles.statLabel}>Abbonamenti Attivi</span>
                             <p className={styles.statValue}>{stats.activeSubscriptions}</p>
-                            <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>Piano Base + Moduli</span>
+                            <span className={styles.statLabel}>Abbonamenti Attivi</span>
+                            <span style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.4)', marginTop: '4px' }}>Piano Base + Moduli</span>
                         </div>
                     </div>
 
                     {/* Ricavi */}
-                    <div className={`${styles.statCard} ${styles.cardGold}`}>
-                        <div className={`${styles.statIcon} ${styles.iconGold}`}>
+                    <div className={styles.statCard}>
+                        <div className={styles.statIcon}>
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
                         </div>
                         <div className={styles.statInfo}>
-                            <span className={styles.statLabel}>Ricavi Mensili (Stimati)</span>
                             <p className={styles.statValue}>€ {stats.estimatedRevenue}</p>
-                            <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>Base 15€ + Extra (Cap 29,99€)</span>
+                            <span className={styles.statLabel}>Ricavi Mensili (Stimati)</span>
+                            <span style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.4)', marginTop: '4px' }}>Base 15€ + Extra (Cap 29,99€)</span>
                         </div>
                     </div>
 

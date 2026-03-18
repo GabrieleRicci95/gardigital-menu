@@ -92,7 +92,7 @@ export default function BookingClient({ restaurant }: BookingClientProps) {
                     </div>
                 </div>
                 <div className={styles.poweredBy}>
-                    Powered by <strong>Gardigital Booking</strong>
+                    Powered by <strong>gardigital.it</strong>
                 </div>
             </div>
         );
@@ -191,7 +191,7 @@ export default function BookingClient({ restaurant }: BookingClientProps) {
             </div>
 
             <div className={styles.poweredBy}>
-                Powered by <strong>Gardigital Booking</strong>
+                Powered by <strong>gardigital.it</strong>
             </div>
         </div>
     );

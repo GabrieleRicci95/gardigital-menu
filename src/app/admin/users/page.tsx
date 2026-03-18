@@ -103,8 +103,8 @@ export default function AdminUsersPage() {
             <header className={styles.header} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h1 className={styles.title}>Gestione Utenti</h1>
                 <button
-                    className={styles.button}
-                    style={{ background: '#1a237e', color: 'white', padding: '10px 20px', borderRadius: '8px', border: 'none', cursor: 'pointer' }}
+                    className={`${styles.btnAction} ${styles.btnGold}`}
+                    style={{ padding: '12px 24px' }}
                     onClick={() => setShowCreateModal(true)}
                 >
                     + Aggiungi Utente
@@ -127,33 +127,24 @@ export default function AdminUsersPage() {
                         <tbody>
                             {users.map(user => (
                                 <tr key={user.id}>
-                                    <td style={{ fontWeight: '600' }}>{user.name}</td>
+                                    <td style={{ fontWeight: '700', color: '#fff' }}>{user.name}</td>
                                     <td>{user.email}</td>
                                     <td>
-                                        <span style={{
-                                            padding: '4px 8px',
-                                            borderRadius: '4px',
-                                            fontSize: '0.8rem',
-                                            fontWeight: 'bold',
-                                            background: user.role === 'ADMIN' ? '#e8f5e9' : '#e3f2fd',
-                                            color: user.role === 'ADMIN' ? '#2e7d32' : '#1565c0',
-                                            border: user.role === 'ADMIN' ? '1px solid #c8e6c9' : '1px solid #bbdefb'
-                                        }}>
+                                        <span className={`${styles.badge} ${user.role === 'ADMIN' ? styles.badgeActive : styles.badgeActive}`} style={user.role === 'ADMIN' ? { background: 'rgba(168, 85, 247, 0.1)', color: '#a855f7', border: '1px solid rgba(168, 85, 247, 0.2)' } : {}}>
                                             {user.role}
                                         </span>
                                     </td>
                                     <td style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem' }}>
                                         {user.restaurants.map(r => r.name).join(', ') || '-'}
                                     </td>
-                                    <td style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem' }}>
+                                    <td style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem', opacity: 0.6 }}>
                                         {new Date(user.createdAt).toLocaleDateString('it-IT')}
                                     </td>
                                     <td>
                                         {user.role !== 'ADMIN' && (
                                             <button
                                                 onClick={() => handleDeleteUser(user.id)}
-                                                className={`${styles.btnAction} ${styles.btnRed}`}
-                                                style={{ backgroundColor: '#ef4444', color: 'white', border: 'none', fontSize: '0.75rem', padding: '4px 8px' }}
+                                                className={`${styles.btnAction} ${styles.btnDanger}`}
                                             >
                                                 Elimina
                                             </button>
@@ -167,56 +158,48 @@ export default function AdminUsersPage() {
             </div>
 
             {showCreateModal && (
-                <div style={{
-                    position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
-                }} onClick={() => setShowCreateModal(false)}>
-                    <div style={{
-                        background: 'white', padding: '30px', borderRadius: '12px',
-                        width: '100%', maxWidth: '400px', boxShadow: '0 10px 25px rgba(0,0,0,0.2)'
-                    }} onClick={e => e.stopPropagation()}>
-                        <h2 style={{ marginBottom: '20px', color: '#1a237e' }}>Crea Nuovo Utente</h2>
+                <div className={styles.modalOverlay} onClick={() => setShowCreateModal(false)}>
+                    <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
+                        <h2 className={styles.modalTitle}>Crea Nuovo Utente</h2>
 
                         {message && (
                             <div style={{
-                                padding: '10px', borderRadius: '4px', marginBottom: '15px',
-                                background: message.type === 'success' ? '#e8f5e9' : '#ffebee',
-                                color: message.type === 'success' ? '#2e7d32' : '#c62828',
-                                fontSize: '0.9rem'
+                                padding: '1rem', borderRadius: 'var(--radius-md)', marginBottom: '1.5rem',
+                                background: message.type === 'success' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                                color: message.type === 'success' ? '#10b981' : '#ef4444',
+                                fontSize: '0.9rem',
+                                border: `1px solid ${message.type === 'success' ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)'}`
                             }}>
                                 {message.text}
                             </div>
                         )}
 
                         <form onSubmit={handleCreateUser}>
-                            <div style={{ marginBottom: '15px' }}>
-                                <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem' }}>Nome Completo</label>
+                            <div className={styles.formGroup}>
+                                <label className={styles.label}>Nome Completo</label>
                                 <input
                                     type="text" required className={styles.input}
                                     value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })}
-                                    style={{ width: '100%' }}
                                 />
                             </div>
-                            <div style={{ marginBottom: '15px' }}>
-                                <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem' }}>Email</label>
+                            <div className={styles.formGroup}>
+                                <label className={styles.label}>Email</label>
                                 <input
                                     type="email" required className={styles.input}
                                     value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })}
-                                    style={{ width: '100%' }}
                                 />
                             </div>
-                            <div style={{ marginBottom: '15px' }}>
-                                <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem' }}>Password</label>
+                            <div className={styles.formGroup}>
+                                <label className={styles.label}>Password</label>
                                 <input
                                     type="password" required className={styles.input}
                                     value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })}
-                                    style={{ width: '100%' }}
                                 />
                             </div>
-                            <div style={{ marginBottom: '20px' }}>
-                                <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem' }}>Ruolo</label>
+                            <div className={styles.formGroup}>
+                                <label className={styles.label}>Ruolo</label>
                                 <select
-                                    className={styles.input} style={{ width: '100%' }}
+                                    className={styles.select}
                                     value={formData.role} onChange={e => setFormData({ ...formData, role: e.target.value })}
                                 >
                                     <option value="OWNER">OWNER (Ristorante)</option>
@@ -224,18 +207,16 @@ export default function AdminUsersPage() {
                                 </select>
                             </div>
 
-                            <div style={{ display: 'flex', gap: '10px' }}>
+                            <div className={styles.modalActions}>
                                 <button
                                     type="submit" disabled={isSubmitting}
-                                    className={styles.button}
-                                    style={{ flex: 1, background: '#1a237e', color: 'white', border: 'none', padding: '12px', borderRadius: '8px', cursor: 'pointer' }}
+                                    className={styles.btnSubmit}
                                 >
                                     {isSubmitting ? 'Creazione...' : 'Crea Utente'}
                                 </button>
                                 <button
                                     type="button" onClick={() => setShowCreateModal(false)}
-                                    className={styles.button}
-                                    style={{ background: '#f5f5f5', color: '#333', border: 'none', padding: '12px', borderRadius: '8px', cursor: 'pointer' }}
+                                    className={styles.btnCancel}
                                 >
                                     Annulla
                                 </button>

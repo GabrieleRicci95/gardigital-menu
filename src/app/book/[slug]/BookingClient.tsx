@@ -77,44 +77,40 @@ export default function BookingClient({ restaurant }: BookingClientProps) {
     };
 
     if (status === 'SUCCESS') {
-        const dateStr = new Date(formData.date).toLocaleDateString('it-IT', { day: 'numeric', month: 'long' });
         return (
-            <div className={styles.container} style={{ '--theme-color': restaurant.themeColor, '--theme-color-soft': themeColorSoft } as any}>
+            <div className={styles.container}>
                 <div className={styles.card}>
                     <div className={styles.successCard}>
-                        <div className={styles.successIcon}>📱</div>
-                        <h2 className={styles.title}>Quasi fatto!</h2>
+                        <div className={styles.successIcon}>✓</div>
+                        <h2 className={styles.title}>Richiesta Inviata</h2>
                         <p className={styles.subtitle}>
-                            Dati salvati. **Per completare la prenotazione, inviaci ora il messaggio preimpostato su WhatsApp.**
-                        </p>
-                        <p style={{ fontSize: '0.9rem', color: '#666', margin: '15px 0' }}>
-                            Se non si è aperta la chat automaticamente, clicca il tasto qui sotto:
+                            Dati ricevuti con successo. Per completare e confermare la prenotazione, clicca il tasto qui sotto e inviaci il messaggio su WhatsApp.
                         </p>
 
                         {restaurant.whatsappNumber && (
                             <a href={waUrl} target="_blank" rel="noopener noreferrer" className={styles.waBtn}>
-                                Invia Messaggio di Conferma
+                                Conferma su WhatsApp
                             </a>
                         )}
                     </div>
                 </div>
                 <div className={styles.poweredBy}>
-                    Powered by <strong>Gardigital Booking</strong>
+                    Powered by <strong>gardigital.it</strong>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className={styles.container} style={{ '--theme-color': restaurant.themeColor, '--theme-color-soft': themeColorSoft } as any}>
+        <div className={styles.container}>
             {restaurant.logoUrl && (
                 <img src={restaurant.logoUrl} alt={restaurant.name} className={styles.logo} />
             )}
             <h1 className={styles.title}>{restaurant.name}</h1>
-            <p className={styles.subtitle}>Prenota il tuo tavolo in pochi secondi</p>
+            <p className={styles.subtitle}>Esperienza di prenotazione premium</p>
 
             <div className={styles.card}>
-                <form onSubmit={handleSubmit} className={styles.inputGroup}>
+                <form onSubmit={handleSubmit}>
                     <div className={styles.section}>
                         <label className={styles.label}>Informazioni Contatto</label>
                         <div className={styles.inputGroup}>
@@ -126,13 +122,24 @@ export default function BookingClient({ restaurant }: BookingClientProps) {
                                 value={formData.name}
                                 onChange={e => setFormData({ ...formData, name: e.target.value })}
                             />
-                            <input
-                                type="tel"
-                                placeholder="Telefono"
-                                className={styles.input}
-                                value={formData.phone}
-                                onChange={e => setFormData({ ...formData, phone: e.target.value })}
-                            />
+                            <div className={styles.grid}>
+                                <input
+                                    required
+                                    type="tel"
+                                    placeholder="Telefono"
+                                    className={styles.input}
+                                    value={formData.phone}
+                                    onChange={e => setFormData({ ...formData, phone: e.target.value })}
+                                />
+                                <input
+                                    required
+                                    type="email"
+                                    placeholder="Email"
+                                    className={styles.input}
+                                    value={formData.email}
+                                    onChange={e => setFormData({ ...formData, email: e.target.value })}
+                                />
+                            </div>
                         </div>
                     </div>
 
@@ -155,8 +162,8 @@ export default function BookingClient({ restaurant }: BookingClientProps) {
                                 onChange={e => setFormData({ ...formData, time: e.target.value })}
                             />
                         </div>
-                        <div style={{ marginTop: '15px' }}>
-                            <label className={styles.label} style={{ fontSize: '0.8rem' }}>Numero di persone</label>
+                        <div style={{ marginTop: '20px' }}>
+                            <label className={styles.label} style={{ fontSize: '0.75rem' }}>Numero di persone</label>
                             <input
                                 required
                                 type="number"
@@ -166,28 +173,23 @@ export default function BookingClient({ restaurant }: BookingClientProps) {
                                 value={formData.guests}
                                 onChange={e => setFormData({ ...formData, guests: parseInt(e.target.value) })}
                             />
-                            {formData.guests >= (restaurant.bookingMaxGuestsPerSlot || 20) && (
-                                <p style={{ fontSize: '0.75rem', color: '#666', marginTop: '8px', fontStyle: 'italic' }}>
-                                    Per gruppi più grandi, ti preghiamo di contattarci telefonicamente.
-                                </p>
-                            )}
                         </div>
                     </div>
 
                     <div className={styles.section}>
-                        <label className={styles.label}>Note (Opzionale)</label>
+                        <label className={styles.label}>Richieste Speciali</label>
                         <textarea
                             className={styles.input}
-                            style={{ minHeight: '80px', fontFamily: 'inherit' }}
-                            placeholder="Allergie, seggioloni, preferenze tavolo..."
+                            style={{ minHeight: '100px', resize: 'vertical' }}
+                            placeholder="Allergie, preferenze tavolo, occasioni speciali..."
                             value={formData.notes}
                             onChange={e => setFormData({ ...formData, notes: e.target.value })}
                         />
                     </div>
 
                     {status === 'ERROR' && (
-                        <p style={{ color: '#ef4444', fontSize: '0.9rem', textAlign: 'center' }}>
-                            Ops! Qualcosa è andato storto. Riprova più tardi.
+                        <p style={{ color: 'var(--color-error)', fontSize: '0.9rem', textAlign: 'center', marginBottom: '1rem' }}>
+                            Errore durante l&apos;invio. Riprova più tardi.
                         </p>
                     )}
 
@@ -202,7 +204,7 @@ export default function BookingClient({ restaurant }: BookingClientProps) {
             </div>
 
             <div className={styles.poweredBy}>
-                Powered by <strong>Gardigital Booking</strong>
+                Powered by <strong>gardigital.it</strong>
             </div>
         </div>
     );

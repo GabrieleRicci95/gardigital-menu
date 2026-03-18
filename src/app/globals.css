@@ -46,16 +46,8 @@
   --transition-normal: 0.3s ease;
 }
 
-/* Dark Mode Variables (Optional foundation) */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: #121212;
-    --color-surface: #1e1e1e;
-    --color-text-main: #e0e0e0;
-    --color-text-secondary: #b0b0b0;
-    --color-border: #333333;
-  }
-}
+/* Standard Nocturne Gold Theme */
+/* (Overrides removed to maintain premium dark theme) */
 
 /* Modern CSS Reset */
 *,

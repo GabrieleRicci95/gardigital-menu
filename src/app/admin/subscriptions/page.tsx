@@ -69,41 +69,41 @@ export default function AdminSubscriptionsPage() {
                                     </td>
                                 </tr>
                             ) : (
-                                subscriptions.map((sub) => (
-                                    <tr key={sub.id}>
-                                        <td>
-                                            <div className={styles.ownerName}>{sub.restaurant?.owner?.name || 'N/A'}</div>
-                                            <div className={styles.ownerEmail}>{sub.restaurant?.owner?.email}</div>
-                                        </td>
-                                        <td style={{ fontWeight: '500' }}>
-                                            {sub.restaurant?.name}
-                                        </td>
-                                        <td style={{ textAlign: 'center' }}>
-                                            <span className={styles.badge} style={{
-                                                backgroundColor: '#e3f2fd',
-                                                color: '#1565c0',
-                                                border: '1px solid #bbdefb'
-                                            }}>
-                                                Standard (€15)
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <span style={{
-                                                color: sub.status === 'ACTIVE' ? '#2e7d32' : '#c62828',
-                                                fontWeight: '700',
-                                                fontSize: '0.85rem',
-                                                background: sub.status === 'ACTIVE' ? '#e8f5e9' : '#ffebee',
-                                                padding: '4px 8px',
-                                                borderRadius: '4px'
-                                            }}>
-                                                {sub.status === 'ACTIVE' ? 'ATTIVO' : sub.status}
-                                            </span>
-                                        </td>
-                                        <td style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem' }}>
-                                            {(sub.restaurant as any).createdAt ? new Date((sub.restaurant as any).createdAt).toLocaleDateString('it-IT') : '-'}
-                                        </td>
-                                    </tr>
-                                ))
+                                subscriptions.map((sub) => {
+                                    const isMastro = sub.restaurant?.name.toLowerCase().includes('mastro');
+                                    const isPilot = sub.plan === 'PILOT';
+                                    
+                                    return (
+                                        <tr key={sub.id}>
+                                            <td>
+                                                <div className={styles.ownerName}>{sub.restaurant?.owner?.name || 'N/A'}</div>
+                                                <div className={styles.ownerEmail}>{sub.restaurant?.owner?.email}</div>
+                                            </td>
+                                            <td style={{ fontWeight: '700', color: 'var(--color-primary)' }}>
+                                                {sub.restaurant?.name}
+                                            </td>
+                                            <td style={{ textAlign: 'center' }}>
+                                                {isPilot ? (
+                                                    <span className={`${styles.badge} ${styles.badgeActive}`} style={{ background: 'rgba(162, 28, 175, 0.1)', color: '#a21caf', border: '1px solid rgba(162, 28, 175, 0.2)' }}>
+                                                        Socio Pilota
+                                                    </span>
+                                                ) : (
+                                                    <span className={`${styles.badge} ${styles.badgeActive}`}>
+                                                        {sub.plan} (€{isMastro ? '14.99' : '15.00'})
+                                                    </span>
+                                                )}
+                                            </td>
+                                            <td>
+                                                <span className={`${styles.badge} ${sub.status === 'ACTIVE' ? styles.badgeActive : styles.badgeExpired}`}>
+                                                    {sub.status === 'ACTIVE' ? 'ATTIVO' : sub.status}
+                                                </span>
+                                            </td>
+                                            <td style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem', opacity: 0.6 }}>
+                                                {(sub.restaurant as any).createdAt ? new Date((sub.restaurant as any).createdAt).toLocaleDateString('it-IT') : '-'}
+                                            </td>
+                                        </tr>
+                                    );
+                                })
                             )}
                         </tbody>
                     </table>
