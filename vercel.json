@@ -4,5 +4,12 @@
             "path": "/api/backup",
             "schedule": "0 2 * * 0"
         }
+    ],
+    "redirects": [
+        {
+            "source": "/privacy-policy",
+            "destination": "/privacy",
+            "permanent": true
+        }
     ]
 }
