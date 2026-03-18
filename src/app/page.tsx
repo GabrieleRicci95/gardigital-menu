@@ -29,7 +29,7 @@ export default function Home() {
           <img src="/logo.png" alt="SoloMenu" className={styles.logoImg} />
         </div>
         <nav className={styles.nav}>
-
+          <Link href="/register" className={styles.navBtnPrimary}>Registrati</Link>
           <Link href="/login" className={styles.navBtn}>Area Clienti</Link>
         </nav>
       </header>

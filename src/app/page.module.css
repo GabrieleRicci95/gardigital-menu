@@ -92,9 +92,30 @@
 }
 
 .navBtn:hover {
+  background: rgba(212, 175, 55, 0.1);
+  box-shadow: 0 0 20px var(--brass-glow);
+  transform: translateY(-2px);
+}
+
+.navBtnPrimary {
   background: var(--brass);
   color: var(--midnight);
-  box-shadow: 0 0 30px var(--brass-glow);
+  padding: 0.8rem 2.2rem;
+  border: 1px solid var(--brass);
+  border-radius: 2px;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 20px var(--brass-glow);
+}
+
+.navBtnPrimary:hover {
+  background: #fff;
+  color: var(--midnight);
+  box-shadow: 0 0 35px var(--brass-glow);
   transform: translateY(-2px);
 }
 
