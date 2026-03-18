@@ -5,11 +5,11 @@ const config: CapacitorConfig = {
   appName: 'SoloMenu',
   webDir: 'public',
   server: {
-    url: 'https://www.gardigital.it/login',
+    url: 'https://www.solomenu.it/login',
     cleartext: true,
     allowNavigation: [
-      'www.gardigital.it',
-      'gardigital.it'
+      'www.solomenu.it',
+      'solomenu.it'
     ]
   }
 };
