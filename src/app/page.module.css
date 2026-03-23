@@ -59,7 +59,7 @@
 .nav {
   display: flex;
   align-items: center;
-  gap: 4rem;
+  gap: 1.5rem;
 }
 
 .navLink {
