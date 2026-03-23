@@ -239,8 +239,6 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
         }
     };
 
-    console.log('MenuClient render for slug:', restaurant.slug); // DEBUG
-    
     return (
         <div
             style={containerStyle}
@@ -410,11 +408,8 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
                 className={restaurant.slug === 'mastro-arrosticino-884' ? undefined : styles.hero}
                 style={restaurant.slug === 'mastro-arrosticino-884' ? {
                     backgroundColor: '#000000',
-                    backgroundImage: `url('${restaurant.coverImageUrl}')`,
-                    backgroundSize: 'contain',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'top center',
-                    minHeight: '400px',
+                    backgroundImage: 'none', // RIMOSSO: Evita il logo gigante ripetuto come sfondo
+                    minHeight: '350px',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
@@ -439,16 +434,16 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
                     {restaurant.slug?.toLowerCase() === 'demo' || restaurant.name?.toLowerCase().includes('demo') ? (
                         <h2 style={{ fontSize: '2.5rem', marginBottom: '10px', fontWeight: 'bold' }}>Benvenuto</h2>
                     ) : restaurant.logoUrl || restaurant.slug === 'mastro-arrosticino-884' ? (
-                        <img
-                            src={restaurant.slug === 'mastro-arrosticino-884' ? '/uploads/mastro-logo-transparent.png' : restaurant.logoUrl || ''}
-                            alt={restaurant.name}
-                            className={styles.logo}
-                            style={restaurant.slug === 'mastro-arrosticino-884' ? {
-                                maxHeight: '160px',
+                        <img 
+                            src={restaurant.slug === 'mastro-arrosticino-884' ? '/uploads/mastro-logo-transparent.png' : restaurant.logoUrl || ''} 
+                            alt={restaurant.name} 
+                            className={styles.logo} 
+                            style={restaurant.slug === 'mastro-arrosticino-884' ? { 
+                                maxHeight: '160px', 
                                 maxWidth: '280px',
-                                mixBlendMode: 'screen',
-                                filter: 'invert(1)',
-                                marginBottom: '10px'
+                                filter: 'brightness(0) invert(1)', // Lo rende bianco puro
+                                mixBlendMode: 'screen', // Rende trasparente lo sfondo bianco (ora nero)
+                                marginBottom: '10px' 
                             } : undefined}
                         />
                     ) : null}
