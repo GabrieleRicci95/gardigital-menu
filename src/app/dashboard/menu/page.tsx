@@ -7,6 +7,7 @@ import {
     closestCenter,
     KeyboardSensor,
     PointerSensor,
+    TouchSensor,
     useSensor,
     useSensors,
     DragEndEvent,
@@ -105,8 +106,20 @@ export default function MenuPage() {
     }>({ isOpen: false, itemId: null, categoryId: null, isCategory: false, isMenu: false, menuId: null });
 
     const sensors = useSensors(
-        useSensor(PointerSensor),
-        useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+        useSensor(PointerSensor, {
+            activationConstraint: {
+                distance: 8,
+            },
+        }),
+        useSensor(TouchSensor, {
+            activationConstraint: {
+                delay: 250,
+                tolerance: 5,
+            },
+        }),
+        useSensor(KeyboardSensor, { 
+            coordinateGetter: sortableKeyboardCoordinates 
+        })
     );
 
     useEffect(() => { fetchInitialData(); }, []);
@@ -481,7 +494,7 @@ export default function MenuPage() {
                                                     ) : (
                                                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1, justifyContent: 'space-between' }}>
                                                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                                                <div {...dragHandleProps} style={{ cursor: 'grab', color: 'rgba(255,255,255,0.2)', padding: '4px' }}>
+                                                                <div {...dragHandleProps} className={menuStyles.dragHandle} style={{ color: 'rgba(255,255,255,0.2)', padding: '4px' }}>
                                                                     <GripVertical size={20} />
                                                                 </div>
                                                                 <h3 style={{ margin: 0, fontSize: '1.3rem', fontFamily: 'Playfair Display, serif', color: '#d4af37' }}>{cat.name}</h3>

@@ -107,6 +107,18 @@
     box-shadow: 0 10px 40px rgba(212, 175, 55, 0.15);
 }
 
+.dragHandle {
+    touch-action: none;
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dragHandle:active {
+    cursor: grabbing;
+}
+
 /* ... existing styles ... */
 .addCategory {
     margin-bottom: var(--spacing-xl);
