@@ -21,10 +21,12 @@ export default function BeachClubLanding() {
             {/* Nav */}
             <nav className={styles.nav}>
                 <div className={styles.navContent}>
-                    <Link href="/" className={styles.logo}>
-                        <img src="/logo-black.png" alt="Gardigital Logo" className={styles.logoImg} />
-                    </Link>
-                    <Link href="/register" className={styles.navBtn}>Attiva Ora</Link>
+                    <div className={styles.logo}>
+                        <Link href="/">
+                            <img src="/logo.png" alt="SoloMenu" className={styles.logoImg} />
+                        </Link>
+                    </div>
+                    <Link href="/register" className={styles.navBtn}>Provalo 7 Giorni Gratis</Link>
                 </div>
             </nav>
 
@@ -47,7 +49,7 @@ export default function BeachClubLanding() {
                             Porta le ordinazioni direttamente sotto l&apos;ombrellone. QR code resistenti e un&apos;interfaccia ultra-rapida per massimizzare le vendite anche nei giorni di massimo affollamento.
                         </p>
                         <Link href="/register" className={styles.mainBtn}>
-                            Digitalizza la tua Spiaggia <ChevronRight size={20} />
+                            Inizia ora (7 Giorni Gratis) <ChevronRight size={20} />
                         </Link>
                     </motion.div>
 
@@ -71,7 +73,16 @@ export default function BeachClubLanding() {
                 </div>
             </section>
 
-            {/* Features */}
+            {/* CTA Final */}
+            <section className={styles.cta}>
+                <div className={styles.ctaBox}>
+                    <h2 className={styles.ctaTitle}>Rendi la tua estate indimenticabile.</h2>
+                    <p className={styles.ctaSubtitle}>Aumenta le vendite del 30% grazie all&apos;efficienza del menu digitale.</p>
+                    <Link href="/register" className={styles.finalBtn}>Inizia ora (7 Giorni Gratis)</Link>
+                </div>
+            </section>
+
+            {/* Features - Moved to End */}
             <section className={styles.features}>
                 <div className={styles.featuresGrid}>
                     <div className={styles.featureCard}>
@@ -89,15 +100,6 @@ export default function BeachClubLanding() {
                         <h3 className={styles.featureTitle}>QR Ultra-Resistenti</h3>
                         <p className={styles.featureText}>Ti forniamo i materiali migliori per resistere a salsedine, sabbia e sole cocente.</p>
                     </div>
-                </div>
-            </section>
-
-            {/* CTA Final */}
-            <section className={styles.cta}>
-                <div className={styles.ctaBox}>
-                    <h2 className={styles.ctaTitle}>Rendi la tua estate indimenticabile.</h2>
-                    <p className={styles.ctaSubtitle}>Aumenta le vendite del 30% grazie all&apos;efficienza del menu digitale.</p>
-                    <Link href="/register" className={styles.finalBtn}>Inizia la Prova Gratuita</Link>
                 </div>
             </section>
         </div>

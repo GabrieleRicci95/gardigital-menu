@@ -16,6 +16,16 @@
     border-bottom: 1px solid rgba(212, 175, 55, 0.1);
 }
 
+.navContent {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .pageWrapper {
     min-height: 100vh;
     display: flex;
@@ -24,7 +34,7 @@
 }
 
 .container {
-    padding: 8rem 2rem;
+    padding: 60px 2rem;
     flex: 1;
     width: 100%;
 }
@@ -92,9 +102,22 @@
     transform: translateY(-3px);
 }
 
+.logo {
+    position: relative;
+    z-index: 1001;
+}
+
 .logoImg {
-    height: 32px;
+    height: 150px;
     width: auto;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(20px);
+    filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.3));
+}
+
+.logoImg:hover {
+    transform: translateY(32px) scale(1.03);
+    filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.4));
 }
 
 .navBtn {
@@ -108,7 +131,7 @@
 }
 
 .hero {
-    padding: 160px 2rem 80px;
+    padding: 120px 2rem 40px;
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -175,17 +198,33 @@
 .floatingTag {
     position: absolute;
     top: 2rem;
-    left: -1rem;
-    background: #0f0f0f;
+    right: 1.5rem;
+    background: rgba(15, 15, 15, 0.85);
+    backdrop-filter: blur(10px);
     padding: 1rem 1.5rem;
-    border-radius: 4px;
+    border-radius: 8px;
     color: #d4af37;
     font-weight: 800;
     font-size: 0.8rem;
-    border: 1px solid #d4af37;
+    border: 1px solid rgba(212, 175, 55, 0.5);
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.features {
+    padding: 60px 2rem;
+    background: #050505;
+    border-top: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.featuresGrid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
 }
 
 .featureCard {
@@ -215,9 +254,13 @@
     background: #0f0f0f;
     border: 1px solid #d4af37;
     border-radius: 4px;
-    padding: 8rem 4rem;
+    padding: 6rem 4rem;
     color: #fff;
     text-align: center;
+}
+
+.cta {
+    padding: 40px 2rem 60px;
 }
 
 .ctaTitle {
@@ -233,4 +276,25 @@
     border-radius: 4px;
     font-weight: 800;
     text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    .navContent {
+        padding: 0 1rem;
+    }
+    
+    .logoImg {
+        height: 90px;
+        transform: translateY(15px);
+    }
+    
+    .navBtn {
+        padding: 0.6rem 1rem;
+        font-size: 0.75rem;
+        white-space: nowrap;
+    }
+    
+    .heroTitle {
+        font-size: 2.5rem;
+    }
 }
