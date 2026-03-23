@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from '../restaurant-dashboard.module.css';
-import { Store, MessageSquare, Globe, Heart, Save, ExternalLink, X } from 'lucide-react';
+import { Store, MessageSquare, Globe, Heart, Save, ExternalLink, X, AlertTriangle, Trash2 } from 'lucide-react';
 import LoadingOverlay from '@/components/common/LoadingOverlay';
 
 export default function RestaurantPage() {
@@ -105,6 +105,34 @@ export default function RestaurantPage() {
         }
     };
 
+    const handleDeleteAccount = async () => {
+        const confirmResult = window.confirm(
+            "ATTENZIONE: Questa azione è IRREVERSIBILE.\n\n" +
+            "Tutti i dati del tuo ristorante (menù, prezzi, ordini, impostazioni) verranno eliminati definitivamente.\n\n" +
+            "Sei sicuro di voler procedere?"
+        );
+
+        if (!confirmResult) return;
+
+        setSaving(true);
+        try {
+            const res = await fetch('/api/auth/delete-account', {
+                method: 'DELETE',
+            });
+
+            if (res.ok) {
+                alert("Account e dati eliminati con successo.");
+                window.location.href = '/login';
+            } else {
+                const data = await res.json();
+                alert(data.error || "Errore durante l'eliminazione.");
+            }
+        } catch (error) {
+            alert("Errore di connessione durante l'eliminazione.");
+        } finally {
+            setSaving(false);
+        }
+    };
 
     if (loading) return <LoadingOverlay />;
 
@@ -254,6 +282,56 @@ export default function RestaurantPage() {
                     </button>
                 </div>
             </div>
+
+            {/* Danger Zone */}
+            {!isDemo && (
+                <div style={{ marginTop: '5rem', borderTop: '1px solid rgba(239, 68, 68, 0.2)', paddingTop: '3rem' }}>
+                    <div style={{ 
+                        background: 'rgba(239, 68, 68, 0.05)', 
+                        border: '1px solid rgba(239, 68, 68, 0.2)', 
+                        borderRadius: '24px', 
+                        padding: '2rem',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '1.5rem'
+                    }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#ef4444' }}>
+                            <AlertTriangle size={24} />
+                            <h2 style={{ fontSize: '1.5rem', fontWeight: '800', margin: 0 }}>Zona Pericolo</h2>
+                        </div>
+                        <p style={{ color: 'rgba(255,255,255,0.6)', margin: 0, lineHeight: '1.6' }}>
+                            L&apos;eliminazione dell&apos;account è definitiva e comporterà la rimozione immediata di tutti i tuoi dati, inclusi i menu pubblici e le impostazioni del ristorante. Questa operazione non può essere annullata.
+                        </p>
+                        <button
+                            onClick={handleDeleteAccount}
+                            disabled={saving}
+                            style={{
+                                background: 'transparent',
+                                border: '1px solid #ef4444',
+                                color: '#ef4444',
+                                padding: '12px 24px',
+                                borderRadius: '12px',
+                                fontWeight: '700',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                                alignSelf: 'flex-start',
+                                transition: 'all 0.3s'
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.background = 'transparent';
+                            }}
+                        >
+                            <Trash2 size={18} />
+                            Elimina Definitivamente Account e Dati
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
