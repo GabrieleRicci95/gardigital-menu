@@ -403,51 +403,70 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
                 whatsappNumber={restaurant.whatsappNumber || ''}
                 restaurantId={activeMenuId}
             />
-
             {/* Hero Section */}
             <header
-                className={styles.hero}
-                style={restaurant.coverImageUrl ? (
-                    restaurant.slug === 'mastro-arrosticino-884' ? {
-                        backgroundImage: `url('${restaurant.coverImageUrl}')`,
-                        backgroundSize: 'contain',
-                        backgroundRepeat: 'no-repeat',
-                        backgroundPosition: 'center center',
-                        backgroundColor: '#000000', // Sfondo nero assoluto per trasparenza logo
-                        minHeight: '300px',
+                className={restaurant.slug === 'mastro-arrosticino-884' ? undefined : styles.hero}
+                style={restaurant.slug === 'mastro-arrosticino-884' ? {
+                    backgroundColor: '#000000',
+                    backgroundImage: `url('${restaurant.coverImageUrl}')`,
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'top center',
+                    minHeight: '400px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '40px 20px',
+                    textAlign: 'center'
+                } : (restaurant.coverImageUrl ? {
+                    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)), url('${restaurant.coverImageUrl}')`,
+                } : undefined)}
+            >
+                <div
+                    className={restaurant.slug === 'mastro-arrosticino-884' ? undefined : styles.heroContent}
+                    style={restaurant.slug === 'mastro-arrosticino-884' ? {
                         display: 'flex',
                         flexDirection: 'column',
-                        justifyContent: 'center',
                         alignItems: 'center',
-                        padding: '2rem 1rem'
-                    } : {
-                        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)), url('${restaurant.coverImageUrl}')`,
-                    }
-                ) : undefined}
-            >
-                {/* Removed dynamic background overlay */}
-
-                <div className={styles.heroContent} style={{ position: 'relative', zIndex: 1 }}>
+                        gap: '20px',
+                        width: '100%',
+                        zIndex: 1
+                    } : { position: 'relative', zIndex: 1 }}
+                >
                     {restaurant.slug?.toLowerCase() === 'demo' || restaurant.name?.toLowerCase().includes('demo') ? (
                         <h2 style={{ fontSize: '2.5rem', marginBottom: '10px', fontWeight: 'bold' }}>Benvenuto</h2>
-                    ) : restaurant.logoUrl ? (
-                        <img 
-                            src={restaurant.slug === 'mastro-arrosticino-884' ? '/uploads/mastro-logo-transparent.png' : restaurant.logoUrl || ''} 
-                            alt={restaurant.name} 
-                            className={styles.logo} 
-                            style={restaurant.slug === 'mastro-arrosticino-884' ? { 
-                                maxHeight: '140px', 
+                    ) : restaurant.logoUrl || restaurant.slug === 'mastro-arrosticino-884' ? (
+                        <img
+                            src={restaurant.slug === 'mastro-arrosticino-884' ? '/uploads/mastro-logo-transparent.png' : restaurant.logoUrl || ''}
+                            alt={restaurant.name}
+                            className={styles.logo}
+                            style={restaurant.slug === 'mastro-arrosticino-884' ? {
+                                maxHeight: '160px',
                                 maxWidth: '280px',
-                                filter: 'brightness(0) invert(1)', // Lo rende bianco puro per sfondo nero
-                                marginBottom: '2rem' 
+                                mixBlendMode: 'screen',
+                                filter: 'invert(1)',
+                                marginBottom: '10px'
                             } : undefined}
                         />
                     ) : null}
+
                     {restaurant.slug !== 'mastro-arrosticino-884' && restaurant.showNameInPublicMenu && (
                         <h1 className={styles.restaurantName}>{restaurant.name}</h1>
                     )}
+
                     {restaurant.description && (
-                        <p className={styles.restaurantDesc} style={restaurant.slug === 'mastro-arrosticino-884' ? { marginTop: '1rem', textShadow: '0 2px 10px rgba(0,0,0,0.5)' } : undefined}>
+                        <p
+                            className={restaurant.slug === 'mastro-arrosticino-884' ? undefined : styles.restaurantDesc}
+                            style={restaurant.slug === 'mastro-arrosticino-884' ? {
+                                color: 'white',
+                                fontSize: '1.1rem',
+                                lineHeight: '1.6',
+                                maxWidth: '90%',
+                                margin: '0 auto',
+                                textShadow: '0 2px 4px rgba(0,0,0,0.8)'
+                            } : undefined}
+                        >
                             {getRestaurantDesc()}
                         </p>
                     )}
