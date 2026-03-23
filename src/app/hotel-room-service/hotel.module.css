@@ -16,9 +16,32 @@
     border-bottom: 1px solid rgba(212, 175, 55, 0.1);
 }
 
+.navContent {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    position: relative;
+    z-index: 1001;
+}
+
 .logoImg {
-    height: 32px;
+    height: 150px;
     width: auto;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(20px);
+    filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.3));
+}
+
+.logoImg:hover {
+    transform: translateY(32px) scale(1.03);
+    filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.4));
 }
 
 .navBtn {
@@ -28,12 +51,29 @@
     border-radius: 4px;
     font-weight: 800;
     text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.2s;
 }
 
 .hero {
-    padding: 160px 2rem 80px;
+    padding: 120px 2rem 40px;
     max-width: 1200px;
     margin: 0 auto;
+}
+
+.heroContent {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+@media (max-width: 968px) {
+    .heroContent {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
 }
 
 .badge {
@@ -48,6 +88,7 @@
     font-weight: 700;
     text-transform: uppercase;
     color: #d4af37;
+    margin-bottom: 2rem;
 }
 
 .heroTitle {
@@ -69,6 +110,15 @@
     font-size: 1.25rem;
     line-height: 1.6;
     color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 3rem;
+    max-width: 540px;
+}
+
+@media (max-width: 968px) {
+    .heroSubtitle {
+        margin-left: auto;
+        margin-right: auto;
+    }
 }
 
 .mainBtn {
@@ -79,21 +129,107 @@
     color: #050505;
     padding: 1.25rem 2.5rem;
     border-radius: 4px;
+    font-size: 1rem;
     font-weight: 800;
     text-decoration: none;
     text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.mainBtn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 20px 40px rgba(255, 255, 255, 0.1);
+}
+
+.heroVisual {
+    position: relative;
+}
+
+.mockupContainer {
+    background: #0f0f0f;
+    border: 1px solid rgba(212, 175, 55, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+}
+
+.mockupImg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.floatingTag {
+    position: absolute;
+    bottom: 2rem;
+    right: 1.5rem;
+    background: rgba(15, 15, 15, 0.85);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(212, 175, 55, 0.5);
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    color: #d4af37;
+    font-weight: 800;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.features {
+    padding: 60px 2rem;
+    background: #050505;
+    border-top: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.featuresGrid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+}
+
+@media (max-width: 768px) {
+    .featuresGrid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .featureCard {
     background: #0f0f0f;
-    padding: 3rem;
+    padding: 3rem 2rem;
     border-radius: 4px;
     border: 1px solid rgba(212, 175, 55, 0.05);
+    transition: all 0.3s;
+    text-align: center;
+}
+
+.featureCard:hover {
+    border-color: #d4af37;
+    transform: translateY(-10px);
 }
 
 .featureIcon {
     color: #d4af37;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2.1rem;
+}
+
+.featureTitle {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+    color: #ffffff;
+}
+
+.featureText {
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.8;
 }
 
 .ctaBox {
@@ -102,21 +238,64 @@
     background: #0f0f0f;
     border: 1px solid #d4af37;
     border-radius: 4px;
-    padding: 8rem 4rem;
+    padding: 6rem 4rem;
     text-align: center;
+}
+
+.cta {
+    padding: 40px 2rem 60px;
 }
 
 .ctaTitle {
     font-family: 'Playfair Display', serif;
     font-size: 4rem;
     font-weight: 400;
+    margin-bottom: 1.5rem;
+}
+
+.ctaSubtitle {
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 3.5rem;
 }
 
 .finalBtn {
+    display: inline-flex;
+    align-items: center;
     background: #d4af37;
     color: #050505;
     padding: 1.5rem 4rem;
     border-radius: 4px;
+    font-size: 1rem;
     font-weight: 800;
     text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    transition: all 0.3s;
+}
+
+.finalBtn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2);
+}
+
+@media (max-width: 768px) {
+    .navContent {
+        padding: 0 1rem;
+    }
+    
+    .logoImg {
+        height: 90px;
+        transform: translateY(15px);
+    }
+    
+    .navBtn {
+        padding: 0.6rem 1rem;
+        font-size: 0.75rem;
+        white-space: nowrap;
+    }
+    
+    .heroTitle {
+        font-size: 2.5rem;
+    }
 }

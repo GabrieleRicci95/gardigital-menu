@@ -22,10 +22,12 @@ export default function HotelLanding() {
             {/* Nav */}
             <nav className={styles.nav}>
                 <div className={styles.navContent}>
-                    <Link href="/" className={styles.logo}>
-                        <img src="/logo-black.png" alt="Gardigital Logo" className={styles.logoImg} />
-                    </Link>
-                    <Link href="/register" className={styles.navBtn}>Attiva Ora</Link>
+                    <div className={styles.logo}>
+                        <Link href="/">
+                            <img src="/logo.png" alt="SoloMenu" className={styles.logoImg} />
+                        </Link>
+                    </div>
+                    <Link href="/register" className={styles.navBtn}>Provalo 7 Giorni Gratis</Link>
                 </div>
             </nav>
 
@@ -48,7 +50,7 @@ export default function HotelLanding() {
                             Eleva l&apos;esperienza dei tuoi ospiti con un menu digitale integrato. Ordini istantanei dalla camera, menu bar e ristorante in un&apos;unica interfaccia premium.
                         </p>
                         <Link href="/register" className={styles.mainBtn}>
-                            Migliora il tuo Servizio <ChevronRight size={20} />
+                            Inizia ora (7 Giorni Gratis) <ChevronRight size={20} />
                         </Link>
                     </motion.div>
 
@@ -66,13 +68,22 @@ export default function HotelLanding() {
                                 className={styles.floatingTag}
                             >
                                 <ConciergeBell size={16} /> Richiesta Ricevuta dalla Camera 102
-                            </motion.div>
+                              </motion.div>
                         </div>
                     </motion.div>
                 </div>
             </section>
 
-            {/* Features */}
+            {/* CTA Final */}
+            <section className={styles.cta}>
+                <div className={styles.ctaBox}>
+                    <h2 className={styles.ctaTitle}>Dai prestigio alla tua struttura.</h2>
+                    <p className={styles.ctaSubtitle}>Un piccolo cambiamento per un grande salto di qualità nel tuo servizio ospiti.</p>
+                    <Link href="/register" className={styles.finalBtn}>Inizia ora (7 Giorni Gratis)</Link>
+                </div>
+            </section>
+
+            {/* Features - Moved to End */}
             <section className={styles.features}>
                 <div className={styles.featuresGrid}>
                     <div className={styles.featureCard}>
@@ -90,15 +101,6 @@ export default function HotelLanding() {
                         <h3 className={styles.featureTitle}>Multi-Service</h3>
                         <p className={styles.featureText}>Gestisci spa, bar della piscina e ristorante con QR code differenziati ma un unico pannello di controllo.</p>
                     </div>
-                </div>
-            </section>
-
-            {/* CTA Final */}
-            <section className={styles.cta}>
-                <div className={styles.ctaBox}>
-                    <h2 className={styles.ctaTitle}>Dai prestigio alla tua struttura.</h2>
-                    <p className={styles.ctaSubtitle}>Un piccolo cambiamento per un grande salto di qualità nel tuo servizio ospiti.</p>
-                    <Link href="/register" className={styles.finalBtn}>Prova Gardigital Gratis</Link>
                 </div>
             </section>
         </div>
