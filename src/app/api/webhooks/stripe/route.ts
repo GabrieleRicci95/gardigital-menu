@@ -64,17 +64,25 @@ export async function POST(req: Request) {
         if (session.mode === 'subscription') {
             const restaurantId = session.metadata.restaurantId;
             const stripeSubscriptionId = session.subscription;
+            const planType = session.metadata.planType || 'MENU';
 
             if (restaurantId && stripeSubscriptionId) {
+                // Retrieve subscription to get current_period_end (handles trials correctly)
+                const stripeSubscription = await stripe.subscriptions.retrieve(stripeSubscriptionId);
+                const newEndDate = new Date(stripeSubscription.current_period_end * 1000);
+
                 await prisma.subscription.update({
                     where: { restaurantId },
                     data: {
+                        status: 'ACTIVE',
+                        endDate: newEndDate,
+                        plan: planType,
                         stripeSubscriptionId: stripeSubscriptionId,
                         isRecurring: true,
                         updatedAt: new Date()
                     }
                 });
-                console.log(`LINKED: Subscription ${stripeSubscriptionId} to restaurant ${restaurantId}`);
+                console.log(`PROACTIVE ACTIVATION: Subscription ${stripeSubscriptionId} activated for restaurant ${restaurantId} until ${newEndDate.toISOString()}`);
             }
         }
     }
@@ -116,6 +124,43 @@ export async function POST(req: Request) {
                 });
                 console.log(`SUCCESS: Subscription extended via Invoice to ${newEndDate.toISOString()} for restaurant ${restaurantId}`);
             }
+        }
+    }
+
+    if (event.type === 'customer.subscription.updated' || event.type === 'customer.subscription.created') {
+        const subscription = event.data.object as any;
+        const subscriptionId = subscription.id;
+        const restaurantId = subscription.metadata.restaurantId;
+
+        if (restaurantId) {
+            console.log(`--- SYNCING SUBSCRIPTION STATE: ${subscriptionId} for ${restaurantId} ---`);
+            const newEndDate = new Date(subscription.current_period_end * 1000);
+            const statusTransitions: Record<string, string> = {
+                'active': 'ACTIVE',
+                'trialing': 'ACTIVE',
+                'past_due': 'SUSPENDED',
+                'canceled': 'EXPIRED',
+                'unpaid': 'EXPIRED',
+                'incomplete': 'PENDING'
+            };
+
+            await prisma.subscription.upsert({
+                where: { restaurantId },
+                update: {
+                    status: statusTransitions[subscription.status] || 'ACTIVE',
+                    endDate: newEndDate,
+                    stripeSubscriptionId: subscriptionId,
+                    isRecurring: !subscription.cancel_at_period_end,
+                    updatedAt: new Date()
+                },
+                create: {
+                    restaurantId,
+                    status: statusTransitions[subscription.status] || 'ACTIVE',
+                    endDate: newEndDate,
+                    stripeSubscriptionId: subscriptionId,
+                    isRecurring: !subscription.cancel_at_period_end
+                }
+            });
         }
     }
 
