@@ -69,6 +69,69 @@ export default function Home() {
           </motion.div>
         </section>
 
+        {/* --- APP SHOWCASE --- */}
+        <section className={styles.appSection}>
+          <div className={styles.appGrid}>
+            <motion.div 
+              className={styles.appVisual}
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <div className={styles.appCircle} />
+              <img src="/assets/app-mockup.png" alt="SoloMenu App Mockup" className={styles.appImage} />
+            </motion.div>
+
+            <motion.div 
+              className={styles.appInfo}
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <motion.div
+                className={styles.heroBadge}
+                style={{ marginBottom: '1.5rem', border: '1px solid rgba(212, 175, 55, 0.3)' }}
+              >
+                <Smartphone size={14} /> SoloMenu Mobile
+              </motion.div>
+              <h2>L&apos;Evoluzione del <span className={styles.highlight}>Tuo Lavoro.</span></h2>
+              <p>
+                Gestisci il tuo ristorante ovunque tu sia. La nostra applicazione nativa ti permette di aggiornare piatti, prezzi e disponibilità in tempo reale direttamente dal tuo smartphone.
+              </p>
+              
+              <div className={styles.storeButtons}>
+                <Link href="#" className={styles.storeBtn}>
+                  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M26.6667 14.6667V17.3333C26.6667 20.2667 24.2667 22.6667 21.3333 22.6667H10.6667C7.73333 22.6667 5.33333 20.2667 5.33333 17.3333V9.33333C5.33333 6.4 7.73333 4 10.6667 4H21.3333C24.2667 4 26.6667 6.4 26.6667 9.33333V10.6667" stroke="#d4af37" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M12 11.3333C12.7364 11.3333 13.3333 10.7364 13.3333 10C13.3333 9.26362 12.7364 8.66666 12 8.66666C11.2636 8.66666 10.6667 9.26362 10.6667 10C10.6667 10.7364 11.2636 11.3333 12 11.3333Z" fill="#d4af37"/>
+                    <path d="M20 11.3333C20.7364 11.3333 21.3333 10.7364 21.3333 10C21.3333 9.26362 20.7364 8.66666 20 8.66666C19.2636 8.66666 18.6667 9.26362 18.6667 10C18.6667 10.7364 19.2636 11.3333 20 11.3333Z" fill="#d4af37"/>
+                    <path d="M12 17.3333C12 17.3333 13.3333 19.3333 16 19.3333C18.6667 19.3333 20 17.3333 20 17.3333" stroke="#d4af37" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  <div className={styles.storeInfo}>
+                    <span className={styles.storeSmall}>Disponibile su</span>
+                    <span className={styles.storeLarge}>App Store</span>
+                  </div>
+                </Link>
+
+                <Link href="#" className={styles.storeBtn}>
+                  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22.6667 2.66666H9.33333C5.65144 2.66666 2.66666 5.65144 2.66666 9.33333V22.6667C2.66666 26.3485 5.65144 29.3333 9.33333 29.3333H22.6667C26.3485 29.3333 29.3333 26.3485 29.3333 22.6667V9.33333C29.3333 5.65144 26.3485 2.66666 22.6667 2.66666Z" stroke="#d4af37" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M16 8V24" stroke="#d4af37" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M8 16H24" stroke="#d4af37" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  <div className={styles.storeInfo}>
+                    <span className={styles.storeSmall}>Disponibile su</span>
+                    <span className={styles.storeLarge}>Google Play</span>
+                  </div>
+                </Link>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+
         {/* --- STATS --- */}
         <section className={styles.stats}>
           <div className={styles.statsGrid}>
@@ -148,67 +211,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* --- APP SHOWCASE --- */}
-        <section className={styles.appSection}>
-          <div className={styles.appGrid}>
-            <motion.div 
-              className={styles.appVisual}
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <div className={styles.appCircle} />
-              <img src="/assets/app-mockup.png" alt="SoloMenu App Mockup" className={styles.appImage} />
-            </motion.div>
-
-            <motion.div 
-              className={styles.appInfo}
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <motion.div
-                className={styles.heroBadge}
-                style={{ marginBottom: '1.5rem', border: '1px solid rgba(212, 175, 55, 0.3)' }}
-              >
-                <Smartphone size={14} /> SoloMenu Mobile
-              </motion.div>
-              <h2>L&apos;Evoluzione del <span className={styles.highlight}>Tuo Lavoro.</span></h2>
-              <p>
-                Gestisci il tuo ristorante ovunque tu sia. La nostra applicazione nativa ti permette di aggiornare piatti, prezzi e disponibilità in tempo reale direttamente dal tuo smartphone.
-              </p>
-              
-              <div className={styles.storeButtons}>
-                <Link href="#" className={styles.storeBtn}>
-                  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M26.6667 14.6667V17.3333C26.6667 20.2667 24.2667 22.6667 21.3333 22.6667H10.6667C7.73333 22.6667 5.33333 20.2667 5.33333 17.3333V9.33333C5.33333 6.4 7.73333 4 10.6667 4H21.3333C24.2667 4 26.6667 6.4 26.6667 9.33333V10.6667" stroke="#d4af37" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M12 11.3333C12.7364 11.3333 13.3333 10.7364 13.3333 10C13.3333 9.26362 12.7364 8.66666 12 8.66666C11.2636 8.66666 10.6667 9.26362 10.6667 10C10.6667 10.7364 11.2636 11.3333 12 11.3333Z" fill="#d4af37"/>
-                    <path d="M20 11.3333C20.7364 11.3333 21.3333 10.7364 21.3333 10C21.3333 9.26362 20.7364 8.66666 20 8.66666C19.2636 8.66666 18.6667 9.26362 18.6667 10C18.6667 10.7364 19.2636 11.3333 20 11.3333Z" fill="#d4af37"/>
-                    <path d="M12 17.3333C12 17.3333 13.3333 19.3333 16 19.3333C18.6667 19.3333 20 17.3333 20 17.3333" stroke="#d4af37" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  <div className={styles.storeInfo}>
-                    <span className={styles.storeSmall}>Disponibile su</span>
-                    <span className={styles.storeLarge}>App Store</span>
-                  </div>
-                </Link>
-
-                <Link href="#" className={styles.storeBtn}>
-                  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M22.6667 2.66666H9.33333C5.65144 2.66666 2.66666 5.65144 2.66666 9.33333V22.6667C2.66666 26.3485 5.65144 29.3333 9.33333 29.3333H22.6667C26.3485 29.3333 29.3333 26.3485 29.3333 22.6667V9.33333C29.3333 5.65144 26.3485 2.66666 22.6667 2.66666Z" stroke="#d4af37" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M16 8V24" stroke="#d4af37" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M8 16H24" stroke="#d4af37" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  <div className={styles.storeInfo}>
-                    <span className={styles.storeSmall}>Disponibile su</span>
-                    <span className={styles.storeLarge}>Google Play</span>
-                  </div>
-                </Link>
-              </div>
-            </motion.div>
-          </div>
-        </section>
 
 
         {/* --- PRICING --- */}
