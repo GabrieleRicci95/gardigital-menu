@@ -388,8 +388,13 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
                         backgroundSize: 'contain',
                         backgroundRepeat: 'no-repeat',
                         backgroundPosition: 'center center',
-                        backgroundColor: '#111111',
-                        minHeight: '250px'
+                        backgroundColor: '#000000', // Sfondo nero assoluto per trasparenza logo
+                        minHeight: '300px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        padding: '2rem 1rem'
                     } : {
                         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)), url('${restaurant.coverImageUrl}')`,
                     }
@@ -402,17 +407,22 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
                         <h2 style={{ fontSize: '2.5rem', marginBottom: '10px', fontWeight: 'bold' }}>Benvenuto</h2>
                     ) : restaurant.logoUrl ? (
                         <img 
-                            src={restaurant.logoUrl} 
+                            src={restaurant.slug === 'mastro-arrosticino-884' ? '/uploads/mastro-logo-transparent.png' : restaurant.logoUrl || ''} 
                             alt={restaurant.name} 
                             className={styles.logo} 
-                            style={restaurant.slug === 'mastro-arrosticino-884' ? { maxHeight: '120px', maxWidth: '240px' } : undefined}
+                            style={restaurant.slug === 'mastro-arrosticino-884' ? { 
+                                maxHeight: '140px', 
+                                maxWidth: '280px',
+                                filter: 'brightness(0) invert(1)', // Lo rende bianco puro per sfondo nero
+                                marginBottom: '2rem' 
+                            } : undefined}
                         />
                     ) : null}
                     {restaurant.slug !== 'mastro-arrosticino-884' && restaurant.showNameInPublicMenu && (
                         <h1 className={styles.restaurantName}>{restaurant.name}</h1>
                     )}
                     {restaurant.description && (
-                        <p className={styles.restaurantDesc}>
+                        <p className={styles.restaurantDesc} style={restaurant.slug === 'mastro-arrosticino-884' ? { marginTop: '1rem', textShadow: '0 2px 10px rgba(0,0,0,0.5)' } : undefined}>
                             {getRestaurantDesc()}
                         </p>
                     )}
