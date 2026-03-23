@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, Suspense, memo } from 'react';
+import { useState, useEffect, Suspense, memo } from 'react';
 import { useIsNativeApp } from '@/lib/hooks/useIsNativeApp';
 import styles from './menu-public.module.css';
 
@@ -120,6 +120,16 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
     const [isTranslating, setIsTranslating] = useState(false);
     const [isLangOpen, setIsLangOpen] = useState(false);
     const isNativeApp = useIsNativeApp();
+
+    // Auto-open reservation if ?reserve=true is in URL
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('reserve') === 'true') {
+                setIsReservationOpen(true);
+            }
+        }
+    }, []);
 
     // Get any active categories/items context if we need it for menu lookup
     const activeMenuId = (initialRestaurant as any).menus?.[0]?.id || (initialRestaurant as any).id;
