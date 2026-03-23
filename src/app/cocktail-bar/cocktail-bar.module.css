@@ -26,10 +26,22 @@
     justify-content: space-between;
 }
 
+.logo {
+    position: relative;
+    z-index: 1001;
+}
+
 .logoImg {
-    height: 32px;
+    height: 150px;
     width: auto;
-    filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.3));
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(20px);
+    filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.3));
+}
+
+.logoImg:hover {
+    transform: translateY(32px) scale(1.03);
+    filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.4));
 }
 
 .navBtn {
@@ -45,7 +57,7 @@
 }
 
 .hero {
-    padding: 160px 2rem 80px;
+    padding: 120px 2rem 40px;
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -148,11 +160,12 @@
 .floatingTag {
     position: absolute;
     bottom: 2rem;
-    right: 2rem;
-    background: #0f0f0f;
-    border: 1px solid #d4af37;
+    right: 1.5rem;
+    background: rgba(15, 15, 15, 0.85);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(212, 175, 55, 0.5);
     padding: 0.75rem 1.25rem;
-    border-radius: 4px;
+    border-radius: 8px;
     color: #d4af37;
     font-weight: 800;
     font-size: 0.8rem;
@@ -161,10 +174,11 @@
     gap: 0.5rem;
     text-transform: uppercase;
     letter-spacing: 1px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
 .features {
-    padding: 100px 2rem;
+    padding: 60px 2rem;
     background: #050505;
     border-top: 1px solid rgba(212, 175, 55, 0.1);
 }
@@ -216,7 +230,7 @@
 }
 
 .cta {
-    padding: 0 2rem 100px;
+    padding: 40px 2rem 60px;
     background: #000;
 }
 
@@ -226,7 +240,7 @@
     background: #0f0f0f;
     border: 1px solid #d4af37;
     border-radius: 4px;
-    padding: 8rem 4rem;
+    padding: 6rem 4rem;
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -259,4 +273,30 @@
     text-transform: uppercase;
     letter-spacing: 3px;
     transition: all 0.3s;
+}
+
+@media (max-width: 768px) {
+    .navContent {
+        padding: 0 1rem;
+    }
+    
+    .logoImg {
+        height: 90px;
+        transform: translateY(15px);
+    }
+    
+    .navBtn {
+        padding: 0.6rem 1rem;
+        font-size: 0.75rem;
+        white-space: nowrap;
+    }
+    
+    .heroTitle {
+        font-size: 2.5rem;
+    }
+}
+
+.finalBtn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2);
 }

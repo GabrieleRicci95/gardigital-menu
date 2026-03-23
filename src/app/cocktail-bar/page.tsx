@@ -21,10 +21,12 @@ export default function CocktailBarLanding() {
             {/* Nav */}
             <nav className={styles.nav}>
                 <div className={styles.navContent}>
-                    <Link href="/" className={styles.logo}>
-                        <img src="/logo-black.png" alt="Gardigital Logo" className={styles.logoImg} />
-                    </Link>
-                    <Link href="/register" className={styles.navBtn}>Prova Ora</Link>
+                    <div className={styles.logo}>
+                        <Link href="/">
+                            <img src="/logo.png" alt="SoloMenu" className={styles.logoImg} />
+                        </Link>
+                    </div>
+                    <Link href="/register" className={styles.navBtn}>Provalo 7 Giorni Gratis</Link>
                 </div>
             </nav>
 
@@ -47,7 +49,7 @@ export default function CocktailBarLanding() {
                             Non far aspettare i tuoi clienti. Un menu rapido, visivamente sbalorditivo e facile da aggiornare. Perfetto per liste drink dinamiche e promozioni notturne.
                         </p>
                         <Link href="/register" className={styles.mainBtn}>
-                            Attiva il tuo Menu <ChevronRight size={20} />
+                            Attiva ora (7 Giorni Gratis) <ChevronRight size={20} />
                         </Link>
                     </motion.div>
 
@@ -71,7 +73,16 @@ export default function CocktailBarLanding() {
                 </div>
             </section>
 
-            {/* Features */}
+            {/* Call to Action */}
+            <section className={styles.cta}>
+                <div className={styles.ctaBox}>
+                    <h2 className={styles.ctaTitle}>Porta il tuo bar al livello successivo.</h2>
+                    <p className={styles.ctaSubtitle}>Inizia la tua prova gratuita e vedi la differenza dalla prima serata.</p>
+                    <Link href="/register" className={styles.finalBtn}>Inizia ora (7 Giorni Gratis)</Link>
+                </div>
+            </section>
+
+            {/* Features - Moved to End */}
             <section className={styles.features}>
                 <div className={styles.featuresGrid}>
                     <div className={styles.featureCard}>
@@ -89,15 +100,6 @@ export default function CocktailBarLanding() {
                         <h3 className={styles.featureTitle}>Listini Dinamici</h3>
                         <p className={styles.featureText}>Aggiorna i drink della serata o cambia i prezzi del fuori menu con un tap dal telefono.</p>
                     </div>
-                </div>
-            </section>
-
-            {/* Call to Action */}
-            <section className={styles.cta}>
-                <div className={styles.ctaBox}>
-                    <h2 className={styles.ctaTitle}>Porta il tuo bar al livello successivo.</h2>
-                    <p className={styles.ctaSubtitle}>Inizia la tua prova gratuita e vedi la differenza dalla prima serata.</p>
-                    <Link href="/register" className={styles.finalBtn}>Sali a Bordo Gratis</Link>
                 </div>
             </section>
         </div>
