@@ -26,10 +26,22 @@
     justify-content: space-between;
 }
 
+.logo {
+    position: relative;
+    z-index: 1001;
+}
+
 .logoImg {
-    height: 32px;
+    height: 150px;
     width: auto;
-    filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.3));
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(20px);
+    filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.3));
+}
+
+.logoImg:hover {
+    transform: translateY(32px) scale(1.03);
+    filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.4));
 }
 
 .navBtn {
@@ -50,7 +62,7 @@
 }
 
 .hero {
-    padding: 160px 2rem 80px;
+    padding: 120px 2rem 40px;
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -160,18 +172,20 @@
 .floatingCard {
     position: absolute;
     top: 2rem;
-    right: -1rem;
-    background: #0f0f0f;
+    right: 1.5rem;
+    background: rgba(15, 15, 15, 0.85);
+    backdrop-filter: blur(10px);
     padding: 1rem 1.5rem;
-    border-radius: 4px;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
     display: flex;
     align-items: center;
     gap: 0.75rem;
     font-weight: 700;
-    font-size: 0.8rem;
-    border: 1px solid #d4af37;
+    font-size: 0.85rem;
+    border: 1px solid rgba(212, 175, 55, 0.5);
     color: #ffffff;
+    z-index: 10;
 }
 
 .sparkleIcon {
@@ -179,7 +193,7 @@
 }
 
 .features {
-    padding: 100px 2rem;
+    padding: 60px 2rem;
     background: #050505;
     border-top: 1px solid rgba(212, 175, 55, 0.1);
 }
@@ -200,7 +214,7 @@
 
 .featureCard {
     background: #0f0f0f;
-    padding: 4rem 2rem;
+    padding: 3rem 2rem;
     border-radius: 4px;
     border: 1px solid rgba(212, 175, 55, 0.05);
     transition: all 0.3s;
@@ -231,21 +245,22 @@
 }
 
 .showcase {
-    padding: 120px 2rem;
+    padding: 60px 2rem;
 }
 
 .showcaseContent {
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 1fr 1.2fr;
-    gap: 6rem;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 4rem;
     align-items: center;
 }
 
 @media (max-width: 968px) {
     .showcaseContent {
         grid-template-columns: 1fr;
+        gap: 2rem;
     }
 }
 
@@ -295,8 +310,14 @@
     gap: 1rem;
 }
 
+.showcaseVisual {
+    display: flex;
+    justify-content: center;
+}
+
 .showcaseImg {
     width: 100%;
+    max-width: 350px;
     height: auto;
     border-radius: 8px;
     box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
@@ -304,7 +325,7 @@
 }
 
 .cta {
-    padding: 0 2rem 100px;
+    padding: 40px 2rem 60px;
 }
 
 .ctaBox {
@@ -312,7 +333,7 @@
     margin: 0 auto;
     background: #0f0f0f;
     border-radius: 4px;
-    padding: 8rem 4rem;
+    padding: 6rem 4rem;
     text-align: center;
     color: #fff;
     position: relative;
@@ -351,4 +372,25 @@
 .finalBtn:hover {
     transform: scale(1.05);
     box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2);
+}
+
+@media (max-width: 768px) {
+    .navContent {
+        padding: 0 1rem;
+    }
+    
+    .logoImg {
+        height: 90px;
+        transform: translateY(15px);
+    }
+    
+    .navBtn {
+        padding: 0.6rem 1rem;
+        font-size: 0.75rem;
+        white-space: nowrap;
+    }
+    
+    .heroTitle {
+        font-size: 2.5rem;
+    }
 }

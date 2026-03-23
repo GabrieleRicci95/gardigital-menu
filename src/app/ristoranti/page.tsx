@@ -22,9 +22,11 @@ export default function RistorantiLanding() {
             {/* Header / Nav */}
             <nav className={styles.nav}>
                 <div className={styles.navContent}>
-                    <Link href="/" className={styles.logo}>
-                        <img src="/logo_solomenu.png" alt="SoloMenu Logo" className={styles.logoImg} />
-                    </Link>
+                    <div className={styles.logo}>
+                        <Link href="/">
+                            <img src="/logo.png" alt="SoloMenu" className={styles.logoImg} />
+                        </Link>
+                    </div>
                     <Link
                         href="/register"
                         className={styles.navBtn}
