@@ -250,6 +250,31 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
                 }
             `}</style>
 
+            {/* AI Translation Loading Overlay */}
+            {isTranslating && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100vw',
+                    height: '100vh',
+                    backgroundColor: 'rgba(0,0,0,0.7)',
+                    backdropFilter: 'blur(8px)',
+                    zIndex: 9999,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'white',
+                    gap: '20px',
+                    textAlign: 'center',
+                    padding: '20px'
+                }}>
+                    <div className={styles.spinner} style={{ width: '60px', height: '60px', borderWidth: '5px' }}></div>
+                    <p style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>{t.translating}</p>
+                </div>
+            )}
+
 
 
 
