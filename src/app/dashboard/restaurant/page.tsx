@@ -12,6 +12,7 @@ export default function RestaurantPage() {
     const [saving, setSaving] = useState(false);
     const [message, setMessage] = useState('');
     const [isDemo, setIsDemo] = useState(false);
+    const [deletePassword, setDeletePassword] = useState('');
     
     // Original data to compare for dirty state
     const originalDataRef = useRef<any>(null);
@@ -106,6 +107,11 @@ export default function RestaurantPage() {
     };
 
     const handleDeleteAccount = async () => {
+        if (!deletePassword) {
+            alert("Inserisci la password di accesso per confermare l'eliminazione.");
+            return;
+        }
+
         const confirmResult = window.confirm(
             "ATTENZIONE: Questa azione è IRREVERSIBILE.\n\n" +
             "Tutti i dati del tuo ristorante (menù, prezzi, ordini, impostazioni) verranno eliminati definitivamente.\n\n" +
@@ -118,6 +124,8 @@ export default function RestaurantPage() {
         try {
             const res = await fetch('/api/auth/delete-account', {
                 method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password: deletePassword })
             });
 
             if (res.ok) {
@@ -302,6 +310,27 @@ export default function RestaurantPage() {
                         <p style={{ color: 'rgba(255,255,255,0.6)', margin: 0, lineHeight: '1.6' }}>
                             L&apos;eliminazione dell&apos;account è definitiva e comporterà la rimozione immediata di tutti i tuoi dati, inclusi i menu pubblici e le impostazioni del ristorante. Questa operazione non può essere annullata.
                         </p>
+                        
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxWidth: '400px' }}>
+                            <label style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.5)', fontWeight: '600' }}>
+                                Conferma con la tua password di accesso:
+                            </label>
+                            <input
+                                type="password"
+                                value={deletePassword}
+                                onChange={(e) => setDeletePassword(e.target.value)}
+                                placeholder="Inserisci la password"
+                                style={{
+                                    padding: '12px 16px',
+                                    background: 'rgba(255, 255, 255, 0.05)',
+                                    border: '1px solid rgba(239, 68, 68, 0.3)',
+                                    borderRadius: '12px',
+                                    color: '#ffffff',
+                                    outline: 'none'
+                                }}
+                            />
+                        </div>
+
                         <button
                             onClick={handleDeleteAccount}
                             disabled={saving}

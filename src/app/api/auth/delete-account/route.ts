@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { getSession, logout, isDemoSession } from '@/lib/auth';
+import { getSession, logout, isDemoSession, verifyPassword } from '@/lib/auth';
 
-export async function DELETE() {
+export async function DELETE(request: Request) {
     const session = await getSession();
     
     if (!session) {
@@ -13,32 +13,48 @@ export async function DELETE() {
         return NextResponse.json({ error: 'L\'account demo non può essere eliminato.' }, { status: 403 });
     }
 
-    const userId = session.user.id;
-
     try {
-        // 1. Trova tutti i ristoranti dell'utente
+        const { password } = await request.json();
+
+        if (!password) {
+            return NextResponse.json({ error: 'Password richiesta per confermare l\'operazione.' }, { status: 400 });
+        }
+
+        const userId = session.user.id;
+
+        // 1. Recupera l'utente per verificare la password
+        const user = await prisma.user.findUnique({
+            where: { id: userId }
+        });
+
+        if (!user) {
+            return NextResponse.json({ error: 'Utente non trovato.' }, { status: 404 });
+        }
+
+        // 2. Verifica la password
+        const isPasswordCorrect = await verifyPassword(password, user.password);
+        if (!isPasswordCorrect) {
+            return NextResponse.json({ error: 'Password errata. Impossibile procedere con l\'eliminazione.' }, { status: 401 });
+        }
+
+        // 3. Trova tutti i ristoranti dell'utente
         const restaurants = await prisma.restaurant.findMany({
             where: { ownerId: userId }
         });
 
-        // 2. Elimina i ristoranti uno per uno 
-        // Nota: Nel Prisma schema, molti modelli hanno onDelete: Cascade rispetto a Restaurant.
-        // Tuttavia, per sicurezza e per gestire eventuali mancanze nel cascade, 
-        // eseguiamo un'eliminazione pulita.
-        
+        // 4. Elimina i ristoranti uno per uno
         for (const rest of restaurants) {
-            // Eliminiamo il ristorante. Il cascade dovrebbe pulire il resto.
             await prisma.restaurant.delete({
                 where: { id: rest.id }
             });
         }
 
-        // 3. Elimina l'utente stesso
+        // 5. Elimina l'utente stesso
         await prisma.user.delete({
             where: { id: userId }
         });
 
-        // 4. Esegui il logout (cancella il cookie di sessione)
+        // 6. Esegui il logout
         await logout();
 
         return NextResponse.json({ success: true, message: 'Account e dati eliminati con successo' });
