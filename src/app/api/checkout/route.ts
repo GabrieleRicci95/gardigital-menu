@@ -79,6 +79,7 @@ export async function POST(req: Request) {
                 planType: planType
             },
             subscription_data: {
+                trial_period_days: 7,
                 metadata: {
                     restaurantId: restaurant.id,
                     ownerId: session.user.id,

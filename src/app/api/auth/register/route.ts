@@ -31,9 +31,7 @@ export async function POST(request: Request) {
             },
         });
 
-        // Create Default Restaurant for the user with 30 days Trial
-        const trialEndDate = new Date();
-        trialEndDate.setDate(trialEndDate.getDate() + 30);
+        // Create Default Restaurant for the user (Subscription PENDING until card added)
         const defaultSlug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + Math.floor(Math.random() * 10000);
 
         await prisma.restaurant.create({
@@ -45,9 +43,9 @@ export async function POST(request: Request) {
                 subscription: {
                     create: {
                         plan: 'BASE',
-                        status: 'ACTIVE',
+                        status: 'PENDING', // Force paywall
                         startDate: new Date(),
-                        endDate: trialEndDate,
+                        endDate: new Date(), // Already expired
                         hasTranslations: true,
                         hasReservations: true
                     }

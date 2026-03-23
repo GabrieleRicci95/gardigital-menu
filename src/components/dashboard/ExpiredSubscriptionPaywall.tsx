@@ -61,7 +61,7 @@ export default function ExpiredSubscriptionPaywall({ isAppMode, onManageClick }:
                     marginBottom: '16px', 
                     fontFamily: 'Playfair Display, serif' 
                 }}>
-                    Servizio Sospeso
+                    Attiva SoloMenu
                 </h2>
                 
                 <p style={{ 
@@ -71,8 +71,8 @@ export default function ExpiredSubscriptionPaywall({ isAppMode, onManageClick }:
                     marginBottom: '32px' 
                 }}>
                     {isAppMode 
-                        ? "Il tuo abbonamento è scaduto. Per continuare a gestire il tuo menu e riattivare il servizio, accedi al portale web da computer o browser mobile."
-                        : "Il tuo abbonamento è scaduto. Rinnova ora per sbloccare le funzionalità della dashboard e riattivare il tuo menu pubblico."
+                        ? "Per iniziare a gestire il tuo menu e attivare i tuoi 7 GIORNI DI PROVA GRATUITA, accedi al portale web e registra un metodo di pagamento."
+                        : "Registra ora un metodo di pagamento per sbloccare la dashboard e attivare i tuoi 7 GIORNI DI PROVA GRATUITA. Nessun addebito verrà effettuato prima della fine della prova."
                     }
                 </p>
 

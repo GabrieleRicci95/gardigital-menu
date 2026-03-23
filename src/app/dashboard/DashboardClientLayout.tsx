@@ -75,13 +75,19 @@ export default function DashboardClientLayout({
                         setSubscriptionPlan(plan);
                         setHasReservations(!!data.restaurant.subscription.hasReservations);
 
+                        const status = data.restaurant.subscription.status;
                         const endDate = data.restaurant.subscription.endDate;
-                        if (endDate) {
-                            const isExpired = plan === 'PILOT' ? false : new Date(endDate) < new Date();
-                            setIsSubscriptionActive(!isExpired);
+                        
+                        if (status === 'ACTIVE') {
+                            if (endDate) {
+                                const isExpired = plan === 'PILOT' ? false : new Date(endDate) < new Date();
+                                setIsSubscriptionActive(!isExpired);
+                            } else {
+                                setIsSubscriptionActive(plan === 'PILOT');
+                            }
                         } else {
-                            // If no end date and not pilot, it might be expired if not active
-                            setIsSubscriptionActive(plan === 'PILOT');
+                            // PENDING, EXPIRED, etc.
+                            setIsSubscriptionActive(false);
                         }
 
                         if (data.restaurant.subscription.hasReservations) {
