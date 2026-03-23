@@ -23,13 +23,13 @@ export default function RistorantiLanding() {
             <nav className={styles.nav}>
                 <div className={styles.navContent}>
                     <Link href="/" className={styles.logo}>
-                        <img src="/logo-black.png" alt="Gardigital Logo" className={styles.logoImg} />
+                        <img src="/logo_solomenu.png" alt="SoloMenu Logo" className={styles.logoImg} />
                     </Link>
                     <Link
                         href="/register"
                         className={styles.navBtn}
                     >
-                        Prova Gratis
+                        Provalo 7 Giorni Gratis
                     </Link>
                 </div>
             </nav>
@@ -54,7 +54,7 @@ export default function RistorantiLanding() {
                         </p>
                         <div className={styles.heroActions}>
                             <Link href="/register" className={styles.mainBtn}>
-                                Inizia Ora Gratis <ChevronRight size={20} />
+                                Inizia ora (7 Giorni Gratis) <ChevronRight size={20} />
                             </Link>
                         </div>
                     </motion.div>
@@ -73,14 +73,41 @@ export default function RistorantiLanding() {
                                 className={styles.floatingCard}
                             >
                                 <Sparkles size={16} className={styles.sparkleIcon} />
-                                <span>Traduzioni in 10+ lingue</span>
+                                <span>Menu Multi-lingua AI</span>
                             </motion.div>
                         </div>
                     </motion.div>
                 </div>
             </section>
 
-            {/* Features Section */}
+            {/* Showcase Section */}
+            <section className={styles.showcase}>
+                <div className={styles.showcaseContent}>
+                    <div className={styles.showcaseText}>
+                        <h2 className={styles.sectionTitle}>Non solo un menu, <br />un sistema di marketing.</h2>
+                        <ul className={styles.checkList}>
+                            <li><Zap size={18} /> Aumenta lo scontrino medio</li>
+                            <li><Zap size={18} /> Valorizza l'estetica dei tuoi piatti</li>
+                            <li><Zap size={18} /> Elimina i costi di ristampa per errori</li>
+                            <li><Zap size={18} /> Semplifica l'esperienza dei tuoi ospiti</li>
+                        </ul>
+                    </div>
+                    <div className={styles.showcaseVisual}>
+                        <img src="/assets/menu-beach.png" alt="Business efficiency" className={styles.showcaseImg} />
+                    </div>
+                </div>
+            </section>
+
+            {/* CTA Final */}
+            <section className={styles.cta}>
+                <div className={styles.ctaBox}>
+                    <h2 className={styles.ctaTitle}>Il futuro del tuo ristorante inizia oggi.</h2>
+                    <p className={styles.ctaSubtitle}>Unisciti a centinaia di ristoratori che hanno già digitalizzato il successo.</p>
+                    <Link href="/register" className={styles.finalBtn}>Attiva Ora (7 Giorni Gratis)</Link>
+                </div>
+            </section>
+
+            {/* Features Section - Moved to End */}
             <section className={styles.features}>
                 <div className={styles.featuresGrid}>
                     <div className={styles.featureCard}>
@@ -98,34 +125,6 @@ export default function RistorantiLanding() {
                         <h3 className={styles.featureTitle}>Esperienza Gourmet</h3>
                         <p className={styles.featureText}>Design raffinato, foto in alta risoluzione e caricamento istantaneo per il massimo del comfort.</p>
                     </div>
-                </div>
-            </section>
-
-            {/* Showcase Section */}
-            <section className={styles.showcase}>
-                <div className={styles.showcaseContent}>
-                    <div className={styles.showcaseText}>
-                        <h2 className={styles.sectionTitle}>Non solo un menu, <br />un sistema di marketing.</h2>
-                        <ul className={styles.checkList}>
-                            <li><Zap size={18} /> Aumenta lo scontrino medio</li>
-                            <li><Zap size={18} /> Riduci i tempi di attesa al tavolo</li>
-                            <li><Zap size={18} /> Elimina i costi di ristampa per errori</li>
-                            <li><Zap size={18} /> Colleziona dati per le tue campagne Ads</li>
-                        </ul>
-                        <Link href="/register" className={styles.secondaryBtn}>Scopri tutte le funzioni <ArrowRight size={18} /></Link>
-                    </div>
-                    <div className={styles.showcaseVisual}>
-                        <img src="/assets/menu-beach.png" alt="Business efficiency" className={styles.showcaseImg} />
-                    </div>
-                </div>
-            </section>
-
-            {/* CTA Final */}
-            <section className={styles.cta}>
-                <div className={styles.ctaBox}>
-                    <h2 className={styles.ctaTitle}>Il futuro del tuo ristorante inizia oggi.</h2>
-                    <p className={styles.ctaSubtitle}>Unisciti a centinaia di ristoratori che hanno già digitalizzato il successo.</p>
-                    <Link href="/register" className={styles.finalBtn}>Prova Gratis 30 Giorni</Link>
                 </div>
             </section>
         </div>
