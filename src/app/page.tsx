@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from "react";
+
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -15,7 +17,8 @@ import {
   ArrowRight,
   TrendingUp,
   Sparkles,
-  Check
+  Check,
+  ChevronDown
 } from "lucide-react";
 import Footer from "@/components/layout/Footer";
 import styles from "./page.module.css";
@@ -281,10 +284,77 @@ export default function Home() {
             />
           </div>
         </section>
+
+        {/* --- FAQ SECTION --- */}
+        <FAQSection />
       </main>
 
       <Footer />
     </div>
+  );
+}
+
+function FAQSection() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const faqs = [
+    {
+      q: "Come funziona la prova gratuita di 7 giorni?",
+      a: "Puoi esplorare tutte le funzionalità di SoloMenu senza limitazioni. Dopo 7 giorni, potrai decidere se attivare l'abbonamento o meno. Non ci sono costi nascosti."
+    },
+    {
+      q: "Posso disdire l'abbonamento in ogni momento?",
+      a: "Assolutamente sì. Dalla tua dashboard puoi disattivare il rinnovo automatico con un solo click. Continuerai ad avere accesso ai servizi fino alla fine del periodo già pagato."
+    },
+    {
+      q: "È necessario acquistare hardware specifico (tablet o simili)?",
+      a: "No, SoloMenu è una web-app ottimizzata che funziona su qualsiasi smartphone, tablet o PC. Non hai bisogno di acquistare terminali dedicati."
+    },
+    {
+      q: "Come vengono generati i QR Code per i tavoli?",
+      a: "Una volta creato il menu, la dashboard genera automaticamente dei QR Code professionali in alta risoluzione che puoi scaricare, stampare e posizionare sui tuoi tavoli."
+    },
+    {
+      q: "Il menu supporta le traduzioni in altre lingue?",
+      a: "Sì, offriamo un modulo di traduzione basato su Intelligenza Artificiale che traduce istantaneamente i tuoi piatti e descrizioni per i tuoi clienti internazionali."
+    }
+  ];
+
+  return (
+    <section className={styles.faqSection}>
+      <div className={styles.faqContainer}>
+        <div className={styles.faqHeader}>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            Domande <span className={styles.highlight}>Frequenti</span>
+          </motion.h2>
+          <p className={styles.sectionSubtitle}>Tutto quello che c&apos;è da sapere su SoloMenu</p>
+        </div>
+
+        <div className={styles.faqList}>
+          {faqs.map((faq, index) => (
+            <div 
+              key={index} 
+              className={`${styles.faqItem} ${openIndex === index ? styles.faqItemOpen : ''}`}
+            >
+              <button 
+                className={styles.faqQuestion}
+                onClick={() => setOpenIndex(openIndex === index ? null : index)}
+              >
+                {faq.q}
+                <ChevronDown size={20} className={styles.faqIcon} />
+              </button>
+              <div className={styles.faqAnswer}>
+                <p>{faq.a}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
