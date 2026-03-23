@@ -385,10 +385,11 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
                 style={restaurant.coverImageUrl ? (
                     restaurant.slug === 'mastro-arrosticino-884' ? {
                         backgroundImage: `url('${restaurant.coverImageUrl}')`,
-                        backgroundSize: '85% auto',
+                        backgroundSize: 'contain',
                         backgroundRepeat: 'no-repeat',
                         backgroundPosition: 'center center',
-                        backgroundColor: '#ffffff',
+                        backgroundColor: '#111111',
+                        minHeight: '250px'
                     } : {
                         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)), url('${restaurant.coverImageUrl}')`,
                     }
@@ -400,7 +401,12 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
                     {restaurant.slug?.toLowerCase() === 'demo' || restaurant.name?.toLowerCase().includes('demo') ? (
                         <h2 style={{ fontSize: '2.5rem', marginBottom: '10px', fontWeight: 'bold' }}>Benvenuto</h2>
                     ) : restaurant.logoUrl ? (
-                        <img src={restaurant.logoUrl} alt={restaurant.name} className={styles.logo} />
+                        <img 
+                            src={restaurant.logoUrl} 
+                            alt={restaurant.name} 
+                            className={styles.logo} 
+                            style={restaurant.slug === 'mastro-arrosticino-884' ? { maxHeight: '120px', maxWidth: '240px' } : undefined}
+                        />
                     ) : null}
                     {restaurant.slug !== 'mastro-arrosticino-884' && restaurant.showNameInPublicMenu && (
                         <h1 className={styles.restaurantName}>{restaurant.name}</h1>
