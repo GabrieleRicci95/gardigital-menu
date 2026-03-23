@@ -292,15 +292,28 @@
     font-family: 'Playfair Display', serif;
     font-size: 4rem;
     font-weight: 400;
+    margin-bottom: 1.5rem;
+}
+
+.ctaSubtitle {
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 3.5rem;
 }
 
 .finalBtn {
+    display: inline-flex;
+    align-items: center;
     background: #d4af37;
     color: #050505;
     padding: 1.5rem 4rem;
     border-radius: 4px;
+    font-size: 1rem;
     font-weight: 800;
     text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    transition: all 0.3s;
 }
 
 @media (max-width: 768px) {
