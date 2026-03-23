@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getSession, logout, isDemoSession, verifyPassword } from '@/lib/auth';
+import { stripe } from '@/lib/stripe';
 
 export async function DELETE(request: Request) {
     const session = await getSession();
@@ -37,13 +38,26 @@ export async function DELETE(request: Request) {
             return NextResponse.json({ error: 'Password errata. Impossibile procedere con l\'eliminazione.' }, { status: 401 });
         }
 
-        // 3. Trova tutti i ristoranti dell'utente
+        // 3. Trova tutti i ristoranti dell'utente con le relative sottoscrizioni
         const restaurants = await prisma.restaurant.findMany({
-            where: { ownerId: userId }
+            where: { ownerId: userId },
+            include: { subscription: true }
         });
 
-        // 4. Elimina i ristoranti uno per uno
+        // 4. Gestione Stripe e eliminazione ristoranti
         for (const rest of restaurants) {
+            // Se c'è un abbonamento Stripe attivo, lo cancelliamo
+            if (rest.subscription?.stripeSubscriptionId && rest.subscription.isRecurring) {
+                try {
+                    await stripe.subscriptions.cancel(rest.subscription.stripeSubscriptionId);
+                    console.log(`Cancellato abbonamento Stripe ${rest.subscription.stripeSubscriptionId} per ristorante ${rest.id}`);
+                } catch (stripeError) {
+                    console.error(`Errore durante la cancellazione Stripe per ${rest.id}:`, stripeError);
+                    // Continuiamo comunque l'eliminazione dei dati locali
+                }
+            }
+
+            // Elimina il ristorante (la sottoscrizione sarà eliminata via cascade se lo schema è aggiornato)
             await prisma.restaurant.delete({
                 where: { id: rest.id }
             });
