@@ -24,6 +24,7 @@ import {
 import styles from './dashboard.module.css';
 import SubscriptionAlert from '@/components/common/SubscriptionAlert';
 import { usePushNotifications } from '@/lib/hooks/usePushNotifications';
+import ExpiredSubscriptionPaywall from '@/components/dashboard/ExpiredSubscriptionPaywall';
 
 export default function DashboardClientLayout({
     children,
@@ -68,14 +69,19 @@ export default function DashboardClientLayout({
                     setIsDrinkActive(!!data.restaurant.drinkList?.isActive);
                     setRestaurantLogo(data.restaurant.logoUrl || null);
                     setCustomModules(data.restaurant.customLists || []);
+                    
                     if (data.restaurant.subscription) {
-                        setSubscriptionPlan(data.restaurant.subscription.plan);
+                        const plan = data.restaurant.subscription.plan;
+                        setSubscriptionPlan(plan);
                         setHasReservations(!!data.restaurant.subscription.hasReservations);
 
                         const endDate = data.restaurant.subscription.endDate;
                         if (endDate) {
-                            const isExpired = new Date(endDate) < new Date();
+                            const isExpired = plan === 'PILOT' ? false : new Date(endDate) < new Date();
                             setIsSubscriptionActive(!isExpired);
+                        } else {
+                            // If no end date and not pilot, it might be expired if not active
+                            setIsSubscriptionActive(plan === 'PILOT');
                         }
 
                         if (data.restaurant.subscription.hasReservations) {
@@ -442,7 +448,13 @@ export default function DashboardClientLayout({
                         <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Benvenuto</span>
                     </div>
                 </header>
-                <div className={styles.content}>{children}</div>
+                <div className={styles.content}>
+                    {!isSubscriptionActive && pathname !== '/dashboard/subscription' && subscriptionPlan !== 'PILOT' ? (
+                        <ExpiredSubscriptionPaywall isAppMode={isAppMode} />
+                    ) : (
+                        children
+                    )}
+                </div>
             </main>
         </div>
     );
