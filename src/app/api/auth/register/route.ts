@@ -31,21 +31,34 @@ export async function POST(request: Request) {
             },
         });
 
-        // Create Default Restaurant for the user
+        // Create Default Restaurant for the user with 30 days Trial
+        const trialEndDate = new Date();
+        trialEndDate.setDate(trialEndDate.getDate() + 30);
         const defaultSlug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + Math.floor(Math.random() * 10000);
+
         await prisma.restaurant.create({
             data: {
                 name: `Ristorante di ${name.split(' ')[0]}`,
                 slug: defaultSlug,
                 ownerId: user.id,
-                showNameInPublicMenu: false
+                showNameInPublicMenu: false,
+                subscription: {
+                    create: {
+                        plan: 'BASE',
+                        status: 'ACTIVE',
+                        startDate: new Date(),
+                        endDate: trialEndDate,
+                        hasTranslations: true,
+                        hasReservations: true
+                    }
+                }
             }
         });
 
         // Auto login after register
         await login({ id: user.id, email: user.email, role: user.role });
 
-        return NextResponse.json({ success: true, redirect: '/onboarding' });
+        return NextResponse.json({ success: true, redirect: '/dashboard' });
     } catch (error) {
         console.error('Registration error:', error);
         return NextResponse.json({ error: 'Errore durante la registrazione' }, { status: 500 });
