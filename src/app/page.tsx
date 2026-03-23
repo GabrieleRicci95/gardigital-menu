@@ -103,26 +103,24 @@ export default function Home() {
               
               <div className={styles.storeButtons}>
                 <Link href="#" className={styles.storeBtn}>
-                  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M26.6667 14.6667V17.3333C26.6667 20.2667 24.2667 22.6667 21.3333 22.6667H10.6667C7.73333 22.6667 5.33333 20.2667 5.33333 17.3333V9.33333C5.33333 6.4 7.73333 4 10.6667 4H21.3333C24.2667 4 26.6667 6.4 26.6667 9.33333V10.6667" stroke="#d4af37" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M12 11.3333C12.7364 11.3333 13.3333 10.7364 13.3333 10C13.3333 9.26362 12.7364 8.66666 12 8.66666C11.2636 8.66666 10.6667 9.26362 10.6667 10C10.6667 10.7364 11.2636 11.3333 12 11.3333Z" fill="#d4af37"/>
-                    <path d="M20 11.3333C20.7364 11.3333 21.3333 10.7364 21.3333 10C21.3333 9.26362 20.7364 8.66666 20 8.66666C19.2636 8.66666 18.6667 9.26362 18.6667 10C18.6667 10.7364 19.2636 11.3333 20 11.3333Z" fill="#d4af37"/>
-                    <path d="M12 17.3333C12 17.3333 13.3333 19.3333 16 19.3333C18.6667 19.3333 20 17.3333 20 17.3333" stroke="#d4af37" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M25.5 12.5C25.5 8.9 28.5 6.9 28.6 6.8C26.9 4.3 24.3 4 23.4 4C21.1 3.8 18.9 5.4 17.7 5.4C16.5 5.4 14.8 4.1 12.9 4.1C10.4 4.1 8 5.6 6.7 7.9C4.1 12.5 6 19.3 8.5 22.9C9.7 24.7 11.2 26.7 13.1 26.6C15 26.5 15.7 25.4 17.9 25.4C20.2 25.4 20.8 26.6 22.8 26.5C24.8 26.4 26.1 24.7 27.4 22.8C28.8 20.7 29.4 18.7 29.4 18.6C29.4 18.6 25.5 17.1 25.5 12.5ZM21.1 8.2C22.1 7 22.8 5.3 22.6 3.7C20.9 3.8 19.1 4.7 18 5.9C17 7 16.2 8.7 16.4 10.3C18 10.4 19.7 9.5 21.1 8.2Z" fill="#d4af37"/>
                   </svg>
                   <div className={styles.storeInfo}>
-                    <span className={styles.storeSmall}>Disponibile su</span>
+                    <span className={styles.storeSmall}>Download on the</span>
                     <span className={styles.storeLarge}>App Store</span>
                   </div>
                 </Link>
 
                 <Link href="#" className={styles.storeBtn}>
-                  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M22.6667 2.66666H9.33333C5.65144 2.66666 2.66666 5.65144 2.66666 9.33333V22.6667C2.66666 26.3485 5.65144 29.3333 9.33333 29.3333H22.6667C26.3485 29.3333 29.3333 26.3485 29.3333 22.6667V9.33333C29.3333 5.65144 26.3485 2.66666 22.6667 2.66666Z" stroke="#d4af37" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M16 8V24" stroke="#d4af37" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M8 16H24" stroke="#d4af37" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5.5 3.3C5.2 3.6 5 4.1 5 4.8V27.2C5 27.9 5.2 28.4 5.5 28.7L5.6 28.8L18.4 16.1V15.9L5.6 3.2L5.5 3.3Z" fill="#d4af37" fillOpacity="0.8"/>
+                    <path d="M22.7 20.4L18.4 16.1V15.9L22.7 11.6L22.8 11.7L28 14.6C29.4 15.4 29.4 16.6 28 17.4L22.8 20.3L22.7 20.4Z" fill="#d4af37"/>
+                    <path d="M22.8 20.4L18.4 16.1L5.5 29L6.5 29.1C7.5 29.1 8.4 28.6 9 28.2L22.8 20.4Z" fill="#d4af37" fillOpacity="0.6"/>
+                    <path d="M22.8 11.6L9 3.8C8.4 3.4 7.5 2.9 6.5 2.9L5.5 3L18.4 15.9L22.8 11.6Z" fill="#d4af37" fillOpacity="0.9"/>
                   </svg>
                   <div className={styles.storeInfo}>
-                    <span className={styles.storeSmall}>Disponibile su</span>
+                    <span className={styles.storeSmall}>GET IT ON</span>
                     <span className={styles.storeLarge}>Google Play</span>
                   </div>
                 </Link>
