@@ -239,6 +239,8 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
         }
     };
 
+    console.log('MenuClient render for slug:', restaurant.slug); // DEBUG
+    
     return (
         <div
             style={containerStyle}
