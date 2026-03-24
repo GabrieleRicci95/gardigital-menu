@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma';
 import { sendPushNotification } from '@/lib/firebase-admin';
 import { getSession } from '@/lib/auth';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(req: Request) {
     try {
         const session = await getSession();

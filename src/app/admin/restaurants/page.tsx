@@ -222,11 +222,10 @@ export default function AdminRestaurantsPage() {
                                     <tr key={r.id}>
                                         <td className={styles.restaurantCell}>
                                             <span className={styles.restaurantName}>{r.name}</span>
-                                            <span className={styles.restaurantId}>{r.id.substring(0, 8)}...</span>
                                         </td>
-                                        <td className={styles.ownerCell}>
-                                            <span className={styles.ownerName}>{r.owner.name || 'N/D'}</span>
-                                            <span className={styles.ownerEmail}>{r.owner.email}</span>
+                                        <td className={styles.ownerCell} style={{ maxWidth: '150px' }}>
+                                            <div style={{ fontSize: '0.8rem', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.owner.name || 'N/D'}</div>
+                                            <div style={{ fontSize: '0.7rem', opacity: 0.5, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.owner.email}</div>
                                         </td>
                                         <td>
                                             {!isActive || isExpired ? (
@@ -265,10 +264,9 @@ export default function AdminRestaurantsPage() {
                                                     <span style={{
                                                         fontWeight: 700,
                                                         color: isExpired ? '#ef4444' : '#fff'
-                                                    }}>
+                                                    }} title={!isExpired ? "Scade presto" : ""}>
                                                         {new Date(r.subscription.endDate).toLocaleDateString('it-IT')}
                                                     </span>
-                                                    {!isExpired && <span style={{ fontSize: '0.7rem', color: 'rgba(255, 255, 255, 0.4)' }}>Scade presto</span>}
                                                 </div>
                                             ) : r.subscription?.plan === 'PILOT' ? (
                                                 <span style={{ color: '#a21caf', fontWeight: 600 }}>Illimitato</span>
@@ -282,16 +280,16 @@ export default function AdminRestaurantsPage() {
                                                     <button
                                                         onClick={() => handlePlanChange(r.id, 'PREMIUM', selectedDuration)}
                                                         className={`${styles.btnAction} ${styles.btnGreen}`}
-                                                        title="Attiva Piano Base"
+                                                        title={`Attiva Piano Base (+${selectedDuration}m)`}
                                                     >
-                                                        <PlusCircle size={14} /> Base (+{selectedDuration}m)
+                                                        <PlusCircle size={14} /> Base
                                                     </button>
                                                     <button
                                                         onClick={() => handlePlanChange(r.id, 'FULL', selectedDuration)}
                                                         className={`${styles.btnAction} ${styles.btnGold}`}
-                                                        title="Attiva Tutto"
+                                                        title={`Attiva Tutto (+${selectedDuration}m)`}
                                                     >
-                                                        <Zap size={14} /> Full (+{selectedDuration}m)
+                                                        <Zap size={14} /> Full
                                                     </button>
                                                     <button
                                                         onClick={() => handlePlanChange(r.id, 'PILOT')}

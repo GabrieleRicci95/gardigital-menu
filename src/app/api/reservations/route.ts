@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma';
 import { getSession, isDemoSession, decrypt } from '@/lib/auth';
 import { sendPushNotification } from '@/lib/firebase-admin';
 
+export const dynamic = 'force-dynamic';
+
 // GET: Fetch reservations (Protected - Admin Only)
 export async function GET(req: Request) {
     try {

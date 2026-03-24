@@ -189,6 +189,15 @@
     word-break: break-all;
 }
 
+.linkBox {
+    background: rgba(15, 15, 15, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 2rem;
+    border: 1px solid rgba(212, 175, 55, 0.1);
+}
+
 /* Soft UI Action Buttons */
 .btnActionEdit {
     padding: 0.5rem 1rem;

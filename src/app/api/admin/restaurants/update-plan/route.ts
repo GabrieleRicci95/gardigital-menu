@@ -78,8 +78,10 @@ export async function POST(req: Request) {
                 plan: newPlan,
                 status: 'ACTIVE',
                 endDate: endDate,
-                hasTranslations: isFull,
-                hasReservations: isFull
+                ...(isFull ? {
+                    hasTranslations: true,
+                    hasReservations: true
+                } : {})
             },
             create: {
                 restaurantId: restaurantId,

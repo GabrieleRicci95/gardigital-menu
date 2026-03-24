@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from '../restaurant-dashboard.module.css';
-import { Store, MessageSquare, Globe, Heart, Save, ExternalLink, X, AlertTriangle, Trash2 } from 'lucide-react';
+import { Store, MessageSquare, Globe, Heart, Save, ExternalLink, X, AlertTriangle, Trash2, Copy, CheckCircle2 } from 'lucide-react';
 import LoadingOverlay from '@/components/common/LoadingOverlay';
 
 export default function RestaurantPage() {
@@ -30,6 +30,15 @@ export default function RestaurantPage() {
         isDrinkActive: false,
         showNameInPublicMenu: true,
     });
+
+    const [copied, setCopied] = useState(false);
+
+    const handleCopyLink = () => {
+        const url = `${window.location.origin}/menu/${formData.slug}`;
+        navigator.clipboard.writeText(url);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
 
     useEffect(() => {
         fetch('/api/restaurant')
@@ -227,33 +236,100 @@ export default function RestaurantPage() {
                             placeholder="Link 'Scrivi una recensione' di Google"
                             className={styles.formInput}
                         />
-                        <span className={styles.helperText}>
-                            ℹ️ Invita i clienti a lasciare una recensione a fine pasto.
-                        </span>
+                        <div style={{ display: 'flex', gap: '10px', marginTop: '1rem' }}>
+                            <span className={styles.helperText} style={{ flex: 1 }}>
+                                ℹ️ Invita i clienti a lasciare una recensione a fine pasto.
+                            </span>
+                            {formData.googleReviewsUrl && (
+                                <a 
+                                    href={formData.googleReviewsUrl} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className={styles.btnSm}
+                                    style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px' }}
+                                >
+                                    <ExternalLink size={14} /> Vedi Recensioni Live
+                                </a>
+                            )}
+                        </div>
                     </div>
 
                 </form>
 
                 {formData.slug && (
-                    <div className={styles.linkBox} style={{ marginTop: '3rem' }}>
-                        <h3 className={styles.cardTitle}>Il tuo Menu Pubblico</h3>
-                        <p className={styles.cardDesc}>
-                            Tutto pronto. Usa questo link per accedere alla versione pubblica.
-                        </p>
-                        <div className={styles.linkContainer}>
-                            <code className={styles.linkUrl}>
-                                {`${typeof window !== 'undefined' ? window.location.origin : ''}/menu/${formData.slug}`}
-                            </code>
-                            <a
-                                href={`/menu/${formData.slug}?preview=true`}
-                                className={styles.btnSm}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                <ExternalLink size={16} /> Anteprima
-                            </a>
+                    <>
+                        <div className={styles.linkBox} style={{ marginTop: '3rem' }}>
+                            <h3 className={styles.cardTitle}>Il tuo Menu Pubblico</h3>
+                            <p className={styles.cardDesc}>
+                                Tutto pronto. Usa questo link per accedere alla versione pubblica.
+                            </p>
+                            <div className={styles.linkContainer}>
+                                <code className={styles.linkUrl}>
+                                    {`${typeof window !== 'undefined' ? window.location.origin : ''}/menu/${formData.slug}`}
+                                </code>
+                                <div style={{ display: 'flex', gap: '8px' }}>
+                                    <button
+                                        onClick={handleCopyLink}
+                                        className={styles.btnSm}
+                                        style={{ background: copied ? '#4ade8020' : '', borderColor: copied ? '#4ade80' : '' }}
+                                    >
+                                        {copied ? <CheckCircle2 size={16} color="#4ade80" /> : <Copy size={16} />}
+                                        {copied ? 'Copiato!' : 'Copia Link'}
+                                    </button>
+                                    <a
+                                        href={`/menu/${formData.slug}?preview=true`}
+                                        className={styles.btnSm}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        <ExternalLink size={16} /> Anteprima
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+
+                        {/* Google Business Profile Integration Guide */}
+                        <div className={styles.linkBox} style={{ marginTop: '2rem', border: '1px solid rgba(66, 133, 244, 0.3)', background: 'rgba(66, 133, 244, 0.05)' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1rem' }}>
+                                <div style={{ background: '#4285F4', padding: '8px', borderRadius: '12px' }}>
+                                    <Globe size={20} color="#fff" />
+                                </div>
+                                <h3 className={styles.cardTitle} style={{ margin: 0 }}>Aggiungi a Google Search & Maps</h3>
+                            </div>
+                            <p className={styles.cardDesc}>
+                                Rendi il tuo menu accessibile direttamente dai risultati di ricerca di Google.
+                            </p>
+                            <div style={{ background: 'rgba(255,255,255,0.03)', padding: '1.5rem', borderRadius: '16px', fontSize: '0.95rem' }}>
+                                <ol style={{ margin: 0, paddingLeft: '1.2rem', display: 'flex', flexDirection: 'column', gap: '10px', color: 'rgba(255,255,255,0.8)' }}>
+                                    <li>Accedi al tuo <strong>Google Business Profile</strong>.</li>
+                                    <li>Clicca su <strong>"Modifica profilo"</strong>.</li>
+                                    <li>Vai nella sezione <strong>"Contatti"</strong> o <strong>"Cibo e bevande"</strong>.</li>
+                                    <li>Incolla il link del tuo menu nel campo <strong>"Link al menu"</strong>.</li>
+                                </ol>
+                                <button
+                                    onClick={handleCopyLink}
+                                    style={{
+                                        marginTop: '1.5rem',
+                                        width: '100%',
+                                        padding: '12px',
+                                        background: '#4285F4',
+                                        color: '#fff',
+                                        border: 'none',
+                                        borderRadius: '12px',
+                                        fontWeight: '700',
+                                        cursor: 'pointer',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        gap: '8px'
+                                    }}
+                                >
+                                    {copied ? <CheckCircle2 size={18} /> : <Copy size={18} />}
+                                    {copied ? 'Link Copiato!' : 'Copia Link per Google'}
+                                </button>
+                            </div>
+                        </div>
+                    </>
                 )}
             </div>
 

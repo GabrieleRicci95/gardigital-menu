@@ -13,7 +13,6 @@ export default function Footer() {
         <footer className={styles.footer}>
             <div className={styles.linksContainer}>
                 <Link href="/contact" className={styles.link}>Contattaci</Link>
-                <Link href="/chi-siamo" className={styles.link}>Chi Siamo</Link>
                 <Link href="/privacy" className={styles.link}>Privacy Policy</Link>
                 <Link href="/terms" className={styles.link}>Termini e Condizioni</Link>
                 <Link href="/cookies" className={styles.link}>Cookie Policy</Link>

@@ -15,6 +15,9 @@ interface Subscription {
             email: string;
         }
     };
+    hasReservations: boolean;
+    hasTranslations: boolean;
+    stripeSubscriptionId: string | null;
 }
 
 import styles from '../admin.module.css';
@@ -46,8 +49,40 @@ export default function AdminSubscriptionsPage() {
     return (
         <div className={styles.container}>
             <header className={styles.header}>
-                <h1 className={styles.title}>Abbonamenti Attivi</h1>
+                <h1 className={styles.title}>Monitoraggio Abbonamenti</h1>
+                <p className={styles.subtitle}>Gestisci le sottoscrizioni e i pagamenti della piattaforma.</p>
             </header>
+
+            {/* KPI Cards */}
+            <div className={styles.statsGrid}>
+                <div className={styles.statCard}>
+                    <div className={styles.statIcon}>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18M5 21V7l8-4 8 4v14M8 21v-4h8v4" /></svg>
+                    </div>
+                    <div className={styles.statInfo}>
+                        <p className={styles.statValue}>{subscriptions.length}</p>
+                        <span className={styles.statLabel}>Totale Ristoranti</span>
+                    </div>
+                </div>
+                <div className={`${styles.statCard} ${styles.statActive}`}>
+                    <div className={styles.statIcon} style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    </div>
+                    <div className={styles.statInfo}>
+                        <p className={styles.statValue}>{subscriptions.filter(s => s.status === 'ACTIVE').length}</p>
+                        <span className={styles.statLabel}>Abbonati Attivi</span>
+                    </div>
+                </div>
+                <div className={styles.statCard}>
+                    <div className={styles.statIcon} style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b' }}>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    </div>
+                    <div className={styles.statInfo}>
+                        <p className={styles.statValue}>{subscriptions.filter(s => !s.stripeSubscriptionId && s.status === 'ACTIVE').length}</p>
+                        <span className={styles.statLabel}>Utenti in Prova</span>
+                    </div>
+                </div>
+            </div>
 
             <div className={styles.tableCard}>
                 <div className={styles.tableContainer}>
@@ -57,6 +92,7 @@ export default function AdminSubscriptionsPage() {
                                 <th>Utente</th>
                                 <th>Ristorante</th>
                                 <th style={{ textAlign: 'center' }}>Piano</th>
+                                <th style={{ textAlign: 'center' }}>Pagamento</th>
                                 <th>Stato</th>
                                 <th>Iscrizione</th>
                             </tr>
@@ -89,7 +125,18 @@ export default function AdminSubscriptionsPage() {
                                                     </span>
                                                 ) : (
                                                     <span className={`${styles.badge} ${styles.badgeActive}`}>
-                                                        {sub.plan} (€{isMastro ? '14.99' : '15.00'})
+                                                        {sub.plan} (€{(isMastro ? 15 : (sub.hasReservations ? 25 : 15)).toFixed(2)})
+                                                    </span>
+                                                )}
+                                            </td>
+                                            <td style={{ textAlign: 'center' }}>
+                                                {sub.stripeSubscriptionId ? (
+                                                    <span className={`${styles.badge} ${styles.badgeActive}`} style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6', border: '1px solid rgba(59, 130, 246, 0.2)' }}>
+                                                        💳 Collegata
+                                                    </span>
+                                                ) : (
+                                                    <span className={styles.badge} style={{ background: 'rgba(255, 255, 255, 0.05)', color: 'rgba(255, 255, 255, 0.4)', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                                                        Nessuna
                                                     </span>
                                                 )}
                                             </td>

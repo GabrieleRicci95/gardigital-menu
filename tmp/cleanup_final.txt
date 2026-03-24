@@ -1,0 +1,20 @@
+RISTORANTI DOPPI INDENTIFICATI PER L'ELIMINAZIONE:
+
+[DELETE] Ristorante La Gorgonia (SOLO) (demo-solo) - Proprietario: demo@gardigital.it
+         -> Mantenuto: Ristorante La Gorgonia (demo)
+
+[DELETE] Ristorante di Gabriele (SOLO) (gabriele-ricci-4361-solo) - Proprietario: gabrielericci234@gmail.com
+         -> Mantenuto: Ristorante di Gabriele (gabriele-ricci-4361)
+
+[DELETE] Ristorante di demo.google@gardigital.it (SOLO) (demo-google-gardigital-it-1992-solo) - Proprietario: demo.google@gardigital.it
+         -> Mantenuto: Ristorante di demo.google@gardigital.it (demo-google-gardigital-it-1992)
+
+[DELETE] Mastro arrosticino (SOLO) (mastro-arrosticino-884-solo) - Proprietario: lamontano2024@gmail.com
+         -> Mantenuto: Mastro arrosticino (mastro-arrosticino-884)
+
+[DELETE] Arion club (SOLO) (arion-club-143-solo) - Proprietario: assculturalearpa@gmail.com
+         -> Mantenuto: Arion club (arion-club-143)
+
+[DELETE] Aperifish & XL Drink e Wine (SOLO) (aperifish-xl-drink-e-wine-733-solo) - Proprietario: ale-c-95@hotmail.it
+         -> Mantenuto: Aperifish & XL Drink e Wine (aperifish-xl-drink-e-wine-733)
+
