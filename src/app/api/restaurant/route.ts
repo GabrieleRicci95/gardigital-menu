@@ -10,16 +10,27 @@ function generateSlug(name: string) {
         .replace(/(^-|-$)+/g, '');
 }
 
-export async function GET() {
+export async function GET(request: Request) {
     const session = await getSession();
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
+    const { searchParams } = new URL(request.url);
+    const impersonateId = searchParams.get('restaurantId');
+    const isAdmin = session.user.role === 'ADMIN';
+
     try {
+        const whereClause: any = {
+            NOT: { slug: { endsWith: '-solo' } }
+        };
+
+        if (isAdmin && impersonateId) {
+            whereClause.id = impersonateId;
+        } else {
+            whereClause.ownerId = session.user.id;
+        }
+
         const restaurant = await prisma.restaurant.findFirst({
-            where: { 
-                ownerId: session.user.id,
-                NOT: { slug: { endsWith: '-solo' } }
-            },
+            where: whereClause,
             orderBy: { createdAt: 'asc' },
             include: {
                 subscription: true,
@@ -38,7 +49,8 @@ export async function GET() {
 
         return NextResponse.json({
             restaurant,
-            isDemo: isDemoSession(session)
+            isDemo: isDemoSession(session),
+            isAdmin
         });
     } catch (error) {
         return NextResponse.json({ error: 'Errore nel recupero del ristorante' }, { status: 500 });
@@ -53,6 +65,7 @@ export async function PATCH(request: Request) {
     try {
         const data = await request.json();
         const {
+            restaurantId, // New: optional for admins
             name, description, themeColor, coverImageUrl, backgroundColor,
             textColor, fontFamily, cardStyle, whatsappNumber, wineListUrl,
             googleReviewsUrl,
@@ -61,12 +74,17 @@ export async function PATCH(request: Request) {
             showNameInPublicMenu
         } = data;
 
+        const isAdmin = session.user.role === 'ADMIN';
+        const ownerId = (isAdmin && restaurantId) ? undefined : session.user.id;
+        const targetRestaurantId = (isAdmin && restaurantId) ? restaurantId : undefined;
+
         const slug = name ? generateSlug(name) : '';
 
         // Check if user already has a restaurant
         const existingRestaurant = await prisma.restaurant.findFirst({
             where: { 
-                ownerId: session.user.id,
+                id: targetRestaurantId,
+                ownerId: ownerId,
                 NOT: { slug: { endsWith: '-solo' } }
             },
             orderBy: { createdAt: 'asc' },

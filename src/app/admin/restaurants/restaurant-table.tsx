@@ -228,6 +228,24 @@ export default function RestaurantTable({ initialRestaurants }: { initialRestaur
 
                                         <div style={{ width: '1px', height: '20px', backgroundColor: '#ddd', margin: '0 5px' }} />
 
+                                        <div style={{ width: '1px', height: '20px', backgroundColor: '#ddd', margin: '0 5px' }} />
+
+                                        <button
+                                            onClick={() => window.open(`/dashboard?impersonate=${rest.id}`, '_blank')}
+                                            className="btn btn-sm"
+                                            style={{
+                                                backgroundColor: '#4527a0',
+                                                color: 'white',
+                                                border: 'none',
+                                                fontSize: '0.75rem',
+                                                padding: '4px 8px',
+                                                cursor: 'pointer'
+                                            }}
+                                            title="Entra nel Dashboard di questo ristorante"
+                                        >
+                                            👁️ Gestisci
+                                        </button>
+
                                         <button
                                             onClick={() => handleUpdatePlan(rest.id, 'BLOCKED')}
                                             disabled={updating === rest.id}

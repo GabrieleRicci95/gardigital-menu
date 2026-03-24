@@ -56,7 +56,11 @@ export default function DashboardClientLayout({
 
     const fetchRestaurantData = async () => {
         try {
-            const res = await fetch('/api/restaurant');
+            const params = new URLSearchParams(window.location.search);
+            const impersonateId = params.get('impersonate');
+            const url = impersonateId ? `/api/restaurant?restaurantId=${impersonateId}` : '/api/restaurant';
+            
+            const res = await fetch(url);
             if (res.ok) {
                 const data = await res.json();
                 if (data.restaurant) {
@@ -105,7 +109,11 @@ export default function DashboardClientLayout({
 
     const fetchPendingCount = async (id: string) => {
         try {
-            const res = await fetch(`/api/reservations?restaurantId=${id}&countPending=true`);
+            const params = new URLSearchParams(window.location.search);
+            const impersonateId = params.get('impersonate');
+            const url = `/api/reservations?restaurantId=${id}&countPending=true${impersonateId ? `&impersonate=${impersonateId}` : ''}`;
+            
+            const res = await fetch(url);
             if (res.ok) {
                 const data = await res.json();
                 setPendingReservationsCount(data.pendingCount || 0);
