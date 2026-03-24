@@ -214,6 +214,33 @@ export default function Home() {
 
 
 
+        {/* --- CONCIERGE ASSISTANCE --- */}
+        <section className={styles.conciergeSection}>
+          <motion.div 
+            className={styles.conciergeContent}
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+          >
+            <div className={styles.conciergeIcon}>
+              <Smartphone size={40} />
+            </div>
+            <h2>Zero Pensieri.<br /><span className={styles.highlight}>Lo carichiamo noi.</span></h2>
+            <p>
+              Temi la tecnologia o semplicemente non hai tempo? Nessun problema. 
+              <strong> Mandaci una foto o il PDF del tuo menù su WhatsApp.</strong> Lo caricheremo noi per te nel sistema, pronto per essere utilizzato, in meno di 24 ore.
+            </p>
+            <a 
+              href="https://wa.me/393278278278?text=Ciao%20Gabriele,%20vorrei%20attivare%20SoloMenu%20ma%20avrei%20bisogno%20di%20aiuto%20per%20caricare%20il%20mio%20menù." 
+              target="_blank" 
+              className={styles.conciergeBtn}
+            >
+              Aiutami a caricare il menù
+            </a>
+          </motion.div>
+        </section>
+
         {/* --- PRICING --- */}
         <section id="pricing" className={styles.pricing}>
           <div className={styles.sectionHeader}>
