@@ -888,3 +888,81 @@
     padding-bottom: 1.5rem;
   }
 }
+/* --- CONCIERGE --- */
+.conciergeSection {
+  padding: 8rem 4rem;
+  background: linear-gradient(to bottom, #000, var(--charcoal));
+  border-top: 1px solid rgba(212, 175, 55, 0.1);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.conciergeContent {
+  max-width: 800px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 4rem;
+  border-radius: 4px;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.conciergeIcon {
+  color: var(--brass);
+  margin-bottom: 2rem;
+  filter: drop-shadow(0 0 15px var(--brass-glow));
+}
+
+.conciergeContent h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 4rem;
+  margin-bottom: 2rem;
+  line-height: 1.1;
+}
+
+.conciergeContent p {
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  line-height: 1.8;
+  margin-bottom: 3rem;
+}
+
+.conciergeContent strong {
+  color: #fff;
+}
+
+.conciergeBtn {
+  background: #25d366; /* WhatsApp Green */
+  color: #fff;
+  padding: 1.2rem 3rem;
+  border-radius: 4px;
+  font-weight: 800;
+  text-decoration: none;
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: all 0.4s ease;
+  font-size: 0.9rem;
+}
+
+.conciergeBtn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
+  filter: brightness(1.1);
+}
+
+@media (max-width: 768px) {
+  .conciergeSection {
+    padding: 6rem 1.5rem;
+  }
+  .conciergeContent {
+    padding: 2.5rem 1.5rem;
+  }
+  .conciergeContent h2 {
+    font-size: 2.5rem;
+  }
+  .conciergeContent p {
+    font-size: 1.1rem;
+  }
+}
