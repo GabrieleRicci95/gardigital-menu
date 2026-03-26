@@ -4,7 +4,25 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import styles from '../restaurant-dashboard.module.css';
-import { Wine, Plus, Trash2, Save, X, ChevronUp, ChevronDown } from 'lucide-react';
+import { Wine, Plus, Trash2, Save, X, ChevronRight, GripVertical } from 'lucide-react';
+import {
+    DndContext,
+    closestCenter,
+    KeyboardSensor,
+    PointerSensor,
+    TouchSensor,
+    useSensor,
+    useSensors,
+    DragEndEvent,
+} from '@dnd-kit/core';
+import {
+    arrayMove,
+    SortableContext,
+    sortableKeyboardCoordinates,
+    useSortable,
+    verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import LoadingOverlay from '@/components/common/LoadingOverlay';
 
 interface ChampagneItem {
@@ -27,6 +45,22 @@ interface ChampagneList {
     sections: ChampagneSection[];
 }
 
+// ---- Sortable Section Wrapper ----
+function SortableSection({ section, index, children }: { section: ChampagneSection; index: number; children: (dragHandleProps: any) => React.ReactNode }) {
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: section.id || `section-${index}` });
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+        opacity: isDragging ? 0.5 : 1,
+        zIndex: isDragging ? 999 : 'auto',
+    };
+    return (
+        <div ref={setNodeRef} style={style}>
+            {children({ ...attributes, ...listeners })}
+        </div>
+    );
+}
+
 export default function ChampagneListPage() {
     const [champagneList, setChampagneList] = useState<ChampagneList>({
         isActive: true,
@@ -36,6 +70,12 @@ export default function ChampagneListPage() {
     const [saving, setSaving] = useState(false);
     const [isDemo, setIsDemo] = useState(false);
     const router = useRouter();
+
+    const sensors = useSensors(
+        useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+        useSensor(TouchSensor, { activationConstraint: { delay: 300, tolerance: 8 } }),
+        useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+    );
 
     // Dirty state management
     const originalDataRef = useRef<string>('');
@@ -126,19 +166,18 @@ export default function ChampagneListPage() {
         }
     };
 
-    const moveSection = (index: number, direction: 'up' | 'down') => {
-        if (isDemo) return;
-        setChampagneList(prev => {
-            const newSections = [...prev.sections];
-            const targetIndex = direction === 'up' ? index - 1 : index + 1;
-            if (targetIndex < 0 || targetIndex >= newSections.length) return prev;
-            
-            const temp = newSections[index];
-            newSections[index] = newSections[targetIndex];
-            newSections[targetIndex] = temp;
-            
-            return { ...prev, sections: newSections };
-        });
+    const handleDragEnd = (event: DragEndEvent) => {
+        const { active, over } = event;
+        if (event.over && active.id !== over?.id) {
+            setChampagneList((prev) => {
+                const oldIndex = prev.sections.findIndex((s) => (s.id || `section-${prev.sections.indexOf(s)}`) === active.id);
+                const newIndex = prev.sections.findIndex((s) => (s.id || `section-${prev.sections.indexOf(s)}`) === over?.id);
+                return {
+                    ...prev,
+                    sections: arrayMove(prev.sections, oldIndex, newIndex),
+                };
+            });
+        }
     };
 
     const addSection = () => {

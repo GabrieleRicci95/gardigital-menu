@@ -4,7 +4,25 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter, useParams } from 'next/navigation';
 import styles from '../../restaurant-dashboard.module.css';
-import { LayoutPanelLeft, Plus, Trash2, Save, X, Camera, ChevronUp, ChevronDown } from 'lucide-react';
+import { LayoutPanelLeft, Plus, Trash2, Save, X, Camera, GripVertical } from 'lucide-react';
+import {
+    DndContext,
+    closestCenter,
+    KeyboardSensor,
+    PointerSensor,
+    TouchSensor,
+    useSensor,
+    useSensors,
+    DragEndEvent,
+} from '@dnd-kit/core';
+import {
+    arrayMove,
+    SortableContext,
+    sortableKeyboardCoordinates,
+    useSortable,
+    verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import LoadingOverlay from '@/components/common/LoadingOverlay';
 
 interface CustomItem {
@@ -161,19 +179,19 @@ export default function CustomListPage() {
         }
     };
 
-    const moveSection = (index: number, direction: 'up' | 'down') => {
-        if (isDemo) return;
-        setCustomList(prev => {
-            const newSections = [...prev.sections];
-            const targetIndex = direction === 'up' ? index - 1 : index + 1;
-            if (targetIndex < 0 || targetIndex >= newSections.length) return prev;
-            
-            const temp = newSections[index];
-            newSections[index] = newSections[targetIndex];
-            newSections[targetIndex] = temp;
-            
-            return { ...prev, sections: newSections };
-        });
+    const handleDragEnd = (event: DragEndEvent) => {
+        const { active, over } = event;
+        if (event.over && active.id !== over?.id) {
+            setCustomList((prev) => {
+                if (!prev) return prev;
+                const oldIndex = prev.sections.findIndex((s) => (s.id || `section-${prev.sections.indexOf(s)}`) === active.id);
+                const newIndex = prev.sections.findIndex((s) => (s.id || `section-${prev.sections.indexOf(s)}`) === over?.id);
+                return {
+                    ...prev,
+                    sections: arrayMove(prev.sections, oldIndex, newIndex),
+                };
+            });
+        }
     };
 
     const addSection = () => {
