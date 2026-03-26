@@ -97,21 +97,34 @@ export default function AdminRestaurantsPage() {
         }
     };
 
-    const handlePlanChange = async (restaurantId: string, newPlan: string, durationMonths: number = 0) => {
+        const handlePlanChange = async (restaurantId: string, newPlan: string, durationMonths: number = 0) => {
         setRestaurants(prev => {
             if (newPlan === 'DELETED') return prev.filter(r => r.id !== restaurantId);
             return prev.map(r => {
                 if (r.id === restaurantId) {
                     const isFull = newPlan === 'FULL';
+                    const isRenew = newPlan === 'RENEW';
+                    let newEndDate: any = null;
+
+                    if (newPlan === 'PILOT') {
+                        newEndDate = null;
+                    } else if (durationMonths > 0) {
+                        const baseDate = (r.subscription?.endDate && new Date(r.subscription.endDate) > new Date())
+                            ? new Date(r.subscription.endDate)
+                            : new Date();
+                        baseDate.setMonth(baseDate.getMonth() + durationMonths);
+                        newEndDate = baseDate.toISOString();
+                    }
+
                     return {
                         ...r,
                         subscription: newPlan === 'BLOCKED' ? null : {
                             ...r.subscription,
-                            plan: newPlan,
+                            plan: isRenew ? (r.subscription?.plan || 'BASE') : newPlan,
                             status: 'ACTIVE',
-                            hasTranslations: isFull || newPlan === 'PILOT',
-                            hasReservations: isFull || newPlan === 'PILOT',
-                            endDate: newPlan === 'PILOT' ? null : (durationMonths > 0 ? new Date(Date.now() + durationMonths * 30 * 24 * 60 * 60 * 1000).toISOString() : null)
+                            hasTranslations: isFull ? true : (newPlan === 'PILOT' ? true : r.subscription?.hasTranslations),
+                            hasReservations: isFull ? true : (newPlan === 'PILOT' ? true : r.subscription?.hasReservations),
+                            endDate: newEndDate
                         } as any
                     };
                 }
@@ -278,18 +291,11 @@ export default function AdminRestaurantsPage() {
                                             <div className={styles.actionGroup} style={{ justifyContent: 'flex-end' }}>
                                                 <div className={styles.btnGroup}>
                                                     <button
-                                                        onClick={() => handlePlanChange(r.id, 'PREMIUM', selectedDuration)}
+                                                        onClick={() => handlePlanChange(r.id, 'RENEW', selectedDuration)}
                                                         className={`${styles.btnAction} ${styles.btnGreen}`}
-                                                        title={`Attiva Piano Base (+${selectedDuration}m)`}
+                                                        title={`Rinnova Abbonamento (+${selectedDuration}m)`}
                                                     >
-                                                        <PlusCircle size={14} /> Base
-                                                    </button>
-                                                    <button
-                                                        onClick={() => handlePlanChange(r.id, 'FULL', selectedDuration)}
-                                                        className={`${styles.btnAction} ${styles.btnGold}`}
-                                                        title={`Attiva Tutto (+${selectedDuration}m)`}
-                                                    >
-                                                        <Zap size={14} /> Full
+                                                        <PlusCircle size={14} /> Rinnova
                                                     </button>
                                                     <button
                                                         onClick={() => handlePlanChange(r.id, 'PILOT')}

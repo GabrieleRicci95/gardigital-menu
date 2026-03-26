@@ -57,17 +57,24 @@ export async function POST(req: Request) {
             return NextResponse.json({ success: true, subscription });
         }
 
-        if (!restaurantId || !['FREE', 'PREMIUM', 'WEBSITE', 'FULL', 'PILOT'].includes(newPlan)) {
+        if (!restaurantId || !['FREE', 'PREMIUM', 'WEBSITE', 'FULL', 'PILOT', 'RENEW'].includes(newPlan)) {
             return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
         }
 
         let endDate = null;
+        let isRenew = newPlan === 'RENEW';
+        
+        // Find existing subscription to base the new end date on if needed
+        const existingSub = await prisma.subscription.findUnique({ where: { restaurantId } });
+
         if (newPlan === 'PILOT') {
             endDate = null;
-        } else if ((newPlan === 'PREMIUM' || newPlan === 'FULL') && durationMonths && typeof durationMonths === 'number') {
-            const date = new Date();
-            date.setMonth(date.getMonth() + durationMonths);
-            endDate = date;
+        } else if ((newPlan === 'PREMIUM' || newPlan === 'FULL' || isRenew) && durationMonths && typeof durationMonths === 'number') {
+            const baseDate = (existingSub?.endDate && existingSub.endDate > new Date()) 
+                ? new Date(existingSub.endDate) 
+                : new Date();
+            baseDate.setMonth(baseDate.getMonth() + durationMonths);
+            endDate = baseDate;
         }
 
         const isFull = newPlan === 'FULL' || newPlan === 'PILOT';
@@ -75,7 +82,7 @@ export async function POST(req: Request) {
         const subscription = await prisma.subscription.upsert({
             where: { restaurantId: restaurantId },
             update: {
-                plan: newPlan,
+                ...(isRenew ? {} : { plan: newPlan }), // Keep existing plan if renewing
                 status: 'ACTIVE',
                 endDate: endDate,
                 ...(isFull ? {
@@ -85,7 +92,7 @@ export async function POST(req: Request) {
             },
             create: {
                 restaurantId: restaurantId,
-                plan: newPlan,
+                plan: isRenew ? 'BASE' : newPlan,
                 status: 'ACTIVE',
                 startDate: new Date(),
                 endDate: endDate,
