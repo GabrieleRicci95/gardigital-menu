@@ -42,18 +42,40 @@ export async function GET(req: Request) {
             restaurants
         };
 
+        // 1. Salva il backup nel database
+        await prisma.backup.create({
+            data: {
+                data: restaurants as any,
+                stats: stats as any
+            }
+        });
+
+        // 2. Gestione rotazione (mantieni solo i 10 più recenti)
+        const backups = await prisma.backup.findMany({
+            orderBy: { createdAt: 'desc' },
+            select: { id: true }
+        });
+
+        if (backups.length > 10) {
+            const idsToDelete = backups.slice(10).map((b: any) => b.id);
+            await prisma.backup.deleteMany({
+                where: { id: { in: idsToDelete } }
+            });
+            console.log(`[BACKUP] Rotazione completata. Eliminati ${idsToDelete.length} vecchi backup.`);
+        }
+
         // Log del backup nei Vercel Logs (visibili su vercel.com)
         console.log(`[BACKUP] ${new Date().toISOString()} - ${stats.restaurantCount} ristoranti, ${stats.totalMenus} menu, ${stats.totalCategories} categorie, ${stats.totalItems} piatti`);
-        console.log('[BACKUP DATA]', JSON.stringify(backupData));
 
         return NextResponse.json({
             success: true,
             timestamp: backupData.timestamp,
-            stats
+            stats,
+            rotation: backups.length > 10 ? 'deleted_old' : 'kept_all'
         });
 
     } catch (error) {
         console.error('[BACKUP ERROR]', error);
-        return NextResponse.json({ error: 'Backup failed' }, { status: 500 });
+        return NextResponse.json({ error: 'Backup failed', details: String(error) }, { status: 500 });
     }
 }
