@@ -62,6 +62,22 @@ function SortableSection({ section, index, children }: { section: DrinkSection; 
     );
 }
 
+// ---- Sortable Section Wrapper ----
+function SortableSection({ section, index, children }: { section: DrinkSection; index: number; children: (dragHandleProps: any) => React.ReactNode }) {
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: section.id || `section-${index}` });
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+        opacity: isDragging ? 0.5 : 1,
+        zIndex: isDragging ? 999 : 'auto',
+    };
+    return (
+        <div ref={setNodeRef} style={style}>
+            {children({ ...attributes, ...listeners })}
+        </div>
+    );
+}
+
 export default function DrinkListPage() {
     const [drinkList, setDrinkList] = useState<DrinkList>({
         isActive: true,
