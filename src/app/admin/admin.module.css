@@ -144,6 +144,14 @@
     cursor: pointer;
     font-size: 0.9rem;
     padding-right: 0.5rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.durationSelect option {
+    background: #1a1a1a;
+    color: #fff;
 }
 
 .durationSelect:focus {
