@@ -25,28 +25,12 @@ export default function ReservationModal({ isOpen, onClose, whatsappNumber, rest
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (isSubmitting) return;
         setIsSubmitting(true);
 
-        const text = `Ciao ${restaurantName}! 👋\n` +
-            `Vorrei prenotare un tavolo.\n\n` +
-            `📅 Data: ${formData.date}\n` +
-            `⏰ Ora: ${formData.time}\n` +
-            `👥 Persone: ${formData.guests}\n` +
-            `👤 Nome: ${formData.name}\n` +
-            (formData.notes ? `📝 Note: ${formData.notes}` : '');
-
-        const encodedText = encodeURIComponent(text);
-        let cleanNumber = whatsappNumber.replace(/\D/g, '');
-        if (cleanNumber.startsWith('00')) cleanNumber = cleanNumber.substring(2);
-        if (cleanNumber.length === 10) cleanNumber = '39' + cleanNumber;
-
-        const waUrl = `https://api.whatsapp.com/send?phone=${cleanNumber}&text=${encodedText}`;
-
-        window.open(waUrl, '_blank');
-        onClose();
-
         try {
-            await fetch('/api/reservations', {
+            // 1. Save to database first
+            const response = await fetch('/api/reservations', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -56,8 +40,32 @@ export default function ReservationModal({ isOpen, onClose, whatsappNumber, rest
                     time: formData.time
                 })
             });
+
+            if (!response.ok) {
+                throw new Error('Errore durante il salvataggio della prenotazione');
+            }
+
+            // 2. Prepare and open WhatsApp
+            const text = `Ciao ${restaurantName}! 👋\n` +
+                `Vorrei prenotare un tavolo.\n\n` +
+                `📅 Data: ${formData.date}\n` +
+                `⏰ Ora: ${formData.time}\n` +
+                `👥 Persone: ${formData.guests}\n` +
+                `👤 Nome: ${formData.name}\n` +
+                (formData.notes ? `📝 Note: ${formData.notes}` : '');
+
+            const encodedText = encodeURIComponent(text);
+            let cleanNumber = whatsappNumber.replace(/\D/g, '');
+            if (cleanNumber.startsWith('00')) cleanNumber = cleanNumber.substring(2);
+            if (cleanNumber.length === 10) cleanNumber = '39' + cleanNumber;
+
+            const waUrl = `https://api.whatsapp.com/send?phone=${cleanNumber}&text=${encodedText}`;
+
+            window.open(waUrl, '_blank');
+            onClose();
         } catch (error) {
-            console.error('Error saving:', error);
+            console.error('Error saving reservation:', error);
+            alert('Si è verificato un errore durante l\'invio della prenotazione. Riprova tra poco o contatta direttamente il ristorante.');
         } finally {
             setIsSubmitting(false);
         }
