@@ -178,9 +178,13 @@ export default function DashboardClientLayout({
                 const data = await res.json();
                 await fetchRestaurantData();
                 router.push(`/dashboard/custom-list/${data.customList.slug}`);
+            } else {
+                const errData = await res.json().catch(() => ({}));
+                alert(`Errore nella creazione del modulo: ${errData.error || 'Riprova più tardi'}`);
             }
         } catch (error) {
             console.error("Modulo creation failed", error);
+            alert("Errore di connessione. Riprova.");
         } finally {
             setIsCreatingModule(false);
         }
