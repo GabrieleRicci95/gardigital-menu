@@ -215,7 +215,7 @@ export default function ChampagneListPage() {
                     <h1 className={styles.title}>Carta Champagne</h1>
                     <p className={styles.subtitle}>Gestisci la tua selezione di Champagne. Organizza le bottiglie con la massima esclusività.</p>
                 </div>
-                <button onClick={addSection} className={styles.btnPrimary} style={{ width: 'auto' }}>
+                <button onClick={addSection} className={styles.newSectionBtn}>
                     <Plus size={20} /> Nuova Categoria
                 </button>
             </header>

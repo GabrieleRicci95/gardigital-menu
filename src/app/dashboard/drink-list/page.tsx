@@ -246,7 +246,7 @@ export default function DrinkListPage() {
                     <h1 className={styles.title}>Drink & Cocktail</h1>
                     <p className={styles.subtitle}>Gestisci la tua selezione di drink. Crea categorie come Cocktail, Birre, Bibite e Amari.</p>
                 </div>
-                <button onClick={addSection} className={styles.btnPrimary} style={{ width: 'auto' }}>
+                <button onClick={addSection} className={styles.newSectionBtn}>
                     <Plus size={20} /> Nuova Categoria
                 </button>
             </header>
