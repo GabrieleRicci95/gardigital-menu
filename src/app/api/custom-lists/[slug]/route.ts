@@ -79,6 +79,15 @@ export async function POST(
         if (!customList) return NextResponse.json({ error: 'Modulo non trovato' }, { status: 404 });
 
         await (prisma as any).$transaction(async (tx: any) => {
+            // Update the customList header fields (name, isActive)
+            await tx.customList.update({
+                where: { id: customList.id },
+                data: {
+                    name: data.name || customList.name,
+                    isActive: data.isActive !== undefined ? data.isActive : customList.isActive
+                }
+            });
+
             // Delete existing sections (cascade deletes items)
             await tx.customListSection.deleteMany({
                 where: { customListId: customList.id }
