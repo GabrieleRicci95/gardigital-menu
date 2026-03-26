@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import styles from '../restaurant-dashboard.module.css';
-import { GlassWater, Plus, Trash2, Save, X, Camera } from 'lucide-react';
+import { GlassWater, Plus, Trash2, Save, X, Camera, ChevronUp, ChevronDown } from 'lucide-react';
 import LoadingOverlay from '@/components/common/LoadingOverlay';
 
 interface DrinkItem {
