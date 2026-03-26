@@ -199,17 +199,20 @@ export default function AdminRestaurantsPage() {
 
                 <div className={styles.durationControl}>
                     <span className={styles.durationLabel}>Durata Rinnovo:</span>
-                    <select
-                        value={selectedDuration}
-                        onChange={(e) => setSelectedDuration(parseInt(e.target.value))}
-                        className={styles.durationSelect}
-                    >
-                        <option value={1}>1 Mese</option>
-                        <option value={3}>3 Mesi</option>
-                        <option value={6}>6 Mesi</option>
-                        <option value={12}>12 Mesi</option>
-                    </select>
-                    <ChevronDown size={16} />
+                    <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                        <select
+                            value={selectedDuration}
+                            onChange={(e) => setSelectedDuration(parseInt(e.target.value))}
+                            className={styles.durationSelect}
+                            style={{ paddingRight: '24px' }}
+                        >
+                            <option value={1}>1 Mese</option>
+                            <option value={3}>3 Mesi</option>
+                            <option value={6}>6 Mesi</option>
+                            <option value={12}>12 Mesi</option>
+                        </select>
+                        <ChevronDown size={16} style={{ position: 'absolute', right: '4px', pointerEvents: 'none', opacity: 0.8 }} />
+                    </div>
                 </div>
             </div>
 
