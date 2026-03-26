@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import styles from '../restaurant-dashboard.module.css';
 import wineListStyles from './wine-list.module.css';
-import { Wine, Plus, Trash2, Save, X, ChevronRight } from 'lucide-react';
+import { Wine, Plus, Trash2, Save, X, ChevronRight, ChevronUp, ChevronDown } from 'lucide-react';
 import LoadingOverlay from '@/components/common/LoadingOverlay';
 
 interface WineItem {
@@ -100,11 +100,15 @@ export default function WineListPage() {
             setSaving(false);
             return;
         }
+        const listToSave = {
+            ...wineList,
+            sections: wineList.sections.map((s, idx) => ({ ...s, sortOrder: idx }))
+        };
         try {
             const res = await fetch('/api/wine-list', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(wineList)
+                body: JSON.stringify(listToSave)
             });
 
             if (res.ok) {
@@ -119,6 +123,21 @@ export default function WineListPage() {
         } finally {
             setSaving(false);
         }
+    };
+
+    const moveSection = (index: number, direction: 'up' | 'down') => {
+        if (isDemo) return;
+        setWineList(prev => {
+            const newSections = [...prev.sections];
+            const targetIndex = direction === 'up' ? index - 1 : index + 1;
+            if (targetIndex < 0 || targetIndex >= newSections.length) return prev;
+            
+            const temp = newSections[index];
+            newSections[index] = newSections[targetIndex];
+            newSections[targetIndex] = temp;
+            
+            return { ...prev, sections: newSections };
+        });
     };
 
     const addSection = () => {
@@ -270,9 +289,27 @@ export default function WineListPage() {
                                 }}
                                 readOnly={isDemo}
                             />
-                            <button onClick={() => removeSection(sIndex)} className={styles.iconBtnDelete} style={{ background: 'rgba(239, 68, 68, 0.1)', padding: '10px' }}>
-                                <Trash2 size={20} />
-                            </button>
+                            <div className={styles.sortActions}>
+                                <button 
+                                    onClick={() => moveSection(sIndex, 'up')} 
+                                    disabled={sIndex === 0 || isDemo}
+                                    className={styles.sortBtn}
+                                    title="Sposta Su"
+                                >
+                                    <ChevronUp size={18} />
+                                </button>
+                                <button 
+                                    onClick={() => moveSection(sIndex, 'down')} 
+                                    disabled={sIndex === wineList.sections.length - 1 || isDemo}
+                                    className={styles.sortBtn}
+                                    title="Sposta Giù"
+                                >
+                                    <ChevronDown size={18} />
+                                </button>
+                                <button onClick={() => removeSection(sIndex)} className={styles.iconBtnDelete} style={{ background: 'rgba(239, 68, 68, 0.1)', padding: '10px', marginLeft: '8px' }}>
+                                    <Trash2 size={20} />
+                                </button>
+                            </div>
                         </div>
 
                         <div style={{ padding: '2rem 2.5rem' }}>
