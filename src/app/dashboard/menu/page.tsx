@@ -523,9 +523,10 @@ export default function MenuPage() {
                                                                     <strong style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.1rem', color: '#d4af37' }}>Nuovo Piatto</strong>
                                                                 </div>
                                                                 <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
-                                                                    <input placeholder="Nome Piatto" value={newItem.name} onChange={e => setNewItem({ ...newItem, name: e.target.value })} required autoFocus className={styles.formInput} style={{ flex: 2 }} />
-                                                                    <input placeholder="Prezzo €" type="number" step="0.5" value={newItem.price} onChange={e => setNewItem({ ...newItem, price: e.target.value })} className={styles.formInput} style={{ flex: 1 }} />
-                                                                </div>
+                                                                     <input placeholder="Nome Piatto" value={newItem.name} onChange={e => setNewItem({ ...newItem, name: e.target.value })} required autoFocus className={styles.formInput} style={{ flex: 2 }} />
+                                                                     <input placeholder="Prezzo €" type="number" step="0.5" value={newItem.price} onChange={e => setNewItem({ ...newItem, price: e.target.value })} className={styles.formInput} style={{ flex: 1 }} />
+                                                                     <input placeholder="Unità (pz, cad...)" value={newItem.priceUnit} onChange={e => setNewItem({ ...newItem, priceUnit: e.target.value })} className={styles.formInput} style={{ flex: 1 }} />
+                                                                 </div>
                                                                 <textarea placeholder="Descrizione ingredienti..." value={newItem.description} onChange={e => setNewItem({ ...newItem, description: e.target.value })} className={styles.formTextarea} style={{ minHeight: '80px', marginBottom: '1rem' }} />
                                                                 <div style={{ marginBottom: '1.5rem' }}>
                                                                     <label style={{ fontWeight: 600, display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)' }}>Allergeni (ID)</label>
@@ -545,10 +546,11 @@ export default function MenuPage() {
                                                             editingId === item.id ? (
                                                                 <div key={item.id} style={{ padding: '1.5rem', border: '1px solid rgba(212,175,55,0.2)', borderRadius: '16px', background: 'rgba(212,175,55,0.03)' }}>
                                                                     <form onSubmit={e => handleUpdateItem(e, item.id)}>
-                                                                        <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
-                                                                            <input value={editItemData.name} onChange={e => setEditItemData({ ...editItemData, name: e.target.value })} required className={styles.formInput} style={{ flex: 2 }} />
-                                                                            <input type="number" step="0.5" value={editItemData.price} onChange={e => setEditItemData({ ...editItemData, price: e.target.value })} className={styles.formInput} style={{ flex: 1 }} />
-                                                                        </div>
+                                                                         <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
+                                                                             <input value={editItemData.name} onChange={e => setEditItemData({ ...editItemData, name: e.target.value })} required className={styles.formInput} style={{ flex: 2 }} />
+                                                                             <input type="number" step="0.5" value={editItemData.price} onChange={e => setEditItemData({ ...editItemData, price: e.target.value })} className={styles.formInput} style={{ flex: 1 }} />
+                                                                             <input placeholder="Unità (pz, cad...)" value={editItemData.priceUnit} onChange={e => setEditItemData({ ...editItemData, priceUnit: e.target.value })} className={styles.formInput} style={{ flex: 1 }} />
+                                                                         </div>
                                                                         <textarea value={editItemData.description} onChange={e => setEditItemData({ ...editItemData, description: e.target.value })} className={styles.formTextarea} style={{ minHeight: '80px', marginBottom: '1rem' }} />
                                                                         <div style={{ marginBottom: '1.5rem' }}>
                                                                             <label style={{ fontWeight: 600, display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)' }}>Allergeni</label>
@@ -589,9 +591,9 @@ export default function MenuPage() {
                                                                     </div>
 
                                                                     <div className={menuStyles.itemPriceActions} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '10px' }}>
-                                                                        <div style={{ fontWeight: 800, fontSize: '1.2rem', color: '#d4af37' }}>
-                                                                            € {item.price ? Number(item.price).toFixed(2) : '0.00'}
-                                                                        </div>
+                                                                         <div style={{ fontWeight: 800, fontSize: '1.2rem', color: '#d4af37' }}>
+                                                                             € {item.price ? Number(item.price).toFixed(2) : '0.00'} {item.priceUnit}
+                                                                         </div>
                                                                         <div className={menuStyles.itemActions} style={{ display: 'flex', gap: '8px' }}>
                                                                             <ActionBtn onClick={() => {
                                                                                 if (isDemo) return;
