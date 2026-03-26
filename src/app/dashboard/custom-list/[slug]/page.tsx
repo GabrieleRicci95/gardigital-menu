@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter, useParams } from 'next/navigation';
 import styles from '../../restaurant-dashboard.module.css';
-import { LayoutPanelLeft, Plus, Trash2, Save, X, Camera } from 'lucide-react';
+import { LayoutPanelLeft, Plus, Trash2, Save, X, Camera, ChevronUp, ChevronDown } from 'lucide-react';
 import LoadingOverlay from '@/components/common/LoadingOverlay';
 
 interface CustomItem {
@@ -106,11 +106,15 @@ export default function CustomListPage() {
             return;
         }
         setSaving(true);
+        const listToSave = {
+            ...customList,
+            sections: customList.sections.map((s, idx) => ({ ...s, sortOrder: idx }))
+        };
         try {
             const res = await fetch(`/api/custom-lists/${slug}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(customList)
+                body: JSON.stringify(listToSave)
             });
 
             if (res.ok) {
@@ -155,6 +159,21 @@ export default function CustomListPage() {
             console.error('Upload Error', error);
             alert('Errore di connessione');
         }
+    };
+
+    const moveSection = (index: number, direction: 'up' | 'down') => {
+        if (isDemo) return;
+        setCustomList(prev => {
+            const newSections = [...prev.sections];
+            const targetIndex = direction === 'up' ? index - 1 : index + 1;
+            if (targetIndex < 0 || targetIndex >= newSections.length) return prev;
+            
+            const temp = newSections[index];
+            newSections[index] = newSections[targetIndex];
+            newSections[targetIndex] = temp;
+            
+            return { ...prev, sections: newSections };
+        });
     };
 
     const addSection = () => {
@@ -307,9 +326,27 @@ export default function CustomListPage() {
                                 }}
                                 readOnly={isDemo}
                             />
-                            <button onClick={() => removeSection(sIndex)} className={styles.iconBtnDelete} style={{ background: 'rgba(239, 68, 68, 0.1)', padding: '10px' }}>
-                                <Trash2 size={20} />
-                            </button>
+                            <div className={styles.sortActions}>
+                                <button 
+                                    onClick={() => moveSection(sIndex, 'up')} 
+                                    disabled={sIndex === 0 || isDemo}
+                                    className={styles.sortBtn}
+                                    title="Sposta Su"
+                                >
+                                    <ChevronUp size={18} />
+                                </button>
+                                <button 
+                                    onClick={() => moveSection(sIndex, 'down')} 
+                                    disabled={sIndex === customList.sections.length - 1 || isDemo}
+                                    className={styles.sortBtn}
+                                    title="Sposta Giù"
+                                >
+                                    <ChevronDown size={18} />
+                                </button>
+                                <button onClick={() => removeSection(sIndex)} className={styles.iconBtnDelete} style={{ background: 'rgba(239, 68, 68, 0.1)', padding: '10px', marginLeft: '8px' }}>
+                                    <Trash2 size={20} />
+                                </button>
+                            </div>
                         </div>
 
                         <div style={{ padding: '2rem 2.5rem' }}>

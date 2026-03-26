@@ -102,11 +102,15 @@ export default function DrinkListPage() {
             return;
         }
         setSaving(true);
+        const listToSave = {
+            ...drinkList,
+            sections: drinkList.sections.map((s, idx) => ({ ...s, sortOrder: idx }))
+        };
         try {
             const res = await fetch('/api/drink-list', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(drinkList)
+                body: JSON.stringify(listToSave)
             });
 
             if (res.ok) {
@@ -151,6 +155,21 @@ export default function DrinkListPage() {
             console.error('Upload Error', error);
             alert('Errore di connessione');
         }
+    };
+
+    const moveSection = (index: number, direction: 'up' | 'down') => {
+        if (isDemo) return;
+        setDrinkList(prev => {
+            const newSections = [...prev.sections];
+            const targetIndex = direction === 'up' ? index - 1 : index + 1;
+            if (targetIndex < 0 || targetIndex >= newSections.length) return prev;
+            
+            const temp = newSections[index];
+            newSections[index] = newSections[targetIndex];
+            newSections[targetIndex] = temp;
+            
+            return { ...prev, sections: newSections };
+        });
     };
 
     const addSection = () => {
@@ -302,9 +321,27 @@ export default function DrinkListPage() {
                                 }}
                                 readOnly={isDemo}
                             />
-                            <button onClick={() => removeSection(sIndex)} className={styles.iconBtnDelete} style={{ background: 'rgba(239, 68, 68, 0.1)', padding: '10px' }}>
-                                <Trash2 size={20} />
-                            </button>
+                            <div className={styles.sortActions}>
+                                <button 
+                                    onClick={() => moveSection(sIndex, 'up')} 
+                                    disabled={sIndex === 0 || isDemo}
+                                    className={styles.sortBtn}
+                                    title="Sposta Su"
+                                >
+                                    <ChevronUp size={18} />
+                                </button>
+                                <button 
+                                    onClick={() => moveSection(sIndex, 'down')} 
+                                    disabled={sIndex === drinkList.sections.length - 1 || isDemo}
+                                    className={styles.sortBtn}
+                                    title="Sposta Giù"
+                                >
+                                    <ChevronDown size={18} />
+                                </button>
+                                <button onClick={() => removeSection(sIndex)} className={styles.iconBtnDelete} style={{ background: 'rgba(239, 68, 68, 0.1)', padding: '10px', marginLeft: '8px' }}>
+                                    <Trash2 size={20} />
+                                </button>
+                            </div>
                         </div>
 
                         <div style={{ padding: '2rem 2.5rem' }}>
