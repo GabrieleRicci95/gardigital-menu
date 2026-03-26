@@ -62,22 +62,6 @@ function SortableSection({ section, index, children }: { section: DrinkSection; 
     );
 }
 
-// ---- Sortable Section Wrapper ----
-function SortableSection({ section, index, children }: { section: DrinkSection; index: number; children: (dragHandleProps: any) => React.ReactNode }) {
-    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: section.id || `section-${index}` });
-    const style = {
-        transform: CSS.Transform.toString(transform),
-        transition,
-        opacity: isDragging ? 0.5 : 1,
-        zIndex: isDragging ? 999 : 'auto',
-    };
-    return (
-        <div ref={setNodeRef} style={style}>
-            {children({ ...attributes, ...listeners })}
-        </div>
-    );
-}
-
 export default function DrinkListPage() {
     const [drinkList, setDrinkList] = useState<DrinkList>({
         isActive: true,
@@ -329,7 +313,7 @@ export default function DrinkListPage() {
             <div className={styles.card} style={{ marginBottom: '2.5rem', background: 'rgba(212, 175, 55, 0.05)', border: '1px solid rgba(212, 175, 55, 0.2)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div>
-                        <h3 className={styles.cardTitle} style={{ margin: 0 }}><GlassWater size={20} /> Stato Pubblicazione</h3>
+                        <h3 className={styles.cardTitle} style={{ margin: 0 }}><Martini size={20} /> Stato Pubblicazione</h3>
                         <p className={styles.cardDesc} style={{ margin: 0, marginTop: '4px' }}>Rendi visibile la lista drink sul tuo menu pubblico.</p>
                     </div>
                     <label style={{ position: 'relative', display: 'inline-block', width: '60px', height: '32px', cursor: 'pointer' }}>

@@ -61,22 +61,6 @@ function SortableSection({ section, index, children }: { section: ChampagneSecti
     );
 }
 
-// ---- Sortable Section Wrapper ----
-function SortableSection({ section, index, children }: { section: ChampagneSection; index: number; children: (dragHandleProps: any) => React.ReactNode }) {
-    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: section.id || `section-${index}` });
-    const style = {
-        transform: CSS.Transform.toString(transform),
-        transition,
-        opacity: isDragging ? 0.5 : 1,
-        zIndex: isDragging ? 999 : 'auto',
-    };
-    return (
-        <div ref={setNodeRef} style={style}>
-            {children({ ...attributes, ...listeners })}
-        </div>
-    );
-}
-
 export default function ChampagneListPage() {
     const [champagneList, setChampagneList] = useState<ChampagneList>({
         isActive: true,

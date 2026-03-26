@@ -47,6 +47,22 @@ interface CustomList {
     sections: CustomSection[];
 }
 
+// ---- Sortable Section Wrapper ----
+function SortableSection({ section, index, children }: { section: CustomSection; index: number; children: (dragHandleProps: any) => React.ReactNode }) {
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: section.id || `section-${index}` });
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+        opacity: isDragging ? 0.5 : 1,
+        zIndex: isDragging ? 999 : 'auto',
+    };
+    return (
+        <div ref={setNodeRef} style={style}>
+            {children({ ...attributes, ...listeners })}
+        </div>
+    );
+}
+
 export default function CustomListPage() {
     const params = useParams();
     const slug = params.slug as string;
@@ -60,6 +76,12 @@ export default function CustomListPage() {
     const [saving, setSaving] = useState(false);
     const [isDemo, setIsDemo] = useState(false);
     const router = useRouter();
+
+    const sensors = useSensors(
+        useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+        useSensor(TouchSensor, { activationConstraint: { delay: 300, tolerance: 8 } }),
+        useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+    );
 
     // Dirty state management
     const originalDataRef = useRef<string>('');
