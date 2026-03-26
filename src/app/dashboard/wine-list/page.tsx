@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import styles from '../restaurant-dashboard.module.css';
+import wineListStyles from './wine-list.module.css';
 import { Wine, Plus, Trash2, Save, X, ChevronRight } from 'lucide-react';
 import LoadingOverlay from '@/components/common/LoadingOverlay';
 
@@ -213,8 +214,8 @@ export default function WineListPage() {
                     <h1 className={styles.title}>Carta dei Vini</h1>
                     <p className={styles.subtitle}>Gestisci la tua cantina digitale con l&apos;eleganza di un sommelier.</p>
                 </div>
-                <button onClick={addSection} className={styles.btnPrimary} style={{ width: 'auto' }}>
-                    <Plus size={20} /> Nuova Categoria
+                <button onClick={addSection} className={wineListStyles.newSectionBtn}>
+                    <Plus size={18} /> Nuova Categoria
                 </button>
             </header>
 
