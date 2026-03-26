@@ -381,7 +381,7 @@ export default function ReservationsPage() {
                         </div>
 
                         <div className={styles.calendarGrid}>
-                            {['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'].map(d => (
+                            {['LU', 'MA', 'ME', 'GI', 'VE', 'SA', 'DO'].map(d => (
                                 <div key={d} className={styles.weekday}>{d}</div>
                             ))}
                             {generateCalendarDays().map((day, idx) => {

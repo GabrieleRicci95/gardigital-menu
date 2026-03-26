@@ -139,7 +139,7 @@
     .sideColumn {
         flex: none;
         width: 100%;
-        max-width: 520px;
+        max-width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -148,9 +148,11 @@
     }
     .calendarContainer {
         width: 100%;
+        max-width: 100%;
         margin: 0;
         padding: 1.5rem 1rem;
         border-radius: 20px;
+        box-sizing: border-box;
     }
 
     .calendarTitle {
@@ -159,11 +161,14 @@
 
     .calendarGrid {
         gap: 4px;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+        width: 100%;
     }
 
     .weekday {
         font-size: 0.7rem;
         padding-bottom: 8px;
+        letter-spacing: 0;
     }
 
     .dayCell {
@@ -172,10 +177,62 @@
     }
 }
 
+@media (max-width: 480px) {
+    .container {
+        padding: 1rem 0.25rem !important;
+    }
+
+    .calendarContainer {
+        padding: 1rem 0.1rem !important;
+        border-radius: 12px;
+    }
+
+    .calendarHeader {
+        flex-direction: column;
+        gap: 0.8rem;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+    }
+
+    .calendarGrid {
+        gap: 0 !important;
+        grid-template-columns: repeat(7, 14.28%) !important;
+    }
+
+    .weekday {
+        font-size: 3.5vw !important;
+        padding-bottom: 5px;
+    }
+
+    .dayCell {
+        font-size: 4vw !important;
+        aspect-ratio: 1;
+        border-radius: 4px;
+    }
+    
+    .calendarTitle {
+        font-size: 5vw !important;
+    }
+
+    .calendarNavBtn {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+@media (max-width: 340px) {
+    .weekday {
+        font-size: 3vw !important;
+    }
+    .dayCell {
+        font-size: 3.5vw !important;
+    }
+}
+
 .list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
     width: 100%;
 }
 

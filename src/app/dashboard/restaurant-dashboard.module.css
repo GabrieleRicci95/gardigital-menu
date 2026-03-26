@@ -108,6 +108,7 @@
     background: linear-gradient(135deg, #d4af37, #aa8c2c);
     color: #000000;
     box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2);
+    border-radius: 12px;
 }
 
 .btnPrimary:hover {
@@ -152,6 +153,18 @@
     border-color: #d4af37;
     background: rgba(255, 255, 255, 0.08);
     box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+}
+
+/* Hide spin buttons for number inputs */
+.formInput::-webkit-outer-spin-button,
+.formInput::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.formInput[type=number] {
+    -moz-appearance: textfield;
+    appearance: none;
 }
 
 .formTextarea {
