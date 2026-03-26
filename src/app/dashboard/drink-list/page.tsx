@@ -343,44 +343,31 @@ export default function DrinkListPage() {
                 {drinkList.sections.map((section, sIndex) => (
                     <div key={section.id || sIndex} className={styles.card} style={{ padding: 0, overflow: 'hidden' }}>
                         <div style={{ background: 'rgba(212, 175, 55, 0.05)', padding: '1.5rem 2.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(212, 175, 55, 0.1)' }}>
-                            <input
-                                type="text"
-                                value={section.name}
-                                onChange={(e) => updateSectionName(sIndex, e.target.value)}
-                                placeholder="Nome Categoria (es. Cocktail Classici)"
-                                style={{
-                                    fontSize: '1.5rem',
-                                    fontWeight: '700',
-                                    border: 'none',
-                                    background: 'transparent',
-                                    outline: 'none',
-                                    color: '#d4af37',
-                                    fontFamily: 'Playfair Display, serif',
-                                    width: '100%'
-                                }}
-                                readOnly={isDemo}
-                            />
-                            <div className={styles.sortActions}>
-                                <button 
-                                    onClick={() => moveSection(sIndex, 'up')} 
-                                    disabled={sIndex === 0 || isDemo}
-                                    className={styles.sortBtn}
-                                    title="Sposta Su"
-                                >
-                                    <ChevronUp size={18} />
-                                </button>
-                                <button 
-                                    onClick={() => moveSection(sIndex, 'down')} 
-                                    disabled={sIndex === drinkList.sections.length - 1 || isDemo}
-                                    className={styles.sortBtn}
-                                    title="Sposta Giù"
-                                >
-                                    <ChevronDown size={18} />
-                                </button>
-                                <button onClick={() => removeSection(sIndex)} className={styles.iconBtnDelete} style={{ background: 'rgba(239, 68, 68, 0.1)', padding: '10px', marginLeft: '8px' }}>
-                                    <Trash2 size={20} />
-                                </button>
+                            <div style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
+                                <div {...dragHandleProps} className={styles.dragHandle}>
+                                    <GripVertical size={20} />
+                                </div>
+                                <input
+                                    type="text"
+                                    value={section.name}
+                                    onChange={(e) => updateSectionName(sIndex, e.target.value)}
+                                    placeholder="Nome Categoria (es. Cocktail Classici)"
+                                    style={{
+                                        fontSize: '1.5rem',
+                                        fontWeight: '700',
+                                        border: 'none',
+                                        background: 'transparent',
+                                        outline: 'none',
+                                        color: '#d4af37',
+                                        fontFamily: 'Playfair Display, serif',
+                                        width: '100%'
+                                    }}
+                                    readOnly={isDemo}
+                                />
                             </div>
+                            <button onClick={() => removeSection(sIndex)} className={styles.iconBtnDelete} style={{ background: 'rgba(239, 68, 68, 0.1)', padding: '10px' }}>
+                                <Trash2 size={20} />
+                            </button>
                         </div>
 
                         <div style={{ padding: '2rem 2.5rem' }}>
