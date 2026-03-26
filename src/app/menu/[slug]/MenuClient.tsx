@@ -415,8 +415,8 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
             />
             {/* Hero Section */}
             <header
-                className={restaurant.slug === 'mastro-arrosticino-884' ? undefined : styles.hero}
-                style={restaurant.slug === 'mastro-arrosticino-884' ? {
+                className={restaurant.slug === 'mastro-arrosticino-884' || restaurant.slug?.includes('arion-club') ? undefined : styles.hero}
+                style={restaurant.slug === 'mastro-arrosticino-884' || restaurant.slug?.includes('arion-club') ? {
                     backgroundColor: '#000000',
                     backgroundImage: 'none', // RIMOSSO: Evita il logo gigante ripetuto come sfondo
                     minHeight: '350px',
@@ -431,8 +431,8 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
                 } : undefined)}
             >
                 <div
-                    className={restaurant.slug === 'mastro-arrosticino-884' ? undefined : styles.heroContent}
-                    style={restaurant.slug === 'mastro-arrosticino-884' ? {
+                    className={restaurant.slug === 'mastro-arrosticino-884' || restaurant.slug?.includes('arion-club') ? undefined : styles.heroContent}
+                    style={restaurant.slug === 'mastro-arrosticino-884' || restaurant.slug?.includes('arion-club') ? {
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
@@ -454,18 +454,24 @@ export function MenuClientContent({ restaurant: initialRestaurant }: { restauran
                                 filter: 'brightness(0) invert(1)', // Lo rende bianco puro
                                 mixBlendMode: 'screen', // Rende trasparente lo sfondo bianco (ora nero)
                                 marginBottom: '10px' 
-                            } : undefined}
+                            } : (restaurant.slug?.includes('arion-club') ? {
+                                maxHeight: '300px',
+                                maxWidth: '100%',
+                                marginBottom: '10px',
+                                borderRadius: '15px', // slightly soften the edges if needed, or leave square
+                                boxShadow: '0 4px 20px rgba(0,0,0,0.5)' // add depth
+                            } : undefined)}
                         />
                     ) : null}
 
-                    {restaurant.slug !== 'mastro-arrosticino-884' && restaurant.showNameInPublicMenu && (
+                    {restaurant.slug !== 'mastro-arrosticino-884' && !restaurant.slug?.includes('arion-club') && restaurant.showNameInPublicMenu && (
                         <h1 className={styles.restaurantName}>{restaurant.name}</h1>
                     )}
 
                     {restaurant.description && (
                         <p
-                            className={restaurant.slug === 'mastro-arrosticino-884' ? undefined : styles.restaurantDesc}
-                            style={restaurant.slug === 'mastro-arrosticino-884' ? {
+                            className={restaurant.slug === 'mastro-arrosticino-884' || restaurant.slug?.includes('arion-club') ? undefined : styles.restaurantDesc}
+                            style={restaurant.slug === 'mastro-arrosticino-884' || restaurant.slug?.includes('arion-club') ? {
                                 color: 'white',
                                 fontSize: '1.1rem',
                                 lineHeight: '1.6',
