@@ -57,3 +57,38 @@
         font-size: 0.8rem;
     }
 }
+
+.newSectionBtn {
+    background: linear-gradient(135deg, #d4af37 0%, #f1d58a 50%, #aa8c2c 100%);
+    background-size: 200% auto;
+    color: #000;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.25);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.newSectionBtn:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+    background-position: right center;
+}
+
+.newSectionBtn:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.newSectionBtn svg {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    padding: 2px;
+}
