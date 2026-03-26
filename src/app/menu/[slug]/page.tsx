@@ -65,6 +65,11 @@ async function getRestaurant(inputSlug: string): Promise<MenuPageRestaurant | nu
         }
 
         const activeMenu = (restaurant as any).menus?.[0];
+        
+        if (!activeMenu) {
+            console.log(`[MENU_PAGE] WARNING: No active menu found for restaurant: ${slug}. Returning empty categories.`);
+        }
+
         const categories = activeMenu ? activeMenu.categories.map((cat: any) => ({
             ...cat,
             items: (cat.items || []).map((item: any) => ({
