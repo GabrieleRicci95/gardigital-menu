@@ -5,7 +5,25 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import styles from '../restaurant-dashboard.module.css';
 import wineListStyles from './wine-list.module.css';
-import { Wine, Plus, Trash2, Save, X, ChevronRight, ChevronUp, ChevronDown } from 'lucide-react';
+import { Wine, Plus, Trash2, Save, X, ChevronRight, GripVertical } from 'lucide-react';
+import {
+    DndContext,
+    closestCenter,
+    KeyboardSensor,
+    PointerSensor,
+    TouchSensor,
+    useSensor,
+    useSensors,
+    DragEndEvent,
+} from '@dnd-kit/core';
+import {
+    arrayMove,
+    SortableContext,
+    sortableKeyboardCoordinates,
+    useSortable,
+    verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import LoadingOverlay from '@/components/common/LoadingOverlay';
 
 interface WineItem {
@@ -28,6 +46,22 @@ interface WineList {
     sections: WineSection[];
 }
 
+// ---- Sortable Section Wrapper ----
+function SortableSection({ section, index, children }: { section: WineSection; index: number; children: (dragHandleProps: any) => React.ReactNode }) {
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: section.id || `section-${index}` });
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+        opacity: isDragging ? 0.5 : 1,
+        zIndex: isDragging ? 999 : 'auto',
+    };
+    return (
+        <div ref={setNodeRef} style={style}>
+            {children({ ...attributes, ...listeners })}
+        </div>
+    );
+}
+
 export default function WineListPage() {
     const [wineList, setWineList] = useState<WineList>({
         isActive: true,
@@ -37,6 +71,12 @@ export default function WineListPage() {
     const [saving, setSaving] = useState(false);
     const [isDemo, setIsDemo] = useState(false);
     const router = useRouter();
+
+    const sensors = useSensors(
+        useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+        useSensor(TouchSensor, { activationConstraint: { delay: 300, tolerance: 8 } }),
+        useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+    );
 
     // Dirty state management
     const originalDataRef = useRef<string>('');
@@ -125,19 +165,18 @@ export default function WineListPage() {
         }
     };
 
-    const moveSection = (index: number, direction: 'up' | 'down') => {
-        if (isDemo) return;
-        setWineList(prev => {
-            const newSections = [...prev.sections];
-            const targetIndex = direction === 'up' ? index - 1 : index + 1;
-            if (targetIndex < 0 || targetIndex >= newSections.length) return prev;
-            
-            const temp = newSections[index];
-            newSections[index] = newSections[targetIndex];
-            newSections[targetIndex] = temp;
-            
-            return { ...prev, sections: newSections };
-        });
+    const handleDragEnd = (event: DragEndEvent) => {
+        const { active, over } = event;
+        if (event.over && active.id !== over?.id) {
+            setWineList((prev) => {
+                const oldIndex = prev.sections.findIndex((s) => (s.id || `section-${prev.sections.indexOf(s)}`) === active.id);
+                const newIndex = prev.sections.findIndex((s) => (s.id || `section-${prev.sections.indexOf(s)}`) === over?.id);
+                return {
+                    ...prev,
+                    sections: arrayMove(prev.sections, oldIndex, newIndex),
+                };
+            });
+        }
     };
 
     const addSection = () => {
@@ -268,107 +307,102 @@ export default function WineListPage() {
             </div>
 
             {/* Sections List */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
-                {wineList.sections.map((section, sIndex) => (
-                    <div key={section.id || sIndex} className={styles.card} style={{ padding: 0, overflow: 'hidden' }}>
-                        <div style={{ background: 'rgba(212, 175, 55, 0.05)', padding: '1.5rem 2.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(212, 175, 55, 0.1)' }}>
-                            <input
-                                type="text"
-                                value={section.name}
-                                onChange={(e) => updateSectionName(sIndex, e.target.value)}
-                                placeholder="Nome Categoria (es. Vini Rossi)"
-                                style={{
-                                    fontSize: '1.5rem',
-                                    fontWeight: '700',
-                                    border: 'none',
-                                    background: 'transparent',
-                                    outline: 'none',
-                                    color: '#d4af37',
-                                    fontFamily: 'Playfair Display, serif',
-                                    width: '100%'
-                                }}
-                                readOnly={isDemo}
-                            />
-                            <div className={styles.sortActions}>
-                                <button 
-                                    onClick={() => moveSection(sIndex, 'up')} 
-                                    disabled={sIndex === 0 || isDemo}
-                                    className={styles.sortBtn}
-                                    title="Sposta Su"
-                                >
-                                    <ChevronUp size={18} />
-                                </button>
-                                <button 
-                                    onClick={() => moveSection(sIndex, 'down')} 
-                                    disabled={sIndex === wineList.sections.length - 1 || isDemo}
-                                    className={styles.sortBtn}
-                                    title="Sposta Giù"
-                                >
-                                    <ChevronDown size={18} />
-                                </button>
-                                <button onClick={() => removeSection(sIndex)} className={styles.iconBtnDelete} style={{ background: 'rgba(239, 68, 68, 0.1)', padding: '10px', marginLeft: '8px' }}>
-                                    <Trash2 size={20} />
-                                </button>
-                            </div>
-                        </div>
-
-                        <div style={{ padding: '2rem 2.5rem' }}>
-                            <button
-                                onClick={() => addItem(sIndex)}
-                                className={styles.btnSm}
-                                style={{ width: '100%', marginBottom: '2rem', borderStyle: 'dashed' }}
-                                disabled={isDemo}
-                            >
-                                <Plus size={18} /> Aggiungi Bottiglia
-                            </button>
-
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                                {section.items.map((item, iIndex) => (
-                                    <div key={item.id || iIndex} style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '1.5rem' }}>
-                                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                                            <input
-                                                type="text"
-                                                value={item.name}
-                                                onChange={e => updateItem(sIndex, iIndex, 'name', e.target.value)}
-                                                placeholder="Nome del Vino"
-                                                className={styles.formInput}
-                                                style={{ fontSize: '1.1rem', fontWeight: 600 }}
-                                                readOnly={isDemo}
-                                            />
-                                            <textarea
-                                                value={item.description}
-                                                onChange={e => updateItem(sIndex, iIndex, 'description', e.target.value)}
-                                                placeholder="Annata, Vitigno, Regione..."
-                                                className={styles.formTextarea}
-                                                style={{ minHeight: '60px', padding: '10px' }}
-                                                rows={2}
-                                                readOnly={isDemo}
-                                            />
-                                        </div>
-                                        <div style={{ width: '120px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                                            <div style={{ position: 'relative' }}>
+            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                <SortableContext items={wineList.sections.map((s, idx) => s.id || `section-${idx}`)} strategy={verticalListSortingStrategy}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+                        {wineList.sections.map((section, sIndex) => (
+                            <SortableSection key={section.id || `section-${sIndex}`} section={section} index={sIndex}>
+                                {(dragHandleProps) => (
+                                    <div className={styles.card} style={{ padding: 0, overflow: 'hidden' }}>
+                                        <div style={{ background: 'rgba(212, 175, 55, 0.05)', padding: '1.5rem 2.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(212, 175, 55, 0.1)' }}>
+                                            <div style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
+                                                <div {...dragHandleProps} className={styles.dragHandle}>
+                                                    <GripVertical size={20} />
+                                                </div>
                                                 <input
-                                                    type="number"
-                                                    value={item.price}
-                                                    onChange={e => updateItem(sIndex, iIndex, 'price', e.target.value)}
-                                                    className={styles.formInput}
-                                                    style={{ textAlign: 'right', paddingRight: '25px' }}
-                                                    placeholder="0.00"
+                                                    type="text"
+                                                    value={section.name}
+                                                    onChange={(e) => updateSectionName(sIndex, e.target.value)}
+                                                    placeholder="Nome Categoria (es. Vini Rossi)"
+                                                    style={{
+                                                        fontSize: '1.5rem',
+                                                        fontWeight: '700',
+                                                        border: 'none',
+                                                        background: 'transparent',
+                                                        outline: 'none',
+                                                        color: '#d4af37',
+                                                        fontFamily: 'Playfair Display, serif',
+                                                        width: '100%'
+                                                    }}
                                                     readOnly={isDemo}
                                                 />
-                                                <span style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', color: '#d4af37' }}>€</span>
                                             </div>
-                                            <button onClick={() => removeItem(sIndex, iIndex)} className={styles.btnSm} style={{ color: '#ef4444', borderColor: 'rgba(239, 68, 68, 0.2)' }}>
-                                                Rimuovi
+                                            <button onClick={() => removeSection(sIndex)} className={styles.iconBtnDelete} style={{ background: 'rgba(239, 68, 68, 0.1)', padding: '10px' }}>
+                                                <Trash2 size={20} />
                                             </button>
                                         </div>
+
+                                        <div style={{ padding: '2rem 2.5rem' }}>
+                                            <button
+                                                onClick={() => addItem(sIndex)}
+                                                className={styles.btnSm}
+                                                style={{ width: '100%', marginBottom: '2rem', borderStyle: 'dashed' }}
+                                                disabled={isDemo}
+                                            >
+                                                <Plus size={18} /> Aggiungi Bottiglia
+                                            </button>
+
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                                                {section.items.map((item, iIndex) => (
+                                                    <div key={item.id || iIndex} style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '1.5rem' }}>
+                                                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                                            <input
+                                                                type="text"
+                                                                value={item.name}
+                                                                onChange={e => updateItem(sIndex, iIndex, 'name', e.target.value)}
+                                                                placeholder="Nome del Vino"
+                                                                className={styles.formInput}
+                                                                style={{ fontSize: '1.1rem', fontWeight: 600 }}
+                                                                readOnly={isDemo}
+                                                            />
+                                                            <textarea
+                                                                value={item.description}
+                                                                onChange={e => updateItem(sIndex, iIndex, 'description', e.target.value)}
+                                                                placeholder="Annata, Vitigno, Regione..."
+                                                                className={styles.formTextarea}
+                                                                style={{ minHeight: '60px', padding: '10px' }}
+                                                                rows={2}
+                                                                readOnly={isDemo}
+                                                            />
+                                                        </div>
+                                                        <div style={{ width: '120px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                                            <div style={{ position: 'relative' }}>
+                                                                <input
+                                                                    type="number"
+                                                                    value={item.price}
+                                                                    onChange={e => updateItem(sIndex, iIndex, 'price', e.target.value)}
+                                                                    className={styles.formInput}
+                                                                    style={{ textAlign: 'right', paddingRight: '25px' }}
+                                                                    placeholder="0.00"
+                                                                    readOnly={isDemo}
+                                                                />
+                                                                <span style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', color: '#d4af37' }}>€</span>
+                                                            </div>
+                                                            <button onClick={() => removeItem(sIndex, iIndex)} className={styles.btnSm} style={{ color: '#ef4444', borderColor: 'rgba(239, 68, 68, 0.2)' }}>
+                                                                Rimuovi
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
                                     </div>
-                                ))}
-                            </div>
-                        </div>
+                                )}
+                            </SortableSection>
+                        ))}
                     </div>
-                ))}
-            </div>
+                </SortableContext>
+            </DndContext>
 
             {/* Sticky Save Bar */}
             <div className={styles.stickySaveBar}>

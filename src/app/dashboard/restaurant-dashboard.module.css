@@ -1032,3 +1032,25 @@
     opacity: 0.3;
     cursor: not-allowed;
 }
+
+.dragHandle {
+    color: #d4af37;
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.2s;
+    background: rgba(212, 175, 55, 0.05);
+    margin-right: 0.5rem;
+}
+
+.dragHandle:hover {
+    background: rgba(212, 175, 55, 0.15);
+    color: #fff;
+}
+
+.dragHandle:active {
+    cursor: grabbing;
+}
