@@ -171,6 +171,47 @@ export default async function FixedMenusPage({ params }: { params: Promise<{ slu
                                     </div>
                                 )}
 
+                                {menu.sections && menu.sections.length > 0 && (
+                                    <div style={{ marginBottom: '2rem' }}>
+                                        {menu.sections.map(section => (
+                                            <div key={section.id} style={{ marginBottom: '1.5rem', textAlign: 'center' }}>
+                                                {section.name && section.name !== 'Cosa include' && section.name !== 'Il Nostro Menu' && (
+                                                    <h3 style={{ color: primaryColor, fontSize: '1.3rem', marginBottom: '0.5rem', borderBottom: `1px solid ${accentColor}`, paddingBottom: '0.3rem', display: 'inline-block' }}>
+                                                        {section.name}
+                                                    </h3>
+                                                )}
+                                                {section.description && (
+                                                    <p style={{ fontStyle: 'italic', color: '#666', marginBottom: '1rem', fontSize: '0.95rem' }}>
+                                                        {section.description}
+                                                    </p>
+                                                )}
+                                                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                                                    {section.items && section.items.map(item => (
+                                                        <li key={item.id} style={{ marginBottom: '1rem' }}>
+                                                            <div style={{ fontWeight: 'bold', fontSize: '1.1rem', color: '#111' }}>{item.name}</div>
+                                                            {item.description && (
+                                                                <div style={{ color: '#555', fontSize: '1rem', marginTop: '4px' }}>{item.description}</div>
+                                                            )}
+                                                            {item.allergens && item.allergens !== '[]' && (
+                                                                <div style={{ marginTop: '6px', fontSize: '0.9rem' }}>
+                                                                    {(() => {
+                                                                        try {
+                                                                            const allergenIds = JSON.parse(item.allergens as string);
+                                                                            return allergensData
+                                                                                .filter(a => allergenIds.includes(a.id))
+                                                                                .map(a => <span key={a.id} title={a.name} style={{ marginRight: '4px' }}>{a.icon}</span>);
+                                                                        } catch (e) { return null; }
+                                                                    })()}
+                                                                </div>
+                                                            )}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+
                                 <div style={{
                                     borderTop: `1px solid ${accentColor}`,
                                     paddingTop: '1rem',

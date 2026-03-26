@@ -25,6 +25,8 @@ export async function GET(req: Request) {
                 wineList: { include: { sections: { include: { items: true } } } },
                 champagneList: { include: { sections: { include: { items: true } } } },
                 drinkList: { include: { sections: { include: { items: true } } } },
+                customLists: { include: { sections: { include: { items: true } } } },
+                fixedMenus: { include: { sections: { include: { items: true } } } },
             }
         });
 
