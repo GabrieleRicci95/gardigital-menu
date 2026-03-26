@@ -251,7 +251,7 @@ export default function CustomListPage() {
                     <h1 className={styles.title}>{customList.name}</h1>
                     <p className={styles.subtitle}>Gestisci i contenuti del modulo "{customList.name}". Organizza tutto con eleganza.</p>
                 </div>
-                <button onClick={addSection} className={styles.btnPrimary} style={{ width: 'auto' }}>
+                <button onClick={addSection} className={styles.newSectionBtn}>
                     <Plus size={20} /> Nuova Categoria
                 </button>
             </header>
