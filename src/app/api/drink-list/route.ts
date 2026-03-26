@@ -97,7 +97,7 @@ export async function POST(req: Request) {
                             sortOrder: i,
                             drinkListId: drinkList.id,
                             items: {
-                                create: section.items.map((item: any) => ({
+                                create: section.items.filter((item: any) => item.name && item.name.trim() !== '').map((item: any) => ({
                                     name: item.name,
                                     description: item.description,
                                     price: item.price,

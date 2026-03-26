@@ -99,7 +99,7 @@ export async function POST(request: Request) {
                             name: section.name,
                             sortOrder: section.sortOrder || 0,
                             items: {
-                                create: section.items?.map((item: any) => ({
+                                create: section.items?.filter((item: any) => item.name && item.name.trim() !== '').map((item: any) => ({
                                     name: item.name,
                                     description: item.description,
                                     price: isNaN(parseFloat(item.price)) ? 0 : parseFloat(item.price)
