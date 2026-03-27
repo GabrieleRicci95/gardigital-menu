@@ -71,21 +71,22 @@ export default function ExpiredSubscriptionPaywall({ isAppMode, onManageClick }:
                     marginBottom: '32px' 
                 }}>
                     {isAppMode 
-                        ? "Per iniziare a gestire il tuo menu e attivare i tuoi 7 GIORNI DI PROVA GRATUITA, accedi al portale web e registra un metodo di pagamento."
+                        ? "Non puoi accedere alle funzionalità attuali. Il tuo abbonamento a SoloMenu è scaduto o in pausa. Contatta l'assistenza per rinnovare il piano."
                         : "Registra ora un metodo di pagamento per sbloccare la dashboard e attivare i tuoi 7 GIORNI DI PROVA GRATUITA. Nessun addebito verrà effettuato prima della fine della prova."
                     }
                 </p>
 
                 {isAppMode ? (
                     <div style={{
-                        background: 'rgba(212, 175, 55, 0.05)',
+                        background: 'rgba(239, 68, 68, 0.05)',
                         padding: '20px',
                         borderRadius: '16px',
-                        border: '1px dashed rgba(212, 175, 55, 0.3)',
-                        width: '100%'
+                        border: '1px dashed rgba(239, 68, 68, 0.3)',
+                        width: '100%',
+                        color: '#ef4444',
+                        fontWeight: '500'
                     }}>
-                        <p style={{ fontWeight: '700', color: '#d4af37', marginBottom: '8px', fontSize: '0.9rem' }}>Accedi su:</p>
-                        <code style={{ fontSize: '1.1rem', color: '#ffffff', fontWeight: '900' }}>master.gardigital.it</code>
+                        Abbonamento non rilevato.
                     </div>
                 ) : (
                     <Link 

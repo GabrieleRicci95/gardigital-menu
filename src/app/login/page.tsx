@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Footer from '@/components/layout/Footer';
@@ -10,7 +10,27 @@ export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [isAppMode, setIsAppMode] = useState(false);
     const router = useRouter();
+
+    useEffect(() => {
+        const checkAppMode = () => {
+            if (typeof window === 'undefined') return;
+            const params = new URLSearchParams(window.location.search);
+            const ua = navigator.userAgent || '';
+            const hasParam = params.get('platform') === 'app';
+            const hasSession = sessionStorage.getItem('isAppMode') === 'true';
+            const isWebView = /Android/i.test(ua) && /Version\/[0-9.]+/i.test(ua);
+            const isStandalone = (window.matchMedia('(display-mode: standalone)').matches) || (navigator as any).standalone;
+            const isCapacitorNative = (window as any).Capacitor?.isNativePlatform?.() === true;
+
+            if (hasParam || hasSession || isWebView || isStandalone || isCapacitorNative) {
+                setIsAppMode(true);
+                sessionStorage.setItem('isAppMode', 'true');
+            }
+        };
+        checkAppMode();
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -80,10 +100,12 @@ export default function LoginPage() {
                             Password dimenticata?
                         </Link>
                     </div>
-
-                    <p className={styles.footer}>
-                        Non hai un account? <Link href="/register" className={styles.secondaryButton}>Registrati</Link>
-                    </p>
+                    
+                    {!isAppMode && (
+                        <p className={styles.footer}>
+                            Non hai un account? <Link href="/register" className={styles.secondaryButton}>Registrati</Link>
+                        </p>
+                    )}
                 </div>
             </div>
             <Footer />
