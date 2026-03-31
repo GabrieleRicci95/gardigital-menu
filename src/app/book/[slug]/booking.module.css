@@ -1,7 +1,7 @@
 .container {
     max-width: 600px;
     margin: 0 auto;
-    padding: 20px 4px; /* Mobile first: extreme minimum padding */
+    padding: 15px 4px; /* Reduced vertical padding */
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -12,33 +12,28 @@
 }
 
 .card {
-    width: 92%; /* Safety margin for small phones */
+    width: 88%; /* Even narrower to guarantee fit */
     background: var(--color-surface);
     border-radius: 12px;
-    padding: 15px 10px; /* Ultra-compact padding */
+    padding: 15px 8px; /* Leaner padding */
     border: 1px solid var(--color-border);
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
     position: relative;
-    margin-top: 20px;
+    margin-top: 15px;
     animation: fadeIn 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
     box-sizing: border-box;
 }
 
 .logo {
-    width: 80px; /* Smaller logo */
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 20px;
-    border: 2px solid var(--color-primary);
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+    width: 70px; /* Smaller logo */
+    height: 70px;
 }
 
 .title {
     font-family: var(--font-family-serif);
-    font-size: 1.3rem; /* Compact title font */
+    font-size: 1.15rem; /* Atomic title */
     font-weight: 400;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     text-align: center;
     color: var(--color-primary);
     letter-spacing: -0.01em;
@@ -47,48 +42,46 @@
 }
 
 .subtitle {
-    font-size: 0.85rem;
+    font-size: 0.75rem; /* Atomic subtitle */
     color: var(--color-text-secondary);
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     text-align: center;
-    line-height: 1.4;
-    padding: 0 8px;
+    line-height: 1.3;
 }
 
 .section {
-    margin-bottom: 30px;
+    margin-bottom: 25px;
 }
 
 .label {
     display: block;
-    font-size: 0.75rem; /* Smaller label */
+    font-size: 0.7rem; /* Tiny label */
     font-weight: 600;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     color: var(--color-primary);
     text-transform: uppercase;
-    letter-spacing: 0.15em;
-    opacity: 0.9;
+    letter-spacing: 0.12em;
+    opacity: 0.85;
 }
 
 .inputGroup {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
 }
 
 .input {
     width: 100%;
-    padding: 10px 12px; /* Slimmer inputs */
-    border-radius: 10px;
+    padding: 8px 10px; /* Atomic padding */
+    border-radius: 8px;
     border: 1px solid var(--color-border);
     background: rgba(255, 255, 255, 0.03);
     color: white;
-    font-size: 0.95rem; /* Prevents auto-zoom on iOS */
+    font-size: 0.85rem; /* Smaller font to fit date/time strings */
     outline: none;
     transition: all 0.3s ease;
     font-family: inherit;
     box-sizing: border-box;
-    max-width: 100%;
 }
 
 .input::placeholder {
@@ -98,13 +91,12 @@
 .input:focus {
     border-color: var(--color-primary);
     background: rgba(255, 255, 255, 0.06);
-    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
 }
 
 .grid {
     display: grid;
-    grid-template-columns: 1fr; /* Stacked by default */
-    gap: 12px;
+    grid-template-columns: 1fr;
+    gap: 10px;
 }
 
 /* Desktop Enhancements */
@@ -140,42 +132,37 @@
 
 .submitBtn {
     width: 100%;
-    padding: 16px;
+    padding: 14px;
     border-radius: 50px;
     border: 1px solid var(--color-primary);
     background: var(--color-primary);
     color: black;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     cursor: pointer;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    margin-top: 25px;
+    margin-top: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .submitBtn:hover:not(:disabled) {
     background: black;
     color: var(--color-primary);
-    transform: translateY(-3px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
 }
 
 .submitBtn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-    border-color: #555;
-    background: #333;
-    color: #777;
 }
 
 .successCard {
     text-align: center;
-    padding: 30px 5px;
+    padding: 25px 5px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -183,39 +170,32 @@
 }
 
 .successIcon {
-    width: 64px;
-    height: 64px;
+    width: 56px;
+    height: 56px;
     background: var(--color-primary);
     color: black;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 32px;
-    margin-bottom: 20px;
-    box-shadow: 0 10px 25px rgba(212, 175, 55, 0.3);
+    font-size: 28px;
+    margin-bottom: 15px;
 }
 
 .waBtn {
     background: #25d366;
     color: white;
-    padding: 14px 28px;
+    padding: 12px 24px;
     border-radius: 50px;
     text-decoration: none;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    margin-top: 25px;
+    margin-top: 20px;
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    transition: all 0.3s ease;
-    box-shadow: 0 10px 20px rgba(37, 211, 102, 0.2);
-}
-
-.waBtn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 15px 30px rgba(37, 211, 102, 0.3);
+    font-size: 0.85rem;
 }
 
 @keyframes fadeIn {
@@ -230,8 +210,8 @@
 }
 
 .poweredBy {
-    margin-top: 50px;
-    font-size: 0.7rem;
+    margin-top: 40px;
+    font-size: 0.65rem;
     color: var(--color-text-secondary);
     letter-spacing: 0.1em;
     text-transform: uppercase;
