@@ -20,7 +20,6 @@ export default function BookingClient({ restaurant }: BookingClientProps) {
     const [formData, setFormData] = useState({
         name: '',
         phone: '',
-        email: '',
         date: new Date().toISOString().split('T')[0],
         time: '19:30',
         guests: 2,
@@ -130,14 +129,6 @@ export default function BookingClient({ restaurant }: BookingClientProps) {
                                     className={styles.input}
                                     value={formData.phone}
                                     onChange={e => setFormData({ ...formData, phone: e.target.value })}
-                                />
-                                <input
-                                    required
-                                    type="email"
-                                    placeholder="Email"
-                                    className={styles.input}
-                                    value={formData.email}
-                                    onChange={e => setFormData({ ...formData, email: e.target.value })}
                                 />
                             </div>
                         </div>
