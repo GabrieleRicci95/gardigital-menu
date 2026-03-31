@@ -101,12 +101,16 @@
     gap: 20px;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
     .grid {
         grid-template-columns: 1fr;
+        gap: 15px;
     }
     .card {
-        padding: 30px 20px;
+        padding: 25px 15px;
+    }
+    .container {
+        padding: 40px 10px;
     }
 }
 
