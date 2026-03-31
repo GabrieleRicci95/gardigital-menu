@@ -29,7 +29,7 @@ export default function AdminLayout({
         <div className={styles.layout}>
             <aside className={`${styles.sidebar} ${isMobileMenuOpen ? styles.open : ''}`}>
                 <div className={styles.logo} style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                    <img src="/gardigital_logo.png" alt="Gardigital" style={{ height: '100px' }} />
+                    <img src="/gardigital_logo.png" alt="Gardigital" style={{ height: '150px' }} />
                     <span style={{ fontSize: '0.6em', color: '#ff9800', verticalAlign: 'middle', border: '1px solid #ff9800', padding: '2px 4px', borderRadius: '4px' }}>ADMIN</span>
                 </div>
                 <nav className={styles.nav}>

@@ -54,9 +54,9 @@ export const metadata: Metadata = {
     images: ["/og-banner.png"],
   },
   icons: {
-    icon: "/logo_v2.png",
-    shortcut: "/logo_v2.png",
-    apple: "/logo_v2.png",
+    icon: "/favicon_transparent_ultra.png",
+    shortcut: "/favicon_transparent_ultra.png",
+    apple: "/favicon_transparent_ultra.png",
   },
   formatDetection: {
     telephone: false,

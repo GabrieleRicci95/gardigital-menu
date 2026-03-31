@@ -2,6 +2,12 @@ import { NextResponse, NextRequest } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getSession, isDemoSession, decrypt } from '@/lib/auth';
 import { sendPushNotification } from '@/lib/firebase-admin';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export const dynamic = 'force-dynamic';
 
@@ -141,7 +147,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
         }
 
-        const dateTimeString = `${date}T${time}:00+01:00`;
+        const reservationDate = dayjs.tz(`${date} ${time}`, 'YYYY-MM-DD HH:mm', 'Europe/Rome').toDate();
 
         const restaurant = await prisma.restaurant.findUnique({
             where: { id: restaurantId },
@@ -165,7 +171,7 @@ export async function POST(req: NextRequest) {
                 phone,
                 email,
                 guests: Number(guests),
-                date: new Date(dateTimeString),
+                date: reservationDate,
                 notes,
                 status: initialStatus
             }

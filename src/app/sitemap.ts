@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    const baseUrl = 'https://www.gardigital.it'
+    const baseUrl = 'https://www.solomenu.it'
 
     const routes: MetadataRoute.Sitemap = [
         '',
@@ -10,7 +10,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/login',
         '/cookies',
         '/privacy',
-        '/terms'
+        '/terms',
+        '/beach-club',
+        '/cocktail-bar',
+        '/ristoranti',
+        '/hotel-room-service',
+        '/demo',
+        '/onboarding',
+        '/register',
+        '/book',
+        '/menu'
     ].map(route => ({
         url: `${baseUrl}${route}`,
         lastModified: new Date(),

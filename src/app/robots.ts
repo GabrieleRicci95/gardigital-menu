@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
             allow: '/',
             disallow: ['/dashboard/', '/api/', '/admin/'],
         },
-        sitemap: 'https://www.gardigital.it/sitemap.xml',
+        sitemap: 'https://www.solomenu.it/sitemap.xml',
     }
 }
