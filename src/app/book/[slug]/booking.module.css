@@ -1,7 +1,7 @@
 .container {
     max-width: 600px;
     margin: 0 auto;
-    padding: 60px 20px;
+    padding: 20px 8px; /* Mobile first default */
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -12,12 +12,11 @@
 .card {
     width: 100%;
     background: var(--color-surface);
-    border-radius: 24px;
-    padding: 40px;
+    border-radius: 16px; /* Mobile first */
+    padding: 20px 10px; /* Mobile first */
     border: 1px solid var(--color-border);
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
     position: relative;
-    overflow: hidden;
     margin-top: 30px;
     animation: fadeIn 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
@@ -34,21 +33,23 @@
 
 .title {
     font-family: var(--font-family-serif);
-    font-size: 2.2rem;
+    font-size: 1.6rem; /* Mobile first */
     font-weight: 400;
     margin-bottom: 15px;
     text-align: center;
     color: var(--color-primary);
     letter-spacing: -0.01em;
+    padding: 0 10px;
 }
 
 .subtitle {
-    font-size: 1rem;
+    font-size: 0.9rem; /* Mobile first */
     color: var(--color-text-secondary);
-    margin-bottom: 40px;
+    margin-bottom: 25px;
     text-align: center;
     line-height: 1.6;
     letter-spacing: 0.02em;
+    padding: 0 10px;
 }
 
 .section {
@@ -69,12 +70,12 @@
 .inputGroup {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;
 }
 
 .input {
     width: 100%;
-    padding: 16px 20px;
+    padding: 12px 14px; /* Mobile first */
     border-radius: 12px;
     border: 1px solid var(--color-border);
     background: rgba(255, 255, 255, 0.03);
@@ -83,6 +84,7 @@
     outline: none;
     transition: all 0.3s ease;
     font-family: inherit;
+    box-sizing: border-box;
 }
 
 .input::placeholder {
@@ -97,36 +99,32 @@
 
 .grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    grid-template-columns: 1fr; /* Mobile first: single column */
+    gap: 15px;
 }
 
-@media (max-width: 600px) {
-    .grid {
-        grid-template-columns: 1fr;
-        gap: 12px;
+/* Desktop Enhancements */
+@media (min-width: 601px) {
+    .container {
+        padding: 60px 20px;
     }
     .card {
-        padding: 20px 10px;
-        border-radius: 16px;
-    }
-    .container {
-        padding: 20px 8px;
+        padding: 40px;
+        border-radius: 24px;
     }
     .title {
-        font-size: 1.5rem;
-        padding: 0 10px;
+        font-size: 2.2rem;
     }
     .subtitle {
-        font-size: 0.85rem;
-        margin-bottom: 20px;
-        padding: 0 10px;
+        font-size: 1.1rem;
+        margin-bottom: 40px;
+    }
+    .grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
     }
     .input {
-        padding: 12px 12px;
-        font-size: 0.95rem; /* Prevents overflow */
-        max-width: 100%;
-        box-sizing: border-box;
+        padding: 16px 20px;
     }
 }
 
@@ -232,4 +230,4 @@
 .poweredBy strong {
     color: var(--color-primary);
     font-weight: 700;
-}
+}
