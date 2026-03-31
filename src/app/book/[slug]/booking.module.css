@@ -104,20 +104,29 @@
 @media (max-width: 600px) {
     .grid {
         grid-template-columns: 1fr;
-        gap: 15px;
+        gap: 12px;
     }
     .card {
         padding: 20px 10px;
+        border-radius: 16px;
     }
     .container {
-        padding: 20px 10px;
+        padding: 20px 8px;
     }
     .title {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
+        padding: 0 10px;
     }
     .subtitle {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         margin-bottom: 20px;
+        padding: 0 10px;
+    }
+    .input {
+        padding: 12px 12px;
+        font-size: 0.95rem; /* Prevents overflow */
+        max-width: 100%;
+        box-sizing: border-box;
     }
 }
 
