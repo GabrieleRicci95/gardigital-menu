@@ -42,6 +42,8 @@ export default function Home() {
       }
     }
   }, []);
+
+  return (
     <div className={styles.container}>
       {/* Header */}
       <header className={styles.header}>
