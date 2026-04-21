@@ -22,9 +22,26 @@ import {
 } from "lucide-react";
 import Footer from "@/components/layout/Footer";
 import styles from "./page.module.css";
+import { useEffect } from "react";
 
 export default function Home() {
-  return (
+  const [isAppMode, setIsAppMode] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const ua = navigator.userAgent || '';
+      const hasParam = params.get('platform') === 'app';
+      const hasSession = sessionStorage.getItem('isAppMode') === 'true';
+      const isIOS = /iPad|iPhone|iPod/.test(ua) && !(window as any).MSStream;
+      const isCapacitorNative = (window as any).Capacitor?.isNativePlatform?.() === true;
+      
+      if (hasParam || hasSession || isIOS || isCapacitorNative) {
+        setIsAppMode(true);
+        sessionStorage.setItem('isAppMode', 'true');
+      }
+    }
+  }, []);
     <div className={styles.container}>
       {/* Header */}
       <header className={styles.header}>
@@ -32,7 +49,7 @@ export default function Home() {
           <img src="/logo.png" alt="SoloMenu" className={styles.logoImg} />
         </div>
         <nav className={styles.nav}>
-          <Link href="/register" className={styles.navBtnPrimary}>Registrati</Link>
+          {!isAppMode && <Link href="/register" className={styles.navBtnPrimary}>Registrati</Link>}
           <Link href="/login" className={styles.navBtn}>Area Clienti</Link>
         </nav>
       </header>
@@ -242,75 +259,77 @@ export default function Home() {
         </section>
 
         {/* --- PRICING --- */}
-        <section id="pricing" className={styles.pricing}>
-          <div className={styles.sectionHeader}>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2>Scegli il tuo <span className={styles.highlight}>Piano</span></h2>
-              <p className={styles.sectionSubtitle}>Soluzioni flessibili per ogni tipo di attività, dal piccolo bar al grande ristorante.</p>
-            </motion.div>
-          </div>
+        {!isAppMode && (
+          <section id="pricing" className={styles.pricing}>
+            <div className={styles.sectionHeader}>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+              >
+                <h2>Scegli il tuo <span className={styles.highlight}>Piano</span></h2>
+                <p className={styles.sectionSubtitle}>Soluzioni flessibili per ogni tipo di attività, dal piccolo bar al grande ristorante.</p>
+              </motion.div>
+            </div>
 
-          <div className={styles.pricingGrid}>
-            <PricingCard 
-              name="Menu" 
-              price="15" 
-              description="Il tuo menu digitale professionale."
-              features={[
-                "Menu Digitale Premium",
-                "QR Code Personalizzato",
-                "Piatti e Categorie Illimitati",
-                "Gestione Foto & Prezzi",
-                "Supporto WhatsApp"
-              ]}
-              planKey="Menu"
-            />
-            <PricingCard 
-              name="Traduzioni" 
-              price="10" 
-              description="Rendi il tuo menu internazionale."
-              features={[
-                "Traduzioni AI Istantanee",
-                "Aggiornamento automatico",
-                "Indispensabile per Turisti"
-              ]}
-              planKey="Traduzioni"
-            />
-            <PricingCard 
-              name="Agenda Digitale" 
-              price="10" 
-              description="Ricevi prenotazioni direttamente."
-              features={[
-                "Prenotazioni via WhatsApp",
-                "Tasto 'Prenota Tavolo' Live",
-                "Gestione Agenda Dashboard",
-                "Conferma rapida al cliente",
-                "Link diretto Google",
-                "Aumenta i tuoi Coperti"
-              ]}
-              planKey="Agenda"
-            />
-            <PricingCard 
-              name="Full Pack" 
-              price="29,99" 
-              oldPrice="35"
-              description="Il pacchetto completo ad un prezzo speciale."
-              features={[
-                "Menu Digitale Incluso",
-                "Modulo Traduzioni Incluso",
-                "Modulo Agenda Digitale Incluso",
-                "Tutte le Liste Speciali",
-                "Supporto Prioritario WhatsApp",
-                "Risparmio Imbattibile"
-              ]}
-              highlighted={true}
-              planKey="OFFERTA-FULL"
-            />
-          </div>
-        </section>
+            <div className={styles.pricingGrid}>
+              <PricingCard 
+                name="Menu" 
+                price="15" 
+                description="Il tuo menu digitale professionale."
+                features={[
+                  "Menu Digitale Premium",
+                  "QR Code Personalizzato",
+                  "Piatti e Categorie Illimitati",
+                  "Gestione Foto & Prezzi",
+                  "Supporto WhatsApp"
+                ]}
+                planKey="Menu"
+              />
+              <PricingCard 
+                name="Traduzioni" 
+                price="10" 
+                description="Rendi il tuo menu internazionale."
+                features={[
+                  "Traduzioni AI Istantanee",
+                  "Aggiornamento automatico",
+                  "Indispensabile per Turisti"
+                ]}
+                planKey="Traduzioni"
+              />
+              <PricingCard 
+                name="Agenda Digitale" 
+                price="10" 
+                description="Ricevi prenotazioni direttamente."
+                features={[
+                  "Prenotazioni via WhatsApp",
+                  "Tasto 'Prenota Tavolo' Live",
+                  "Gestione Agenda Dashboard",
+                  "Conferma rapida al cliente",
+                  "Link diretto Google",
+                  "Aumenta i tuoi Coperti"
+                ]}
+                planKey="Agenda"
+              />
+              <PricingCard 
+                name="Full Pack" 
+                price="29,99" 
+                oldPrice="35"
+                description="Il pacchetto completo ad un prezzo speciale."
+                features={[
+                  "Menu Digitale Incluso",
+                  "Modulo Traduzioni Incluso",
+                  "Modulo Agenda Digitale Incluso",
+                  "Tutte le Liste Speciali",
+                  "Supporto Prioritario WhatsApp",
+                  "Risparmio Imbattibile"
+                ]}
+                highlighted={true}
+                planKey="OFFERTA-FULL"
+              />
+            </div>
+          </section>
+        )}
 
         {/* --- FAQ SECTION --- */}
         <FAQSection />

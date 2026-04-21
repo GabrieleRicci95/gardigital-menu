@@ -32,7 +32,7 @@ export default function RegisterPage() {
             const data = await res.json();
 
             if (res.ok) {
-                router.push(data.redirect || '/onboarding');
+                router.push(data.redirect || '/dashboard');
             } else {
                 setError(data.error || 'Registrazione fallita');
             }

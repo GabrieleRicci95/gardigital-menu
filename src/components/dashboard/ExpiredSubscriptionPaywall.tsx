@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { Lock, CreditCard, ExternalLink, ShieldAlert } from 'lucide-react';
+import { Lock, CreditCard, ExternalLink, ShieldAlert, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
 
 interface ExpiredSubscriptionPaywallProps {
@@ -71,22 +71,49 @@ export default function ExpiredSubscriptionPaywall({ isAppMode, onManageClick }:
                     marginBottom: '32px' 
                 }}>
                     {isAppMode 
-                        ? "Non puoi accedere alle funzionalità attuali. Il tuo abbonamento a SoloMenu è scaduto o in pausa. Contatta l'assistenza per rinnovare il piano."
+                        ? "L'abbonamento aziendale per questo ristorante è scaduto o non è attivo. L'accesso alle funzionalità di gestione è riservato agli utenti con una licenza valida fornita da SoloMenu."
                         : "Registra ora un metodo di pagamento per sbloccare la dashboard e attivare i tuoi 7 GIORNI DI PROVA GRATUITA. Nessun addebito verrà effettuato prima della fine della prova."
                     }
                 </p>
 
                 {isAppMode ? (
                     <div style={{
-                        background: 'rgba(239, 68, 68, 0.05)',
-                        padding: '20px',
-                        borderRadius: '16px',
-                        border: '1px dashed rgba(239, 68, 68, 0.3)',
                         width: '100%',
-                        color: '#ef4444',
-                        fontWeight: '500'
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '16px'
                     }}>
-                        Abbonamento non rilevato.
+                        <div style={{
+                            background: 'rgba(212, 175, 55, 0.05)',
+                            padding: '20px',
+                            borderRadius: '16px',
+                            border: '1px dashed rgba(212, 175, 55, 0.3)',
+                            width: '100%',
+                            color: '#d4af37',
+                            fontWeight: '500'
+                        }}>
+                            Servizio Aziendale Sospeso
+                        </div>
+                        
+                        <button 
+                            onClick={() => alert("Nessun acquisto In-App trovato per questo Apple ID. Se hai un abbonamento attivo gestito dalla tua azienda, contatta il supporto tecnico.")}
+                            style={{
+                                background: 'transparent',
+                                color: 'rgba(255,255,255,0.6)',
+                                border: '1px solid rgba(255,255,255,0.1)',
+                                padding: '12px',
+                                borderRadius: '12px',
+                                fontSize: '0.85rem',
+                                fontWeight: '600',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '8px',
+                                cursor: 'pointer'
+                            }}
+                        >
+                            <RefreshCw size={14} /> Ripristina Acquisti
+                        </button>
                     </div>
                 ) : (
                     <Link 

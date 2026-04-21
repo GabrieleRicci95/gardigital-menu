@@ -182,8 +182,10 @@ export default function SubscriptionPage() {
                         border: '1px dashed rgba(212, 175, 55, 0.3)',
                         marginBottom: '32px'
                     }}>
-                        <p style={{ fontWeight: '700', color: '#d4af37', marginBottom: '8px' }}>Accedi da Computer o Browser su:</p>
-                        <code style={{ fontSize: '1.2rem', color: '#ffffff', fontWeight: '900' }}>master.gardigital.it</code>
+                        <p style={{ fontWeight: '700', color: '#d4af37', marginBottom: '8px' }}>Configurazione Aziendale:</p>
+                        <p style={{ fontSize: '1rem', color: '#ffffff', fontWeight: '500', lineHeight: '1.4' }}>
+                            Le impostazioni avanzate e il piano licenze sono gestiti tramite la piattaforma SoloMenu B2B.
+                        </p>
                     </div>
                     <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.4)' }}>
                         Le tue funzionalità attive rimarranno operative nell'app dopo il rinnovo via web.

@@ -27,7 +27,11 @@ export default function OnboardingPage() {
                     const sub = data.restaurant?.subscription;
 
                     if (sub && sub.status === 'ACTIVE') {
-                        router.push('/dashboard');
+                        const endDate = sub.endDate;
+                        const isExpired = endDate ? new Date(endDate) < new Date() : false;
+                        if (!isExpired) {
+                            router.push('/dashboard');
+                        }
                     }
                 }
             } catch (error) {
@@ -36,7 +40,7 @@ export default function OnboardingPage() {
         };
 
         checkStatus();
-        const interval = setInterval(checkStatus, 5000); // Poll every 5s
+        const interval = setInterval(checkStatus, 3000); // Poll faster
         return () => clearInterval(interval);
     }, [router]);
 
@@ -59,16 +63,16 @@ export default function OnboardingPage() {
                 <h1 className={styles.title}>Attivazione in Corso</h1>
                 <p className={styles.text}>
                     Grazie per esserti registrato!<br />
-                    Il tuo account è attualmente <strong>in attesa di revisione</strong>.
+                    Il tuo account è in fase di **configurazione finale**.
                 </p>
 
                 <div className={styles.statusBox}>
-                    Un amministratore attiverà il tuo profilo a breve.<br />
-                    Non devi fare nulla, questa pagina si aggiornerà automaticamente appena sarai attivo.
+                    Stiamo preparando il tuo spazio di lavoro.<br />
+                    Questa pagina si aggiornerà automaticamente tra pochi istanti.
                 </div>
 
                 <div className={styles.footerText}>
-                    <p>Se hai fretta o desideri maggiori informazioni, contattaci.</p>
+                    <p>Hai bisogno di assistenza?</p>
                     <a href="/contact" className={styles.contactLink}>
                         Contatta Supporto &rarr;
                     </a>

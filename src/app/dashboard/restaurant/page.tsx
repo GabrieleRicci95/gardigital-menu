@@ -367,76 +367,89 @@ export default function RestaurantPage() {
                 </div>
             </div>
 
-            {/* Danger Zone */}
-            {!isDemo && (
-                <div style={{ marginTop: '5rem', borderTop: '1px solid rgba(239, 68, 68, 0.2)', paddingTop: '3rem' }}>
-                    <div style={{ 
-                        background: 'rgba(239, 68, 68, 0.05)', 
-                        border: '1px solid rgba(239, 68, 68, 0.2)', 
-                        borderRadius: '24px', 
-                        padding: '2rem',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '1.5rem'
-                    }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#ef4444' }}>
-                            <AlertTriangle size={24} />
-                            <h2 style={{ fontSize: '1.5rem', fontWeight: '800', margin: 0 }}>Zona Pericolo</h2>
-                        </div>
-                        <p style={{ color: 'rgba(255,255,255,0.6)', margin: 0, lineHeight: '1.6' }}>
-                            L&apos;eliminazione dell&apos;account è definitiva e comporterà la rimozione immediata di tutti i tuoi dati, inclusi i menu pubblici e le impostazioni del ristorante. Questa operazione non può essere annullata.
-                        </p>
-                        
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxWidth: '400px' }}>
-                            <label style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.5)', fontWeight: '600' }}>
-                                Conferma con la tua password di accesso:
-                            </label>
-                            <input
-                                type="password"
-                                value={deletePassword}
-                                onChange={(e) => setDeletePassword(e.target.value)}
-                                placeholder="Inserisci la password"
-                                style={{
-                                    padding: '12px 16px',
-                                    background: 'rgba(255, 255, 255, 0.05)',
-                                    border: '1px solid rgba(239, 68, 68, 0.3)',
-                                    borderRadius: '12px',
-                                    color: '#ffffff',
-                                    outline: 'none'
-                                }}
-                            />
-                        </div>
-
-                        <button
-                            onClick={handleDeleteAccount}
-                            disabled={saving}
-                            style={{
-                                background: 'transparent',
-                                border: '1px solid #ef4444',
-                                color: '#ef4444',
-                                padding: '12px 24px',
-                                borderRadius: '12px',
-                                fontWeight: '700',
-                                cursor: 'pointer',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '8px',
-                                alignSelf: 'flex-start',
-                                transition: 'all 0.3s'
-                            }}
-                            onMouseEnter={(e) => {
-                                e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)';
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.style.background = 'transparent';
-                            }}
-                        >
-                            <Trash2 size={18} />
-                            Elimina Definitivamente Account e Dati
-                        </button>
+            {/* Danger Zone - Always visible for Apple Review, but simulated for demo account */}
+            <div style={{ marginTop: '5rem', borderTop: '1px solid rgba(239, 68, 68, 0.2)', paddingTop: '3rem' }}>
+                <div style={{ 
+                    background: 'rgba(239, 68, 68, 0.05)', 
+                    border: '1px solid rgba(239, 68, 68, 0.2)', 
+                    borderRadius: '24px', 
+                    padding: '2rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '1.5rem'
+                }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#ef4444' }}>
+                        <AlertTriangle size={24} />
+                        <h2 style={{ fontSize: '1.5rem', fontWeight: '800', margin: 0 }}>Zona Pericolo</h2>
                     </div>
+                    
+                    {isDemo && (
+                        <div style={{ 
+                            padding: '12px 16px', 
+                            background: 'rgba(212, 175, 55, 0.1)', 
+                            border: '1px solid #d4af37', 
+                            borderRadius: '12px',
+                            color: '#d4af37',
+                            fontSize: '0.95rem',
+                            fontWeight: '600'
+                        }}>
+                            ℹ️ Nota per il revisore: Questo è un account DEMO. L&apos;eliminazione sarà simulata per mostrare il funzionamento completo del sistema senza cancellare i dati condivisi.
+                        </div>
+                    )}
+
+                    <p style={{ color: 'rgba(255,255,255,0.6)', margin: 0, lineHeight: '1.6' }}>
+                        L&apos;eliminazione dell&apos;account è definitiva e comporterà la rimozione immediata di tutti i tuoi dati, inclusi i menu pubblici e le impostazioni del ristorante. Questa operazione non può essere annullata.
+                    </p>
+                    
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxWidth: '400px' }}>
+                        <label style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.5)', fontWeight: '600' }}>
+                            Conferma con la tua password di accesso:
+                        </label>
+                        <input
+                            type="password"
+                            value={deletePassword}
+                            onChange={(e) => setDeletePassword(e.target.value)}
+                            placeholder="Inserisci la password"
+                            style={{
+                                padding: '12px 16px',
+                                background: 'rgba(255, 255, 255, 0.05)',
+                                border: '1px solid rgba(239, 68, 68, 0.3)',
+                                borderRadius: '12px',
+                                color: '#ffffff',
+                                outline: 'none'
+                            }}
+                        />
+                    </div>
+
+                    <button
+                        onClick={handleDeleteAccount}
+                        disabled={saving}
+                        style={{
+                            background: 'transparent',
+                            border: '1px solid #ef4444',
+                            color: '#ef4444',
+                            padding: '12px 24px',
+                            borderRadius: '12px',
+                            fontWeight: '700',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            alignSelf: 'flex-start',
+                            transition: 'all 0.3s'
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'transparent';
+                        }}
+                    >
+                        <Trash2 size={18} />
+                        Elimina Definitivamente Account e Dati
+                    </button>
                 </div>
-            )}
+            </div>
         </div>
     );
 }

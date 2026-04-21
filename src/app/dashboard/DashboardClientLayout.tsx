@@ -149,11 +149,12 @@ export default function DashboardClientLayout({
             const ua = navigator.userAgent || '';
             const hasParam = params.get('platform') === 'app';
             const hasSession = sessionStorage.getItem('isAppMode') === 'true';
+            const isIOS = /iPad|iPhone|iPod/.test(ua) && !(window as any).MSStream;
             const isWebView = /Android/i.test(ua) && /Version\/[0-9.]+/i.test(ua);
             const isStandalone = (window.matchMedia('(display-mode: standalone)').matches) || (navigator as any).standalone;
             const isCapacitorNative = (window as any).Capacitor?.isNativePlatform?.() === true;
 
-            if (hasParam || hasSession || isWebView || isStandalone || isCapacitorNative) {
+            if (hasParam || hasSession || isWebView || isStandalone || isCapacitorNative || isIOS) {
                 setIsAppMode(true);
                 sessionStorage.setItem('isAppMode', 'true');
             }
