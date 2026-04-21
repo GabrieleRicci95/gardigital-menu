@@ -2,20 +2,26 @@ import 'server-only';
 import * as admin from 'firebase-admin';
 
 // Protect against multiple initializations in development
-if (!admin.apps.length) {
-    try {
-        if (process.env.FIREBASE_SERVICE_ACCOUNT) {
-            const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-            admin.initializeApp({
-                credential: admin.credential.cert(serviceAccount)
-            });
-            console.log("Firebase Admin initialized successfully.");
-        } else {
-            console.warn("FIREBASE_SERVICE_ACCOUNT environment variable is not set. Push notifications will be silent.");
+function initializeFirebase() {
+    if (!admin.apps.length) {
+        try {
+            if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+                const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+                admin.initializeApp({
+                    credential: admin.credential.cert(serviceAccount)
+                });
+                console.log("Firebase Admin initialized successfully.");
+                return true;
+            } else {
+                console.warn("FIREBASE_SERVICE_ACCOUNT environment variable is not set. Push notifications will be silent.");
+                return false;
+            }
+        } catch (error) {
+            console.error("Firebase Admin initialization error:", error);
+            return false;
         }
-    } catch (error) {
-        console.error("Firebase Admin initialization error:", error);
     }
+    return true;
 }
 
 export const firebaseAdmin = admin;
@@ -25,8 +31,9 @@ export const firebaseAdmin = admin;
  */
 export async function sendPushNotification(tokens: string[], title: string, body: string, data?: any) {
     if (!tokens || tokens.length === 0) return;
-    if (!admin.apps.length) {
-        console.warn("Cannot send push notification: Firebase Admin not initialized.");
+    
+    if (!initializeFirebase()) {
+        console.warn("Cannot send push notification: Firebase Admin initialization failed.");
         return;
     }
 
