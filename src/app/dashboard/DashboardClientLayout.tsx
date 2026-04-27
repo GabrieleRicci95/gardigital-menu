@@ -191,14 +191,10 @@ export default function DashboardClientLayout({
         }
     };
 
-    const handleDeleteSpecialModule = async (e: React.MouseEvent, type: 'wine' | 'champagne' | 'drink', name: string) => {
-        e.preventDefault();
-        e.stopPropagation();
-        if (!confirm(`Sei sicuro di voler rimuovere il modulo "${name}"? Potrai riattivarlo dalle impostazioni del ristorante.`)) return;
-
+    const handleToggleSpecialModule = async (type: 'wine' | 'champagne' | 'drink', currentStatus: boolean) => {
         try {
             const body = {
-                [type === 'wine' ? 'isWineActive' : type === 'champagne' ? 'isChampagneActive' : 'isDrinkActive']: false
+                [type === 'wine' ? 'isWineActive' : type === 'champagne' ? 'isChampagneActive' : 'isDrinkActive']: !currentStatus
             };
             const res = await fetch('/api/restaurant', {
                 method: 'PATCH',
@@ -207,12 +203,9 @@ export default function DashboardClientLayout({
             });
             if (res.ok) {
                 await fetchRestaurantData();
-                if (pathname.includes(type)) {
-                    router.push('/dashboard');
-                }
             }
         } catch (error) {
-            console.error("Special modulo deletion failed", error);
+            console.error("Special modulo toggle failed", error);
         }
     };
 
@@ -347,6 +340,48 @@ export default function DashboardClientLayout({
                                 <span>Aggiungi Modulo</span>
                             </button>
 
+                            {/* Special Modules Toggles */}
+                            <div style={{ marginBottom: '16px', padding: '0 8px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 12px', background: 'rgba(255,255,255,0.03)', borderRadius: '10px', transition: 'all 0.3s' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.85rem', color: isWineActive ? '#d4af37' : 'rgba(255,255,255,0.4)' }}>
+                                        <Wine size={14} />
+                                        <span>Lista Vini</span>
+                                    </div>
+                                    <input 
+                                        type="checkbox" 
+                                        checked={isWineActive} 
+                                        onChange={() => handleToggleSpecialModule('wine', isWineActive)}
+                                        style={{ accentColor: '#d4af37', cursor: 'pointer', width: '16px', height: '16px' }}
+                                    />
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 12px', background: 'rgba(255,255,255,0.03)', borderRadius: '10px', transition: 'all 0.3s' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.85rem', color: isChampagneActive ? '#d4af37' : 'rgba(255,255,255,0.4)' }}>
+                                        <GlassWater size={14} />
+                                        <span>Champagne</span>
+                                    </div>
+                                    <input 
+                                        type="checkbox" 
+                                        checked={isChampagneActive} 
+                                        onChange={() => handleToggleSpecialModule('champagne', isChampagneActive)}
+                                        style={{ accentColor: '#d4af37', cursor: 'pointer', width: '16px', height: '16px' }}
+                                    />
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 12px', background: 'rgba(255,255,255,0.03)', borderRadius: '10px', transition: 'all 0.3s' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.85rem', color: isDrinkActive ? '#d4af37' : 'rgba(255,255,255,0.4)' }}>
+                                        <Martini size={14} />
+                                        <span>Lista Drink</span>
+                                    </div>
+                                    <input 
+                                        type="checkbox" 
+                                        checked={isDrinkActive} 
+                                        onChange={() => handleToggleSpecialModule('drink', isDrinkActive)}
+                                        style={{ accentColor: '#d4af37', cursor: 'pointer', width: '16px', height: '16px' }}
+                                    />
+                                </div>
+                            </div>
+
+                            <div style={{ height: '1px', background: 'rgba(212, 175, 55, 0.1)', margin: '4px 10px 12px 0' }} />
+
                             {isWineActive && (
                                 <div className={styles.customModuleWrapper}>
                                     <Link 
@@ -357,13 +392,6 @@ export default function DashboardClientLayout({
                                         <Wine size={16} />
                                         <span>Vini/Bollicine</span>
                                     </Link>
-                                    <button 
-                                        className={styles.deleteModuleBtn}
-                                        onClick={(e) => handleDeleteSpecialModule(e, 'wine', 'Vini/Bollicine')}
-                                        title="Elimina modulo"
-                                    >
-                                        <Trash2 size={14} />
-                                    </button>
                                 </div>
                             )}
                             {isChampagneActive && (
@@ -376,13 +404,6 @@ export default function DashboardClientLayout({
                                         <GlassWater size={16} />
                                         <span>Champagne</span>
                                     </Link>
-                                    <button 
-                                        className={styles.deleteModuleBtn}
-                                        onClick={(e) => handleDeleteSpecialModule(e, 'champagne', 'Champagne')}
-                                        title="Elimina modulo"
-                                    >
-                                        <Trash2 size={14} />
-                                    </button>
                                 </div>
                             )}
                             {isDrinkActive && (
@@ -395,13 +416,6 @@ export default function DashboardClientLayout({
                                         <Martini size={16} />
                                         <span>Drink</span>
                                     </Link>
-                                    <button 
-                                        className={styles.deleteModuleBtn}
-                                        onClick={(e) => handleDeleteSpecialModule(e, 'drink', 'Drink')}
-                                        title="Elimina modulo"
-                                    >
-                                        <Trash2 size={14} />
-                                    </button>
                                 </div>
                             )}
 
