@@ -210,6 +210,34 @@ export default function DemoRistorante() {
                 </div>
             </section>
 
+            {/* PRIVATE PARTIES SECTION */}
+            <section style={{ padding: '6rem 20px', backgroundColor: '#f8fafc' }}>
+                <div style={{ maxWidth: '1000px', margin: '0 auto', backgroundColor: '#ffffff', borderRadius: '20px', overflow: 'hidden', boxShadow: '0 20px 40px rgba(0,0,0,0.05)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
+                    <div style={{ minHeight: '350px', backgroundImage: 'url("https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80")', backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
+                    <div style={{ padding: '3.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                        <h2 style={{ fontSize: '2.2rem', fontFamily: '"Playfair Display", serif', color: '#0f172a', marginBottom: '1rem' }}>Feste Private & Cerimonie</h2>
+                        <div style={{ height: '3px', width: '40px', backgroundColor: '#0d9488', marginBottom: '1.5rem' }}></div>
+                        <p style={{ color: '#64748b', lineHeight: '1.6', marginBottom: '2.5rem', fontSize: '1.1rem' }}>
+                            Cerchi la location perfetta per il tuo compleanno, festa di laurea o cena aziendale? Mettiamo a disposizione i nostri spazi in esclusiva con menu personalizzati e un servizio impeccabile per rendere indimenticabile il tuo evento.
+                        </p>
+                        <a href="mailto:info@aperifish.it" style={{
+                            display: 'inline-block',
+                            backgroundColor: '#0f172a',
+                            color: 'white',
+                            padding: '15px 30px',
+                            borderRadius: '50px',
+                            textDecoration: 'none',
+                            fontWeight: 'bold',
+                            textAlign: 'center',
+                            alignSelf: 'flex-start',
+                            boxShadow: '0 10px 20px rgba(15, 23, 42, 0.2)'
+                        }}>
+                            Richiedi un Preventivo
+                        </a>
+                    </div>
+                </div>
+            </section>
+
             {/* PROMOTIONS SECTION */}
             <section style={{ padding: '6rem 20px', backgroundColor: '#0d9488', color: 'white', textAlign: 'center' }}>
                 <div style={{ maxWidth: '800px', margin: '0 auto' }}>
