@@ -77,6 +77,234 @@ export default async function FixedMenusPage({ params }: { params: Promise<{ slu
     const primaryColor = restaurant.themeColor || '#001f2f';
     const accentColor = '#e2b13c';
 
+    const isAperifish = slug.toLowerCase().includes('aperifish');
+
+    if (isAperifish) {
+        return (
+            <div style={{
+                fontFamily: restaurant.fontFamily === 'playfair' ? '"Playfair Display", serif' : 'var(--font-inter, sans-serif)',
+                minHeight: '100vh',
+                background: `linear-gradient(135deg, #0a0f18 0%, #001f2f 100%)`,
+                color: '#f8fafc',
+                position: 'relative',
+                overflowX: 'hidden'
+            }}>
+                {/* Decorative background elements */}
+                <div style={{ position: 'absolute', top: '-10%', left: '-10%', width: '40vw', height: '40vw', background: 'radial-gradient(circle, rgba(226,177,60,0.1) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }}></div>
+                <div style={{ position: 'absolute', bottom: '10%', right: '-10%', width: '30vw', height: '30vw', background: 'radial-gradient(circle, rgba(0,191,255,0.05) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }}></div>
+
+                {/* Fixed Back Button */}
+                <Link
+                    href={`/menu/${slug}`}
+                    style={{
+                        position: 'fixed',
+                        top: '20px',
+                        left: '20px',
+                        zIndex: 100,
+                        padding: '10px 20px',
+                        background: 'rgba(0, 31, 47, 0.7)',
+                        backdropFilter: 'blur(10px)',
+                        WebkitBackdropFilter: 'blur(10px)',
+                        color: accentColor,
+                        borderRadius: '30px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        textDecoration: 'none',
+                        border: `1px solid rgba(226, 177, 60, 0.3)`,
+                        boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
+                        fontSize: '0.9rem',
+                        fontWeight: '600',
+                        transition: 'all 0.3s ease'
+                    }}
+                >
+                    <span style={{ fontSize: '1.2rem' }}>←</span> Indietro
+                </Link>
+
+                {/* Header */}
+                <header style={{
+                    padding: '5rem 1.5rem 3rem 1.5rem',
+                    textAlign: 'center',
+                    position: 'relative',
+                    zIndex: 10
+                }}>
+                    <h1 style={{ 
+                        margin: 0, 
+                        fontSize: '3rem', 
+                        letterSpacing: '4px', 
+                        textTransform: 'uppercase', 
+                        color: accentColor,
+                        fontWeight: '800',
+                        textShadow: '0 0 20px rgba(226,177,60,0.2)'
+                    }}>
+                        I Nostri Percorsi
+                    </h1>
+                    <p style={{ marginTop: '1rem', color: '#94a3b8', fontSize: '1.1rem', fontStyle: 'italic', maxWidth: '600px', margin: '1rem auto 0 auto' }}>
+                        Lasciati guidare in un'esperienza culinaria unica, pensata per esaltare i sapori del mare.
+                    </p>
+                </header>
+
+                {/* Menus Container */}
+                <div style={{ padding: '0 1.5rem 4rem 1.5rem', maxWidth: '850px', margin: '0 auto', position: 'relative', zIndex: 10 }}>
+
+                    {restaurant.fixedMenus.length === 0 ? (
+                        <div style={{ textAlign: 'center', padding: '3rem', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', color: '#cbd5e1' }}>
+                            <p>I percorsi degustazione sono in fase di aggiornamento.</p>
+                        </div>
+                    ) : (
+                        restaurant.fixedMenus.map((menu) => (
+                            <div key={menu.id} style={{
+                                background: 'rgba(255, 255, 255, 0.03)',
+                                backdropFilter: 'blur(20px)',
+                                WebkitBackdropFilter: 'blur(20px)',
+                                border: '1px solid rgba(255, 255, 255, 0.08)',
+                                borderRadius: '24px',
+                                overflow: 'hidden',
+                                boxShadow: '0 20px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1)',
+                                marginBottom: '3rem',
+                                color: '#f8fafc',
+                                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                            }}>
+                                {/* Card Header */}
+                                <div style={{ 
+                                    padding: '2rem 1.5rem 1.5rem 1.5rem', 
+                                    textAlign: 'center',
+                                    background: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, transparent 100%)',
+                                    borderBottom: '1px solid rgba(255,255,255,0.05)'
+                                }}>
+                                    <h2 style={{ 
+                                        margin: 0, 
+                                        color: '#fff', 
+                                        fontSize: '2rem', 
+                                        fontWeight: '700',
+                                        letterSpacing: '1px'
+                                    }}>
+                                        {menu.name}
+                                    </h2>
+                                    {menu.subtitle && (
+                                        <div style={{ color: accentColor, fontSize: '1.1rem', marginTop: '0.8rem', fontStyle: 'italic', fontWeight: '500' }}>
+                                            ~ {menu.subtitle} ~
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Card Body */}
+                                <div style={{ padding: '2rem 1.5rem' }}>
+
+                                    {menu.description && (
+                                        <div style={{
+                                            textAlign: 'center',
+                                            whiteSpace: 'pre-wrap',
+                                            lineHeight: '1.8',
+                                            fontSize: '1.15rem',
+                                            color: '#cbd5e1',
+                                            marginBottom: '2.5rem',
+                                            padding: '0 1rem'
+                                        }}>
+                                            {menu.description}
+                                        </div>
+                                    )}
+
+                                    {menu.sections && menu.sections.length > 0 && (
+                                        <div style={{ marginBottom: '2rem' }}>
+                                            {menu.sections.map(section => (
+                                                <div key={section.id} style={{ marginBottom: '2rem', textAlign: 'center' }}>
+                                                    {section.name && section.name !== 'Cosa include' && section.name !== 'Il Nostro Menu' && (
+                                                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
+                                                            <div style={{ height: '1px', flex: 1, background: 'linear-gradient(to right, transparent, rgba(226,177,60,0.3))' }}></div>
+                                                            <h3 style={{ color: accentColor, fontSize: '1.3rem', margin: 0, fontWeight: '600', textTransform: 'uppercase', letterSpacing: '2px' }}>
+                                                                {section.name}
+                                                            </h3>
+                                                            <div style={{ height: '1px', flex: 1, background: 'linear-gradient(to left, transparent, rgba(226,177,60,0.3))' }}></div>
+                                                        </div>
+                                                    )}
+                                                    {section.description && (
+                                                        <p style={{ fontStyle: 'italic', color: '#94a3b8', marginBottom: '1.5rem', fontSize: '1rem' }}>
+                                                            {section.description}
+                                                        </p>
+                                                    )}
+                                                    <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                                                        {section.items && section.items.map(item => (
+                                                            <li key={item.id} style={{ marginBottom: '1.5rem' }}>
+                                                                <div style={{ fontWeight: '600', fontSize: '1.2rem', color: '#fff', letterSpacing: '0.5px' }}>
+                                                                    {item.name}
+                                                                </div>
+                                                                {item.description && (
+                                                                    <div style={{ color: '#94a3b8', fontSize: '1rem', marginTop: '6px', lineHeight: '1.5' }}>
+                                                                        {item.description}
+                                                                    </div>
+                                                                )}
+                                                                {item.allergens && item.allergens !== '[]' && (
+                                                                    <div style={{ marginTop: '8px', fontSize: '0.9rem', display: 'flex', justifyContent: 'center', gap: '5px' }}>
+                                                                        {(() => {
+                                                                            try {
+                                                                                const allergenIds = JSON.parse(item.allergens as string);
+                                                                                return allergensData
+                                                                                    .filter(a => allergenIds.includes(a.id))
+                                                                                    .map(a => <span key={a.id} title={a.name} style={{ opacity: 0.8 }}>{a.icon}</span>);
+                                                                            } catch (e) { return null; }
+                                                                        })()}
+                                                                    </div>
+                                                                )}
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+
+                                    {/* Price Tag */}
+                                    <div style={{
+                                        marginTop: '3rem',
+                                        padding: '1.5rem',
+                                        background: 'rgba(0,0,0,0.2)',
+                                        borderRadius: '16px',
+                                        textAlign: 'center',
+                                        border: '1px solid rgba(255,255,255,0.03)'
+                                    }}>
+                                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', gap: '5px' }}>
+                                            <span style={{ fontWeight: '500', color: '#cbd5e1', fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Prezzo a persona</span>
+                                            <span style={{ fontSize: '2.8rem', fontWeight: '800', color: accentColor, lineHeight: '1' }}>{Number(menu.price).toFixed(2)}€</span>
+                                        </div>
+                                        {!['apericena cotto e crudo', 'aperifish crudo', 'aperifish cotto'].map(s => s.toLowerCase()).some(s => menu.name.toLowerCase().includes(s)) && (
+                                            <div style={{ fontSize: '0.9rem', color: '#64748b', fontStyle: 'italic', marginTop: '10px' }}>
+                                                Bevande escluse
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        ))
+                    )}
+
+                    {/* Allergen Legend */}
+                    <div style={{ 
+                        marginTop: '4rem', 
+                        background: 'rgba(0,0,0,0.3)', 
+                        border: '1px solid rgba(255,255,255,0.05)',
+                        padding: '2rem', 
+                        borderRadius: '20px', 
+                        color: '#94a3b8' 
+                    }}>
+                        <h4 style={{ margin: '0 0 1.5rem 0', color: '#fff', fontSize: '1.2rem', textAlign: 'center', fontWeight: '600' }}>
+                            Legenda Allergeni
+                        </h4>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '15px' }}>
+                            {allergensData.map(a => (
+                                <div key={a.id} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.9rem' }}>
+                                    <span style={{ fontSize: '1.2rem', opacity: 0.8 }}>{a.icon}</span>
+                                    <span><strong>{a.id}.</strong> {a.name}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        );
+    }
+
     // Using the same "Pub" background as requested for events
     const coverImage = 'https://images.unsplash.com/photo-1575444758702-4a6b9222336e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80';
 

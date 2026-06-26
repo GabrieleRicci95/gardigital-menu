@@ -25,9 +25,6 @@ export default function RestaurantPage() {
         slug: '',
         whatsappNumber: '',
         googleReviewsUrl: '',
-        isWineActive: false,
-        isChampagneActive: false,
-        isDrinkActive: false,
         showNameInPublicMenu: true,
     });
 
@@ -53,9 +50,6 @@ export default function RestaurantPage() {
                         slug: data.restaurant.slug || '',
                         whatsappNumber: data.restaurant.whatsappNumber || '',
                         googleReviewsUrl: data.restaurant.googleReviewsUrl || '',
-                        isWineActive: !!data.restaurant.wineList?.isActive,
-                        isChampagneActive: !!data.restaurant.champagneList?.isActive,
-                        isDrinkActive: !!data.restaurant.drinkList?.isActive,
                         showNameInPublicMenu: data.restaurant.showNameInPublicMenu ?? true,
                     };
                     setFormData(initialData);

@@ -98,45 +98,55 @@ export async function PATCH(request: Request) {
         let restaurant;
 
         if (existingRestaurant) {
+            // Build dynamic update data to handle partial updates correctly
+            const updateData: any = {
+                description,
+                themeColor,
+                coverImageUrl,
+                backgroundColor,
+                textColor,
+                fontFamily,
+                cardStyle,
+                whatsappNumber,
+                wineListUrl,
+                googleReviewsUrl,
+                bookingMaxGuestsPerSlot,
+                bookingAutoConfirm,
+                showNameInPublicMenu,
+                name: name || existingRestaurant.name,
+                slug: (name && existingRestaurant.name !== name) ? slug + '-' + Math.floor(Math.random() * 1000) : existingRestaurant.slug,
+            };
+
+            // Only update special modules if explicitly provided in the request
+            if (isWineActive !== undefined) {
+                updateData.wineList = {
+                    upsert: {
+                        create: { isActive: isWineActive },
+                        update: { isActive: isWineActive }
+                    }
+                };
+            }
+            if (isChampagneActive !== undefined) {
+                updateData.champagneList = {
+                    upsert: {
+                        create: { isActive: isChampagneActive },
+                        update: { isActive: isChampagneActive }
+                    }
+                };
+            }
+            if (isDrinkActive !== undefined) {
+                updateData.drinkList = {
+                    upsert: {
+                        create: { isActive: isDrinkActive },
+                        update: { isActive: isDrinkActive }
+                    }
+                };
+            }
+
             // Update
             restaurant = await prisma.restaurant.update({
                 where: { id: existingRestaurant.id },
-                data: {
-                    description,
-                    themeColor,
-                    coverImageUrl,
-                    backgroundColor,
-                    textColor,
-                    fontFamily,
-                    cardStyle,
-                    whatsappNumber,
-                    wineListUrl,
-                    googleReviewsUrl,
-                    bookingMaxGuestsPerSlot,
-                    bookingAutoConfirm,
-                    showNameInPublicMenu,
-                    name: name || existingRestaurant.name,
-                    slug: (name && existingRestaurant.name !== name) ? slug + '-' + Math.floor(Math.random() * 1000) : existingRestaurant.slug,
-                    // Handle related lists
-                    wineList: {
-                        upsert: {
-                            create: { isActive: isWineActive ?? true },
-                            update: { isActive: isWineActive ?? true }
-                        }
-                    },
-                    champagneList: {
-                        upsert: {
-                            create: { isActive: isChampagneActive ?? false },
-                            update: { isActive: isChampagneActive ?? false }
-                        }
-                    },
-                    drinkList: {
-                        upsert: {
-                            create: { isActive: isDrinkActive ?? false },
-                            update: { isActive: isDrinkActive ?? false }
-                        }
-                    }
-                },
+                data: updateData,
                 include: {
                     wineList: { select: { isActive: true } },
                     champagneList: { select: { isActive: true } },
