@@ -138,7 +138,7 @@ export default function DemoRistorante() {
 
                         {/* Card 2 */}
                         <div style={{ borderRadius: '20px', overflow: 'hidden', backgroundColor: '#ffffff', boxShadow: '0 20px 40px rgba(0,0,0,0.05)' }}>
-                            <img src="https://images.unsplash.com/photo-1565557613262-c8bf64f691eb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Tartare" style={{ width: '100%', height: '250px', objectFit: 'cover' }} />
+                            <img src="https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Tartare" style={{ width: '100%', height: '250px', objectFit: 'cover' }} />
                             <div style={{ padding: '2rem' }}>
                                 <h3 style={{ fontSize: '1.5rem', color: '#0f172a', marginBottom: '0.5rem', fontFamily: '"Playfair Display", serif' }}>Tartare di Tonno</h3>
                                 <p style={{ color: '#64748b', marginBottom: '1.5rem' }}>Tonno rosso battuto al coltello, avocado, stracciatella e granella di pistacchio.</p>
