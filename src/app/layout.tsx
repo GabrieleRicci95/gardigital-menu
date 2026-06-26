@@ -136,7 +136,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
         {children}
-        <CookieBanner />
+        {/* <CookieBanner /> */}
       </body>
     </html>
   );
