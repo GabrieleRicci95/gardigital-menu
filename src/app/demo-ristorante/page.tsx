@@ -178,6 +178,64 @@ export default function DemoRistorante() {
                 </div>
             </section>
 
+            {/* EVENTS SECTION */}
+            <section style={{ padding: '6rem 20px', backgroundColor: '#ffffff' }}>
+                <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+                    <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+                        <h2 style={{ fontSize: '2.5rem', fontFamily: '"Playfair Display", serif', color: '#0f172a' }}>Eventi in Programma</h2>
+                        <div style={{ height: '3px', width: '60px', backgroundColor: '#f59e0b', margin: '1rem auto 0 auto' }}></div>
+                    </div>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '2rem' }}>
+                        <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', padding: '2rem', backgroundColor: '#f8fafc', borderRadius: '15px', borderLeft: '4px solid #0d9488' }}>
+                            <div style={{ textAlign: 'center', minWidth: '80px' }}>
+                                <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#0f172a' }}>12</div>
+                                <div style={{ color: '#0d9488', fontWeight: 'bold', textTransform: 'uppercase' }}>Lug</div>
+                            </div>
+                            <div>
+                                <h3 style={{ fontSize: '1.3rem', color: '#0f172a', marginBottom: '0.5rem', fontFamily: '"Playfair Display", serif' }}>Sushi & Sax Live</h3>
+                                <p style={{ color: '#64748b', margin: 0 }}>Accompagnamento musicale dal vivo con sax durante l'apericena.</p>
+                            </div>
+                        </div>
+                        <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', padding: '2rem', backgroundColor: '#f8fafc', borderRadius: '15px', borderLeft: '4px solid #0d9488' }}>
+                            <div style={{ textAlign: 'center', minWidth: '80px' }}>
+                                <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#0f172a' }}>Ogni</div>
+                                <div style={{ color: '#0d9488', fontWeight: 'bold', textTransform: 'uppercase' }}>Dom</div>
+                            </div>
+                            <div>
+                                <h3 style={{ fontSize: '1.3rem', color: '#0f172a', marginBottom: '0.5rem', fontFamily: '"Playfair Display", serif' }}>Domenica in Bolla</h3>
+                                <p style={{ color: '#64748b', margin: 0 }}>Ostriche a metà prezzo se ordini una bottiglia di Franciacorta o Champagne.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* PROMOTIONS SECTION */}
+            <section style={{ padding: '6rem 20px', backgroundColor: '#0d9488', color: 'white', textAlign: 'center' }}>
+                <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+                    <Star size={40} color="#f59e0b" style={{ margin: '0 auto 1.5rem auto' }} />
+                    <h2 style={{ fontSize: '2.5rem', fontFamily: '"Playfair Display", serif', marginBottom: '1.5rem' }}>
+                        Offerta Speciale Pausa Pranzo
+                    </h2>
+                    <p style={{ fontSize: '1.2rem', marginBottom: '2.5rem', lineHeight: '1.6', color: '#ccfbf1' }}>
+                        Vieni a trovarci a pranzo dal Martedì al Venerdì. Per te il nostro speciale "Business Lunch" a soli <strong>15€</strong> comprensivo di primo di mare, acqua e caffè.
+                    </p>
+                    <Link href="/book/aperifish-xl-drink-e-wine-733-solo" style={{
+                        display: 'inline-block',
+                        backgroundColor: '#f59e0b',
+                        color: 'white',
+                        padding: '15px 35px',
+                        borderRadius: '50px',
+                        textDecoration: 'none',
+                        fontWeight: 'bold',
+                        fontSize: '1.1rem',
+                        boxShadow: '0 10px 25px rgba(245, 158, 11, 0.4)'
+                    }}>
+                        Approfitta dell'Offerta
+                    </Link>
+                </div>
+            </section>
+
             {/* INFO & FOOTER */}
             <footer style={{ backgroundColor: '#0f172a', color: 'white', padding: '5rem 20px 2rem 20px' }}>
                 <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '3rem', marginBottom: '4rem' }}>
